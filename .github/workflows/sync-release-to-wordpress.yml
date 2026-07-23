@@ -51,6 +51,15 @@ jobs:
             exit 1
           fi
 
+          curl --fail --location \
+            --output masterforge-installer.exe \
+            "$INSTALLER_URL"
+
+          INSTALLER_CHECKSUM="$(
+            sha256sum masterforge-installer.exe |
+            awk '{ print $1 }'
+          )"
+
           {
             echo "tag=$RELEASE_TAG"
             echo "name<<MFTM_RELEASE_NAME"
@@ -61,6 +70,7 @@ jobs:
             echo "MFTM_RELEASE_NOTES"
             echo "published_at=$PUBLISHED_AT"
             echo "download_url=$INSTALLER_URL"
+            echo "checksum=$INSTALLER_CHECKSUM"
           } >> "$GITHUB_OUTPUT"
 
       - name: Sync release to WordPress
@@ -73,6 +83,7 @@ jobs:
           RELEASE_NOTES: ${{ steps.release.outputs.notes }}
           PUBLISHED_AT: ${{ steps.release.outputs.published_at }}
           DOWNLOAD_URL: ${{ steps.release.outputs.download_url }}
+          CHECKSUM: ${{ steps.release.outputs.checksum }}
         run: |
           VERSION="${RELEASE_TAG#v}"
 
@@ -83,7 +94,7 @@ jobs:
               --arg download_url "$DOWNLOAD_URL" \
               --arg release_notes "$RELEASE_NOTES" \
               --arg published_at "$PUBLISHED_AT" \
-              --arg checksum "" \
+              --arg checksum "$CHECKSUM" \
               '{
                 version: $version,
                 release_name: $release_name,
