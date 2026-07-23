@@ -1,0 +1,68 @@
+name: Sync Release to WordPress
+
+on:
+  release:
+    types:
+      - published
+
+jobs:
+  sync-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Find Windows installer
+        id: installer
+        shell: bash
+        run: |
+          INSTALLER_URL="$(
+            jq -r '
+              .release.assets[]
+              | select(.name | endswith(".exe"))
+              | .browser_download_url
+            ' "$GITHUB_EVENT_PATH" | head -n 1
+          )"
+
+          if [ -z "$INSTALLER_URL" ] || [ "$INSTALLER_URL" = "null" ]; then
+            echo "No Windows .exe asset was found on this release."
+            exit 1
+          fi
+
+          echo "url=$INSTALLER_URL" >> "$GITHUB_OUTPUT"
+
+      - name: Sync release to WordPress
+        shell: bash
+        env:
+          SYNC_URL: ${{ secrets.MASTERFORGE_SYNC_URL }}
+          SYNC_TOKEN: ${{ secrets.MASTERFORGE_SYNC_TOKEN }}
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+          RELEASE_NAME: ${{ github.event.release.name }}
+          RELEASE_NOTES: ${{ github.event.release.body }}
+          PUBLISHED_AT: ${{ github.event.release.published_at }}
+          DOWNLOAD_URL: ${{ steps.installer.outputs.url }}
+        run: |
+          VERSION="${RELEASE_TAG#v}"
+
+          PAYLOAD="$(
+            jq -n \
+              --arg version "$VERSION" \
+              --arg release_name "$RELEASE_NAME" \
+              --arg download_url "$DOWNLOAD_URL" \
+              --arg release_notes "$RELEASE_NOTES" \
+              --arg published_at "$PUBLISHED_AT" \
+              --arg checksum "" \
+              '{
+                version: $version,
+                release_name: $release_name,
+                download_url: $download_url,
+                release_notes: $release_notes,
+                published_at: $published_at,
+                checksum: $checksum
+              }'
+          )"
+
+          curl --fail-with-body \
+            --request POST \
+            --header "Content-Type: application/json" \
+            --header "X-MasterForge-Release-Token: $SYNC_TOKEN" \
+            --data "$PAYLOAD" \
+            "$SYNC_URL"
