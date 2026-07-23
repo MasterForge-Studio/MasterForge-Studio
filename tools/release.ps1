@@ -313,7 +313,9 @@ try {
     $Confirmation = Read-Host "Type RELEASE to continue"
 
     if ($Confirmation -cne "RELEASE") {
-        throw "Release cancelled. The confirmation text did not match RELEASE."
+        Write-Host ""
+        Write-Host "Release cancelled. No changes were made."
+        exit 0
     }
 
     if (-not [string]::IsNullOrWhiteSpace($ReleaseVersion)) {
