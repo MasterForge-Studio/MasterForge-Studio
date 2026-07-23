@@ -1,5 +1,16 @@
 # MasterForge Studio Changelog
 
+## v0.3.1-alpha
+
+- Added automatic startup into the campaign creation wizard when no campaigns exist.
+- Separated development and installed user-data profiles.
+- Retained shared activation data across development and installed builds.
+- Added Git source control and connected the project to GitHub.
+- Added automated GitHub release-to-WordPress synchronisation.
+- Added secure release metadata syncing for version, notes, installer URL, publication date and SHA-256 checksum.
+- Added the PowerShell release pipeline with dry-run, build-only and release safety checks.
+- Updated MasterForge Studio to version 0.3.1-alpha.
+
 ## v0.3.0-alpha
 
 - Reorganised navigation around In Game, Pre-Game, World Building and Settings workflows.

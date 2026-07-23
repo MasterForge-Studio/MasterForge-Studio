@@ -27,6 +27,7 @@ $TagName = "v$Version"
 
 $PackageLockPath = Join-Path $ProjectRoot "package-lock.json"
 $VersionFilePath = Join-Path $ProjectRoot "src\version.js"
+$ChangelogPath = Join-Path $ProjectRoot "CHANGELOG.md"
 
 if (
     -not [string]::IsNullOrWhiteSpace($VersionOverride) `
@@ -47,6 +48,10 @@ if (
     Write-Host "package.json version: $PackageVersion"
     Write-Host "Test version:         $Version"
     Write-Host ""
+}
+
+if (-not (Test-Path $ChangelogPath)) {
+    throw "CHANGELOG.md was not found at: $ChangelogPath"
 }
 
 if (-not (Test-Path $PackageLockPath)) {
@@ -82,6 +87,31 @@ if (Test-Path $VersionFilePath) {
         throw "Version mismatch: package.json is $PackageVersion but src\version.js exports $VersionFileValue."
     }
 }
+
+$ChangelogContent = Get-Content $ChangelogPath -Raw
+$ChangelogHeading = "## v$PackageVersion"
+$ChangelogPattern = "(?ms)^" +
+[regex]::Escape($ChangelogHeading) +
+"\s*\r?\n(?<notes>.*?)(?=^##\s|\z)"
+
+$ChangelogMatch = [regex]::Match(
+    $ChangelogContent,
+    $ChangelogPattern
+)
+
+if (-not $ChangelogMatch.Success) {
+    throw "CHANGELOG.md does not contain a section headed '$ChangelogHeading'."
+}
+
+$ReleaseNotes = $ChangelogMatch.Groups["notes"].Value.Trim()
+
+if ([string]::IsNullOrWhiteSpace($ReleaseNotes)) {
+    throw "The changelog section for $PackageVersion is empty."
+}
+
+$ReleaseNotesPath = Join-Path `
+    $ProjectRoot `
+    "release\release-notes-$PackageVersion.md"
 
 Write-Host ""
 Write-Host "MasterForge Studio Release"
@@ -312,6 +342,20 @@ try {
 
     Write-Host ""
     Write-Host "Publishing GitHub pre-release..."
+    $ReleaseNotesDirectory = Split-Path -Parent $ReleaseNotesPath
+
+    if (-not (Test-Path $ReleaseNotesDirectory)) {
+        New-Item `
+            -ItemType Directory `
+            -Path $ReleaseNotesDirectory `
+            -Force |
+        Out-Null
+    }
+
+    $ReleaseNotes |
+    Set-Content `
+        -Path $ReleaseNotesPath `
+        -Encoding UTF8
 
     gh release create `
         $TagName `
@@ -321,7 +365,7 @@ try {
         --prerelease `
         --latest=false `
         --title $ReleaseTitle `
-        --generate-notes
+        --notes-file $ReleaseNotesPath
 
     if ($LASTEXITCODE -ne 0) {
         throw "GitHub pre-release creation failed."
