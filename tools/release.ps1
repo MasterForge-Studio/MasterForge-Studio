@@ -28,6 +28,14 @@ if (
     throw "ReleaseVersion and VersionOverride cannot be used together."
 }
 
+if (-not [string]::IsNullOrWhiteSpace($ReleaseVersion)) {
+    $ReleaseVersion = $ReleaseVersion.Trim()
+
+    if ($ReleaseVersion -notmatch '^\d+\.\d+\.\d+-(alpha|beta)(?:\.[0-9A-Za-z.-]+)?$') {
+        throw "ReleaseVersion must look like 0.3.2-alpha or 0.3.2-beta.1."
+    }
+}
+
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $PackageJsonPath = Join-Path $ProjectRoot "package.json"
 
