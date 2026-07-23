@@ -1,5 +1,6 @@
 param(
-    [switch]$DryRun
+    [switch]$DryRun,
+    [string]$VersionOverride
 )
 
 $ErrorActionPreference = "Stop"
@@ -12,14 +13,35 @@ if (-not (Test-Path $PackageJsonPath)) {
 }
 
 $PackageJson = Get-Content $PackageJsonPath -Raw | ConvertFrom-Json
-$Version = [string]$PackageJson.version
+$PackageVersion = [string]$PackageJson.version
+
+$Version = if ([string]::IsNullOrWhiteSpace($VersionOverride)) {
+    $PackageVersion
+}
+else {
+    $VersionOverride.Trim()
+}
+
 $TagName = "v$Version"
 
 $PackageLockPath = Join-Path $ProjectRoot "package-lock.json"
 $VersionFilePath = Join-Path $ProjectRoot "src\version.js"
 
-if ([string]::IsNullOrWhiteSpace($Version)) {
-    throw "No version was found in package.json."
+if (
+    -not [string]::IsNullOrWhiteSpace($VersionOverride) `
+        -and -not $DryRun
+) {
+    throw "VersionOverride may only be used together with -DryRun."
+}
+
+if (
+    -not [string]::IsNullOrWhiteSpace($VersionOverride) `
+        -and $Version -ne $PackageVersion
+) {
+    Write-Host "Version override is being used for dry-run testing only."
+    Write-Host "package.json version: $PackageVersion"
+    Write-Host "Test version:         $Version"
+    Write-Host ""
 }
 
 if (-not (Test-Path $PackageLockPath)) {
@@ -34,8 +56,8 @@ if ($LASTEXITCODE -ne 0) {
 
 $PackageLockVersion = [string]$PackageLockVersion.Trim()
 
-if ($PackageLockVersion -ne $Version) {
-    throw "Version mismatch: package.json is $Version but package-lock.json is $PackageLockVersion."
+if ($PackageLockVersion -ne $PackageVersion) {
+    throw "Version mismatch: package.json is $PackageVersion but package-lock.json is $PackageLockVersion."
 }
 
 if (Test-Path $VersionFilePath) {
@@ -47,8 +69,8 @@ if (Test-Path $VersionFilePath) {
 
     $VersionFileValue = [string]$VersionFileValue.Trim()
 
-    if ($VersionFileValue -ne $Version) {
-        throw "Version mismatch: package.json is $Version but src\version.js exports $VersionFileValue."
+    if ($VersionFileValue -ne $PackageVersion) {
+        throw "Version mismatch: package.json is $PackageVersion but src\version.js exports $VersionFileValue."
     }
 }
 
