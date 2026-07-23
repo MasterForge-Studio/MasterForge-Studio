@@ -5,40 +5,74 @@ on:
     types:
       - published
 
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: GitHub release tag to sync
+        required: true
+        default: v0.3.1-alpha
+
 jobs:
   sync-release:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Find Windows installer
-        id: installer
+      - name: Load release information
+        id: release
         shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT_NAME: ${{ github.event_name }}
+          MANUAL_RELEASE_TAG: ${{ inputs.release_tag }}
         run: |
+          if [ "$EVENT_NAME" = "release" ]; then
+            jq '.release' "$GITHUB_EVENT_PATH" > release.json
+          else
+            gh api \
+              "repos/$GITHUB_REPOSITORY/releases/tags/$MANUAL_RELEASE_TAG" \
+              > release.json
+          fi
+
+          RELEASE_TAG="$(jq -r '.tag_name' release.json)"
+          RELEASE_NAME="$(jq -r '.name // .tag_name' release.json)"
+          RELEASE_NOTES="$(jq -r '.body // ""' release.json)"
+          PUBLISHED_AT="$(jq -r '.published_at // ""' release.json)"
+
           INSTALLER_URL="$(
             jq -r '
-              .release.assets[]
+              .assets[]
               | select(.name | endswith(".exe"))
               | .browser_download_url
-            ' "$GITHUB_EVENT_PATH" | head -n 1
+            ' release.json | head -n 1
           )"
 
           if [ -z "$INSTALLER_URL" ] || [ "$INSTALLER_URL" = "null" ]; then
-            echo "No Windows .exe asset was found on this release."
+            echo "No Windows .exe asset was found on release $RELEASE_TAG."
             exit 1
           fi
 
-          echo "url=$INSTALLER_URL" >> "$GITHUB_OUTPUT"
+          {
+            echo "tag=$RELEASE_TAG"
+            echo "name<<MFTM_RELEASE_NAME"
+            echo "$RELEASE_NAME"
+            echo "MFTM_RELEASE_NAME"
+            echo "notes<<MFTM_RELEASE_NOTES"
+            echo "$RELEASE_NOTES"
+            echo "MFTM_RELEASE_NOTES"
+            echo "published_at=$PUBLISHED_AT"
+            echo "download_url=$INSTALLER_URL"
+          } >> "$GITHUB_OUTPUT"
 
       - name: Sync release to WordPress
         shell: bash
         env:
           SYNC_URL: ${{ secrets.MASTERFORGE_SYNC_URL }}
           SYNC_TOKEN: ${{ secrets.MASTERFORGE_SYNC_TOKEN }}
-          RELEASE_TAG: ${{ github.event.release.tag_name }}
-          RELEASE_NAME: ${{ github.event.release.name }}
-          RELEASE_NOTES: ${{ github.event.release.body }}
-          PUBLISHED_AT: ${{ github.event.release.published_at }}
-          DOWNLOAD_URL: ${{ steps.installer.outputs.url }}
+          RELEASE_TAG: ${{ steps.release.outputs.tag }}
+          RELEASE_NAME: ${{ steps.release.outputs.name }}
+          RELEASE_NOTES: ${{ steps.release.outputs.notes }}
+          PUBLISHED_AT: ${{ steps.release.outputs.published_at }}
+          DOWNLOAD_URL: ${{ steps.release.outputs.download_url }}
         run: |
           VERSION="${RELEASE_TAG#v}"
 
