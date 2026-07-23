@@ -107,6 +107,42 @@ try {
     Write-Host "Required release tools are available."
     Write-Host "GitHub CLI authentication is valid."
     Write-Host ""
+    $CurrentBranch = git branch --show-current
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to determine the current Git branch."
+    }
+
+    $CurrentBranch = [string]$CurrentBranch.Trim()
+
+    if ($CurrentBranch -ne "main") {
+        throw "Releases must be created from the main branch. Current branch: $CurrentBranch"
+    }
+
+    Write-Host "Fetching the latest GitHub repository state..."
+
+    git fetch origin --tags
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to fetch the latest commits and tags from GitHub."
+    }
+
+    $LocalCommit = git rev-parse HEAD
+    $RemoteCommit = git rev-parse origin/main
+
+    if (
+        $LASTEXITCODE -ne 0 `
+            -or [string]::IsNullOrWhiteSpace($RemoteCommit)
+    ) {
+        throw "Unable to compare the local branch with origin/main."
+    }
+
+    if ($LocalCommit.Trim() -ne $RemoteCommit.Trim()) {
+        throw "Local main does not match origin/main. Pull or push your changes before releasing."
+    }
+
+    Write-Host "Current branch is main."
+    Write-Host "Local main matches origin/main."
     $GitStatus = git status --porcelain
 
     if ($LASTEXITCODE -ne 0) {
