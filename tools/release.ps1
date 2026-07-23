@@ -212,6 +212,13 @@ try {
     }
 
     Write-Host ""
+    Write-Host "Preparing Windows installer build..."
+
+    if (Test-Path $InstallerPath) {
+        Write-Host "Removing existing installer for version $Version..."
+        Remove-Item $InstallerPath -Force
+    }
+
     Write-Host "Building Windows installer..."
     Write-Host ""
 
