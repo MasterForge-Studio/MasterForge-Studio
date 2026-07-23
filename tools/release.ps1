@@ -338,6 +338,13 @@ try {
         if ($UpdatedPackageLockVersion -ne $ReleaseVersion) {
             throw "package-lock.json was not updated to $ReleaseVersion."
         }
+        if ($PrepareOnly) {
+            Write-Host ""
+            Write-Host "Prepare-only mode complete."
+            Write-Host "package.json and package-lock.json were updated but not staged or committed."
+            Write-Host "Review the changes with: git diff"
+            exit 0
+        }
 
         git add package.json package-lock.json
 
@@ -352,13 +359,6 @@ try {
         }
 
         Write-Host "Version files updated and committed."
-
-        if ($PrepareOnly) {
-            Write-Host ""
-            Write-Host "Prepare-only mode complete."
-            Write-Host "No installer, tag or GitHub release was created."
-            exit 0
-        }
     }
 
     Write-Host ""
