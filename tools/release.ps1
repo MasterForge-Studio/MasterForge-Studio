@@ -153,7 +153,7 @@ try {
         throw "The Git working tree is not clean. Commit or stash changes before releasing."
     }
 
-    g    git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
+    git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
 
     if ($LASTEXITCODE -eq 0) {
         throw "Git tag $TagName already exists."
