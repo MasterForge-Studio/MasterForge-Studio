@@ -286,18 +286,26 @@ try {
     Write-Host "Pre-release checks passed."
     Write-Host ""
     Write-Host "This will:"
-    Write-Host "  - Build MasterForge Studio $Version"
-    Write-Host "  - Generate the installer SHA-256 checksum"
 
-    if ($BuildOnly) {
-        Write-Host "  - Stop without creating a tag or GitHub release"
+    if ($PrepareOnly) {
+        Write-Host "  - Update package.json to $Version"
+        Write-Host "  - Update package-lock.json to $Version"
+        Write-Host "  - Stop without staging, committing, building or publishing"
     }
     else {
-        Write-Host "  - Create Git tag $TagName"
-        Write-Host "  - Push the commit and tag to GitHub"
-        Write-Host "  - Publish a GitHub pre-release"
-        Write-Host "  - Upload the installer and checksum"
-        Write-Host "  - Trigger the WordPress release sync"
+        Write-Host "  - Build MasterForge Studio $Version"
+        Write-Host "  - Generate the installer SHA-256 checksum"
+
+        if ($BuildOnly) {
+            Write-Host "  - Stop without creating a tag or GitHub release"
+        }
+        else {
+            Write-Host "  - Create Git tag $TagName"
+            Write-Host "  - Push the commit and tag to GitHub"
+            Write-Host "  - Publish a GitHub pre-release"
+            Write-Host "  - Upload the installer and checksum"
+            Write-Host "  - Trigger the WordPress release sync"
+        }
     }
 
     Write-Host ""
