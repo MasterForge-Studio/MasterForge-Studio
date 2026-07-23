@@ -238,10 +238,28 @@ try {
         throw "The installer exists but is empty: $InstallerPath"
     }
 
+    $ChecksumPath = "$InstallerPath.sha256"
+    $InstallerChecksum = (
+        Get-FileHash `
+            -Path $InstallerPath `
+            -Algorithm SHA256
+    ).Hash.ToLowerInvariant()
+
+    "$InstallerChecksum  $($InstallerFile.Name)" |
+    Set-Content `
+        -Path $ChecksumPath `
+        -Encoding ASCII
+
+    if (-not (Test-Path $ChecksumPath)) {
+        throw "Installer checksum file was not created at: $ChecksumPath"
+    }
+
     Write-Host ""
     Write-Host "Installer build completed successfully."
     Write-Host "Installer: $InstallerPath"
     Write-Host "Size:      $([math]::Round($InstallerFile.Length / 1MB, 2)) MB"
+    Write-Host "SHA-256:   $InstallerChecksum"
+    Write-Host "Checksum:  $ChecksumPath"
     Write-Host ""
     Write-Host "Creating Git tag $TagName..."
 
@@ -275,6 +293,7 @@ try {
     gh release create `
         $TagName `
         $InstallerPath `
+        $ChecksumPath `
         --verify-tag `
         --prerelease `
         --latest=false `
