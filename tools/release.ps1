@@ -46,11 +46,14 @@ if (-not (Test-Path $PackageJsonPath)) {
 $PackageJson = Get-Content $PackageJsonPath -Raw | ConvertFrom-Json
 $PackageVersion = [string]$PackageJson.version
 
-$Version = if ([string]::IsNullOrWhiteSpace($VersionOverride)) {
-    $PackageVersion
+$Version = if (-not [string]::IsNullOrWhiteSpace($ReleaseVersion)) {
+    $ReleaseVersion
+}
+elseif (-not [string]::IsNullOrWhiteSpace($VersionOverride)) {
+    $VersionOverride.Trim()
 }
 else {
-    $VersionOverride.Trim()
+    $PackageVersion
 }
 
 $TagName = "v$Version"
@@ -119,7 +122,7 @@ if (Test-Path $VersionFilePath) {
 }
 
 $ChangelogContent = Get-Content $ChangelogPath -Raw
-$ChangelogHeading = "## v$PackageVersion"
+$ChangelogHeading = "## v$Version"
 $ChangelogPattern = "(?ms)^" +
 [regex]::Escape($ChangelogHeading) +
 "\s*\r?\n(?<notes>.*?)(?=^##\s|\z)"
@@ -141,7 +144,7 @@ if ([string]::IsNullOrWhiteSpace($ReleaseNotes)) {
 
 $ReleaseNotesPath = Join-Path `
     $ProjectRoot `
-    "release\release-notes-$PackageVersion.md"
+    "release\release-notes-$Version.md"
 
 Write-Host ""
 Write-Host "MasterForge Studio Release"
@@ -286,6 +289,58 @@ try {
 
     if ($Confirmation -cne "RELEASE") {
         throw "Release cancelled. The confirmation text did not match RELEASE."
+    }
+
+    if (-not [string]::IsNullOrWhiteSpace($ReleaseVersion)) {
+        Write-Host ""
+        Write-Host "Preparing project version $ReleaseVersion..."
+
+        npm version $ReleaseVersion --no-git-tag-version
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "npm failed to update package.json and package-lock.json."
+        }
+
+        $UpdatedPackageVersion = node -e `
+            "process.stdout.write(String(require(process.argv[1]).version))" `
+            $PackageJsonPath
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Unable to verify the updated package.json version."
+        }
+
+        $UpdatedPackageLockVersion = node -e `
+            "process.stdout.write(String(require(process.argv[1]).version))" `
+            $PackageLockPath
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Unable to verify the updated package-lock.json version."
+        }
+
+        $UpdatedPackageVersion = [string]$UpdatedPackageVersion.Trim()
+        $UpdatedPackageLockVersion = [string]$UpdatedPackageLockVersion.Trim()
+
+        if ($UpdatedPackageVersion -ne $ReleaseVersion) {
+            throw "package.json was not updated to $ReleaseVersion."
+        }
+
+        if ($UpdatedPackageLockVersion -ne $ReleaseVersion) {
+            throw "package-lock.json was not updated to $ReleaseVersion."
+        }
+
+        git add package.json package-lock.json
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to stage the version files."
+        }
+
+        git commit -m "Prepare MasterForge Studio v$ReleaseVersion"
+
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to commit the version update."
+        }
+
+        Write-Host "Version files updated and committed."
     }
 
     Write-Host ""
