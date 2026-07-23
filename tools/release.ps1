@@ -153,14 +153,21 @@ try {
         throw "The Git working tree is not clean. Commit or stash changes before releasing."
     }
 
-    git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
+    g    git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
 
     if ($LASTEXITCODE -eq 0) {
         throw "Git tag $TagName already exists."
     }
 
+    gh release view $TagName --json tagName 2>$null | Out-Null
+
+    if ($LASTEXITCODE -eq 0) {
+        throw "GitHub release $TagName already exists."
+    }
+
     Write-Host "Working tree is clean."
-    Write-Host "Tag is available."
+    Write-Host "Git tag is available."
+    Write-Host "GitHub release name is available."
 
     $InstallerPath = Join-Path `
         $ProjectRoot `
