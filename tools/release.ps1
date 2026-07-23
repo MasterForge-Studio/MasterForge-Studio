@@ -1,6 +1,7 @@
 param(
     [switch]$DryRun,
     [switch]$BuildOnly,
+    [switch]$PrepareOnly,
     [string]$VersionOverride,
     [string]$ReleaseVersion
 )
@@ -69,8 +70,18 @@ if (
     throw "VersionOverride may only be used together with -DryRun."
 }
 
-if ($DryRun -and $BuildOnly) {
-    throw "DryRun and BuildOnly cannot be used together."
+$SelectedModes = @(
+    $DryRun,
+    $BuildOnly,
+    $PrepareOnly
+) | Where-Object { $_ }
+
+if ($SelectedModes.Count -gt 1) {
+    throw "DryRun, BuildOnly and PrepareOnly cannot be used together."
+}
+
+if ($PrepareOnly -and [string]::IsNullOrWhiteSpace($ReleaseVersion)) {
+    throw "PrepareOnly requires ReleaseVersion."
 }
 
 if (
@@ -341,6 +352,13 @@ try {
         }
 
         Write-Host "Version files updated and committed."
+
+        if ($PrepareOnly) {
+            Write-Host ""
+            Write-Host "Prepare-only mode complete."
+            Write-Host "No installer, tag or GitHub release was created."
+            exit 0
+        }
     }
 
     Write-Host ""
