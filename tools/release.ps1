@@ -85,6 +85,28 @@ Write-Host ""
 Push-Location $ProjectRoot
 
 try {
+    $RequiredCommands = @(
+        "git",
+        "node",
+        "npm",
+        "gh"
+    )
+
+    foreach ($CommandName in $RequiredCommands) {
+        if (-not (Get-Command $CommandName -ErrorAction SilentlyContinue)) {
+            throw "Required command '$CommandName' is not installed or is not available in PATH."
+        }
+    }
+
+    gh auth status 2>&1 | Out-Null
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "GitHub CLI is not authenticated. Run: gh auth login"
+    }
+
+    Write-Host "Required release tools are available."
+    Write-Host "GitHub CLI authentication is valid."
+    Write-Host ""
     $GitStatus = git status --porcelain
 
     if ($LASTEXITCODE -ne 0) {
