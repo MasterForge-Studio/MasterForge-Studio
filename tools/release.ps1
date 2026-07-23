@@ -94,10 +94,6 @@ if (
     Write-Host ""
 }
 
-if (-not (Test-Path $ChangelogPath)) {
-    throw "CHANGELOG.md was not found at: $ChangelogPath"
-}
-
 if (-not (Test-Path $PackageLockPath)) {
     throw "package-lock.json was not found at: $PackageLockPath"
 }
@@ -132,7 +128,7 @@ if (Test-Path $VersionFilePath) {
     }
 }
 
-if (-not $PrepareOnly -and -not $DryRun) {
+if (-not $PrepareOnly -and -not $DryRun -and -not $BuildOnly) {
     if (-not (Test-Path $ChangelogPath)) {
         throw "CHANGELOG.md was not found at: $ChangelogPath"
     }
@@ -242,7 +238,7 @@ try {
         throw "The Git working tree is not clean. Commit or stash changes before releasing."
     }
 
-    if (-not $BuildOnly) {
+    if (-not $BuildOnly -and -not $PrepareOnly) {
         git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
 
         if ($LASTEXITCODE -eq 0) {
@@ -265,7 +261,12 @@ try {
         Write-Host "GitHub release name is available."
     }
     else {
-        Write-Host "Build-only mode: tag and GitHub release checks skipped."
+        if ($PrepareOnly) {
+            Write-Host "Prepare-only mode: tag and GitHub release checks skipped."
+        }
+        else {
+            Write-Host "Build-only mode: tag and GitHub release checks skipped."
+        }
     }
 
     $InstallerPath = Join-Path `
