@@ -15,8 +15,41 @@ $PackageJson = Get-Content $PackageJsonPath -Raw | ConvertFrom-Json
 $Version = [string]$PackageJson.version
 $TagName = "v$Version"
 
+$PackageLockPath = Join-Path $ProjectRoot "package-lock.json"
+$VersionFilePath = Join-Path $ProjectRoot "src\version.js"
+
 if ([string]::IsNullOrWhiteSpace($Version)) {
     throw "No version was found in package.json."
+}
+
+if (-not (Test-Path $PackageLockPath)) {
+    throw "package-lock.json was not found at: $PackageLockPath"
+}
+
+$PackageLockVersion = node -p "require('./package-lock.json').version"
+
+if ($LASTEXITCODE -ne 0) {
+    throw "Unable to read the version from package-lock.json."
+}
+
+$PackageLockVersion = [string]$PackageLockVersion.Trim()
+
+if ($PackageLockVersion -ne $Version) {
+    throw "Version mismatch: package.json is $Version but package-lock.json is $PackageLockVersion."
+}
+
+if (Test-Path $VersionFilePath) {
+    $VersionFileValue = node -p "require('./src/version.js').VERSION"
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Unable to read the exported version from src\version.js."
+    }
+
+    $VersionFileValue = [string]$VersionFileValue.Trim()
+
+    if ($VersionFileValue -ne $Version) {
+        throw "Version mismatch: package.json is $Version but src\version.js exports $VersionFileValue."
+    }
 }
 
 Write-Host ""
