@@ -132,7 +132,7 @@ if (Test-Path $VersionFilePath) {
     }
 }
 
-if (-not $PrepareOnly) {
+if (-not $PrepareOnly -and -not $DryRun) {
     if (-not (Test-Path $ChangelogPath)) {
         throw "CHANGELOG.md was not found at: $ChangelogPath"
     }
