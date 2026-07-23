@@ -48,7 +48,9 @@ if (-not (Test-Path $PackageLockPath)) {
     throw "package-lock.json was not found at: $PackageLockPath"
 }
 
-$PackageLockVersion = node -p "require('./package-lock.json').version"
+$PackageLockVersion = node -e `
+    "process.stdout.write(String(require(process.argv[1]).version))" `
+    $PackageLockPath
 
 if ($LASTEXITCODE -ne 0) {
     throw "Unable to read the version from package-lock.json."
@@ -61,7 +63,9 @@ if ($PackageLockVersion -ne $PackageVersion) {
 }
 
 if (Test-Path $VersionFilePath) {
-    $VersionFileValue = node -p "require('./src/version.js').VERSION"
+    $VersionFileValue = node -e `
+        "process.stdout.write(String(require(process.argv[1]).VERSION))" `
+        $VersionFilePath
 
     if ($LASTEXITCODE -ne 0) {
         throw "Unable to read the exported version from src\version.js."
