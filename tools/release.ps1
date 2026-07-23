@@ -132,30 +132,36 @@ if (Test-Path $VersionFilePath) {
     }
 }
 
-$ChangelogContent = Get-Content $ChangelogPath -Raw
-$ChangelogHeading = "## v$Version"
-$ChangelogPattern = "(?ms)^" +
-[regex]::Escape($ChangelogHeading) +
-"\s*\r?\n(?<notes>.*?)(?=^##\s|\z)"
+if (-not $PrepareOnly) {
+    if (-not (Test-Path $ChangelogPath)) {
+        throw "CHANGELOG.md was not found at: $ChangelogPath"
+    }
 
-$ChangelogMatch = [regex]::Match(
-    $ChangelogContent,
-    $ChangelogPattern
-)
+    $ChangelogContent = Get-Content $ChangelogPath -Raw
+    $ChangelogHeading = "## v$Version"
+    $ChangelogPattern = "(?ms)^" +
+    [regex]::Escape($ChangelogHeading) +
+    "\s*\r?\n(?<notes>.*?)(?=^##\s|\z)"
 
-if (-not $ChangelogMatch.Success) {
-    throw "CHANGELOG.md does not contain a section headed '$ChangelogHeading'."
+    $ChangelogMatch = [regex]::Match(
+        $ChangelogContent,
+        $ChangelogPattern
+    )
+
+    if (-not $ChangelogMatch.Success) {
+        throw "CHANGELOG.md does not contain a section headed '$ChangelogHeading'."
+    }
+
+    $ReleaseNotes = $ChangelogMatch.Groups["notes"].Value.Trim()
+
+    if ([string]::IsNullOrWhiteSpace($ReleaseNotes)) {
+        throw "The changelog section for $Version is empty."
+    }
+
+    $ReleaseNotesPath = Join-Path `
+        $ProjectRoot `
+        "release\release-notes-$Version.md"
 }
-
-$ReleaseNotes = $ChangelogMatch.Groups["notes"].Value.Trim()
-
-if ([string]::IsNullOrWhiteSpace($ReleaseNotes)) {
-    throw "The changelog section for $PackageVersion is empty."
-}
-
-$ReleaseNotesPath = Join-Path `
-    $ProjectRoot `
-    "release\release-notes-$Version.md"
 
 Write-Host ""
 Write-Host "MasterForge Studio Release"
