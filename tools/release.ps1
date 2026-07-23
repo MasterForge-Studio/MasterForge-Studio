@@ -82,15 +82,45 @@ try {
     Write-Host "Working tree is clean."
     Write-Host "Tag is available."
 
+    $InstallerPath = Join-Path `
+        $ProjectRoot `
+        "release\MasterForge-Studio-Setup-$Version-x64.exe"
+
     if ($DryRun) {
         Write-Host ""
-        Write-Host "Dry run complete. No build or release actions were performed."
+        Write-Host "Dry run complete."
+        Write-Host "Expected installer:"
+        Write-Host $InstallerPath
+        Write-Host ""
+        Write-Host "No build or release actions were performed."
         exit 0
     }
 
     Write-Host ""
     Write-Host "Pre-release checks passed."
-    Write-Host "Build and publishing steps will be added next."
+    Write-Host "Building Windows installer..."
+    Write-Host ""
+
+    npm run dist:win
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Windows installer build failed."
+    }
+
+    if (-not (Test-Path $InstallerPath)) {
+        throw "Expected installer was not found at: $InstallerPath"
+    }
+
+    $InstallerFile = Get-Item $InstallerPath
+
+    if ($InstallerFile.Length -le 0) {
+        throw "The installer exists but is empty: $InstallerPath"
+    }
+
+    Write-Host ""
+    Write-Host "Installer build completed successfully."
+    Write-Host "Installer: $InstallerPath"
+    Write-Host "Size:      $([math]::Round($InstallerFile.Length / 1MB, 2)) MB"
 }
 finally {
     Pop-Location
