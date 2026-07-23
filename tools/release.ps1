@@ -1,10 +1,32 @@
 param(
     [switch]$DryRun,
     [switch]$BuildOnly,
-    [string]$VersionOverride
+    [string]$VersionOverride,
+    [string]$ReleaseVersion
 )
 
 $ErrorActionPreference = "Stop"
+
+if (
+    -not [string]::IsNullOrWhiteSpace($ReleaseVersion) `
+        -and $DryRun
+) {
+    throw "ReleaseVersion cannot be used together with DryRun."
+}
+
+if (
+    -not [string]::IsNullOrWhiteSpace($ReleaseVersion) `
+        -and $BuildOnly
+) {
+    throw "ReleaseVersion cannot be used together with BuildOnly."
+}
+
+if (
+    -not [string]::IsNullOrWhiteSpace($ReleaseVersion) `
+        -and -not [string]::IsNullOrWhiteSpace($VersionOverride)
+) {
+    throw "ReleaseVersion and VersionOverride cannot be used together."
+}
 
 $ProjectRoot = Split-Path -Parent $PSScriptRoot
 $PackageJsonPath = Join-Path $ProjectRoot "package.json"
