@@ -1,5 +1,6 @@
 param(
     [switch]$DryRun,
+    [switch]$BuildOnly,
     [string]$VersionOverride
 )
 
@@ -32,6 +33,10 @@ if (
         -and -not $DryRun
 ) {
     throw "VersionOverride may only be used together with -DryRun."
+}
+
+if ($DryRun -and $BuildOnly) {
+    throw "DryRun and BuildOnly cannot be used together."
 }
 
 if (
@@ -157,27 +162,31 @@ try {
         throw "The Git working tree is not clean. Commit or stash changes before releasing."
     }
 
-    git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
+    if (-not $BuildOnly) {
+        git rev-parse --verify --quiet "refs/tags/$TagName" | Out-Null
 
-    if ($LASTEXITCODE -eq 0) {
-        throw "Git tag $TagName already exists."
+        if ($LASTEXITCODE -eq 0) {
+            throw "Git tag $TagName already exists."
+        }
+
+        $PreviousErrorActionPreference = $ErrorActionPreference
+        $ErrorActionPreference = "Continue"
+
+        gh release view $TagName --json tagName 2>$null | Out-Null
+        $GitHubReleaseExists = ($LASTEXITCODE -eq 0)
+
+        $ErrorActionPreference = $PreviousErrorActionPreference
+
+        if ($GitHubReleaseExists) {
+            throw "GitHub release $TagName already exists."
+        }
+
+        Write-Host "Git tag is available."
+        Write-Host "GitHub release name is available."
     }
-
-    $PreviousErrorActionPreference = $ErrorActionPreference
-    $ErrorActionPreference = "Continue"
-
-    gh release view $TagName --json tagName 2>$null | Out-Null
-    $GitHubReleaseExists = ($LASTEXITCODE -eq 0)
-
-    $ErrorActionPreference = $PreviousErrorActionPreference
-
-    if ($GitHubReleaseExists) {
-        throw "GitHub release $TagName already exists."
+    else {
+        Write-Host "Build-only mode: tag and GitHub release checks skipped."
     }
-
-    Write-Host "Working tree is clean."
-    Write-Host "Git tag is available."
-    Write-Host "GitHub release name is available."
 
     $InstallerPath = Join-Path `
         $ProjectRoot `
@@ -198,11 +207,19 @@ try {
     Write-Host ""
     Write-Host "This will:"
     Write-Host "  - Build MasterForge Studio $Version"
-    Write-Host "  - Create Git tag $TagName"
-    Write-Host "  - Push the commit and tag to GitHub"
-    Write-Host "  - Publish a GitHub pre-release"
-    Write-Host "  - Upload the Windows installer"
-    Write-Host "  - Trigger the WordPress release sync"
+    Write-Host "  - Generate the installer SHA-256 checksum"
+
+    if ($BuildOnly) {
+        Write-Host "  - Stop without creating a tag or GitHub release"
+    }
+    else {
+        Write-Host "  - Create Git tag $TagName"
+        Write-Host "  - Push the commit and tag to GitHub"
+        Write-Host "  - Publish a GitHub pre-release"
+        Write-Host "  - Upload the installer and checksum"
+        Write-Host "  - Trigger the WordPress release sync"
+    }
+
     Write-Host ""
 
     $Confirmation = Read-Host "Type RELEASE to continue"
@@ -260,6 +277,12 @@ try {
     Write-Host "Size:      $([math]::Round($InstallerFile.Length / 1MB, 2)) MB"
     Write-Host "SHA-256:   $InstallerChecksum"
     Write-Host "Checksum:  $ChecksumPath"
+    if ($BuildOnly) {
+        Write-Host ""
+        Write-Host "Build-only mode complete."
+        Write-Host "No Git tag, push, or GitHub release was created."
+        exit 0
+    }
     Write-Host ""
     Write-Host "Creating Git tag $TagName..."
 
