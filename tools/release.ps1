@@ -159,9 +159,15 @@ try {
         throw "Git tag $TagName already exists."
     }
 
-    gh release view $TagName --json tagName 2>$null | Out-Null
+    $PreviousErrorActionPreference = $ErrorActionPreference
+    $ErrorActionPreference = "Continue"
 
-    if ($LASTEXITCODE -eq 0) {
+    gh release view $TagName --json tagName 2>$null | Out-Null
+    $GitHubReleaseExists = ($LASTEXITCODE -eq 0)
+
+    $ErrorActionPreference = $PreviousErrorActionPreference
+
+    if ($GitHubReleaseExists) {
         throw "GitHub release $TagName already exists."
     }
 
