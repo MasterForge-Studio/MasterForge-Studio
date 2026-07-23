@@ -160,6 +160,55 @@ try {
     Write-Host "Installer build completed successfully."
     Write-Host "Installer: $InstallerPath"
     Write-Host "Size:      $([math]::Round($InstallerFile.Length / 1MB, 2)) MB"
+    Write-Host ""
+    Write-Host "Creating Git tag $TagName..."
+
+    git tag -a $TagName -m "MasterForge Studio $Version"
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to create Git tag $TagName."
+    }
+
+    Write-Host "Pushing current branch..."
+
+    git push origin HEAD
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to push the current branch to GitHub."
+    }
+
+    Write-Host "Pushing tag $TagName..."
+
+    git push origin $TagName
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "Failed to push Git tag $TagName."
+    }
+
+    $ReleaseTitle = "MasterForge Studio v$Version"
+
+    Write-Host ""
+    Write-Host "Publishing GitHub pre-release..."
+
+    gh release create `
+        $TagName `
+        $InstallerPath `
+        --verify-tag `
+        --prerelease `
+        --latest=false `
+        --title $ReleaseTitle `
+        --generate-notes
+
+    if ($LASTEXITCODE -ne 0) {
+        throw "GitHub pre-release creation failed."
+    }
+
+    Write-Host ""
+    Write-Host "Release published successfully."
+    Write-Host "GitHub tag: $TagName"
+    Write-Host "Installer:  $InstallerPath"
+    Write-Host ""
+    Write-Host "The GitHub release event will now trigger the WordPress sync workflow."
 }
 finally {
     Pop-Location
