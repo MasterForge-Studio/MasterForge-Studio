@@ -1,0 +1,10 @@
+{
+  "id": "monster-hunters",
+  "entity_type": "faction",
+  "name": "Monster Hunters",
+  "description": "Individuals hunting the monsters of the valley.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

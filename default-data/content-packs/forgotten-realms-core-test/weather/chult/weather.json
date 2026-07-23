@@ -1,0 +1,48 @@
+{
+  "id": "chult-weather",
+  "name": "Chult Weather",
+  "regionId": "chult",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Clear",
+      "description": "Visibility is good and travel is straightforward."
+    },
+    {
+      "roll": "2",
+      "name": "Light rain or snow",
+      "description": "Travel is slower and tracks become harder to read."
+    },
+    {
+      "roll": "3",
+      "name": "Heavy weather",
+      "description": "Ranged visibility drops and exposed travel becomes uncomfortable."
+    },
+    {
+      "roll": "4",
+      "name": "Mists or haze",
+      "description": "Shapes blur at distance and ambushes become easier."
+    },
+    {
+      "roll": "5",
+      "name": "Strong wind",
+      "description": "Open flames struggle and loose objects shift or rattle."
+    },
+    {
+      "roll": "6",
+      "name": "Oppressive stillness",
+      "description": "The air feels wrong and sound carries strangely."
+    },
+    {
+      "roll": "7",
+      "name": "Sudden change",
+      "description": "The weather turns quickly, forcing decisions about shelter or pace."
+    },
+    {
+      "roll": "8",
+      "name": "Omen weather",
+      "description": "A dramatic sky, strange light or unnatural chill foreshadows trouble."
+    }
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

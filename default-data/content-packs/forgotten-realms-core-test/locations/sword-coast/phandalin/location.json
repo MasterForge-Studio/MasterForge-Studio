@@ -1,0 +1,26 @@
+{
+  "id": "phandalin",
+  "worldId": "forgotten-realms",
+  "regionId": "sword-coast",
+  "name": "Phandalin",
+  "type": "location",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/locations/phandalin/background.webp",
+  "summary": "A small frontier settlement near old ruins, trade roads, mines and local trouble.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

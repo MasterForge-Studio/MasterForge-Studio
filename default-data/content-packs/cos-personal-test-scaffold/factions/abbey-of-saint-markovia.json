@@ -1,0 +1,14 @@
+{
+  "id": "abbey-of-saint-markovia",
+  "name": "Abbey of Saint Markovia",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Abbey household and inhabitants.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

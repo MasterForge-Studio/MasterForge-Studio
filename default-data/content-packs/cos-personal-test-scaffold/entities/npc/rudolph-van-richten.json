@@ -1,0 +1,11 @@
+{
+  "id": "rudolph-van-richten",
+  "entity_type": "npc",
+  "name": "Rudolph van Richten",
+  "description": "monster hunter in hiding. Placeholder for personal verification.",
+  "data": {
+    "factionId": "monster-hunters",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "arabelle",
+  "entity_type": "npc",
+  "name": "Arabelle",
+  "description": "Vistani child. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vistani",
+    "regionId": "lake-zarovich"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,46 @@
+{
+  "id": "sword-coast",
+  "name": "Sword Coast",
+  "type": "region",
+  "worldId": "forgotten-realms",
+  "summary": "A long, dangerous stretch of western Faerûn where city-states, merchant roads, wild frontiers and ancient ruins press against the Sea of Swords.",
+  "dmTone": [
+    "salt wind",
+    "old roads",
+    "political rivalry",
+    "frontier danger",
+    "ancient ruins"
+  ],
+  "environment": [
+    "salt wind",
+    "old roads",
+    "political rivalry",
+    "frontier danger",
+    "ancient ruins"
+  ],
+  "politics": [
+    "Sword Coast is shaped by local powers, trade needs and old conflicts.",
+    "Adventurers can shift local balances quickly if they earn trust or fear."
+  ],
+  "culture": [
+    "People of Sword Coast carry strong local customs and stories.",
+    "Rumour, reputation and practical help matter to most communities."
+  ],
+  "travelHazards": [
+    "Bad weather",
+    "Bandits or raiders",
+    "Difficult terrain",
+    "Old ruins and hidden magic"
+  ],
+  "rumours": [
+    "Something old has stirred somewhere in Sword Coast.",
+    "A recent disappearance has locals worried.",
+    "A merchant is paying quietly for reliable blades."
+  ],
+  "dmSecrets": [
+    "A hidden faction is exploiting unrest in Sword Coast.",
+    "An old site nearby is connected to a larger campaign mystery."
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/regions/sword-coast/background.webp"
+}

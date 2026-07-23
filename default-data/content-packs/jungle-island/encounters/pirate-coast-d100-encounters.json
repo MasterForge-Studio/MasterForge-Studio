@@ -1,0 +1,610 @@
+{
+  "id": "pirate-coast-d100-encounters",
+  "name": "Pirate Coast d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "chult",
+  "regionId": "pirate-coast",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Pirate lookout horn",
+      "description": "Pirate lookout horn. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 2,
+      "name": "Smuggler boat unloading",
+      "description": "Smuggler boat unloading. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 3,
+      "name": "Giant crab nest",
+      "description": "Giant crab nest. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 4,
+      "name": "Reef wreck treasure",
+      "description": "Reef wreck treasure. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 5,
+      "name": "Ghost lantern offshore",
+      "description": "Ghost lantern offshore. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 6,
+      "name": "Sea cave hideout",
+      "description": "Sea cave hideout. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 7,
+      "name": "Castaway tells lies",
+      "description": "Castaway tells lies. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 8,
+      "name": "Hidden cannon position",
+      "description": "Hidden cannon position. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 9,
+      "name": "Mangrove ambush",
+      "description": "Mangrove ambush. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 10,
+      "name": "Undead sailor patrol",
+      "description": "Undead sailor patrol. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 11,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 12,
+      "name": "Tide reveals tunnel",
+      "description": "Tide reveals tunnel. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 13,
+      "name": "Prisoner escape plea",
+      "description": "Prisoner escape plea. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 14,
+      "name": "Crocodile in inlet",
+      "description": "Crocodile in inlet. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 15,
+      "name": "Sea hag whisper",
+      "description": "Sea hag whisper. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 16,
+      "name": "Pirate feast smoke",
+      "description": "Pirate feast smoke. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 17,
+      "name": "False distress signal",
+      "description": "False distress signal. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 18,
+      "name": "Buried chest trap",
+      "description": "Buried chest trap. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 19,
+      "name": "Shark-finned waters",
+      "description": "Shark-finned waters. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 20,
+      "name": "Ghost ship silhouette",
+      "description": "Ghost ship silhouette. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 21,
+      "name": "Pirate lookout horn",
+      "description": "Pirate lookout horn. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 22,
+      "name": "Smuggler boat unloading",
+      "description": "Smuggler boat unloading. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 23,
+      "name": "Giant crab nest",
+      "description": "Giant crab nest. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 24,
+      "name": "Reef wreck treasure",
+      "description": "Reef wreck treasure. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 25,
+      "name": "Ghost lantern offshore",
+      "description": "Ghost lantern offshore. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 26,
+      "name": "Sea cave hideout",
+      "description": "Sea cave hideout. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 27,
+      "name": "Castaway tells lies",
+      "description": "Castaway tells lies. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 28,
+      "name": "Hidden cannon position",
+      "description": "Hidden cannon position. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 29,
+      "name": "Mangrove ambush",
+      "description": "Mangrove ambush. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 30,
+      "name": "Undead sailor patrol",
+      "description": "Undead sailor patrol. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 31,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 32,
+      "name": "Tide reveals tunnel",
+      "description": "Tide reveals tunnel. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 33,
+      "name": "Prisoner escape plea",
+      "description": "Prisoner escape plea. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 34,
+      "name": "Crocodile in inlet",
+      "description": "Crocodile in inlet. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 35,
+      "name": "Sea hag whisper",
+      "description": "Sea hag whisper. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 36,
+      "name": "Pirate feast smoke",
+      "description": "Pirate feast smoke. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 37,
+      "name": "False distress signal",
+      "description": "False distress signal. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 38,
+      "name": "Buried chest trap",
+      "description": "Buried chest trap. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 39,
+      "name": "Shark-finned waters",
+      "description": "Shark-finned waters. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 40,
+      "name": "Ghost ship silhouette",
+      "description": "Ghost ship silhouette. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 41,
+      "name": "Pirate lookout horn",
+      "description": "Pirate lookout horn. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 42,
+      "name": "Smuggler boat unloading",
+      "description": "Smuggler boat unloading. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 43,
+      "name": "Giant crab nest",
+      "description": "Giant crab nest. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 44,
+      "name": "Reef wreck treasure",
+      "description": "Reef wreck treasure. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 45,
+      "name": "Ghost lantern offshore",
+      "description": "Ghost lantern offshore. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 46,
+      "name": "Sea cave hideout",
+      "description": "Sea cave hideout. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 47,
+      "name": "Castaway tells lies",
+      "description": "Castaway tells lies. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 48,
+      "name": "Hidden cannon position",
+      "description": "Hidden cannon position. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 49,
+      "name": "Mangrove ambush",
+      "description": "Mangrove ambush. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 50,
+      "name": "Undead sailor patrol",
+      "description": "Undead sailor patrol. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 51,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 52,
+      "name": "Tide reveals tunnel",
+      "description": "Tide reveals tunnel. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 53,
+      "name": "Prisoner escape plea",
+      "description": "Prisoner escape plea. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 54,
+      "name": "Crocodile in inlet",
+      "description": "Crocodile in inlet. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 55,
+      "name": "Sea hag whisper",
+      "description": "Sea hag whisper. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 56,
+      "name": "Pirate feast smoke",
+      "description": "Pirate feast smoke. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 57,
+      "name": "False distress signal",
+      "description": "False distress signal. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 58,
+      "name": "Buried chest trap",
+      "description": "Buried chest trap. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 59,
+      "name": "Shark-finned waters",
+      "description": "Shark-finned waters. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 60,
+      "name": "Ghost ship silhouette",
+      "description": "Ghost ship silhouette. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 61,
+      "name": "Pirate lookout horn",
+      "description": "Pirate lookout horn. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 62,
+      "name": "Smuggler boat unloading",
+      "description": "Smuggler boat unloading. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 63,
+      "name": "Giant crab nest",
+      "description": "Giant crab nest. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 64,
+      "name": "Reef wreck treasure",
+      "description": "Reef wreck treasure. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 65,
+      "name": "Ghost lantern offshore",
+      "description": "Ghost lantern offshore. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 66,
+      "name": "Sea cave hideout",
+      "description": "Sea cave hideout. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 67,
+      "name": "Castaway tells lies",
+      "description": "Castaway tells lies. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 68,
+      "name": "Hidden cannon position",
+      "description": "Hidden cannon position. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 69,
+      "name": "Mangrove ambush",
+      "description": "Mangrove ambush. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 70,
+      "name": "Undead sailor patrol",
+      "description": "Undead sailor patrol. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 71,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 72,
+      "name": "Tide reveals tunnel",
+      "description": "Tide reveals tunnel. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 73,
+      "name": "Prisoner escape plea",
+      "description": "Prisoner escape plea. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 74,
+      "name": "Crocodile in inlet",
+      "description": "Crocodile in inlet. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 75,
+      "name": "Sea hag whisper",
+      "description": "Sea hag whisper. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 76,
+      "name": "Pirate feast smoke",
+      "description": "Pirate feast smoke. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 77,
+      "name": "False distress signal",
+      "description": "False distress signal. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 78,
+      "name": "Buried chest trap",
+      "description": "Buried chest trap. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 79,
+      "name": "Shark-finned waters",
+      "description": "Shark-finned waters. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 80,
+      "name": "Ghost ship silhouette",
+      "description": "Ghost ship silhouette. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 81,
+      "name": "Pirate lookout horn",
+      "description": "Pirate lookout horn. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 82,
+      "name": "Smuggler boat unloading",
+      "description": "Smuggler boat unloading. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 83,
+      "name": "Giant crab nest",
+      "description": "Giant crab nest. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 84,
+      "name": "Reef wreck treasure",
+      "description": "Reef wreck treasure. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 85,
+      "name": "Ghost lantern offshore",
+      "description": "Ghost lantern offshore. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 86,
+      "name": "Sea cave hideout",
+      "description": "Sea cave hideout. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 87,
+      "name": "Castaway tells lies",
+      "description": "Castaway tells lies. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 88,
+      "name": "Hidden cannon position",
+      "description": "Hidden cannon position. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 89,
+      "name": "Mangrove ambush",
+      "description": "Mangrove ambush. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 90,
+      "name": "Undead sailor patrol",
+      "description": "Undead sailor patrol. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 91,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 92,
+      "name": "Tide reveals tunnel",
+      "description": "Tide reveals tunnel. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 93,
+      "name": "Prisoner escape plea",
+      "description": "Prisoner escape plea. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 94,
+      "name": "Crocodile in inlet",
+      "description": "Crocodile in inlet. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 95,
+      "name": "Sea hag whisper",
+      "description": "Sea hag whisper. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 96,
+      "name": "Pirate feast smoke",
+      "description": "Pirate feast smoke. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 97,
+      "name": "False distress signal",
+      "description": "False distress signal. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 98,
+      "name": "Buried chest trap",
+      "description": "Buried chest trap. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 99,
+      "name": "Shark-finned waters",
+      "description": "Shark-finned waters. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 100,
+      "name": "Ghost ship silhouette",
+      "description": "Ghost ship silhouette. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    }
+  ]
+}

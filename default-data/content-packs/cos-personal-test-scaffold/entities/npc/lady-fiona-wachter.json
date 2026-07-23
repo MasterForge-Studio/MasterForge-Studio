@@ -1,0 +1,11 @@
+{
+  "id": "lady-fiona-wachter",
+  "entity_type": "npc",
+  "name": "Lady Fiona Wachter",
+  "description": "noble conspirator. Placeholder for personal verification.",
+  "data": {
+    "factionId": "wachter-cult",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

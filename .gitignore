@@ -1,0 +1,26 @@
+# Installed dependencies
+node_modules/
+
+# Electron Builder output
+release/
+
+# Temporary working files
+temp/
+
+# Old archived content packs
+content-packs-old/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Local environment files
+.env
+.env.*
+
+# Windows files
+Thumbs.db
+Desktop.ini
+
+# Generated database
+default-data/masterforge-studio.db

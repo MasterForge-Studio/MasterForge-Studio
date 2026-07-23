@@ -1,0 +1,109 @@
+{
+  "id": "svalich-woods-encounters",
+  "name": "Svalich Woods d100 Encounters",
+  "regionId": "svalich-woods",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Raven Omen",
+      "description": "A gothic travel event: raven omen. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "6-10",
+      "name": "Distant Howls",
+      "description": "A gothic travel event: distant howls. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "11-15",
+      "name": "Lost Traveller",
+      "description": "A gothic travel event: lost traveller. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "16-20",
+      "name": "Roadside Shrine",
+      "description": "A gothic travel event: roadside shrine. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "21-25",
+      "name": "Mournful Procession",
+      "description": "A gothic travel event: mournful procession. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "26-30",
+      "name": "Wolf Pack Shadow",
+      "description": "A gothic travel event: wolf pack shadow. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "31-35",
+      "name": "Suspicious Locals",
+      "description": "A gothic travel event: suspicious locals. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "36-40",
+      "name": "Abandoned Cart",
+      "description": "A gothic travel event: abandoned cart. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "41-45",
+      "name": "Unquiet Dead",
+      "description": "A gothic travel event: unquiet dead. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "46-50",
+      "name": "Servant of the Castle",
+      "description": "A gothic travel event: servant of the castle. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "51-55",
+      "name": "False Shelter",
+      "description": "A gothic travel event: false shelter. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "56-60",
+      "name": "Hungry Mist",
+      "description": "A gothic travel event: hungry mist. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "61-65",
+      "name": "Broken Signpost",
+      "description": "A gothic travel event: broken signpost. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "66-70",
+      "name": "Strange Footprints",
+      "description": "A gothic travel event: strange footprints. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "71-75",
+      "name": "Hidden Watcher",
+      "description": "A gothic travel event: hidden watcher. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "76-80",
+      "name": "Crying in the Fog",
+      "description": "A gothic travel event: crying in the fog. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "81-85",
+      "name": "Old Battlefield Remnant",
+      "description": "A gothic travel event: old battlefield remnant. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "86-90",
+      "name": "Cursed Animal",
+      "description": "A gothic travel event: cursed animal. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "91-95",
+      "name": "Vistani Wagon",
+      "description": "A gothic travel event: vistani wagon. Use as a prompt, then verify with book/location context."
+    },
+    {
+      "roll": "96-100",
+      "name": "Something Follows",
+      "description": "A gothic travel event: something follows. Use as a prompt, then verify with book/location context."
+    }
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "omu",
+  "name": "Omu",
+  "type": "location",
+  "regionId": "chult",
+  "summary": "A ruined forbidden city swallowed by jungle, haunted by old gods, traps, undead and the consequences of ancient pride.",
+  "politics": [
+    "No lawful ruler controls Omu; power belongs to whatever can survive its ruins.",
+    "Competing factions might seek relics, secrets or sacred sites."
+  ],
+  "culture": [
+    "The ruins speak through carvings, shrines and broken civic spaces.",
+    "Every plaza feels like a warning."
+  ],
+  "factions": [
+    "Yuan-ti cults",
+    "Undead remnants",
+    "Treasure hunters",
+    "Jungle predators"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "lost-jungle-isle",
+  "background": "assets/locations/omu/background.webp"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "krezk-authority",
+  "entity_type": "faction",
+  "name": "Krezk Authority",
+  "description": "Leadership and guards of Krezk.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

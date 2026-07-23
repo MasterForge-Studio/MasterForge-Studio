@@ -1,0 +1,11 @@
+{
+  "id": "ireena-kolyana",
+  "entity_type": "npc",
+  "name": "Ireena Kolyana",
+  "description": "noblewoman drawn into danger. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

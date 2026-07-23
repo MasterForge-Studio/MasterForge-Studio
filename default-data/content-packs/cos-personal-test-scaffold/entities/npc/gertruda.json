@@ -1,0 +1,11 @@
+{
+  "id": "gertruda",
+  "entity_type": "npc",
+  "name": "Gertruda",
+  "description": "missing young woman. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "castle-ravenloft"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

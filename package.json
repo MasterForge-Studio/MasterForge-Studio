@@ -1,0 +1,73 @@
+{
+  "name": "masterforge-studio",
+  "productName": "MasterForge Studio",
+  "version": "0.3.1-alpha",
+  "description": "MasterForge Studio — offline-first campaign management for Game Masters.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist:win": "electron-builder --win nsis --x64"
+  },
+  "dependencies": {
+    "adm-zip": "^0.5.17",
+    "better-sqlite3": "^12.11.1"
+  },
+  "type": "commonjs",
+  "build": {
+    "appId": "studio.masterforge.app",
+    "productName": "MasterForge Studio",
+    "asar": true,
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "package.json",
+      "src/**/*",
+      "!**/*.map",
+      "!**/temp{,/**/*}",
+      "!**/test{,/**/*}",
+      "!**/tests{,/**/*}"
+    ],
+    "extraResources": [
+      {
+        "from": "default-data/themes",
+        "to": "default-data/themes"
+      },
+      {
+        "from": "default-data/rules",
+        "to": "default-data/rules"
+      }
+    ],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": ["x64"]
+        }
+      ],
+      "icon": "src/assets/Logo.png",
+      "artifactName": "MasterForge-Studio-Setup-${version}-${arch}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "MasterForge Studio",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerIcon": "release/.icon-ico/icon.ico",
+      "uninstallerIcon": "release/.icon-ico/icon.ico"
+    }
+  },
+  "devDependencies": {
+    "electron": "^35.7.5",
+    "electron-builder": "^26.15.3",
+    "electron-rebuild": "^3.2.9"
+  }
+}

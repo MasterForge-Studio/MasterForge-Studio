@@ -1,0 +1,10 @@
+{
+  "id": "wachter-cult",
+  "entity_type": "faction",
+  "name": "Wachter Cult",
+  "description": "Noble-led faction opposed to the current Vallaki order.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

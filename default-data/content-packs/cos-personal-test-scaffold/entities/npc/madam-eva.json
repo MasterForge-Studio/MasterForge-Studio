@@ -1,0 +1,11 @@
+{
+  "id": "madam-eva",
+  "entity_type": "npc",
+  "name": "Madam Eva",
+  "description": "Vistani seer. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vistani",
+    "regionId": "tser-pool"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

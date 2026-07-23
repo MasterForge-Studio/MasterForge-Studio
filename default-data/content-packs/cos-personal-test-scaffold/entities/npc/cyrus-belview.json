@@ -1,0 +1,11 @@
+{
+  "id": "cyrus-belview",
+  "entity_type": "npc",
+  "name": "Cyrus Belview",
+  "description": "castle servant. Placeholder for personal verification.",
+  "data": {
+    "factionId": "castle-ravenloft-court",
+    "regionId": "castle-ravenloft"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

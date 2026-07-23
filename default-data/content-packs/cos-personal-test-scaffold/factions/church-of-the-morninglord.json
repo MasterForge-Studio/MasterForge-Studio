@@ -1,0 +1,14 @@
+{
+  "id": "church-of-the-morninglord",
+  "name": "Church of the Morninglord",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Faith communities trying to preserve hope.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

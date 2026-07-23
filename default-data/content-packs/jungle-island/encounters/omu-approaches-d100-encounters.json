@@ -1,0 +1,610 @@
+{
+  "id": "omu-approaches-d100-encounters",
+  "name": "Omu Approaches d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "chult",
+  "regionId": "omu-approaches",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Yuan-ti patrol tracks",
+      "description": "Yuan-ti patrol tracks. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 2,
+      "name": "Forbidden marker stone",
+      "description": "Forbidden marker stone. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 3,
+      "name": "Serpent watches from branch",
+      "description": "Serpent watches from branch. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 4,
+      "name": "Dead explorer with warning",
+      "description": "Dead explorer with warning. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 5,
+      "name": "Ravine bridge cut",
+      "description": "Ravine bridge cut. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 6,
+      "name": "Velociraptor ambush",
+      "description": "Velociraptor ambush. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 7,
+      "name": "Stone trap half sprung",
+      "description": "Stone trap half sprung. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 8,
+      "name": "Green fog rolls in",
+      "description": "Green fog rolls in. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 9,
+      "name": "Cultist camp ashes",
+      "description": "Cultist camp ashes. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 10,
+      "name": "Whispers in sleep",
+      "description": "Whispers in sleep. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 11,
+      "name": "Ancient road under roots",
+      "description": "Ancient road under roots. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 12,
+      "name": "Venomous blossoms",
+      "description": "Venomous blossoms. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 13,
+      "name": "Hidden scout whistle",
+      "description": "Hidden scout whistle. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 14,
+      "name": "Snake skin as large as sail",
+      "description": "Snake skin as large as sail. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 15,
+      "name": "Riddle carved in stone",
+      "description": "Riddle carved in stone. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 16,
+      "name": "Undead guardian with key",
+      "description": "Undead guardian with key. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 17,
+      "name": "Relic hunter gone mad",
+      "description": "Relic hunter gone mad. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 18,
+      "name": "Thunder with no rain",
+      "description": "Thunder with no rain. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 19,
+      "name": "Map tattoo on corpse",
+      "description": "Map tattoo on corpse. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 20,
+      "name": "City glimpse through canopy",
+      "description": "City glimpse through canopy. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 21,
+      "name": "Yuan-ti patrol tracks",
+      "description": "Yuan-ti patrol tracks. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 22,
+      "name": "Forbidden marker stone",
+      "description": "Forbidden marker stone. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 23,
+      "name": "Serpent watches from branch",
+      "description": "Serpent watches from branch. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 24,
+      "name": "Dead explorer with warning",
+      "description": "Dead explorer with warning. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 25,
+      "name": "Ravine bridge cut",
+      "description": "Ravine bridge cut. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 26,
+      "name": "Velociraptor ambush",
+      "description": "Velociraptor ambush. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 27,
+      "name": "Stone trap half sprung",
+      "description": "Stone trap half sprung. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 28,
+      "name": "Green fog rolls in",
+      "description": "Green fog rolls in. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 29,
+      "name": "Cultist camp ashes",
+      "description": "Cultist camp ashes. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 30,
+      "name": "Whispers in sleep",
+      "description": "Whispers in sleep. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 31,
+      "name": "Ancient road under roots",
+      "description": "Ancient road under roots. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 32,
+      "name": "Venomous blossoms",
+      "description": "Venomous blossoms. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 33,
+      "name": "Hidden scout whistle",
+      "description": "Hidden scout whistle. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 34,
+      "name": "Snake skin as large as sail",
+      "description": "Snake skin as large as sail. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 35,
+      "name": "Riddle carved in stone",
+      "description": "Riddle carved in stone. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 36,
+      "name": "Undead guardian with key",
+      "description": "Undead guardian with key. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 37,
+      "name": "Relic hunter gone mad",
+      "description": "Relic hunter gone mad. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 38,
+      "name": "Thunder with no rain",
+      "description": "Thunder with no rain. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 39,
+      "name": "Map tattoo on corpse",
+      "description": "Map tattoo on corpse. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 40,
+      "name": "City glimpse through canopy",
+      "description": "City glimpse through canopy. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 41,
+      "name": "Yuan-ti patrol tracks",
+      "description": "Yuan-ti patrol tracks. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 42,
+      "name": "Forbidden marker stone",
+      "description": "Forbidden marker stone. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 43,
+      "name": "Serpent watches from branch",
+      "description": "Serpent watches from branch. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 44,
+      "name": "Dead explorer with warning",
+      "description": "Dead explorer with warning. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 45,
+      "name": "Ravine bridge cut",
+      "description": "Ravine bridge cut. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 46,
+      "name": "Velociraptor ambush",
+      "description": "Velociraptor ambush. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 47,
+      "name": "Stone trap half sprung",
+      "description": "Stone trap half sprung. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 48,
+      "name": "Green fog rolls in",
+      "description": "Green fog rolls in. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 49,
+      "name": "Cultist camp ashes",
+      "description": "Cultist camp ashes. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 50,
+      "name": "Whispers in sleep",
+      "description": "Whispers in sleep. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 51,
+      "name": "Ancient road under roots",
+      "description": "Ancient road under roots. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 52,
+      "name": "Venomous blossoms",
+      "description": "Venomous blossoms. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 53,
+      "name": "Hidden scout whistle",
+      "description": "Hidden scout whistle. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 54,
+      "name": "Snake skin as large as sail",
+      "description": "Snake skin as large as sail. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 55,
+      "name": "Riddle carved in stone",
+      "description": "Riddle carved in stone. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 56,
+      "name": "Undead guardian with key",
+      "description": "Undead guardian with key. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 57,
+      "name": "Relic hunter gone mad",
+      "description": "Relic hunter gone mad. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 58,
+      "name": "Thunder with no rain",
+      "description": "Thunder with no rain. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 59,
+      "name": "Map tattoo on corpse",
+      "description": "Map tattoo on corpse. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 60,
+      "name": "City glimpse through canopy",
+      "description": "City glimpse through canopy. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 61,
+      "name": "Yuan-ti patrol tracks",
+      "description": "Yuan-ti patrol tracks. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 62,
+      "name": "Forbidden marker stone",
+      "description": "Forbidden marker stone. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 63,
+      "name": "Serpent watches from branch",
+      "description": "Serpent watches from branch. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 64,
+      "name": "Dead explorer with warning",
+      "description": "Dead explorer with warning. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 65,
+      "name": "Ravine bridge cut",
+      "description": "Ravine bridge cut. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 66,
+      "name": "Velociraptor ambush",
+      "description": "Velociraptor ambush. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 67,
+      "name": "Stone trap half sprung",
+      "description": "Stone trap half sprung. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 68,
+      "name": "Green fog rolls in",
+      "description": "Green fog rolls in. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 69,
+      "name": "Cultist camp ashes",
+      "description": "Cultist camp ashes. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 70,
+      "name": "Whispers in sleep",
+      "description": "Whispers in sleep. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 71,
+      "name": "Ancient road under roots",
+      "description": "Ancient road under roots. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 72,
+      "name": "Venomous blossoms",
+      "description": "Venomous blossoms. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 73,
+      "name": "Hidden scout whistle",
+      "description": "Hidden scout whistle. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 74,
+      "name": "Snake skin as large as sail",
+      "description": "Snake skin as large as sail. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 75,
+      "name": "Riddle carved in stone",
+      "description": "Riddle carved in stone. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 76,
+      "name": "Undead guardian with key",
+      "description": "Undead guardian with key. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 77,
+      "name": "Relic hunter gone mad",
+      "description": "Relic hunter gone mad. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 78,
+      "name": "Thunder with no rain",
+      "description": "Thunder with no rain. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 79,
+      "name": "Map tattoo on corpse",
+      "description": "Map tattoo on corpse. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 80,
+      "name": "City glimpse through canopy",
+      "description": "City glimpse through canopy. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 81,
+      "name": "Yuan-ti patrol tracks",
+      "description": "Yuan-ti patrol tracks. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 82,
+      "name": "Forbidden marker stone",
+      "description": "Forbidden marker stone. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 83,
+      "name": "Serpent watches from branch",
+      "description": "Serpent watches from branch. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 84,
+      "name": "Dead explorer with warning",
+      "description": "Dead explorer with warning. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 85,
+      "name": "Ravine bridge cut",
+      "description": "Ravine bridge cut. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 86,
+      "name": "Velociraptor ambush",
+      "description": "Velociraptor ambush. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 87,
+      "name": "Stone trap half sprung",
+      "description": "Stone trap half sprung. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 88,
+      "name": "Green fog rolls in",
+      "description": "Green fog rolls in. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 89,
+      "name": "Cultist camp ashes",
+      "description": "Cultist camp ashes. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 90,
+      "name": "Whispers in sleep",
+      "description": "Whispers in sleep. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 91,
+      "name": "Ancient road under roots",
+      "description": "Ancient road under roots. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 92,
+      "name": "Venomous blossoms",
+      "description": "Venomous blossoms. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 93,
+      "name": "Hidden scout whistle",
+      "description": "Hidden scout whistle. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 94,
+      "name": "Snake skin as large as sail",
+      "description": "Snake skin as large as sail. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 95,
+      "name": "Riddle carved in stone",
+      "description": "Riddle carved in stone. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 96,
+      "name": "Undead guardian with key",
+      "description": "Undead guardian with key. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 97,
+      "name": "Relic hunter gone mad",
+      "description": "Relic hunter gone mad. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 98,
+      "name": "Thunder with no rain",
+      "description": "Thunder with no rain. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 99,
+      "name": "Map tattoo on corpse",
+      "description": "Map tattoo on corpse. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 100,
+      "name": "City glimpse through canopy",
+      "description": "City glimpse through canopy. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    }
+  ]
+}

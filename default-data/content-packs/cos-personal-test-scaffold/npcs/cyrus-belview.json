@@ -1,0 +1,14 @@
+{
+  "id": "cyrus-belview",
+  "name": "Cyrus Belview",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "castle-ravenloft",
+  "factionId": "castle-ravenloft-court",
+  "role": "castle servant",
+  "description": "Cyrus Belview: castle servant. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,610 @@
+{
+  "id": "lost-temples-d100-loot",
+  "name": "Lost Temples d100 Loot",
+  "type": "loot-table",
+  "locationId": "chult",
+  "regionId": "lost-temples",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Gold maze idol",
+      "description": "Gold maze idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 2,
+      "name": "Cursed altar coin",
+      "description": "Cursed altar coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 3,
+      "name": "Ceremonial obsidian knife",
+      "description": "Ceremonial obsidian knife. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 4,
+      "name": "Ancient prayer tablet",
+      "description": "Ancient prayer tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 5,
+      "name": "Bone mask fragment",
+      "description": "Bone mask fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 6,
+      "name": "Temple key of green stone",
+      "description": "Temple key of green stone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 7,
+      "name": "Silver incense burner",
+      "description": "Silver incense burner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 8,
+      "name": "Blood moss sample",
+      "description": "Blood moss sample. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 9,
+      "name": "Stone guardian eye",
+      "description": "Stone guardian eye. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 10,
+      "name": "Yuan-ti ritual note",
+      "description": "Yuan-ti ritual note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 11,
+      "name": "Blue crystal tear",
+      "description": "Blue crystal tear. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 12,
+      "name": "Offering bowl gem",
+      "description": "Offering bowl gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 13,
+      "name": "Fresco fragment",
+      "description": "Fresco fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 14,
+      "name": "Sacred feather bundle",
+      "description": "Sacred feather bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 15,
+      "name": "Temple bell clapper",
+      "description": "Temple bell clapper. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 16,
+      "name": "Relic hunter's pack",
+      "description": "Relic hunter's pack. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 17,
+      "name": "Carved wooden sun disc",
+      "description": "Carved wooden sun disc. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 18,
+      "name": "Poison dart case",
+      "description": "Poison dart case. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 19,
+      "name": "Jade priest ring",
+      "description": "Jade priest ring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 20,
+      "name": "Oracle dream token",
+      "description": "Oracle dream token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 21,
+      "name": "Gold maze idol",
+      "description": "Gold maze idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 22,
+      "name": "Cursed altar coin",
+      "description": "Cursed altar coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 23,
+      "name": "Ceremonial obsidian knife",
+      "description": "Ceremonial obsidian knife. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 24,
+      "name": "Ancient prayer tablet",
+      "description": "Ancient prayer tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 25,
+      "name": "Bone mask fragment",
+      "description": "Bone mask fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 26,
+      "name": "Temple key of green stone",
+      "description": "Temple key of green stone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 27,
+      "name": "Silver incense burner",
+      "description": "Silver incense burner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 28,
+      "name": "Blood moss sample",
+      "description": "Blood moss sample. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 29,
+      "name": "Stone guardian eye",
+      "description": "Stone guardian eye. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 30,
+      "name": "Yuan-ti ritual note",
+      "description": "Yuan-ti ritual note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 31,
+      "name": "Blue crystal tear",
+      "description": "Blue crystal tear. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 32,
+      "name": "Offering bowl gem",
+      "description": "Offering bowl gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 33,
+      "name": "Fresco fragment",
+      "description": "Fresco fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 34,
+      "name": "Sacred feather bundle",
+      "description": "Sacred feather bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 35,
+      "name": "Temple bell clapper",
+      "description": "Temple bell clapper. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 36,
+      "name": "Relic hunter's pack",
+      "description": "Relic hunter's pack. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 37,
+      "name": "Carved wooden sun disc",
+      "description": "Carved wooden sun disc. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 38,
+      "name": "Poison dart case",
+      "description": "Poison dart case. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 39,
+      "name": "Jade priest ring",
+      "description": "Jade priest ring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 40,
+      "name": "Oracle dream token",
+      "description": "Oracle dream token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 41,
+      "name": "Gold maze idol",
+      "description": "Gold maze idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 42,
+      "name": "Cursed altar coin",
+      "description": "Cursed altar coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 43,
+      "name": "Ceremonial obsidian knife",
+      "description": "Ceremonial obsidian knife. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 44,
+      "name": "Ancient prayer tablet",
+      "description": "Ancient prayer tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 45,
+      "name": "Bone mask fragment",
+      "description": "Bone mask fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 46,
+      "name": "Temple key of green stone",
+      "description": "Temple key of green stone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 47,
+      "name": "Silver incense burner",
+      "description": "Silver incense burner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 48,
+      "name": "Blood moss sample",
+      "description": "Blood moss sample. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 49,
+      "name": "Stone guardian eye",
+      "description": "Stone guardian eye. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 50,
+      "name": "Yuan-ti ritual note",
+      "description": "Yuan-ti ritual note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 51,
+      "name": "Blue crystal tear",
+      "description": "Blue crystal tear. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 52,
+      "name": "Offering bowl gem",
+      "description": "Offering bowl gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 53,
+      "name": "Fresco fragment",
+      "description": "Fresco fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 54,
+      "name": "Sacred feather bundle",
+      "description": "Sacred feather bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 55,
+      "name": "Temple bell clapper",
+      "description": "Temple bell clapper. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 56,
+      "name": "Relic hunter's pack",
+      "description": "Relic hunter's pack. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 57,
+      "name": "Carved wooden sun disc",
+      "description": "Carved wooden sun disc. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 58,
+      "name": "Poison dart case",
+      "description": "Poison dart case. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 59,
+      "name": "Jade priest ring",
+      "description": "Jade priest ring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 60,
+      "name": "Oracle dream token",
+      "description": "Oracle dream token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 61,
+      "name": "Gold maze idol",
+      "description": "Gold maze idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 62,
+      "name": "Cursed altar coin",
+      "description": "Cursed altar coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 63,
+      "name": "Ceremonial obsidian knife",
+      "description": "Ceremonial obsidian knife. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 64,
+      "name": "Ancient prayer tablet",
+      "description": "Ancient prayer tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 65,
+      "name": "Bone mask fragment",
+      "description": "Bone mask fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 66,
+      "name": "Temple key of green stone",
+      "description": "Temple key of green stone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 67,
+      "name": "Silver incense burner",
+      "description": "Silver incense burner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 68,
+      "name": "Blood moss sample",
+      "description": "Blood moss sample. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 69,
+      "name": "Stone guardian eye",
+      "description": "Stone guardian eye. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 70,
+      "name": "Yuan-ti ritual note",
+      "description": "Yuan-ti ritual note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 71,
+      "name": "Blue crystal tear",
+      "description": "Blue crystal tear. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 72,
+      "name": "Offering bowl gem",
+      "description": "Offering bowl gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 73,
+      "name": "Fresco fragment",
+      "description": "Fresco fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 74,
+      "name": "Sacred feather bundle",
+      "description": "Sacred feather bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 75,
+      "name": "Temple bell clapper",
+      "description": "Temple bell clapper. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 76,
+      "name": "Relic hunter's pack",
+      "description": "Relic hunter's pack. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 77,
+      "name": "Carved wooden sun disc",
+      "description": "Carved wooden sun disc. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 78,
+      "name": "Poison dart case",
+      "description": "Poison dart case. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 79,
+      "name": "Jade priest ring",
+      "description": "Jade priest ring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 80,
+      "name": "Oracle dream token",
+      "description": "Oracle dream token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 81,
+      "name": "Gold maze idol",
+      "description": "Gold maze idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 82,
+      "name": "Cursed altar coin",
+      "description": "Cursed altar coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 83,
+      "name": "Ceremonial obsidian knife",
+      "description": "Ceremonial obsidian knife. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 84,
+      "name": "Ancient prayer tablet",
+      "description": "Ancient prayer tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 85,
+      "name": "Bone mask fragment",
+      "description": "Bone mask fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 86,
+      "name": "Temple key of green stone",
+      "description": "Temple key of green stone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 87,
+      "name": "Silver incense burner",
+      "description": "Silver incense burner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 88,
+      "name": "Blood moss sample",
+      "description": "Blood moss sample. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 89,
+      "name": "Stone guardian eye",
+      "description": "Stone guardian eye. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 90,
+      "name": "Yuan-ti ritual note",
+      "description": "Yuan-ti ritual note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 91,
+      "name": "Blue crystal tear",
+      "description": "Blue crystal tear. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 92,
+      "name": "Offering bowl gem",
+      "description": "Offering bowl gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 93,
+      "name": "Fresco fragment",
+      "description": "Fresco fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 94,
+      "name": "Sacred feather bundle",
+      "description": "Sacred feather bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 95,
+      "name": "Temple bell clapper",
+      "description": "Temple bell clapper. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 96,
+      "name": "Relic hunter's pack",
+      "description": "Relic hunter's pack. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 97,
+      "name": "Carved wooden sun disc",
+      "description": "Carved wooden sun disc. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 98,
+      "name": "Poison dart case",
+      "description": "Poison dart case. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 99,
+      "name": "Jade priest ring",
+      "description": "Jade priest ring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 100,
+      "name": "Oracle dream token",
+      "description": "Oracle dream token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    }
+  ]
+}

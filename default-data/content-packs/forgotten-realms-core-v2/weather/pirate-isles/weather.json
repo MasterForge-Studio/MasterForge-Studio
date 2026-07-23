@@ -1,0 +1,47 @@
+{
+  "id": "pirate-isles-weather",
+  "name": "Pirate Isles Weather",
+  "locationId": "pirate-isles",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Clear conditions",
+      "description": "Good visibility around Pirate Isles; locals go about normal business."
+    },
+    {
+      "roll": "2",
+      "name": "Light wind",
+      "description": "A noticeable breeze carries smells, sounds and rumours through Pirate Isles."
+    },
+    {
+      "roll": "3",
+      "name": "Heavy cloud",
+      "description": "The sky presses low over Pirate Isles, making colours dull and tempers short."
+    },
+    {
+      "roll": "4",
+      "name": "Sudden rain or snow",
+      "description": "A quick change in weather disrupts travel and street life in Pirate Isles."
+    },
+    {
+      "roll": "5",
+      "name": "Difficult visibility",
+      "description": "Mist, glare, spray or blowing dust makes distance hard to judge near Pirate Isles."
+    },
+    {
+      "roll": "6",
+      "name": "Unsettled omen",
+      "description": "Animals, sailors or locals notice something odd in the air around Pirate Isles."
+    },
+    {
+      "roll": "7",
+      "name": "Harsh weather",
+      "description": "Travel around Pirate Isles becomes tiring; checks may be needed if the party pushes on."
+    },
+    {
+      "roll": "8",
+      "name": "Dangerous weather",
+      "description": "A storm, whiteout, heat surge or violent squall creates immediate complications at Pirate Isles."
+    }
+  ]
+}

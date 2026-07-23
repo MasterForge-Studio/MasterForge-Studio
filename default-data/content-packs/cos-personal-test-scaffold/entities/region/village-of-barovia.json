@@ -1,0 +1,10 @@
+{
+  "id": "village-of-barovia",
+  "entity_type": "region",
+  "name": "Village of Barovia",
+  "description": "A bleak village near the eastern road, marked by grief and fear.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

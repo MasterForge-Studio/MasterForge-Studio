@@ -1,0 +1,30 @@
+{
+  "name": "Chult",
+  "climate": "Tropical jungle",
+  "summary": "A hot, ancient jungle peninsula filled with dinosaurs, ruins, powerful old magic, poisonous plants and lost civilisations.",
+  "politics": [
+    "Port Nyanzaru is dominated by wealthy merchant interests.",
+    "Remote jungle regions are controlled by survival, tribes, monsters and whoever has the strength to hold territory."
+  ],
+  "culture": [
+    "Guides, hunters, traders and explorers are common around settlements.",
+    "Jungle travel is dangerous and often requires local knowledge.",
+    "Dinosaurs are part of daily life in some areas, not just monsters."
+  ],
+  "factions": [
+    "Emerald Enclave",
+    "Flaming Fist",
+    "Harpers",
+    "Ytepka Society",
+    "Pirates",
+    "Yuan-ti"
+  ],
+  "dmTone": [
+    "Heat",
+    "Humidity",
+    "Ancient ruins",
+    "Constant jungle noise",
+    "Predators nearby",
+    "Civilisation feels fragile"
+  ]
+}

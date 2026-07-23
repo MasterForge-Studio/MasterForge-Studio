@@ -1,0 +1,11 @@
+{
+  "id": "wintersplinter",
+  "entity_type": "npc",
+  "name": "Wintersplinter",
+  "description": "tree blight threat. Placeholder for personal verification.",
+  "data": {
+    "factionId": "druids-of-yester-hill",
+    "regionId": "yester-hill"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

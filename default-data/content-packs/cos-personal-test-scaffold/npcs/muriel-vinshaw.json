@@ -1,0 +1,14 @@
+{
+  "id": "muriel-vinshaw",
+  "name": "Muriel Vinshaw",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "svalich-woods",
+  "factionId": "keepers-of-the-feather",
+  "role": "watchful ally",
+  "description": "Muriel Vinshaw: watchful ally. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

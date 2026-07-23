@@ -1,0 +1,11 @@
+{
+  "id": "davian-martikov",
+  "entity_type": "npc",
+  "name": "Davian Martikov",
+  "description": "winery patriarch. Placeholder for personal verification.",
+  "data": {
+    "factionId": "keepers-of-the-feather",
+    "regionId": "wizard-of-wines"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "berez",
+  "entity_type": "region",
+  "name": "Ruins of Berez",
+  "description": "A drowned ruin haunted by tragedy and old power.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "valley-of-dread",
+  "locationId": "chult",
+  "name": "Valley of Dread",
+  "type": "region",
+  "environment": [
+    "Open jungle valleys",
+    "Broken dinosaur trails",
+    "Bone fields",
+    "Clawed trees",
+    "Echoing cliffs"
+  ],
+  "weather": [
+    "Heavy heat",
+    "Dry thunder",
+    "Sudden valley fog",
+    "Rain that turns dust to red mud"
+  ],
+  "politics": [
+    "Large predators are the only law.",
+    "Hunters enter rarely and never casually."
+  ],
+  "culture": [
+    "Chultans speak of the valley with practical fear.",
+    "Old bones are left undisturbed unless necessity demands otherwise."
+  ],
+  "creatures": {
+    "common": [
+      "Hadrosaurs",
+      "Axe beaks",
+      "Velociraptors",
+      "Pteranodons",
+      "Giant lizards"
+    ],
+    "dangerous": [
+      "Allosaurus",
+      "Ankylosaurus",
+      "Triceratops",
+      "Giant scorpions",
+      "Undead hunters"
+    ],
+    "legendary": [
+      "Tyrannosaurus rex",
+      "King of Feathers-style apex predator",
+      "Ancient thunder lizard"
+    ]
+  },
+  "humanoids": [
+    "Dinosaur hunters",
+    "Bone collectors",
+    "Lost soldiers",
+    "Mad trophy seekers",
+    "Grung trackers"
+  ],
+  "travelHazards": [
+    "Stampedes",
+    "Predator ambushes",
+    "Rockfalls",
+    "Open ground exposure",
+    "Territorial displays"
+  ],
+  "rumours": [
+    "A beast with scars like white lightning rules the valley.",
+    "A hunter left a fortune in a cave and never returned.",
+    "Drums are sometimes heard from empty cliffs."
+  ],
+  "dmSecrets": [
+    "The apex predator can become a recurring threat.",
+    "Bone fields conceal relics and warnings.",
+    "A faction may be baiting monsters toward rivals."
+  ]
+}

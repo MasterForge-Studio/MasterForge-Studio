@@ -1,0 +1,11 @@
+{
+  "id": "baba-lysaga",
+  "entity_type": "npc",
+  "name": "Baba Lysaga",
+  "description": "ancient witch. Placeholder for personal verification.",
+  "data": {
+    "factionId": "baba-lysaga-servants",
+    "regionId": "berez"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

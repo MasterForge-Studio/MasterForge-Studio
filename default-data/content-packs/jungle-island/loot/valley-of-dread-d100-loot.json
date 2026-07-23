@@ -1,0 +1,610 @@
+{
+  "id": "valley-of-dread-d100-loot",
+  "name": "Valley of Dread d100 Loot",
+  "type": "loot-table",
+  "locationId": "chult",
+  "regionId": "valley-of-dread",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Massive dinosaur tooth",
+      "description": "Massive dinosaur tooth. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 2,
+      "name": "Hunter's trophy bead",
+      "description": "Hunter's trophy bead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 3,
+      "name": "Cracked spyglass",
+      "description": "Cracked spyglass. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 4,
+      "name": "Bone-field relic coin",
+      "description": "Bone-field relic coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 5,
+      "name": "Triceratops horn sliver",
+      "description": "Triceratops horn sliver. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 6,
+      "name": "Old spearhead",
+      "description": "Old spearhead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 7,
+      "name": "Eggshell fragment",
+      "description": "Eggshell fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 8,
+      "name": "Raptor claw necklace",
+      "description": "Raptor claw necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 9,
+      "name": "Leather trophy journal",
+      "description": "Leather trophy journal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 10,
+      "name": "Gold tooth from corpse",
+      "description": "Gold tooth from corpse. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 11,
+      "name": "Dinosaur hide strap",
+      "description": "Dinosaur hide strap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 12,
+      "name": "Whistle carved from bone",
+      "description": "Whistle carved from bone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 13,
+      "name": "Ancient warning tablet",
+      "description": "Ancient warning tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 14,
+      "name": "Hunter's climbing hook",
+      "description": "Hunter's climbing hook. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 15,
+      "name": "Preserved meat bundle",
+      "description": "Preserved meat bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 16,
+      "name": "Amber resin lump",
+      "description": "Amber resin lump. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 17,
+      "name": "Painted skull charm",
+      "description": "Painted skull charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 18,
+      "name": "Iron bear trap parts",
+      "description": "Iron bear trap parts. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 19,
+      "name": "Fang-studded bracer",
+      "description": "Fang-studded bracer. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 20,
+      "name": "Map to hunter cache",
+      "description": "Map to hunter cache. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 21,
+      "name": "Massive dinosaur tooth",
+      "description": "Massive dinosaur tooth. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 22,
+      "name": "Hunter's trophy bead",
+      "description": "Hunter's trophy bead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 23,
+      "name": "Cracked spyglass",
+      "description": "Cracked spyglass. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 24,
+      "name": "Bone-field relic coin",
+      "description": "Bone-field relic coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 25,
+      "name": "Triceratops horn sliver",
+      "description": "Triceratops horn sliver. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 26,
+      "name": "Old spearhead",
+      "description": "Old spearhead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 27,
+      "name": "Eggshell fragment",
+      "description": "Eggshell fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 28,
+      "name": "Raptor claw necklace",
+      "description": "Raptor claw necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 29,
+      "name": "Leather trophy journal",
+      "description": "Leather trophy journal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 30,
+      "name": "Gold tooth from corpse",
+      "description": "Gold tooth from corpse. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 31,
+      "name": "Dinosaur hide strap",
+      "description": "Dinosaur hide strap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 32,
+      "name": "Whistle carved from bone",
+      "description": "Whistle carved from bone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 33,
+      "name": "Ancient warning tablet",
+      "description": "Ancient warning tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 34,
+      "name": "Hunter's climbing hook",
+      "description": "Hunter's climbing hook. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 35,
+      "name": "Preserved meat bundle",
+      "description": "Preserved meat bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 36,
+      "name": "Amber resin lump",
+      "description": "Amber resin lump. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 37,
+      "name": "Painted skull charm",
+      "description": "Painted skull charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 38,
+      "name": "Iron bear trap parts",
+      "description": "Iron bear trap parts. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 39,
+      "name": "Fang-studded bracer",
+      "description": "Fang-studded bracer. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 40,
+      "name": "Map to hunter cache",
+      "description": "Map to hunter cache. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 41,
+      "name": "Massive dinosaur tooth",
+      "description": "Massive dinosaur tooth. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 42,
+      "name": "Hunter's trophy bead",
+      "description": "Hunter's trophy bead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 43,
+      "name": "Cracked spyglass",
+      "description": "Cracked spyglass. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 44,
+      "name": "Bone-field relic coin",
+      "description": "Bone-field relic coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 45,
+      "name": "Triceratops horn sliver",
+      "description": "Triceratops horn sliver. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 46,
+      "name": "Old spearhead",
+      "description": "Old spearhead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 47,
+      "name": "Eggshell fragment",
+      "description": "Eggshell fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 48,
+      "name": "Raptor claw necklace",
+      "description": "Raptor claw necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 49,
+      "name": "Leather trophy journal",
+      "description": "Leather trophy journal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 50,
+      "name": "Gold tooth from corpse",
+      "description": "Gold tooth from corpse. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 51,
+      "name": "Dinosaur hide strap",
+      "description": "Dinosaur hide strap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 52,
+      "name": "Whistle carved from bone",
+      "description": "Whistle carved from bone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 53,
+      "name": "Ancient warning tablet",
+      "description": "Ancient warning tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 54,
+      "name": "Hunter's climbing hook",
+      "description": "Hunter's climbing hook. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 55,
+      "name": "Preserved meat bundle",
+      "description": "Preserved meat bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 56,
+      "name": "Amber resin lump",
+      "description": "Amber resin lump. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 57,
+      "name": "Painted skull charm",
+      "description": "Painted skull charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 58,
+      "name": "Iron bear trap parts",
+      "description": "Iron bear trap parts. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 59,
+      "name": "Fang-studded bracer",
+      "description": "Fang-studded bracer. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 60,
+      "name": "Map to hunter cache",
+      "description": "Map to hunter cache. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 61,
+      "name": "Massive dinosaur tooth",
+      "description": "Massive dinosaur tooth. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 62,
+      "name": "Hunter's trophy bead",
+      "description": "Hunter's trophy bead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 63,
+      "name": "Cracked spyglass",
+      "description": "Cracked spyglass. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 64,
+      "name": "Bone-field relic coin",
+      "description": "Bone-field relic coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 65,
+      "name": "Triceratops horn sliver",
+      "description": "Triceratops horn sliver. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 66,
+      "name": "Old spearhead",
+      "description": "Old spearhead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 67,
+      "name": "Eggshell fragment",
+      "description": "Eggshell fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 68,
+      "name": "Raptor claw necklace",
+      "description": "Raptor claw necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 69,
+      "name": "Leather trophy journal",
+      "description": "Leather trophy journal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 70,
+      "name": "Gold tooth from corpse",
+      "description": "Gold tooth from corpse. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 71,
+      "name": "Dinosaur hide strap",
+      "description": "Dinosaur hide strap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 72,
+      "name": "Whistle carved from bone",
+      "description": "Whistle carved from bone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 73,
+      "name": "Ancient warning tablet",
+      "description": "Ancient warning tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 74,
+      "name": "Hunter's climbing hook",
+      "description": "Hunter's climbing hook. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 75,
+      "name": "Preserved meat bundle",
+      "description": "Preserved meat bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 76,
+      "name": "Amber resin lump",
+      "description": "Amber resin lump. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 77,
+      "name": "Painted skull charm",
+      "description": "Painted skull charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 78,
+      "name": "Iron bear trap parts",
+      "description": "Iron bear trap parts. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 79,
+      "name": "Fang-studded bracer",
+      "description": "Fang-studded bracer. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 80,
+      "name": "Map to hunter cache",
+      "description": "Map to hunter cache. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 81,
+      "name": "Massive dinosaur tooth",
+      "description": "Massive dinosaur tooth. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 82,
+      "name": "Hunter's trophy bead",
+      "description": "Hunter's trophy bead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 83,
+      "name": "Cracked spyglass",
+      "description": "Cracked spyglass. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 84,
+      "name": "Bone-field relic coin",
+      "description": "Bone-field relic coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 85,
+      "name": "Triceratops horn sliver",
+      "description": "Triceratops horn sliver. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 86,
+      "name": "Old spearhead",
+      "description": "Old spearhead. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 87,
+      "name": "Eggshell fragment",
+      "description": "Eggshell fragment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 88,
+      "name": "Raptor claw necklace",
+      "description": "Raptor claw necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 89,
+      "name": "Leather trophy journal",
+      "description": "Leather trophy journal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 90,
+      "name": "Gold tooth from corpse",
+      "description": "Gold tooth from corpse. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 91,
+      "name": "Dinosaur hide strap",
+      "description": "Dinosaur hide strap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 92,
+      "name": "Whistle carved from bone",
+      "description": "Whistle carved from bone. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 93,
+      "name": "Ancient warning tablet",
+      "description": "Ancient warning tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 94,
+      "name": "Hunter's climbing hook",
+      "description": "Hunter's climbing hook. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 95,
+      "name": "Preserved meat bundle",
+      "description": "Preserved meat bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 96,
+      "name": "Amber resin lump",
+      "description": "Amber resin lump. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 97,
+      "name": "Painted skull charm",
+      "description": "Painted skull charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 98,
+      "name": "Iron bear trap parts",
+      "description": "Iron bear trap parts. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 99,
+      "name": "Fang-studded bracer",
+      "description": "Fang-studded bracer. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 100,
+      "name": "Map to hunter cache",
+      "description": "Map to hunter cache. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    }
+  ]
+}

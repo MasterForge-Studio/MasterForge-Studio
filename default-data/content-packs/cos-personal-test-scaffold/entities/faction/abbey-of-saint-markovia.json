@@ -1,0 +1,10 @@
+{
+  "id": "abbey-of-saint-markovia",
+  "entity_type": "faction",
+  "name": "Abbey of Saint Markovia",
+  "description": "Abbey household and inhabitants.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

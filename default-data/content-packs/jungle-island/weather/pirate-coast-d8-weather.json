@@ -1,0 +1,50 @@
+{
+  "id": "pirate-coast-d8-weather",
+  "name": "Pirate Coast d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "pirate-coast",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Salt mist",
+      "description": "Ships and caves hard to see."
+    },
+    {
+      "roll": 2,
+      "name": "Clear pirate weather",
+      "description": "Sails visible at distance."
+    },
+    {
+      "roll": 3,
+      "name": "Sudden squall",
+      "description": "Small boats risk capsizing."
+    },
+    {
+      "roll": 4,
+      "name": "Night fog",
+      "description": "Smugglers move safely."
+    },
+    {
+      "roll": 5,
+      "name": "Hot still water",
+      "description": "No wind; delays at sea."
+    },
+    {
+      "roll": 6,
+      "name": "Storm surge",
+      "description": "Coves and beaches dangerous."
+    },
+    {
+      "roll": 7,
+      "name": "Bright moon tide",
+      "description": "Night travel easier but visible."
+    },
+    {
+      "roll": 8,
+      "name": "Heavy rain curtain",
+      "description": "Gunfire and shouts muffled."
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "lydia-vallakovich",
+  "entity_type": "npc",
+  "name": "Lydia Vallakovich",
+  "description": "baron's wife. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vallaki-baronial-rule",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

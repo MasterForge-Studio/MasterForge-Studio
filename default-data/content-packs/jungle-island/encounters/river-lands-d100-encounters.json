@@ -1,0 +1,610 @@
+{
+  "id": "river-lands-d100-encounters",
+  "name": "River Lands d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "chult",
+  "regionId": "river-lands",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Boatman offers passage",
+      "description": "Boatman offers passage. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 2,
+      "name": "Crocodile attacks crossing",
+      "description": "Crocodile attacks crossing. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 3,
+      "name": "Rope bridge snaps",
+      "description": "Rope bridge snaps. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 4,
+      "name": "Pirate canoe pursuit",
+      "description": "Pirate canoe pursuit. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 5,
+      "name": "Waterfall hides shrine",
+      "description": "Waterfall hides shrine. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 6,
+      "name": "Floating corpse carries message",
+      "description": "Floating corpse carries message. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 7,
+      "name": "River mist hides ambush",
+      "description": "River mist hides ambush. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 8,
+      "name": "Pteranodons dive for fish",
+      "description": "Pteranodons dive for fish. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 9,
+      "name": "Trader canoe damaged",
+      "description": "Trader canoe damaged. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 10,
+      "name": "Flood surge rises",
+      "description": "Flood surge rises. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 11,
+      "name": "Undead boat drifts silently",
+      "description": "Undead boat drifts silently. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 12,
+      "name": "Giant frog leaps aboard",
+      "description": "Giant frog leaps aboard. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 13,
+      "name": "Hidden rocks tear canoe",
+      "description": "Hidden rocks tear canoe. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 14,
+      "name": "Emerald Enclave river sign",
+      "description": "Emerald Enclave river sign. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 15,
+      "name": "Yuan-ti watcher on bank",
+      "description": "Yuan-ti watcher on bank. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 16,
+      "name": "Ancient ferry stone",
+      "description": "Ancient ferry stone. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 17,
+      "name": "Fish swarm boils water",
+      "description": "Fish swarm boils water. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 18,
+      "name": "Allosaurus drinks nearby",
+      "description": "Allosaurus drinks nearby. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 19,
+      "name": "Smuggler boat wreck",
+      "description": "Smuggler boat wreck. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 20,
+      "name": "River spirit omen",
+      "description": "River spirit omen. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 21,
+      "name": "Boatman offers passage",
+      "description": "Boatman offers passage. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 22,
+      "name": "Crocodile attacks crossing",
+      "description": "Crocodile attacks crossing. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 23,
+      "name": "Rope bridge snaps",
+      "description": "Rope bridge snaps. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 24,
+      "name": "Pirate canoe pursuit",
+      "description": "Pirate canoe pursuit. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 25,
+      "name": "Waterfall hides shrine",
+      "description": "Waterfall hides shrine. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 26,
+      "name": "Floating corpse carries message",
+      "description": "Floating corpse carries message. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 27,
+      "name": "River mist hides ambush",
+      "description": "River mist hides ambush. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 28,
+      "name": "Pteranodons dive for fish",
+      "description": "Pteranodons dive for fish. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 29,
+      "name": "Trader canoe damaged",
+      "description": "Trader canoe damaged. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 30,
+      "name": "Flood surge rises",
+      "description": "Flood surge rises. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 31,
+      "name": "Undead boat drifts silently",
+      "description": "Undead boat drifts silently. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 32,
+      "name": "Giant frog leaps aboard",
+      "description": "Giant frog leaps aboard. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 33,
+      "name": "Hidden rocks tear canoe",
+      "description": "Hidden rocks tear canoe. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 34,
+      "name": "Emerald Enclave river sign",
+      "description": "Emerald Enclave river sign. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 35,
+      "name": "Yuan-ti watcher on bank",
+      "description": "Yuan-ti watcher on bank. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 36,
+      "name": "Ancient ferry stone",
+      "description": "Ancient ferry stone. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 37,
+      "name": "Fish swarm boils water",
+      "description": "Fish swarm boils water. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 38,
+      "name": "Allosaurus drinks nearby",
+      "description": "Allosaurus drinks nearby. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 39,
+      "name": "Smuggler boat wreck",
+      "description": "Smuggler boat wreck. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 40,
+      "name": "River spirit omen",
+      "description": "River spirit omen. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 41,
+      "name": "Boatman offers passage",
+      "description": "Boatman offers passage. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 42,
+      "name": "Crocodile attacks crossing",
+      "description": "Crocodile attacks crossing. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 43,
+      "name": "Rope bridge snaps",
+      "description": "Rope bridge snaps. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 44,
+      "name": "Pirate canoe pursuit",
+      "description": "Pirate canoe pursuit. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 45,
+      "name": "Waterfall hides shrine",
+      "description": "Waterfall hides shrine. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 46,
+      "name": "Floating corpse carries message",
+      "description": "Floating corpse carries message. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 47,
+      "name": "River mist hides ambush",
+      "description": "River mist hides ambush. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 48,
+      "name": "Pteranodons dive for fish",
+      "description": "Pteranodons dive for fish. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 49,
+      "name": "Trader canoe damaged",
+      "description": "Trader canoe damaged. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 50,
+      "name": "Flood surge rises",
+      "description": "Flood surge rises. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 51,
+      "name": "Undead boat drifts silently",
+      "description": "Undead boat drifts silently. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 52,
+      "name": "Giant frog leaps aboard",
+      "description": "Giant frog leaps aboard. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 53,
+      "name": "Hidden rocks tear canoe",
+      "description": "Hidden rocks tear canoe. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 54,
+      "name": "Emerald Enclave river sign",
+      "description": "Emerald Enclave river sign. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 55,
+      "name": "Yuan-ti watcher on bank",
+      "description": "Yuan-ti watcher on bank. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 56,
+      "name": "Ancient ferry stone",
+      "description": "Ancient ferry stone. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 57,
+      "name": "Fish swarm boils water",
+      "description": "Fish swarm boils water. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 58,
+      "name": "Allosaurus drinks nearby",
+      "description": "Allosaurus drinks nearby. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 59,
+      "name": "Smuggler boat wreck",
+      "description": "Smuggler boat wreck. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 60,
+      "name": "River spirit omen",
+      "description": "River spirit omen. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 61,
+      "name": "Boatman offers passage",
+      "description": "Boatman offers passage. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 62,
+      "name": "Crocodile attacks crossing",
+      "description": "Crocodile attacks crossing. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 63,
+      "name": "Rope bridge snaps",
+      "description": "Rope bridge snaps. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 64,
+      "name": "Pirate canoe pursuit",
+      "description": "Pirate canoe pursuit. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 65,
+      "name": "Waterfall hides shrine",
+      "description": "Waterfall hides shrine. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 66,
+      "name": "Floating corpse carries message",
+      "description": "Floating corpse carries message. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 67,
+      "name": "River mist hides ambush",
+      "description": "River mist hides ambush. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 68,
+      "name": "Pteranodons dive for fish",
+      "description": "Pteranodons dive for fish. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 69,
+      "name": "Trader canoe damaged",
+      "description": "Trader canoe damaged. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 70,
+      "name": "Flood surge rises",
+      "description": "Flood surge rises. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 71,
+      "name": "Undead boat drifts silently",
+      "description": "Undead boat drifts silently. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 72,
+      "name": "Giant frog leaps aboard",
+      "description": "Giant frog leaps aboard. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 73,
+      "name": "Hidden rocks tear canoe",
+      "description": "Hidden rocks tear canoe. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 74,
+      "name": "Emerald Enclave river sign",
+      "description": "Emerald Enclave river sign. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 75,
+      "name": "Yuan-ti watcher on bank",
+      "description": "Yuan-ti watcher on bank. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 76,
+      "name": "Ancient ferry stone",
+      "description": "Ancient ferry stone. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 77,
+      "name": "Fish swarm boils water",
+      "description": "Fish swarm boils water. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 78,
+      "name": "Allosaurus drinks nearby",
+      "description": "Allosaurus drinks nearby. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 79,
+      "name": "Smuggler boat wreck",
+      "description": "Smuggler boat wreck. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 80,
+      "name": "River spirit omen",
+      "description": "River spirit omen. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 81,
+      "name": "Boatman offers passage",
+      "description": "Boatman offers passage. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 82,
+      "name": "Crocodile attacks crossing",
+      "description": "Crocodile attacks crossing. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 83,
+      "name": "Rope bridge snaps",
+      "description": "Rope bridge snaps. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 84,
+      "name": "Pirate canoe pursuit",
+      "description": "Pirate canoe pursuit. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 85,
+      "name": "Waterfall hides shrine",
+      "description": "Waterfall hides shrine. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 86,
+      "name": "Floating corpse carries message",
+      "description": "Floating corpse carries message. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 87,
+      "name": "River mist hides ambush",
+      "description": "River mist hides ambush. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 88,
+      "name": "Pteranodons dive for fish",
+      "description": "Pteranodons dive for fish. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 89,
+      "name": "Trader canoe damaged",
+      "description": "Trader canoe damaged. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 90,
+      "name": "Flood surge rises",
+      "description": "Flood surge rises. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 91,
+      "name": "Undead boat drifts silently",
+      "description": "Undead boat drifts silently. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 92,
+      "name": "Giant frog leaps aboard",
+      "description": "Giant frog leaps aboard. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 93,
+      "name": "Hidden rocks tear canoe",
+      "description": "Hidden rocks tear canoe. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 94,
+      "name": "Emerald Enclave river sign",
+      "description": "Emerald Enclave river sign. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 95,
+      "name": "Yuan-ti watcher on bank",
+      "description": "Yuan-ti watcher on bank. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 96,
+      "name": "Ancient ferry stone",
+      "description": "Ancient ferry stone. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 97,
+      "name": "Fish swarm boils water",
+      "description": "Fish swarm boils water. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 98,
+      "name": "Allosaurus drinks nearby",
+      "description": "Allosaurus drinks nearby. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 99,
+      "name": "Smuggler boat wreck",
+      "description": "Smuggler boat wreck. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 100,
+      "name": "River spirit omen",
+      "description": "River spirit omen. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    }
+  ]
+}

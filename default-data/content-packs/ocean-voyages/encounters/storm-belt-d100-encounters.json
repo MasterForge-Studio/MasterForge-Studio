@@ -1,0 +1,130 @@
+{
+  "id": "storm-belt-d100-encounters",
+  "name": "Storm Belt d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "trackless-sea",
+  "regionId": "storm-belt",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Rain wall ahead",
+      "description": "Rain wall ahead. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "6-10",
+      "name": "Crew secures rigging",
+      "description": "Crew secures rigging. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "11-15",
+      "name": "Loose cargo danger",
+      "description": "Loose cargo danger. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "16-20",
+      "name": "Lightning strikes sea",
+      "description": "Lightning strikes sea. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "21-25",
+      "name": "Broken spar risk",
+      "description": "Broken spar risk. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "26-30",
+      "name": "Sailor overboard scare",
+      "description": "Sailor overboard scare. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "31-35",
+      "name": "Storm-tossed wreckage",
+      "description": "Storm-tossed wreckage. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "36-40",
+      "name": "Sea monster glimpsed in lightning",
+      "description": "Sea monster glimpsed in lightning. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "41-45",
+      "name": "Compass spins",
+      "description": "Compass spins. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "46-50",
+      "name": "Storm spirit omen",
+      "description": "Storm spirit omen. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "51-55",
+      "name": "Mast strain",
+      "description": "Mast strain. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "56-60",
+      "name": "Flooded lower deck",
+      "description": "Flooded lower deck. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "61-65",
+      "name": "Cold wind cuts tropical air",
+      "description": "Cold wind cuts tropical air. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "66-70",
+      "name": "Panicked animals or cargo",
+      "description": "Panicked animals or cargo. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "71-75",
+      "name": "Ghost ship in storm",
+      "description": "Ghost ship in storm. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "76-80",
+      "name": "Pirate using storm cover",
+      "description": "Pirate using storm cover. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "81-85",
+      "name": "Huge rogue wave",
+      "description": "Huge rogue wave. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "86-90",
+      "name": "Dark shape rides wave",
+      "description": "Dark shape rides wave. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "91-95",
+      "name": "Eye of the storm calm",
+      "description": "Eye of the storm calm. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "96-100",
+      "name": "Voice speaks through thunder",
+      "description": "Voice speaks through thunder. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    }
+  ]
+}

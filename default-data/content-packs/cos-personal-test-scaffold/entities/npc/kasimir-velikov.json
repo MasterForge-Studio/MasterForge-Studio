@@ -1,0 +1,11 @@
+{
+  "id": "kasimir-velikov",
+  "entity_type": "npc",
+  "name": "Kasimir Velikov",
+  "description": "dusk elf survivor. Placeholder for personal verification.",
+  "data": {
+    "factionId": "dusk-elves",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "krezk-authority",
+  "name": "Krezk Authority",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Leadership and guards of Krezk.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

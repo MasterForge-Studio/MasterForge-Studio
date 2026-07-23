@@ -1,0 +1,14 @@
+{
+  "id": "father-donavich",
+  "name": "Father Donavich",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "village-of-barovia",
+  "factionId": "church-of-the-morninglord",
+  "role": "village priest",
+  "description": "Father Donavich: village priest. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

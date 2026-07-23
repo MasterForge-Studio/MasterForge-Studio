@@ -1,0 +1,47 @@
+{
+  "id": "open-sea-lanes-weather",
+  "name": "Open Sea Lanes Weather",
+  "locationId": "open-sea-lanes",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Clear conditions",
+      "description": "Good visibility around Open Sea Lanes; locals go about normal business."
+    },
+    {
+      "roll": "2",
+      "name": "Light wind",
+      "description": "A noticeable breeze carries smells, sounds and rumours through Open Sea Lanes."
+    },
+    {
+      "roll": "3",
+      "name": "Heavy cloud",
+      "description": "The sky presses low over Open Sea Lanes, making colours dull and tempers short."
+    },
+    {
+      "roll": "4",
+      "name": "Sudden rain or snow",
+      "description": "A quick change in weather disrupts travel and street life in Open Sea Lanes."
+    },
+    {
+      "roll": "5",
+      "name": "Difficult visibility",
+      "description": "Mist, glare, spray or blowing dust makes distance hard to judge near Open Sea Lanes."
+    },
+    {
+      "roll": "6",
+      "name": "Unsettled omen",
+      "description": "Animals, sailors or locals notice something odd in the air around Open Sea Lanes."
+    },
+    {
+      "roll": "7",
+      "name": "Harsh weather",
+      "description": "Travel around Open Sea Lanes becomes tiring; checks may be needed if the party pushes on."
+    },
+    {
+      "roll": "8",
+      "name": "Dangerous weather",
+      "description": "A storm, whiteout, heat surge or violent squall creates immediate complications at Open Sea Lanes."
+    }
+  ]
+}

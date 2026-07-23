@@ -1,0 +1,10 @@
+{
+  "id": "lake-zarovich",
+  "entity_type": "region",
+  "name": "Lake Zarovich",
+  "description": "A dark northern lake watched by mist and lonely roads.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

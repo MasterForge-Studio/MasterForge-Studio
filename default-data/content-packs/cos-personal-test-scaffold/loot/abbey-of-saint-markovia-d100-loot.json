@@ -1,0 +1,109 @@
+{
+  "id": "abbey-of-saint-markovia-loot",
+  "name": "Abbey Of Saint Markovia d100 Loot",
+  "regionId": "abbey-of-saint-markovia",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Tarnished holy symbol",
+      "description": "Small atmospheric find: tarnished holy symbol. Add specific value/lore if desired."
+    },
+    {
+      "roll": "6-10",
+      "name": "Wolf-bitten cloak",
+      "description": "Small atmospheric find: wolf-bitten cloak. Add specific value/lore if desired."
+    },
+    {
+      "roll": "11-15",
+      "name": "Cracked lantern",
+      "description": "Small atmospheric find: cracked lantern. Add specific value/lore if desired."
+    },
+    {
+      "roll": "16-20",
+      "name": "Old Barovian coin",
+      "description": "Small atmospheric find: old barovian coin. Add specific value/lore if desired."
+    },
+    {
+      "roll": "21-25",
+      "name": "Bundle of black feathers",
+      "description": "Small atmospheric find: bundle of black feathers. Add specific value/lore if desired."
+    },
+    {
+      "roll": "26-30",
+      "name": "Water-damaged letter",
+      "description": "Small atmospheric find: water-damaged letter. Add specific value/lore if desired."
+    },
+    {
+      "roll": "31-35",
+      "name": "Bottle of sour wine",
+      "description": "Small atmospheric find: bottle of sour wine. Add specific value/lore if desired."
+    },
+    {
+      "roll": "36-40",
+      "name": "Silvered trinket",
+      "description": "Small atmospheric find: silvered trinket. Add specific value/lore if desired."
+    },
+    {
+      "roll": "41-45",
+      "name": "Rusty key",
+      "description": "Small atmospheric find: rusty key. Add specific value/lore if desired."
+    },
+    {
+      "roll": "46-50",
+      "name": "Hand-drawn road sketch",
+      "description": "Small atmospheric find: hand-drawn road sketch. Add specific value/lore if desired."
+    },
+    {
+      "roll": "51-55",
+      "name": "Broken rosary",
+      "description": "Small atmospheric find: broken rosary. Add specific value/lore if desired."
+    },
+    {
+      "roll": "56-60",
+      "name": "Small carved raven",
+      "description": "Small atmospheric find: small carved raven. Add specific value/lore if desired."
+    },
+    {
+      "roll": "61-65",
+      "name": "Wax-sealed note",
+      "description": "Small atmospheric find: wax-sealed note. Add specific value/lore if desired."
+    },
+    {
+      "roll": "66-70",
+      "name": "Dried herbs",
+      "description": "Small atmospheric find: dried herbs. Add specific value/lore if desired."
+    },
+    {
+      "roll": "71-75",
+      "name": "Dull silver ring",
+      "description": "Small atmospheric find: dull silver ring. Add specific value/lore if desired."
+    },
+    {
+      "roll": "76-80",
+      "name": "Bloodstained scarf",
+      "description": "Small atmospheric find: bloodstained scarf. Add specific value/lore if desired."
+    },
+    {
+      "roll": "81-85",
+      "name": "Weathered journal page",
+      "description": "Small atmospheric find: weathered journal page. Add specific value/lore if desired."
+    },
+    {
+      "roll": "86-90",
+      "name": "Bone charm",
+      "description": "Small atmospheric find: bone charm. Add specific value/lore if desired."
+    },
+    {
+      "roll": "91-95",
+      "name": "Candle stub",
+      "description": "Small atmospheric find: candle stub. Add specific value/lore if desired."
+    },
+    {
+      "roll": "96-100",
+      "name": "Forgotten keepsake",
+      "description": "Small atmospheric find: forgotten keepsake. Add specific value/lore if desired."
+    }
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

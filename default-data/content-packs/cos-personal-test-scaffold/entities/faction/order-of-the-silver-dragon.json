@@ -1,0 +1,10 @@
+{
+  "id": "order-of-the-silver-dragon",
+  "entity_type": "faction",
+  "name": "Order of the Silver Dragon",
+  "description": "Fallen knights bound to unresolved duty.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

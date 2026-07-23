@@ -1,0 +1,207 @@
+[
+  {
+    "id": "dwarf-mcchicken",
+    "playerId": "gingernut",
+    "name": "Dwarf McChicken",
+    "species": "Dwarf",
+    "speciesOne": "Dwarf",
+    "speciesTwo": "Dwarf",
+    "isHybrid": false,
+    "class": "Cleric",
+    "subclass": "",
+    "level": 1,
+    "ac": 10,
+    "maxHP": 10,
+    "currentHP": 10,
+    "passivePerception": 10,
+    "passiveInvestigation": 10,
+    "passiveInsight": 10,
+    "status": "Alive",
+    "abilities": {
+      "str": 10,
+      "dex": 10,
+      "con": 10,
+      "int": 10,
+      "wis": 10,
+      "cha": 10
+    },
+    "skills": {
+      "perception": {
+        "proficient": false,
+        "expertise": false
+      },
+      "investigation": {
+        "proficient": false,
+        "expertise": false
+      },
+      "insight": {
+        "proficient": false,
+        "expertise": false
+      }
+    }
+  },
+  {
+    "id": "roderick-ruddy-redtail",
+    "playerId": "bigpappacdog",
+    "name": "Roderick \"Ruddy\" Redtail",
+    "species": "Legacy / Homebrew",
+    "speciesOne": "Legacy / Homebrew",
+    "speciesTwo": "Legacy / Homebrew",
+    "isHybrid": false,
+    "class": "Bard",
+    "subclass": "",
+    "level": 3,
+    "ac": 13,
+    "maxHP": 16,
+    "currentHP": 16,
+    "passivePerception": 16,
+    "passiveInvestigation": 11,
+    "passiveInsight": 12,
+    "status": "Alive",
+    "abilities": {
+      "str": 9,
+      "dex": 14,
+      "con": 13,
+      "int": 13,
+      "wis": 14,
+      "cha": 14
+    },
+    "skills": {
+      "perception": {
+        "proficient": false,
+        "expertise": false
+      },
+      "investigation": {
+        "proficient": false,
+        "expertise": false
+      },
+      "insight": {
+        "proficient": false,
+        "expertise": false
+      }
+    }
+  },
+  {
+    "id": "saturn-star",
+    "playerId": "saturnstar",
+    "name": "Saturn Star",
+    "species": "Elf",
+    "speciesOne": "Elf",
+    "speciesTwo": "Elf",
+    "isHybrid": false,
+    "class": "Wizard",
+    "subclass": "",
+    "level": 3,
+    "ac": 10,
+    "maxHP": 10,
+    "currentHP": 10,
+    "passivePerception": 14,
+    "passiveInvestigation": 15,
+    "passiveInsight": 12,
+    "status": "Alive",
+    "abilities": {
+      "str": 10,
+      "dex": 10,
+      "con": 10,
+      "int": 16,
+      "wis": 14,
+      "cha": 10
+    },
+    "skills": {
+      "perception": {
+        "proficient": true,
+        "expertise": false
+      },
+      "investigation": {
+        "proficient": true,
+        "expertise": false
+      },
+      "insight": {
+        "proficient": false,
+        "expertise": false
+      }
+    }
+  },
+  {
+    "id": "ween-the-wiz",
+    "playerId": "badladgamer",
+    "name": "Ween The Wiz",
+    "species": "Dwarf",
+    "speciesOne": "Dwarf",
+    "speciesTwo": "Dwarf",
+    "isHybrid": false,
+    "class": "Wizard",
+    "subclass": "",
+    "level": 3,
+    "ac": 12,
+    "maxHP": 25,
+    "currentHP": 25,
+    "passivePerception": 16,
+    "passiveInvestigation": 10,
+    "passiveInsight": 10,
+    "status": "Alive",
+    "abilities": {
+      "str": 13,
+      "dex": 14,
+      "con": 16,
+      "int": 19,
+      "wis": 15,
+      "cha": 14
+    },
+    "skills": {
+      "perception": {
+        "proficient": false,
+        "expertise": false
+      },
+      "investigation": {
+        "proficient": true,
+        "expertise": false
+      },
+      "insight": {
+        "proficient": false,
+        "expertise": false
+      }
+    }
+  },
+  {
+    "id": "max",
+    "playerId": "gingerboyjames",
+    "name": "Max",
+    "species": "Dragonborn",
+    "speciesOne": "Dragonborn",
+    "speciesTwo": "Dragonborn",
+    "isHybrid": false,
+    "class": "Fighter",
+    "subclass": "",
+    "level": 3,
+    "ac": 16,
+    "maxHP": 27,
+    "currentHP": 27,
+    "passivePerception": 13,
+    "passiveInvestigation": 10,
+    "passiveInsight": 10,
+    "status": "Alive",
+    "abilities": {
+      "str": 18,
+      "dex": 15,
+      "con": 15,
+      "int": 11,
+      "wis": 13,
+      "cha": 9
+    },
+    "skills": {
+      "perception": {
+        "proficient": false,
+        "expertise": false
+      },
+      "investigation": {
+        "proficient": false,
+        "expertise": false
+      },
+      "insight": {
+        "proficient": false,
+        "expertise": false
+      }
+    }
+  }
+]

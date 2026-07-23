@@ -1,0 +1,34 @@
+{
+  "id": "caer-callidyrr",
+  "name": "Caer Callidyrr",
+  "type": "location",
+  "regionId": "moonshae-isles",
+  "summary": "A royal island stronghold where courtly power, old bloodlines and druidic traditions meet beneath sea winds.",
+  "politics": [
+    "Kings, clans and druids negotiate authority through custom and power.",
+    "Outside influence is watched carefully."
+  ],
+  "culture": [
+    "Hospitality, honour, songs and old oaths carry weight.",
+    "The land and sea are treated as living powers."
+  ],
+  "factions": [
+    "Royal court",
+    "Druid circles",
+    "Island clans",
+    "Harbour captains"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/caer-callidyrr/background.webp"
+}

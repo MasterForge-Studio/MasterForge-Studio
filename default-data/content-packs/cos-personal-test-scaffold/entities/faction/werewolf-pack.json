@@ -1,0 +1,10 @@
+{
+  "id": "werewolf-pack",
+  "entity_type": "faction",
+  "name": "Werewolf Pack",
+  "description": "Predatory pack tied to the western wilderness.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

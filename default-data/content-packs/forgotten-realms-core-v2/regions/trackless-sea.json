@@ -1,0 +1,46 @@
+{
+  "id": "trackless-sea",
+  "name": "Trackless Sea",
+  "type": "region",
+  "worldId": "forgotten-realms",
+  "summary": "A vast tropical ocean of trade routes, pirate waters, monster-haunted depths, sudden storms and strange lights beneath the waves.",
+  "dmTone": [
+    "open water",
+    "creaking timber",
+    "distant thunder",
+    "loneliness",
+    "hidden reefs"
+  ],
+  "environment": [
+    "open water",
+    "creaking timber",
+    "distant thunder",
+    "loneliness",
+    "hidden reefs"
+  ],
+  "politics": [
+    "Trackless Sea is shaped by local powers, trade needs and old conflicts.",
+    "Adventurers can shift local balances quickly if they earn trust or fear."
+  ],
+  "culture": [
+    "People of Trackless Sea carry strong local customs and stories.",
+    "Rumour, reputation and practical help matter to most communities."
+  ],
+  "travelHazards": [
+    "Bad weather",
+    "Bandits or raiders",
+    "Difficult terrain",
+    "Old ruins and hidden magic"
+  ],
+  "rumours": [
+    "Something old has stirred somewhere in Trackless Sea.",
+    "A recent disappearance has locals worried.",
+    "A merchant is paying quietly for reliable blades."
+  ],
+  "dmSecrets": [
+    "A hidden faction is exploiting unrest in Trackless Sea.",
+    "An old site nearby is connected to a larger campaign mystery."
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/regions/trackless-sea/background.webp"
+}

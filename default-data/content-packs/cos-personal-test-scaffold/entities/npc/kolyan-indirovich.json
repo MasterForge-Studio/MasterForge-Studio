@@ -1,0 +1,11 @@
+{
+  "id": "kolyan-indirovich",
+  "entity_type": "npc",
+  "name": "Kolyan Indirovich",
+  "description": "late burgomaster. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

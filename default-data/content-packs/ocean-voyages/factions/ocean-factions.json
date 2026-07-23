@@ -1,0 +1,24 @@
+{
+  "id": "ocean-factions",
+  "name": "Ocean Factions",
+  "type": "faction-pack",
+  "locationId": "trackless-sea",
+  "factions": [
+    {
+      "name": "Free Captains",
+      "summary": "Independent captains who value profit, reputation and freedom."
+    },
+    {
+      "name": "Pirate Crews",
+      "summary": "Predatory crews using speed, fear and false flags."
+    },
+    {
+      "name": "Merchant Factors",
+      "summary": "Trade agents protecting cargo, contracts and shipping routes."
+    },
+    {
+      "name": "Sahuagin Raiders",
+      "summary": "Undersea raiders who strike from below and vanish into deep water."
+    }
+  ]
+}

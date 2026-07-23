@@ -1,0 +1,11 @@
+{
+  "id": "ernst-larnak",
+  "entity_type": "npc",
+  "name": "Ernst Larnak",
+  "description": "spy and agent. Placeholder for personal verification.",
+  "data": {
+    "factionId": "wachter-cult",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

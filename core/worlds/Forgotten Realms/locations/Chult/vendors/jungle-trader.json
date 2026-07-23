@@ -1,0 +1,42 @@
+{
+  "vendorTypes": [
+    "Wandering jungle trader",
+    "Chultan hunter",
+    "Shipwreck scavenger",
+    "Herbalist",
+    "Suspicious guide"
+  ],
+  "names": [
+    "Ekene Reedwalker",
+    "Jobali Taban",
+    "Akachi Riverborn",
+    "Nima Goldleaf",
+    "Sefu Blackwater"
+  ],
+  "personalities": [
+    "Friendly but always bargaining",
+    "Quiet and watchful",
+    "Talks too much when nervous",
+    "Suspicious of outsiders",
+    "Laughs loudly at danger"
+  ],
+  "secrets": [
+    "Knows of a ruined trail inland",
+    "Has seen Yuan-ti signs nearby",
+    "Once guided an expedition that vanished",
+    "Trades information to the Harpers",
+    "Is hiding from pirates"
+  ],
+  "stock": [
+    "Rope, 50 ft",
+    "Waterskin",
+    "Rain catcher",
+    "Insect repellent",
+    "Antitoxin",
+    "Potion of Healing",
+    "Fishing hooks",
+    "Machete",
+    "Climber's kit",
+    "Old Chultan map fragment"
+  ]
+}

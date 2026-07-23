@@ -1,0 +1,11 @@
+{
+  "id": "father-donavich",
+  "entity_type": "npc",
+  "name": "Father Donavich",
+  "description": "village priest. Placeholder for personal verification.",
+  "data": {
+    "factionId": "church-of-the-morninglord",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "gadof-blinsky",
+  "entity_type": "npc",
+  "name": "Gadof Blinsky",
+  "description": "toymaker. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

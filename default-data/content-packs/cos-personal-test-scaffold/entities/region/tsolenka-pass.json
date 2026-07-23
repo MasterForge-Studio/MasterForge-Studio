@@ -1,0 +1,10 @@
+{
+  "id": "tsolenka-pass",
+  "entity_type": "region",
+  "name": "Tsolenka Pass",
+  "description": "A dangerous mountain route of wind, stone and exposure.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

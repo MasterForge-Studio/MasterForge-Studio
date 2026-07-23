@@ -1,0 +1,11 @@
+{
+  "id": "dmitri-krezkov",
+  "entity_type": "npc",
+  "name": "Dmitri Krezkov",
+  "description": "burgomaster of Krezk. Placeholder for personal verification.",
+  "data": {
+    "factionId": "krezk-authority",
+    "regionId": "krezk"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,72 @@
+{
+  "id": "jungle-interior",
+  "locationId": "chult",
+  "name": "Jungle Interior",
+  "type": "region",
+  "environment": [
+    "Towering canopy",
+    "Vines as thick as ropes",
+    "Ruined stone undergrowth",
+    "Muddy game trails",
+    "Insects everywhere"
+  ],
+  "weather": [
+    "Steaming heat",
+    "Short violent rain",
+    "Still air before storms",
+    "Thunder hidden by canopy"
+  ],
+  "politics": [
+    "No single authority holds the jungle interior.",
+    "Guides, tribes, undead, monsters and hidden factions all claim small territories."
+  ],
+  "culture": [
+    "Stories are carried by guides and hunters rather than maps.",
+    "Leaving offerings at old stones is common among those who know better."
+  ],
+  "creatures": {
+    "common": [
+      "Flying snakes",
+      "Giant frogs",
+      "Hadrosaurs",
+      "Axe beaks",
+      "Velociraptors"
+    ],
+    "dangerous": [
+      "Assassin vines",
+      "Girallon",
+      "Allosaurus",
+      "Giant wasps",
+      "Undead patrols"
+    ],
+    "legendary": [
+      "Tyrannosaurus rex",
+      "Jungle spirit",
+      "Lost guardian of Ubtao"
+    ]
+  },
+  "humanoids": [
+    "Chultan hunters",
+    "Emerald Enclave scouts",
+    "Lost adventurers",
+    "Cannibal cult remnants",
+    "Grung hunters"
+  ],
+  "travelHazards": [
+    "Poison thorns",
+    "Disease-bearing insects",
+    "False trails",
+    "Rotten ground",
+    "Flash floods"
+  ],
+  "rumours": [
+    "The jungle moves paths when it wants people lost.",
+    "A singing ruin can be heard after rain.",
+    "A hunter saw a dead man walking with gold in his hands."
+  ],
+  "dmSecrets": [
+    "A hidden trail leads toward a larger ruin network.",
+    "The jungle reacts to bloodshed near sacred stones.",
+    "A recurring animal messenger may be more than natural."
+  ]
+}

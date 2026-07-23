@@ -1,0 +1,14 @@
+{
+  "id": "lydia-vallakovich",
+  "name": "Lydia Vallakovich",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "vallaki",
+  "factionId": "vallaki-baronial-rule",
+  "role": "baron's wife",
+  "description": "Lydia Vallakovich: baron's wife. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

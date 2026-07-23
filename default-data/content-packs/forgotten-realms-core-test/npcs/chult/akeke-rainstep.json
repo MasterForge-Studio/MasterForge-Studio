@@ -1,0 +1,17 @@
+{
+  "id": "akeke-rainstep",
+  "name": "Akeke Rainstep",
+  "type": "npc",
+  "entity_type": "npc",
+  "worldId": "forgotten-realms",
+  "regionId": "chult",
+  "locationId": "port-nyanzaru",
+  "role": "Guide and jungle scout",
+  "description": "A calm guide who reads the jungle like a map.",
+  "tags": [
+    "guide",
+    "jungle",
+    "practical"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

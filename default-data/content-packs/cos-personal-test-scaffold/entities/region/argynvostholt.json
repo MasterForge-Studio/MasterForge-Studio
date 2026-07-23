@@ -1,0 +1,10 @@
+{
+  "id": "argynvostholt",
+  "entity_type": "region",
+  "name": "Argynvostholt",
+  "description": "A ruined manor of fallen knights and lingering duty.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

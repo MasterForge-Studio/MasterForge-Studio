@@ -1,0 +1,39 @@
+{
+  "id": "chult",
+  "worldId": "forgotten-realms",
+  "name": "Chult",
+  "type": "location",
+  "defaultThemeId": "lost-jungle-isle",
+  "climate": "Tropical jungle",
+  "summary": "A hot, ancient jungle peninsula of dinosaurs, ruins, poisonous plants, undead, hidden gods, merchant wealth and old magic.",
+  "politics": [
+    "Port Nyanzaru is dominated by merchant princes and wealthy interests.",
+    "Remote jungle regions are controlled by survival, tribal knowledge, monsters, undead and whoever can hold territory.",
+    "Foreign powers such as the Flaming Fist exploit charters, supplies and military pressure."
+  ],
+  "culture": [
+    "Guides, hunters, traders and explorers are common near settlements.",
+    "Jungle travel is dangerous and often requires local knowledge.",
+    "Dinosaurs are beasts of burden, racing animals, predators and living symbols of Chult.",
+    "Ancient ruins are treated with caution, fear, reverence or greed depending on who is speaking."
+  ],
+  "factions": [
+    "Merchant Princes",
+    "Emerald Enclave",
+    "Flaming Fist",
+    "Harpers",
+    "Ytepka Society",
+    "Pirates",
+    "Yuan-ti",
+    "Order of the Gauntlet"
+  ],
+  "dmTone": [
+    "Heat",
+    "Humidity",
+    "Ancient ruins",
+    "Constant jungle noise",
+    "Predators nearby",
+    "Civilisation feels fragile",
+    "Beauty hiding lethal danger"
+  ]
+}

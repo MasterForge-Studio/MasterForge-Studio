@@ -1,0 +1,11 @@
+{
+  "id": "muriel-vinshaw",
+  "entity_type": "npc",
+  "name": "Muriel Vinshaw",
+  "description": "watchful ally. Placeholder for personal verification.",
+  "data": {
+    "factionId": "keepers-of-the-feather",
+    "regionId": "svalich-woods"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

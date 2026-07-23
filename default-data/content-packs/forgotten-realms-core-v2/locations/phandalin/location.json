@@ -1,0 +1,35 @@
+{
+  "id": "phandalin",
+  "name": "Phandalin",
+  "type": "location",
+  "regionId": "sword-coast",
+  "summary": "A frontier mining town where wagon trails, prospectors, old ruins and local tensions make even small troubles feel dangerous.",
+  "politics": [
+    "Townmasters, miners, farmers and outside interests all pull in different directions.",
+    "Local law is thin and often depends on who is brave enough to act."
+  ],
+  "culture": [
+    "Practical frontier folk value work, trade and reputation.",
+    "News travels quickly through the inn, provisioner and miners’ exchange."
+  ],
+  "factions": [
+    "Town council",
+    "Miners’ Exchange",
+    "Local farmers",
+    "Zhentarim interests",
+    "Adventuring companies"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/phandalin/background.webp"
+}

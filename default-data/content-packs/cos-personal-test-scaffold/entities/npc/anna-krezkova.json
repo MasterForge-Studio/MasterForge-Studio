@@ -1,0 +1,11 @@
+{
+  "id": "anna-krezkova",
+  "entity_type": "npc",
+  "name": "Anna Krezkova",
+  "description": "Krezk leader's wife. Placeholder for personal verification.",
+  "data": {
+    "factionId": "krezk-authority",
+    "regionId": "krezk"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

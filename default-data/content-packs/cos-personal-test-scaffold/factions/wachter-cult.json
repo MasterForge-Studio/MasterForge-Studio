@@ -1,0 +1,14 @@
+{
+  "id": "wachter-cult",
+  "name": "Wachter Cult",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Noble-led faction opposed to the current Vallaki order.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

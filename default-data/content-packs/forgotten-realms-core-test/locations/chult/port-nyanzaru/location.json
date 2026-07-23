@@ -1,0 +1,26 @@
+{
+  "id": "port-nyanzaru",
+  "worldId": "forgotten-realms",
+  "regionId": "chult",
+  "name": "Port Nyanzaru",
+  "type": "location",
+  "themeId": "lost-jungle-isle",
+  "defaultThemeId": "lost-jungle-isle",
+  "background": "scenes/locations/port-nyanzaru/background.webp",
+  "summary": "A bright tropical port city of markets, guides, dinosaurs, harbour walls and jungle rumours.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

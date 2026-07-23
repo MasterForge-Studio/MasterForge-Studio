@@ -1,0 +1,11 @@
+{
+  "id": "yeska",
+  "entity_type": "npc",
+  "name": "Yeska",
+  "description": "altar boy. Placeholder for personal verification.",
+  "data": {
+    "factionId": "church-of-the-morninglord",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,17 @@
+{
+  "id": "moonshae-isles",
+  "worldId": "forgotten-realms",
+  "name": "Moonshae Isles",
+  "type": "region",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/regions/moonshae-isles/background.webp",
+  "summary": "Misty islands of old stone circles, sea crossings, fey legends and coastal strongholds.",
+  "dmTone": [
+    "Exploration",
+    "Regional politics",
+    "Local dangers",
+    "Travel choices"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

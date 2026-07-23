@@ -1,0 +1,10 @@
+{
+  "id": "krezk",
+  "entity_type": "region",
+  "name": "Krezk",
+  "description": "A guarded mountain settlement clinging to faith and survival.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

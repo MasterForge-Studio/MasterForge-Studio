@@ -1,0 +1,50 @@
+{
+  "id": "river-lands-d8-weather",
+  "name": "River Lands d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "river-lands",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Morning river mist",
+      "description": "Navigation by landmarks harder."
+    },
+    {
+      "roll": 2,
+      "name": "Bright glare",
+      "description": "Looking upstream/downstream is difficult."
+    },
+    {
+      "roll": 3,
+      "name": "Heavy upriver rain",
+      "description": "Current strengthens after delay."
+    },
+    {
+      "roll": 4,
+      "name": "Calm water",
+      "description": "Travel smooth but ambushes easier."
+    },
+    {
+      "roll": 5,
+      "name": "Thunder valley echo",
+      "description": "Sound-based detection unreliable."
+    },
+    {
+      "roll": 6,
+      "name": "Sudden squall",
+      "description": "Boat handling checks required."
+    },
+    {
+      "roll": 7,
+      "name": "Warm drizzle",
+      "description": "Tracks on banks preserved."
+    },
+    {
+      "roll": 8,
+      "name": "Flood pulse",
+      "description": "Crossings become dangerous."
+    }
+  ]
+}

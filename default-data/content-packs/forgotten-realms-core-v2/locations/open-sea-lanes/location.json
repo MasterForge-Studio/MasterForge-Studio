@@ -1,0 +1,34 @@
+{
+  "id": "open-sea-lanes",
+  "name": "Open Sea Lanes",
+  "type": "location",
+  "regionId": "trackless-sea",
+  "summary": "Long trade routes across open water where weather, discipline, pirates and strange omens decide who reaches port.",
+  "politics": [
+    "Captains rule aboard ship, but cargo owners, naval patrols and pirates influence every route.",
+    "Law weakens with every league from land."
+  ],
+  "culture": [
+    "Sailors live by routine, superstition and hard-earned trust.",
+    "Stories are traded almost as often as coin."
+  ],
+  "factions": [
+    "Merchant captains",
+    "Pirates",
+    "Naval patrols",
+    "Sahuagin raiders"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/open-sea-lanes/background.webp"
+}

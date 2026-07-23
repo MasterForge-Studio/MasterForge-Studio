@@ -1,0 +1,26 @@
+{
+  "id": "neverwinter",
+  "worldId": "forgotten-realms",
+  "regionId": "sword-coast",
+  "name": "Neverwinter",
+  "type": "location",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/locations/neverwinter/background.webp",
+  "summary": "A rebuilt northern city of stone walls, warm lights, craftsmen, nobles and hidden intrigue.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

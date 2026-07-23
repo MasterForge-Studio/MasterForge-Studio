@@ -1,0 +1,47 @@
+{
+  "id": "baldurs-gate-encounters",
+  "name": "Baldur’s Gate Encounters",
+  "locationId": "baldurs-gate",
+  "entries": [
+    {
+      "roll": "1-10",
+      "name": "Local rumour in Baldur’s Gate",
+      "description": "A nervous local offers a warning, a lie, or a useful lead."
+    },
+    {
+      "roll": "11-25",
+      "name": "Suspicious watcher",
+      "description": "Someone observes the party from a distance in Baldur’s Gate."
+    },
+    {
+      "roll": "26-40",
+      "name": "Travel complication",
+      "description": "A blocked route, damaged bridge, crowd, patrol or difficult ground slows progress."
+    },
+    {
+      "roll": "41-55",
+      "name": "Faction contact",
+      "description": "A faction tied to Baldur’s Gate approaches with an offer or demand."
+    },
+    {
+      "roll": "56-70",
+      "name": "Hostile scouts",
+      "description": "Bandits, beasts, cultists, pirates or local enemies test the party from cover."
+    },
+    {
+      "roll": "71-85",
+      "name": "Environmental hazard",
+      "description": "The land, weather or city layout of Baldur’s Gate creates danger."
+    },
+    {
+      "roll": "86-95",
+      "name": "Hidden opportunity",
+      "description": "A clue, cache, secret door, overheard plan or old marker appears."
+    },
+    {
+      "roll": "96-100",
+      "name": "Signature threat of Baldur’s Gate",
+      "description": "A major local danger appears or leaves fresh evidence nearby."
+    }
+  ]
+}

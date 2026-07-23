@@ -1,0 +1,107 @@
+[
+  {
+    "roll": 1,
+    "name": "Washed Ashore Supplies",
+    "type": "Discovery",
+    "difficulty": "Easy",
+    "creatures": [],
+    "environment": "Shipwreck beach",
+    "readAloud": "Among the broken timber and seaweed, something useful catches your eye.",
+    "checks": [
+      {
+        "skill": "Investigation",
+        "dc": 10,
+        "success": "Finds a sealed crate of basic supplies."
+      }
+    ],
+    "notes": "Useful early survival reward. Add rope, rations, waterskin or basic tools."
+  },
+  {
+    "roll": 2,
+    "name": "Giant Crab Scavengers",
+    "type": "Combat",
+    "difficulty": "Easy",
+    "creatures": [
+      {
+        "name": "Giant Crab",
+        "amount": 3
+      }
+    ],
+    "environment": "Rock pools and wreckage",
+    "readAloud": "The wreckage shifts. Something hard and many-legged scrapes across the stones.",
+    "checks": [
+      {
+        "skill": "Perception",
+        "dc": 12,
+        "success": "Notices the crabs before they close in."
+      }
+    ],
+    "notes": "Good low-risk first combat."
+  },
+  {
+    "roll": 3,
+    "name": "Carnivorous Vines",
+    "type": "Hazard",
+    "difficulty": "Medium",
+    "creatures": [
+      {
+        "name": "Grasping Vines",
+        "amount": 1
+      }
+    ],
+    "environment": "Jungle edge",
+    "readAloud": "The jungle ahead is still. Too still. Thick vines hang between the trees like ropes.",
+    "checks": [
+      {
+        "skill": "Perception",
+        "dc": 15,
+        "success": "Spots the vines moving against the breeze."
+      }
+    ],
+    "notes": "Use as restraint hazard. Fire scares the vines back."
+  },
+  {
+    "roll": 4,
+    "name": "Velociraptor Stalkers",
+    "type": "Combat",
+    "difficulty": "Medium",
+    "creatures": [
+      {
+        "name": "Velociraptor",
+        "amount": 4
+      }
+    ],
+    "environment": "Dense coastal jungle",
+    "readAloud": "The birdsong cuts off all at once. Somewhere in the green, claws click softly against stone.",
+    "checks": [
+      {
+        "skill": "Perception",
+        "dc": 14,
+        "success": "Notices movement circling through the undergrowth."
+      }
+    ],
+    "notes": "Teach pack tactics. They test the party before committing."
+  },
+  {
+    "roll": 5,
+    "name": "Distant Apex Roar",
+    "type": "Warning",
+    "difficulty": "Hard",
+    "creatures": [
+      {
+        "name": "Tyrannosaurus Rex",
+        "amount": 1
+      }
+    ],
+    "environment": "Mistcliff jungle",
+    "readAloud": "A roar rolls across the jungle, so deep you feel it in your ribs. Birds explode from the canopy.",
+    "checks": [
+      {
+        "skill": "Survival",
+        "dc": 13,
+        "success": "Realises the sound came from something enormous, but not close yet."
+      }
+    ],
+    "notes": "Do not force combat at level 3. Use as pressure and direction control."
+  }
+]

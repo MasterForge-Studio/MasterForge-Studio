@@ -1,0 +1,50 @@
+{
+  "id": "mistcliff-coast-d8-weather",
+  "name": "Mistcliff Coast d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "mistcliff-coast",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Rolling sea mist",
+      "description": "Visibility reduced along cliffs and beaches."
+    },
+    {
+      "roll": 2,
+      "name": "Warm heavy rain",
+      "description": "Tracks wash away; sound is muffled."
+    },
+    {
+      "roll": 3,
+      "name": "Sudden tropical storm",
+      "description": "Travel slows; cliffs become dangerous."
+    },
+    {
+      "roll": 4,
+      "name": "Oppressive humidity",
+      "description": "Long marches risk exhaustion."
+    },
+    {
+      "roll": 5,
+      "name": "Clear glaring sun",
+      "description": "Spotting distant ships or birds easier."
+    },
+    {
+      "roll": 6,
+      "name": "Strong coastal wind",
+      "description": "Ranged attacks and flying creatures affected."
+    },
+    {
+      "roll": 7,
+      "name": "Night fog lingers",
+      "description": "Ambush chances increase."
+    },
+    {
+      "roll": 8,
+      "name": "Thunderheads inland",
+      "description": "Storm likely if party moves toward jungle."
+    }
+  ]
+}

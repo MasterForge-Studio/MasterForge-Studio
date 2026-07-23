@@ -1,0 +1,48 @@
+{
+  "id": "chult-jungle-trader",
+  "name": "Chult Jungle Trader",
+  "type": "vendor-table",
+  "locationId": "chult",
+  "names": [
+    "Ekene Reedwalker",
+    "Jobali Taban",
+    "Akachi Riverborn",
+    "Nala of the Green Road",
+    "Sefu Coppermask"
+  ],
+  "vendorTypes": [
+    "Wandering jungle trader",
+    "Chultan hunter",
+    "Shipwreck scavenger",
+    "River canoe trader",
+    "Market supply agent"
+  ],
+  "personalities": [
+    "Friendly but always bargaining",
+    "Quiet and watchful",
+    "Loud and suspicious",
+    "Helpful if respected",
+    "Secretive and superstitious"
+  ],
+  "secrets": [
+    "Knows of a ruined trail inland",
+    "Has seen yuan-ti signs",
+    "Is hiding from pirates",
+    "Carries a cursed idol unknowingly",
+    "Works as a faction informant"
+  ],
+  "stock": [
+    "Rope, 50 ft",
+    "Waterskin",
+    "Rain catcher",
+    "Insect repellent salve",
+    "Antitoxin",
+    "Machete",
+    "Fishing line",
+    "Herbal poultice",
+    "Dried fruit",
+    "Torch bundle",
+    "Canvas tarp",
+    "Chultan map scrap"
+  ]
+}

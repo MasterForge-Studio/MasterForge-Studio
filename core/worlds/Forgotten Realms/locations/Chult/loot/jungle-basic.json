@@ -1,0 +1,37 @@
+[
+  {
+    "roll": 1,
+    "name": "Salt-stained pouch",
+    "type": "Coins",
+    "value": "14 sp, 6 gp",
+    "notes": "Recovered from wreckage or an old explorer pack."
+  },
+  {
+    "roll": 2,
+    "name": "Potion of Healing",
+    "type": "Consumable",
+    "value": "Common magic item",
+    "notes": "A useful early survival reward."
+  },
+  {
+    "roll": 3,
+    "name": "Dinosaur tooth necklace",
+    "type": "Trinket",
+    "value": "15 gp",
+    "notes": "May interest Chultan hunters or traders."
+  },
+  {
+    "roll": 4,
+    "name": "Old explorer journal page",
+    "type": "Clue",
+    "value": "Story item",
+    "notes": "Mentions ruins hidden beyond the cliffs."
+  },
+  {
+    "roll": 5,
+    "name": "Sealed supply tin",
+    "type": "Survival",
+    "value": "Useful gear",
+    "notes": "Contains dry tinder, fishing hooks and needle/thread."
+  }
+]

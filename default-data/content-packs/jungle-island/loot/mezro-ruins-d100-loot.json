@@ -1,0 +1,610 @@
+{
+  "id": "mezro-ruins-d100-loot",
+  "name": "Mezro Ruins d100 Loot",
+  "type": "loot-table",
+  "locationId": "chult",
+  "regionId": "mezro-ruins",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Sacred mosaic tile",
+      "description": "Sacred mosaic tile. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 2,
+      "name": "Ancient bronze coin",
+      "description": "Ancient bronze coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 3,
+      "name": "Prayer bead of Ubtao",
+      "description": "Prayer bead of Ubtao. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 4,
+      "name": "Weathered scholar note",
+      "description": "Weathered scholar note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 5,
+      "name": "Silver-inlaid stone key",
+      "description": "Silver-inlaid stone key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 6,
+      "name": "Spirit feather token",
+      "description": "Spirit feather token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 7,
+      "name": "Old ceremonial dagger",
+      "description": "Old ceremonial dagger. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 8,
+      "name": "Gold-threaded cloth scrap",
+      "description": "Gold-threaded cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 9,
+      "name": "Carved maze tablet",
+      "description": "Carved maze tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 10,
+      "name": "Crystal lens",
+      "description": "Crystal lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 11,
+      "name": "Untarnished temple cup",
+      "description": "Untarnished temple cup. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 12,
+      "name": "Broken statue eye gem",
+      "description": "Broken statue eye gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 13,
+      "name": "Harpers coded message",
+      "description": "Harpers coded message. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 14,
+      "name": "Sacred pool water vial",
+      "description": "Sacred pool water vial. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 15,
+      "name": "Ancient city seal",
+      "description": "Ancient city seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 16,
+      "name": "Blue enamel brooch",
+      "description": "Blue enamel brooch. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 17,
+      "name": "Prayer flag bundle",
+      "description": "Prayer flag bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 18,
+      "name": "Stone door token",
+      "description": "Stone door token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 19,
+      "name": "Small jade frog",
+      "description": "Small jade frog. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 20,
+      "name": "Vision-marked parchment",
+      "description": "Vision-marked parchment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 21,
+      "name": "Sacred mosaic tile",
+      "description": "Sacred mosaic tile. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 22,
+      "name": "Ancient bronze coin",
+      "description": "Ancient bronze coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 23,
+      "name": "Prayer bead of Ubtao",
+      "description": "Prayer bead of Ubtao. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 24,
+      "name": "Weathered scholar note",
+      "description": "Weathered scholar note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 25,
+      "name": "Silver-inlaid stone key",
+      "description": "Silver-inlaid stone key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 26,
+      "name": "Spirit feather token",
+      "description": "Spirit feather token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 27,
+      "name": "Old ceremonial dagger",
+      "description": "Old ceremonial dagger. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 28,
+      "name": "Gold-threaded cloth scrap",
+      "description": "Gold-threaded cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 29,
+      "name": "Carved maze tablet",
+      "description": "Carved maze tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 30,
+      "name": "Crystal lens",
+      "description": "Crystal lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 31,
+      "name": "Untarnished temple cup",
+      "description": "Untarnished temple cup. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 32,
+      "name": "Broken statue eye gem",
+      "description": "Broken statue eye gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 33,
+      "name": "Harpers coded message",
+      "description": "Harpers coded message. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 34,
+      "name": "Sacred pool water vial",
+      "description": "Sacred pool water vial. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 35,
+      "name": "Ancient city seal",
+      "description": "Ancient city seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 36,
+      "name": "Blue enamel brooch",
+      "description": "Blue enamel brooch. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 37,
+      "name": "Prayer flag bundle",
+      "description": "Prayer flag bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 38,
+      "name": "Stone door token",
+      "description": "Stone door token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 39,
+      "name": "Small jade frog",
+      "description": "Small jade frog. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 40,
+      "name": "Vision-marked parchment",
+      "description": "Vision-marked parchment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 41,
+      "name": "Sacred mosaic tile",
+      "description": "Sacred mosaic tile. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 42,
+      "name": "Ancient bronze coin",
+      "description": "Ancient bronze coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 43,
+      "name": "Prayer bead of Ubtao",
+      "description": "Prayer bead of Ubtao. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 44,
+      "name": "Weathered scholar note",
+      "description": "Weathered scholar note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 45,
+      "name": "Silver-inlaid stone key",
+      "description": "Silver-inlaid stone key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 46,
+      "name": "Spirit feather token",
+      "description": "Spirit feather token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 47,
+      "name": "Old ceremonial dagger",
+      "description": "Old ceremonial dagger. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 48,
+      "name": "Gold-threaded cloth scrap",
+      "description": "Gold-threaded cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 49,
+      "name": "Carved maze tablet",
+      "description": "Carved maze tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 50,
+      "name": "Crystal lens",
+      "description": "Crystal lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 51,
+      "name": "Untarnished temple cup",
+      "description": "Untarnished temple cup. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 52,
+      "name": "Broken statue eye gem",
+      "description": "Broken statue eye gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 53,
+      "name": "Harpers coded message",
+      "description": "Harpers coded message. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 54,
+      "name": "Sacred pool water vial",
+      "description": "Sacred pool water vial. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 55,
+      "name": "Ancient city seal",
+      "description": "Ancient city seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 56,
+      "name": "Blue enamel brooch",
+      "description": "Blue enamel brooch. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 57,
+      "name": "Prayer flag bundle",
+      "description": "Prayer flag bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 58,
+      "name": "Stone door token",
+      "description": "Stone door token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 59,
+      "name": "Small jade frog",
+      "description": "Small jade frog. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 60,
+      "name": "Vision-marked parchment",
+      "description": "Vision-marked parchment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 61,
+      "name": "Sacred mosaic tile",
+      "description": "Sacred mosaic tile. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 62,
+      "name": "Ancient bronze coin",
+      "description": "Ancient bronze coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 63,
+      "name": "Prayer bead of Ubtao",
+      "description": "Prayer bead of Ubtao. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 64,
+      "name": "Weathered scholar note",
+      "description": "Weathered scholar note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 65,
+      "name": "Silver-inlaid stone key",
+      "description": "Silver-inlaid stone key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 66,
+      "name": "Spirit feather token",
+      "description": "Spirit feather token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 67,
+      "name": "Old ceremonial dagger",
+      "description": "Old ceremonial dagger. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 68,
+      "name": "Gold-threaded cloth scrap",
+      "description": "Gold-threaded cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 69,
+      "name": "Carved maze tablet",
+      "description": "Carved maze tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 70,
+      "name": "Crystal lens",
+      "description": "Crystal lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 71,
+      "name": "Untarnished temple cup",
+      "description": "Untarnished temple cup. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 72,
+      "name": "Broken statue eye gem",
+      "description": "Broken statue eye gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 73,
+      "name": "Harpers coded message",
+      "description": "Harpers coded message. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 74,
+      "name": "Sacred pool water vial",
+      "description": "Sacred pool water vial. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 75,
+      "name": "Ancient city seal",
+      "description": "Ancient city seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 76,
+      "name": "Blue enamel brooch",
+      "description": "Blue enamel brooch. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 77,
+      "name": "Prayer flag bundle",
+      "description": "Prayer flag bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 78,
+      "name": "Stone door token",
+      "description": "Stone door token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 79,
+      "name": "Small jade frog",
+      "description": "Small jade frog. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 80,
+      "name": "Vision-marked parchment",
+      "description": "Vision-marked parchment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 81,
+      "name": "Sacred mosaic tile",
+      "description": "Sacred mosaic tile. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 82,
+      "name": "Ancient bronze coin",
+      "description": "Ancient bronze coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 83,
+      "name": "Prayer bead of Ubtao",
+      "description": "Prayer bead of Ubtao. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 84,
+      "name": "Weathered scholar note",
+      "description": "Weathered scholar note. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 85,
+      "name": "Silver-inlaid stone key",
+      "description": "Silver-inlaid stone key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 86,
+      "name": "Spirit feather token",
+      "description": "Spirit feather token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 87,
+      "name": "Old ceremonial dagger",
+      "description": "Old ceremonial dagger. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 88,
+      "name": "Gold-threaded cloth scrap",
+      "description": "Gold-threaded cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 89,
+      "name": "Carved maze tablet",
+      "description": "Carved maze tablet. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 90,
+      "name": "Crystal lens",
+      "description": "Crystal lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 91,
+      "name": "Untarnished temple cup",
+      "description": "Untarnished temple cup. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 92,
+      "name": "Broken statue eye gem",
+      "description": "Broken statue eye gem. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 93,
+      "name": "Harpers coded message",
+      "description": "Harpers coded message. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 94,
+      "name": "Sacred pool water vial",
+      "description": "Sacred pool water vial. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 95,
+      "name": "Ancient city seal",
+      "description": "Ancient city seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 96,
+      "name": "Blue enamel brooch",
+      "description": "Blue enamel brooch. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 97,
+      "name": "Prayer flag bundle",
+      "description": "Prayer flag bundle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 98,
+      "name": "Stone door token",
+      "description": "Stone door token. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 99,
+      "name": "Small jade frog",
+      "description": "Small jade frog. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 100,
+      "name": "Vision-marked parchment",
+      "description": "Vision-marked parchment. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    }
+  ]
+}

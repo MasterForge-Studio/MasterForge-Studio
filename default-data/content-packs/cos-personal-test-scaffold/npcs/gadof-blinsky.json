@@ -1,0 +1,14 @@
+{
+  "id": "gadof-blinsky",
+  "name": "Gadof Blinsky",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "vallaki",
+  "factionId": "barovian-commoners",
+  "role": "toymaker",
+  "description": "Gadof Blinsky: toymaker. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

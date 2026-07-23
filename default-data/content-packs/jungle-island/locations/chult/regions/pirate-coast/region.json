@@ -1,0 +1,72 @@
+{
+  "id": "pirate-coast",
+  "locationId": "chult",
+  "name": "Pirate Coast",
+  "type": "region",
+  "environment": [
+    "Hidden coves",
+    "Sea caves",
+    "Mangrove inlets",
+    "Wreck-strewn beaches",
+    "Lookout cliffs"
+  ],
+  "weather": [
+    "Salt mist",
+    "Sudden squalls",
+    "Hot clear days",
+    "Night fog over black water"
+  ],
+  "politics": [
+    "Pirate crews, smugglers and informants control practical power.",
+    "Alliances shift quickly when gold appears."
+  ],
+  "culture": [
+    "Trust is measured in coin, threats and shared danger.",
+    "Ship names carry reputations stronger than flags."
+  ],
+  "creatures": {
+    "common": [
+      "Giant crabs",
+      "Sea birds",
+      "Flying snakes",
+      "Reef sharks",
+      "Lizards"
+    ],
+    "dangerous": [
+      "Pirate ambushes",
+      "Sea hags",
+      "Giant octopus",
+      "Undead sailors",
+      "Crocodiles"
+    ],
+    "legendary": [
+      "Ghost ship",
+      "Sea dragon rumour",
+      "Ancient drowned spirit"
+    ]
+  },
+  "humanoids": [
+    "Pirates",
+    "Smugglers",
+    "Castaways",
+    "Informants",
+    "Escaped prisoners"
+  ],
+  "travelHazards": [
+    "Reef cuts",
+    "Tides",
+    "Hidden lookouts",
+    "Trapped caches",
+    "Storm surge"
+  ],
+  "rumours": [
+    "A captain buried treasure under a singing stone.",
+    "A ghost lantern appears before raids.",
+    "One pirate crew is secretly working for serpent folk."
+  ],
+  "dmSecrets": [
+    "A pirate contact can become ally or enemy.",
+    "A cache contains a map fragment to the interior.",
+    "A wreck holds more than stolen goods."
+  ]
+}

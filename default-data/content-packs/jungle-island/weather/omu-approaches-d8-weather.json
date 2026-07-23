@@ -1,0 +1,50 @@
+{
+  "id": "omu-approaches-d8-weather",
+  "name": "Omu Approaches d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "omu-approaches",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Green fog",
+      "description": "Yuan-ti and ambushes harder to spot."
+    },
+    {
+      "roll": 2,
+      "name": "Thunder without rain",
+      "description": "Cursed atmosphere; morale pressure."
+    },
+    {
+      "roll": 3,
+      "name": "Heavy oppressive heat",
+      "description": "Exhaustion risk increases."
+    },
+    {
+      "roll": 4,
+      "name": "Sudden cold shade",
+      "description": "Unnatural omen."
+    },
+    {
+      "roll": 5,
+      "name": "Rain smelling of stone",
+      "description": "Hidden paths and carvings revealed."
+    },
+    {
+      "roll": 6,
+      "name": "Still serpent weather",
+      "description": "Snakes and yuan-ti more active."
+    },
+    {
+      "roll": 7,
+      "name": "Black clouds gather",
+      "description": "Travel choices feel urgent."
+    },
+    {
+      "roll": 8,
+      "name": "Clear forbidden view",
+      "description": "Distant ruins glimpsed briefly."
+    }
+  ]
+}

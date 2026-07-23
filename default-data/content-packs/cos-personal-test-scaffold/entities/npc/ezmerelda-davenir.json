@@ -1,0 +1,11 @@
+{
+  "id": "ezmerelda-davenir",
+  "entity_type": "npc",
+  "name": "Ezmerelda d'Avenir",
+  "description": "monster hunter. Placeholder for personal verification.",
+  "data": {
+    "factionId": "monster-hunters",
+    "regionId": "van-richtens-tower"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

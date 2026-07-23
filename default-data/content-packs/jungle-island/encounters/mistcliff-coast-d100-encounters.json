@@ -1,0 +1,610 @@
+{
+  "id": "mistcliff-coast-d100-encounters",
+  "name": "Mistcliff Coast d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "chult",
+  "regionId": "mistcliff-coast",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Shipwreck survivor signal",
+      "description": "Shipwreck survivor signal. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 2,
+      "name": "Pteranodon shadows overhead",
+      "description": "Pteranodon shadows overhead. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 3,
+      "name": "Giant crabs in wreckage",
+      "description": "Giant crabs in wreckage. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 4,
+      "name": "Cliff path collapse",
+      "description": "Cliff path collapse. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 5,
+      "name": "Pirate scouts in the mist",
+      "description": "Pirate scouts in the mist. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 6,
+      "name": "Ancient stone exposed by tide",
+      "description": "Ancient stone exposed by tide. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 7,
+      "name": "Flying snakes nesting in sailcloth",
+      "description": "Flying snakes nesting in sailcloth. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 8,
+      "name": "Crocodile at freshwater stream",
+      "description": "Crocodile at freshwater stream. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 9,
+      "name": "Undead sailor half-buried",
+      "description": "Undead sailor half-buried. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 10,
+      "name": "Assassin vine by waterfall",
+      "description": "Assassin vine by waterfall. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 11,
+      "name": "Smuggler cache under driftwood",
+      "description": "Smuggler cache under driftwood. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 12,
+      "name": "Sea cave echoes with chanting",
+      "description": "Sea cave echoes with chanting. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 13,
+      "name": "Lost explorer begging for water",
+      "description": "Lost explorer begging for water. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 14,
+      "name": "Velociraptor pack stalking beach",
+      "description": "Velociraptor pack stalking beach. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 15,
+      "name": "Storm surge cuts the route",
+      "description": "Storm surge cuts the route. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 16,
+      "name": "Yuan-ti spy leaves false trail",
+      "description": "Yuan-ti spy leaves false trail. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 17,
+      "name": "Giant constrictor in jungle fringe",
+      "description": "Giant constrictor in jungle fringe. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 18,
+      "name": "Old idol under roots",
+      "description": "Old idol under roots. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 19,
+      "name": "Hunter warning of inland beast",
+      "description": "Hunter warning of inland beast. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 20,
+      "name": "Roc feather falls from sky",
+      "description": "Roc feather falls from sky. Minor sign: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 21,
+      "name": "Shipwreck survivor signal",
+      "description": "Shipwreck survivor signal. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 22,
+      "name": "Pteranodon shadows overhead",
+      "description": "Pteranodon shadows overhead. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 23,
+      "name": "Giant crabs in wreckage",
+      "description": "Giant crabs in wreckage. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 24,
+      "name": "Cliff path collapse",
+      "description": "Cliff path collapse. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 25,
+      "name": "Pirate scouts in the mist",
+      "description": "Pirate scouts in the mist. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 26,
+      "name": "Ancient stone exposed by tide",
+      "description": "Ancient stone exposed by tide. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 27,
+      "name": "Flying snakes nesting in sailcloth",
+      "description": "Flying snakes nesting in sailcloth. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 28,
+      "name": "Crocodile at freshwater stream",
+      "description": "Crocodile at freshwater stream. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 29,
+      "name": "Undead sailor half-buried",
+      "description": "Undead sailor half-buried. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 30,
+      "name": "Assassin vine by waterfall",
+      "description": "Assassin vine by waterfall. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 31,
+      "name": "Smuggler cache under driftwood",
+      "description": "Smuggler cache under driftwood. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 32,
+      "name": "Sea cave echoes with chanting",
+      "description": "Sea cave echoes with chanting. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 33,
+      "name": "Lost explorer begging for water",
+      "description": "Lost explorer begging for water. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 34,
+      "name": "Velociraptor pack stalking beach",
+      "description": "Velociraptor pack stalking beach. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 35,
+      "name": "Storm surge cuts the route",
+      "description": "Storm surge cuts the route. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 36,
+      "name": "Yuan-ti spy leaves false trail",
+      "description": "Yuan-ti spy leaves false trail. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 37,
+      "name": "Giant constrictor in jungle fringe",
+      "description": "Giant constrictor in jungle fringe. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 38,
+      "name": "Old idol under roots",
+      "description": "Old idol under roots. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 39,
+      "name": "Hunter warning of inland beast",
+      "description": "Hunter warning of inland beast. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 40,
+      "name": "Roc feather falls from sky",
+      "description": "Roc feather falls from sky. Close encounter: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 41,
+      "name": "Shipwreck survivor signal",
+      "description": "Shipwreck survivor signal. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 42,
+      "name": "Pteranodon shadows overhead",
+      "description": "Pteranodon shadows overhead. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 43,
+      "name": "Giant crabs in wreckage",
+      "description": "Giant crabs in wreckage. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 44,
+      "name": "Cliff path collapse",
+      "description": "Cliff path collapse. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 45,
+      "name": "Pirate scouts in the mist",
+      "description": "Pirate scouts in the mist. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 46,
+      "name": "Ancient stone exposed by tide",
+      "description": "Ancient stone exposed by tide. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 47,
+      "name": "Flying snakes nesting in sailcloth",
+      "description": "Flying snakes nesting in sailcloth. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 48,
+      "name": "Crocodile at freshwater stream",
+      "description": "Crocodile at freshwater stream. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 49,
+      "name": "Undead sailor half-buried",
+      "description": "Undead sailor half-buried. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 50,
+      "name": "Assassin vine by waterfall",
+      "description": "Assassin vine by waterfall. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 51,
+      "name": "Smuggler cache under driftwood",
+      "description": "Smuggler cache under driftwood. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 52,
+      "name": "Sea cave echoes with chanting",
+      "description": "Sea cave echoes with chanting. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 53,
+      "name": "Lost explorer begging for water",
+      "description": "Lost explorer begging for water. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 54,
+      "name": "Velociraptor pack stalking beach",
+      "description": "Velociraptor pack stalking beach. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 55,
+      "name": "Storm surge cuts the route",
+      "description": "Storm surge cuts the route. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 56,
+      "name": "Yuan-ti spy leaves false trail",
+      "description": "Yuan-ti spy leaves false trail. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 57,
+      "name": "Giant constrictor in jungle fringe",
+      "description": "Giant constrictor in jungle fringe. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 58,
+      "name": "Old idol under roots",
+      "description": "Old idol under roots. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 59,
+      "name": "Hunter warning of inland beast",
+      "description": "Hunter warning of inland beast. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 60,
+      "name": "Roc feather falls from sky",
+      "description": "Roc feather falls from sky. Complication: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 61,
+      "name": "Shipwreck survivor signal",
+      "description": "Shipwreck survivor signal. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 62,
+      "name": "Pteranodon shadows overhead",
+      "description": "Pteranodon shadows overhead. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 63,
+      "name": "Giant crabs in wreckage",
+      "description": "Giant crabs in wreckage. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 64,
+      "name": "Cliff path collapse",
+      "description": "Cliff path collapse. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 65,
+      "name": "Pirate scouts in the mist",
+      "description": "Pirate scouts in the mist. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 66,
+      "name": "Ancient stone exposed by tide",
+      "description": "Ancient stone exposed by tide. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 67,
+      "name": "Flying snakes nesting in sailcloth",
+      "description": "Flying snakes nesting in sailcloth. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 68,
+      "name": "Crocodile at freshwater stream",
+      "description": "Crocodile at freshwater stream. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 69,
+      "name": "Undead sailor half-buried",
+      "description": "Undead sailor half-buried. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 70,
+      "name": "Assassin vine by waterfall",
+      "description": "Assassin vine by waterfall. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 71,
+      "name": "Smuggler cache under driftwood",
+      "description": "Smuggler cache under driftwood. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 72,
+      "name": "Sea cave echoes with chanting",
+      "description": "Sea cave echoes with chanting. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 73,
+      "name": "Lost explorer begging for water",
+      "description": "Lost explorer begging for water. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 74,
+      "name": "Velociraptor pack stalking beach",
+      "description": "Velociraptor pack stalking beach. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 75,
+      "name": "Storm surge cuts the route",
+      "description": "Storm surge cuts the route. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 76,
+      "name": "Yuan-ti spy leaves false trail",
+      "description": "Yuan-ti spy leaves false trail. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 77,
+      "name": "Giant constrictor in jungle fringe",
+      "description": "Giant constrictor in jungle fringe. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 78,
+      "name": "Old idol under roots",
+      "description": "Old idol under roots. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 79,
+      "name": "Hunter warning of inland beast",
+      "description": "Hunter warning of inland beast. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 80,
+      "name": "Roc feather falls from sky",
+      "description": "Roc feather falls from sky. Opportunity: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 81,
+      "name": "Shipwreck survivor signal",
+      "description": "Shipwreck survivor signal. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 82,
+      "name": "Pteranodon shadows overhead",
+      "description": "Pteranodon shadows overhead. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 83,
+      "name": "Giant crabs in wreckage",
+      "description": "Giant crabs in wreckage. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 84,
+      "name": "Cliff path collapse",
+      "description": "Cliff path collapse. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 85,
+      "name": "Pirate scouts in the mist",
+      "description": "Pirate scouts in the mist. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 86,
+      "name": "Ancient stone exposed by tide",
+      "description": "Ancient stone exposed by tide. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 87,
+      "name": "Flying snakes nesting in sailcloth",
+      "description": "Flying snakes nesting in sailcloth. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 88,
+      "name": "Crocodile at freshwater stream",
+      "description": "Crocodile at freshwater stream. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 89,
+      "name": "Undead sailor half-buried",
+      "description": "Undead sailor half-buried. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 90,
+      "name": "Assassin vine by waterfall",
+      "description": "Assassin vine by waterfall. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 91,
+      "name": "Smuggler cache under driftwood",
+      "description": "Smuggler cache under driftwood. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 92,
+      "name": "Sea cave echoes with chanting",
+      "description": "Sea cave echoes with chanting. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 93,
+      "name": "Lost explorer begging for water",
+      "description": "Lost explorer begging for water. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 94,
+      "name": "Velociraptor pack stalking beach",
+      "description": "Velociraptor pack stalking beach. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 95,
+      "name": "Storm surge cuts the route",
+      "description": "Storm surge cuts the route. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 96,
+      "name": "Yuan-ti spy leaves false trail",
+      "description": "Yuan-ti spy leaves false trail. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 97,
+      "name": "Giant constrictor in jungle fringe",
+      "description": "Giant constrictor in jungle fringe. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 98,
+      "name": "Old idol under roots",
+      "description": "Old idol under roots. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 99,
+      "name": "Hunter warning of inland beast",
+      "description": "Hunter warning of inland beast. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    },
+    {
+      "roll": 100,
+      "name": "Roc feather falls from sky",
+      "description": "Roc feather falls from sky. Dangerous twist: tailor the intensity to the party tier and current travel pace.",
+      "tierHint": "Tier 1: warning/signs. Tier 2: active threat. Tier 3+: larger consequences or intelligent opposition."
+    }
+  ]
+}

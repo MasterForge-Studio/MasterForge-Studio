@@ -1,0 +1,9 @@
+{
+  "id": "forgotten-realms",
+  "name": "Forgotten Realms",
+  "type": "world",
+  "summary": "A vast high-fantasy world of ancient empires, living gods, dangerous magic, frontier towns, powerful cities and ruins waiting beneath every road and forest.",
+  "themeId": "merchant-vessel",
+  "background": "assets/worlds/forgotten-realms/background.webp",
+  "defaultRegionId": "sword-coast"
+}

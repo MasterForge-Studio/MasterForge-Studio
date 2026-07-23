@@ -1,0 +1,36 @@
+{
+  "id": "waterdeep",
+  "name": "Waterdeep",
+  "type": "location",
+  "regionId": "sword-coast",
+  "summary": "The City of Splendors, where masked lords, guilds, nobles, temples, crime syndicates and adventurers crowd behind high walls.",
+  "politics": [
+    "The Masked Lords rule through mystery, law and careful manipulation.",
+    "Guild power touches almost every trade and service in the city."
+  ],
+  "culture": [
+    "Cosmopolitan, proud and theatrical; status matters, but coin and competence matter too.",
+    "Every ward has its own manners, risks and opportunities."
+  ],
+  "factions": [
+    "Masked Lords",
+    "City Watch",
+    "Harpers",
+    "Zhentarim",
+    "Xanathar Guild",
+    "Noble houses"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/waterdeep/background.webp"
+}

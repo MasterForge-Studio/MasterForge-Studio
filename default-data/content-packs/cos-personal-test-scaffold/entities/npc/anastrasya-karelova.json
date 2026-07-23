@@ -1,0 +1,11 @@
+{
+  "id": "anastrasya-karelova",
+  "entity_type": "npc",
+  "name": "Anastrasya Karelova",
+  "description": "Ravenloft bride. Placeholder for personal verification.",
+  "data": {
+    "factionId": "castle-ravenloft-court",
+    "regionId": "castle-ravenloft"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

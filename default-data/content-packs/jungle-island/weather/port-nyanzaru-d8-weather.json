@@ -1,0 +1,50 @@
+{
+  "id": "port-nyanzaru-d8-weather",
+  "name": "Port Nyanzaru d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "port-nyanzaru",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Clear harbour heat",
+      "description": "Crowds are active; dehydration risk for long chases."
+    },
+    {
+      "roll": 2,
+      "name": "Humid market haze",
+      "description": "Perception checks in packed streets are slightly harder."
+    },
+    {
+      "roll": 3,
+      "name": "Short tropical shower",
+      "description": "Streets slick; racing beasts harder to control."
+    },
+    {
+      "roll": 4,
+      "name": "Sea breeze",
+      "description": "Travel and city movement feel easier."
+    },
+    {
+      "roll": 5,
+      "name": "Heavy afternoon rain",
+      "description": "Outdoor meetings disrupted; alleys flood."
+    },
+    {
+      "roll": 6,
+      "name": "Thunder over harbour",
+      "description": "Ships delay departures; sailors grow restless."
+    },
+    {
+      "roll": 7,
+      "name": "Hot wind from jungle",
+      "description": "Tempers rise; exhaustion risk for armour."
+    },
+    {
+      "roll": 8,
+      "name": "Festival-bright skies",
+      "description": "Public events, races and crowds swell."
+    }
+  ]
+}

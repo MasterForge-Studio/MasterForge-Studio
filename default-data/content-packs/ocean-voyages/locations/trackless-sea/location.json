@@ -1,0 +1,33 @@
+{
+  "id": "trackless-sea",
+  "worldId": "forgotten-realms",
+  "name": "The Trackless Sea",
+  "type": "location",
+  "defaultThemeId": "merchant-vessel",
+  "summary": "A vast tropical ocean west of Faerûn. Ships travelling south towards Chult cross unpredictable waters filled with storms, pirates, sea monsters, hidden reefs, drifting wreckage and forgotten dangers.",
+  "politics": [
+    "Sea lanes are shaped by merchant companies, naval patrols, pirates and independent captains.",
+    "Law becomes thinner the further a ship sails from major ports."
+  ],
+  "culture": [
+    "Sailors trade rumours as readily as coin.",
+    "A ship crew becomes a small travelling village where rank, trust and routine matter.",
+    "Superstition is common at sea, especially around storms, wrecks and strange lights beneath the water."
+  ],
+  "factions": [
+    "Merchant companies",
+    "Independent captains",
+    "Pirates",
+    "Coastal smugglers",
+    "Sahuagin raiders",
+    "Harbour authorities"
+  ],
+  "dmTone": [
+    "Isolation",
+    "Salt air",
+    "Creaking timber",
+    "Deep water",
+    "Uncertain horizons",
+    "Sudden danger"
+  ]
+}

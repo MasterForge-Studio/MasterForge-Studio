@@ -1,0 +1,11 @@
+{
+  "id": "the-abbot",
+  "entity_type": "npc",
+  "name": "The Abbot",
+  "description": "mysterious holy figure. Placeholder for personal verification.",
+  "data": {
+    "factionId": "abbey-of-saint-markovia",
+    "regionId": "abbey-of-saint-markovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

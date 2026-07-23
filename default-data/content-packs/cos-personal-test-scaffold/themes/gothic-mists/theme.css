@@ -1,0 +1,14 @@
+:root {
+  --theme-bg-app: url("./backgrounds/background.webp");
+  --font-main: Georgia, "Times New Roman", serif;
+  --app-bg: rgba(8, 6, 8, 0.96);
+  --panel-bg: rgba(16, 10, 14, 0.88);
+  --card-bg: rgba(22, 13, 18, 0.78);
+  --text-main: #f1e7dc;
+  --text-muted: #bdaaa2;
+  --accent: #b11226;
+  --border: rgba(190, 160, 130, 0.48);
+  --radius: 14px;
+}
+#app { background: transparent !important; }
+#app::before { opacity: var(--theme-image-opacity, 1) !important; }

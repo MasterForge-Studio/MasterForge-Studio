@@ -1,0 +1,36 @@
+{
+  "id": "barovia",
+  "worldId": "domains-of-dread",
+  "name": "Barovia",
+  "type": "domain",
+  "summary": "A mist-shrouded valley of dread ruled by a vampire lord. Personal testing scaffold only; fill canonical details from the book.",
+  "politics": [
+    "Autocratic supernatural rule",
+    "Fear-bound settlements",
+    "Local burgomasters and fragile civic authority"
+  ],
+  "culture": [
+    "Suspicion of outsiders",
+    "Superstitious traditions",
+    "Hard living under constant dread"
+  ],
+  "factions": [
+    "castle-ravenloft-court",
+    "vistani",
+    "keepers-of-the-feather",
+    "vallaki-baronial-rule",
+    "wachter-cult",
+    "werewolf-pack",
+    "order-of-the-silver-dragon",
+    "druids-of-yester-hill",
+    "church-of-the-morninglord"
+  ],
+  "dmTone": [
+    "Cold mist",
+    "Candlelight",
+    "Ravens",
+    "Howling wolves",
+    "Old grief"
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

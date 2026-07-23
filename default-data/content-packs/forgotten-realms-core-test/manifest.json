@@ -1,0 +1,15 @@
+{
+  "id": "forgotten-realms-core-test",
+  "name": "Forgotten Realms Core Test Pack",
+  "version": "0.2.0-alpha.1",
+  "author": "Reedy's Web Designs",
+  "type": "world-pack",
+  "description": "Internal MasterForge Studio test pack for validating World → Region → Location hierarchy, scene/background inheritance, theme switching, and import behaviour. Not for commercial distribution.",
+  "masterForgeVersion": "0.2.0-alpha",
+  "worldId": "forgotten-realms",
+  "importNotes": [
+    "Designed for the new hierarchy: World → Region → Location.",
+    "Regions and locations include themeId/defaultThemeId plus background fields for scene fallback testing.",
+    "Background files are placeholders so switching can be tested immediately. Replace with generated art later."
+  ]
+}

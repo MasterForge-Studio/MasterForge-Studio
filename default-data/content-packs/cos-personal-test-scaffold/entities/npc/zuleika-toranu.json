@@ -1,0 +1,11 @@
+{
+  "id": "zuleika-toranu",
+  "entity_type": "npc",
+  "name": "Zuleika Toranescu",
+  "description": "werewolf with divided loyalties. Placeholder for personal verification.",
+  "data": {
+    "factionId": "werewolf-pack",
+    "regionId": "werewolf-den"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

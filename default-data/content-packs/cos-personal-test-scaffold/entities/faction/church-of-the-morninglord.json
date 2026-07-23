@@ -1,0 +1,10 @@
+{
+  "id": "church-of-the-morninglord",
+  "entity_type": "faction",
+  "name": "Church of the Morninglord",
+  "description": "Faith communities trying to preserve hope.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

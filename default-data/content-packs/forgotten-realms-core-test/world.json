@@ -1,0 +1,17 @@
+{
+  "id": "forgotten-realms",
+  "name": "Forgotten Realms",
+  "type": "world",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/worlds/forgotten-realms/background.webp",
+  "summary": "A broad high-fantasy campaign world used here as an internal MasterForge Studio test world.",
+  "tone": [
+    "Heroic fantasy",
+    "Ancient magic",
+    "Political factions",
+    "Dangerous wilderness",
+    "Legendary ruins"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

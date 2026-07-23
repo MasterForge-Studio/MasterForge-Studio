@@ -1,0 +1,130 @@
+{
+  "id": "ghost-wreck-fields-d100-encounters",
+  "name": "Ghost Wreck Fields d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "trackless-sea",
+  "regionId": "ghost-wreck-fields",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Half-sunk hull",
+      "description": "Half-sunk hull. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "6-10",
+      "name": "Ship bell rings alone",
+      "description": "Ship bell rings alone. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "11-15",
+      "name": "Cold mist",
+      "description": "Cold mist. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "16-20",
+      "name": "Old captain log floats by",
+      "description": "Old captain log floats by. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "21-25",
+      "name": "Skeleton at the wheel",
+      "description": "Skeleton at the wheel. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "26-30",
+      "name": "Ghostly crew silhouette",
+      "description": "Ghostly crew silhouette. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "31-35",
+      "name": "Cargo untouched by rot",
+      "description": "Cargo untouched by rot. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "36-40",
+      "name": "Dead sailor whispers",
+      "description": "Dead sailor whispers. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "41-45",
+      "name": "Compass points to wreck",
+      "description": "Compass points to wreck. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "46-50",
+      "name": "Wreck survivor who should be dead",
+      "description": "Wreck survivor who should be dead. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "51-55",
+      "name": "Waterlogged holy symbol",
+      "description": "Waterlogged holy symbol. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "56-60",
+      "name": "Undead hand grips rail",
+      "description": "Undead hand grips rail. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "61-65",
+      "name": "Haunted lifeboat",
+      "description": "Haunted lifeboat. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "66-70",
+      "name": "Pale lights below",
+      "description": "Pale lights below. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "71-75",
+      "name": "Name of ship changes when read",
+      "description": "Name of ship changes when read. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "76-80",
+      "name": "Barnacled chest",
+      "description": "Barnacled chest. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "81-85",
+      "name": "Spectral warning",
+      "description": "Spectral warning. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "86-90",
+      "name": "Wreck rises higher",
+      "description": "Wreck rises higher. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "91-95",
+      "name": "Something trapped below deck",
+      "description": "Something trapped below deck. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "96-100",
+      "name": "Ancient drowned intelligence",
+      "description": "Ancient drowned intelligence. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    }
+  ]
+}

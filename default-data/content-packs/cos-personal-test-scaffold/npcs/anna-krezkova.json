@@ -1,0 +1,14 @@
+{
+  "id": "anna-krezkova",
+  "name": "Anna Krezkova",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "krezk",
+  "factionId": "krezk-authority",
+  "role": "Krezk leader's wife",
+  "description": "Anna Krezkova: Krezk leader's wife. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

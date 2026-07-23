@@ -1,0 +1,34 @@
+{
+  "id": "pirate-isles",
+  "name": "Pirate Isles",
+  "type": "location",
+  "regionId": "trackless-sea",
+  "summary": "Hidden coves, black markets and treacherous anchorages where outlaw captains make temporary alliances.",
+  "politics": [
+    "Power belongs to captains, crews and whoever controls safe harbour.",
+    "Betrayal is expected but bad reputation still has a price."
+  ],
+  "culture": [
+    "Bravado, fear, greed and loyalty mix uneasily.",
+    "Every tavern song is half warning and half advertisement."
+  ],
+  "factions": [
+    "Pirate crews",
+    "Smugglers",
+    "Fences",
+    "Corrupt harbour agents"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/pirate-isles/background.webp"
+}

@@ -1,0 +1,14 @@
+{
+  "id": "izek-strazni",
+  "name": "Izek Strazni",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "vallaki",
+  "factionId": "vallaki-baronial-rule",
+  "role": "brutal enforcer",
+  "description": "Izek Strazni: brutal enforcer. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

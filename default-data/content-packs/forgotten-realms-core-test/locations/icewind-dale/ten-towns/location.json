@@ -1,0 +1,26 @@
+{
+  "id": "ten-towns",
+  "worldId": "forgotten-realms",
+  "regionId": "icewind-dale",
+  "name": "Ten-Towns",
+  "type": "location",
+  "themeId": "gothic-mists",
+  "defaultThemeId": "gothic-mists",
+  "background": "scenes/locations/ten-towns/background.webp",
+  "summary": "A cluster of isolated lakeside settlements surviving snow, darkness, scarcity and fear.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

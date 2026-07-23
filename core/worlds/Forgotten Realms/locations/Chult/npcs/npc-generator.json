@@ -1,0 +1,71 @@
+{
+  "species": [
+    "Chultan Human",
+    "Human",
+    "Half-Elf",
+    "Dwarf",
+    "Tabaxi",
+    "Aarakocra",
+    "Grung",
+    "Lizardfolk"
+  ],
+  "roles": [
+    "Guide",
+    "Hunter",
+    "Explorer",
+    "Trader",
+    "Scout",
+    "Priest",
+    "Pirate",
+    "Faction Agent",
+    "Lost Adventurer",
+    "Village Elder"
+  ],
+  "names": [
+    "Akachi Riverborn",
+    "Ekene Reedwalker",
+    "Jobali Taban",
+    "Nima Goldleaf",
+    "Sefu Blackwater",
+    "Zalika Thornstep",
+    "M'Bala Sunspear",
+    "Tano Reedwhisper"
+  ],
+  "appearances": [
+    "weather-beaten face and jungle-worn clothing",
+    "bright beadwork and a battered leather satchel",
+    "scarred arms and a necklace of dinosaur teeth",
+    "painted wooden charms hanging from their belt",
+    "a wide-brimmed hat soaked from the humidity"
+  ],
+  "personalities": [
+    "friendly but cautious",
+    "suspicious of outsiders",
+    "talks too much when nervous",
+    "calm even in danger",
+    "blunt, practical and hard to impress"
+  ],
+  "secrets": [
+    "knows of a ruined trail inland",
+    "has seen Yuan-ti signs nearby",
+    "is quietly working with the Harpers",
+    "once survived a failed expedition",
+    "is hiding from pirates"
+  ],
+  "hooks": [
+    "needs help finding a missing relative",
+    "can guide the party for a price",
+    "knows a rumour about an ancient idol",
+    "saw smoke from a hidden camp",
+    "has a map fragment but does not trust strangers"
+  ],
+  "factions": [
+    "None",
+    "Harpers",
+    "Emerald Enclave",
+    "Ytepka Society",
+    "Flaming Fist",
+    "Yuan-ti",
+    "Pirates"
+  ]
+}

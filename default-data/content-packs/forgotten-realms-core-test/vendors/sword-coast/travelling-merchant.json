@@ -1,0 +1,30 @@
+{
+  "id": "sword-coast-travelling-merchant",
+  "name": "Sword Coast Travelling Merchant",
+  "regionId": "sword-coast",
+  "stock": [
+    "Rope",
+    "Lantern oil",
+    "Weathered map case",
+    "Iron spikes",
+    "Healing draught",
+    "Fine cloak"
+  ],
+  "vendorTypes": [
+    "Road merchant",
+    "Caravan quartermaster",
+    "Guild factor"
+  ],
+  "personalities": [
+    "Talkative",
+    "Careful",
+    "Overly friendly",
+    "Secretive"
+  ],
+  "secrets": [
+    "Knows which roads are unsafe",
+    "Is carrying a sealed message",
+    "Recognises a faction symbol"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

@@ -1,0 +1,610 @@
+{
+  "id": "pirate-coast-d100-loot",
+  "name": "Pirate Coast d100 Loot",
+  "type": "loot-table",
+  "locationId": "chult",
+  "regionId": "pirate-coast",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 2,
+      "name": "Buried chest key",
+      "description": "Buried chest key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 3,
+      "name": "Salt-rusted pistol part",
+      "description": "Salt-rusted pistol part. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 4,
+      "name": "Pearl necklace",
+      "description": "Pearl necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 5,
+      "name": "Smuggler ledger page",
+      "description": "Smuggler ledger page. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 6,
+      "name": "Black sail cloth scrap",
+      "description": "Black sail cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 7,
+      "name": "Hidden rum bottle",
+      "description": "Hidden rum bottle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 8,
+      "name": "Gold hoop earring",
+      "description": "Gold hoop earring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 9,
+      "name": "Old treasure map corner",
+      "description": "Old treasure map corner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 10,
+      "name": "Silver dagger in boot sheath",
+      "description": "Silver dagger in boot sheath. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 11,
+      "name": "Jade parrot charm",
+      "description": "Jade parrot charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 12,
+      "name": "Reef pearl cluster",
+      "description": "Reef pearl cluster. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 13,
+      "name": "Ghost lantern wick",
+      "description": "Ghost lantern wick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 14,
+      "name": "Pirate flag strip",
+      "description": "Pirate flag strip. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 15,
+      "name": "Captain's ring seal",
+      "description": "Captain's ring seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 16,
+      "name": "Fine spyglass lens",
+      "description": "Fine spyglass lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 17,
+      "name": "Barnacle-covered idol",
+      "description": "Barnacle-covered idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 18,
+      "name": "Coral necklace",
+      "description": "Coral necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 19,
+      "name": "Prisoner's carved tally stick",
+      "description": "Prisoner's carved tally stick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 20,
+      "name": "Waterproof pistol powder horn",
+      "description": "Waterproof pistol powder horn. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 21,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 22,
+      "name": "Buried chest key",
+      "description": "Buried chest key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 23,
+      "name": "Salt-rusted pistol part",
+      "description": "Salt-rusted pistol part. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 24,
+      "name": "Pearl necklace",
+      "description": "Pearl necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 25,
+      "name": "Smuggler ledger page",
+      "description": "Smuggler ledger page. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 26,
+      "name": "Black sail cloth scrap",
+      "description": "Black sail cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 27,
+      "name": "Hidden rum bottle",
+      "description": "Hidden rum bottle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 28,
+      "name": "Gold hoop earring",
+      "description": "Gold hoop earring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 29,
+      "name": "Old treasure map corner",
+      "description": "Old treasure map corner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 30,
+      "name": "Silver dagger in boot sheath",
+      "description": "Silver dagger in boot sheath. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 31,
+      "name": "Jade parrot charm",
+      "description": "Jade parrot charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 32,
+      "name": "Reef pearl cluster",
+      "description": "Reef pearl cluster. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 33,
+      "name": "Ghost lantern wick",
+      "description": "Ghost lantern wick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 34,
+      "name": "Pirate flag strip",
+      "description": "Pirate flag strip. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 35,
+      "name": "Captain's ring seal",
+      "description": "Captain's ring seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 36,
+      "name": "Fine spyglass lens",
+      "description": "Fine spyglass lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 37,
+      "name": "Barnacle-covered idol",
+      "description": "Barnacle-covered idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 38,
+      "name": "Coral necklace",
+      "description": "Coral necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 39,
+      "name": "Prisoner's carved tally stick",
+      "description": "Prisoner's carved tally stick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 40,
+      "name": "Waterproof pistol powder horn",
+      "description": "Waterproof pistol powder horn. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 41,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 42,
+      "name": "Buried chest key",
+      "description": "Buried chest key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 43,
+      "name": "Salt-rusted pistol part",
+      "description": "Salt-rusted pistol part. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 44,
+      "name": "Pearl necklace",
+      "description": "Pearl necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 45,
+      "name": "Smuggler ledger page",
+      "description": "Smuggler ledger page. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 46,
+      "name": "Black sail cloth scrap",
+      "description": "Black sail cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 47,
+      "name": "Hidden rum bottle",
+      "description": "Hidden rum bottle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 48,
+      "name": "Gold hoop earring",
+      "description": "Gold hoop earring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 49,
+      "name": "Old treasure map corner",
+      "description": "Old treasure map corner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 50,
+      "name": "Silver dagger in boot sheath",
+      "description": "Silver dagger in boot sheath. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 51,
+      "name": "Jade parrot charm",
+      "description": "Jade parrot charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 52,
+      "name": "Reef pearl cluster",
+      "description": "Reef pearl cluster. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 53,
+      "name": "Ghost lantern wick",
+      "description": "Ghost lantern wick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 54,
+      "name": "Pirate flag strip",
+      "description": "Pirate flag strip. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 55,
+      "name": "Captain's ring seal",
+      "description": "Captain's ring seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 56,
+      "name": "Fine spyglass lens",
+      "description": "Fine spyglass lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 57,
+      "name": "Barnacle-covered idol",
+      "description": "Barnacle-covered idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 58,
+      "name": "Coral necklace",
+      "description": "Coral necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 59,
+      "name": "Prisoner's carved tally stick",
+      "description": "Prisoner's carved tally stick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 60,
+      "name": "Waterproof pistol powder horn",
+      "description": "Waterproof pistol powder horn. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 61,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 62,
+      "name": "Buried chest key",
+      "description": "Buried chest key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 63,
+      "name": "Salt-rusted pistol part",
+      "description": "Salt-rusted pistol part. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 64,
+      "name": "Pearl necklace",
+      "description": "Pearl necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 65,
+      "name": "Smuggler ledger page",
+      "description": "Smuggler ledger page. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 66,
+      "name": "Black sail cloth scrap",
+      "description": "Black sail cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 67,
+      "name": "Hidden rum bottle",
+      "description": "Hidden rum bottle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 68,
+      "name": "Gold hoop earring",
+      "description": "Gold hoop earring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 69,
+      "name": "Old treasure map corner",
+      "description": "Old treasure map corner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 70,
+      "name": "Silver dagger in boot sheath",
+      "description": "Silver dagger in boot sheath. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 71,
+      "name": "Jade parrot charm",
+      "description": "Jade parrot charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 72,
+      "name": "Reef pearl cluster",
+      "description": "Reef pearl cluster. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 73,
+      "name": "Ghost lantern wick",
+      "description": "Ghost lantern wick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 74,
+      "name": "Pirate flag strip",
+      "description": "Pirate flag strip. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 75,
+      "name": "Captain's ring seal",
+      "description": "Captain's ring seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 76,
+      "name": "Fine spyglass lens",
+      "description": "Fine spyglass lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 77,
+      "name": "Barnacle-covered idol",
+      "description": "Barnacle-covered idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 78,
+      "name": "Coral necklace",
+      "description": "Coral necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 79,
+      "name": "Prisoner's carved tally stick",
+      "description": "Prisoner's carved tally stick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 80,
+      "name": "Waterproof pistol powder horn",
+      "description": "Waterproof pistol powder horn. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 81,
+      "name": "Captain's marked coin",
+      "description": "Captain's marked coin. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 82,
+      "name": "Buried chest key",
+      "description": "Buried chest key. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 83,
+      "name": "Salt-rusted pistol part",
+      "description": "Salt-rusted pistol part. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 84,
+      "name": "Pearl necklace",
+      "description": "Pearl necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 85,
+      "name": "Smuggler ledger page",
+      "description": "Smuggler ledger page. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 86,
+      "name": "Black sail cloth scrap",
+      "description": "Black sail cloth scrap. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 87,
+      "name": "Hidden rum bottle",
+      "description": "Hidden rum bottle. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 88,
+      "name": "Gold hoop earring",
+      "description": "Gold hoop earring. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 89,
+      "name": "Old treasure map corner",
+      "description": "Old treasure map corner. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 90,
+      "name": "Silver dagger in boot sheath",
+      "description": "Silver dagger in boot sheath. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 91,
+      "name": "Jade parrot charm",
+      "description": "Jade parrot charm. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 92,
+      "name": "Reef pearl cluster",
+      "description": "Reef pearl cluster. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 93,
+      "name": "Ghost lantern wick",
+      "description": "Ghost lantern wick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 94,
+      "name": "Pirate flag strip",
+      "description": "Pirate flag strip. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 95,
+      "name": "Captain's ring seal",
+      "description": "Captain's ring seal. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 96,
+      "name": "Fine spyglass lens",
+      "description": "Fine spyglass lens. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 97,
+      "name": "Barnacle-covered idol",
+      "description": "Barnacle-covered idol. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 98,
+      "name": "Coral necklace",
+      "description": "Coral necklace. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 99,
+      "name": "Prisoner's carved tally stick",
+      "description": "Prisoner's carved tally stick. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    },
+    {
+      "roll": 100,
+      "name": "Waterproof pistol powder horn",
+      "description": "Waterproof pistol powder horn. This find should feel tied to the local terrain, previous travellers or ancient Chultan history.",
+      "tierHint": "Scale value or magic based on party tier."
+    }
+  ]
+}

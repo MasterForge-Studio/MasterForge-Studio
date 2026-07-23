@@ -1,0 +1,17 @@
+{
+  "id": "mira-stonebridge",
+  "name": "Mira Stonebridge",
+  "type": "npc",
+  "entity_type": "npc",
+  "worldId": "forgotten-realms",
+  "regionId": "sword-coast",
+  "locationId": "phandalin",
+  "role": "Innkeeper and rumour source",
+  "description": "A sharp-eyed innkeeper who hears more than she admits.",
+  "tags": [
+    "rumours",
+    "friendly",
+    "frontier"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

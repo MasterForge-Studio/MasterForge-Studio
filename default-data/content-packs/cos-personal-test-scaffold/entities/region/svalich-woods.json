@@ -1,0 +1,10 @@
+{
+  "id": "svalich-woods",
+  "entity_type": "region",
+  "name": "Svalich Woods",
+  "description": "Mist-choked woodland roads haunted by wolves and worse.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

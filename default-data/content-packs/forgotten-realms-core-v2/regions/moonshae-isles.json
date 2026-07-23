@@ -1,0 +1,46 @@
+{
+  "id": "moonshae-isles",
+  "name": "Moonshae Isles",
+  "type": "region",
+  "worldId": "forgotten-realms",
+  "summary": "Mist-shrouded islands of druidic circles, storm-battered coasts, fey crossings, old clans and sea-raider threats.",
+  "dmTone": [
+    "sea mist",
+    "standing stones",
+    "fey glamour",
+    "island politics",
+    "storms"
+  ],
+  "environment": [
+    "sea mist",
+    "standing stones",
+    "fey glamour",
+    "island politics",
+    "storms"
+  ],
+  "politics": [
+    "Moonshae Isles is shaped by local powers, trade needs and old conflicts.",
+    "Adventurers can shift local balances quickly if they earn trust or fear."
+  ],
+  "culture": [
+    "People of Moonshae Isles carry strong local customs and stories.",
+    "Rumour, reputation and practical help matter to most communities."
+  ],
+  "travelHazards": [
+    "Bad weather",
+    "Bandits or raiders",
+    "Difficult terrain",
+    "Old ruins and hidden magic"
+  ],
+  "rumours": [
+    "Something old has stirred somewhere in Moonshae Isles.",
+    "A recent disappearance has locals worried.",
+    "A merchant is paying quietly for reliable blades."
+  ],
+  "dmSecrets": [
+    "A hidden faction is exploiting unrest in Moonshae Isles.",
+    "An old site nearby is connected to a larger campaign mystery."
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/regions/moonshae-isles/background.webp"
+}

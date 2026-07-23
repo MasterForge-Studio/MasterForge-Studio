@@ -1,0 +1,130 @@
+{
+  "id": "reef-and-shallows-d100-encounters",
+  "name": "Reefs & Shallows d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "trackless-sea",
+  "regionId": "reef-and-shallows",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Bright coral visible below",
+      "description": "Bright coral visible below. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "6-10",
+      "name": "Hull scrapes a sandbar",
+      "description": "Hull scrapes a sandbar. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "11-15",
+      "name": "Reef fish swarm",
+      "description": "Reef fish swarm. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "16-20",
+      "name": "Pearl diver canoe",
+      "description": "Pearl diver canoe. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "21-25",
+      "name": "Hidden rocks ahead",
+      "description": "Hidden rocks ahead. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "26-30",
+      "name": "Wreck mast under water",
+      "description": "Wreck mast under water. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "31-35",
+      "name": "Giant crab on reef",
+      "description": "Giant crab on reef. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "36-40",
+      "name": "Sahuagin ambush point",
+      "description": "Sahuagin ambush point. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "41-45",
+      "name": "Treasure glint below",
+      "description": "Treasure glint below. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "46-50",
+      "name": "Poisonous reef creature",
+      "description": "Poisonous reef creature. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "51-55",
+      "name": "Navigation dispute",
+      "description": "Navigation dispute. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "56-60",
+      "name": "Small island with palms",
+      "description": "Small island with palms. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "61-65",
+      "name": "Tide strands a boat",
+      "description": "Tide strands a boat. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "66-70",
+      "name": "Shark feeding frenzy",
+      "description": "Shark feeding frenzy. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "71-75",
+      "name": "Old anchor lodged in coral",
+      "description": "Old anchor lodged in coral. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "76-80",
+      "name": "Merfolk warning",
+      "description": "Merfolk warning. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "81-85",
+      "name": "Smuggler cache buoy",
+      "description": "Smuggler cache buoy. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "86-90",
+      "name": "Reef collapses under swimmer",
+      "description": "Reef collapses under swimmer. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "91-95",
+      "name": "Dragon turtle shell mistaken for island",
+      "description": "Dragon turtle shell mistaken for island. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "96-100",
+      "name": "Glowing coral at night",
+      "description": "Glowing coral at night. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    }
+  ]
+}

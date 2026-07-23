@@ -1,0 +1,17 @@
+{
+  "id": "sword-coast",
+  "worldId": "forgotten-realms",
+  "name": "Sword Coast",
+  "type": "region",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/regions/sword-coast/background.webp",
+  "summary": "A rugged western coastline of city-states, trade roads, frontier towns and ancient ruins.",
+  "dmTone": [
+    "Exploration",
+    "Regional politics",
+    "Local dangers",
+    "Travel choices"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

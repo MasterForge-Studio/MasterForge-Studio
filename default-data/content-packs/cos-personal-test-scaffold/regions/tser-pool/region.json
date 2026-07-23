@@ -1,0 +1,50 @@
+{
+  "id": "tser-pool",
+  "locationId": "barovia",
+  "name": "Tser Pool Encampment",
+  "summary": "A riverside Vistani camp and crossroads of prophecy.",
+  "environment": [
+    "Cold mist",
+    "Oppressive silence",
+    "Unnatural dread"
+  ],
+  "weather": [
+    "Grey skies",
+    "Cold rain",
+    "Sudden fog",
+    "Biting wind"
+  ],
+  "creatures": {
+    "common": [
+      "wolves",
+      "ravens",
+      "frightened locals"
+    ],
+    "dangerous": [
+      "undead",
+      "cursed beasts",
+      "servants of darkness"
+    ],
+    "legendary": [
+      "ancient evil influence"
+    ]
+  },
+  "humanoids": [
+    "Barovians",
+    "Vistani travellers",
+    "isolated survivors"
+  ],
+  "travelHazards": [
+    "Mists obscure distance",
+    "roads feel longer than expected",
+    "safe rest is rare"
+  ],
+  "rumours": [
+    "Locals avoid speaking openly after dark",
+    "ravens may be more than they seem"
+  ],
+  "dmSecrets": [
+    "Fill canonical secrets from the book you own."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

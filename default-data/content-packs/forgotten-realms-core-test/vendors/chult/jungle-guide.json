@@ -1,0 +1,30 @@
+{
+  "id": "chult-jungle-guide",
+  "name": "Chultan Jungle Guide",
+  "regionId": "chult",
+  "stock": [
+    "Rain catcher",
+    "Insect salve",
+    "Machete",
+    "Waterproof satchel",
+    "Spare sandals",
+    "Anti-venom vial"
+  ],
+  "vendorTypes": [
+    "Jungle guide",
+    "Dockside outfitter",
+    "River trader"
+  ],
+  "personalities": [
+    "Bold",
+    "Practical",
+    "Superstitious",
+    "Cheerfully expensive"
+  ],
+  "secrets": [
+    "Knows a hidden trail",
+    "Avoids one cursed ruin",
+    "Can identify dinosaur signs"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

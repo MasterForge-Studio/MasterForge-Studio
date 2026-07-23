@@ -1,0 +1,14 @@
+{
+  "id": "baron-vargas-vallakovich",
+  "name": "Baron Vargas Vallakovich",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "vallaki",
+  "factionId": "vallaki-baronial-rule",
+  "role": "burgomaster of Vallaki",
+  "description": "Baron Vargas Vallakovich: burgomaster of Vallaki. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

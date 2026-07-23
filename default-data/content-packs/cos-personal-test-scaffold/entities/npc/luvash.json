@@ -1,0 +1,11 @@
+{
+  "id": "luvash",
+  "entity_type": "npc",
+  "name": "Luvash",
+  "description": "Vistani leader. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vistani",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

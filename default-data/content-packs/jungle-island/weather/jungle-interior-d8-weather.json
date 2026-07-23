@@ -1,0 +1,50 @@
+{
+  "id": "jungle-interior-d8-weather",
+  "name": "Jungle Interior d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "jungle-interior",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Steaming stillness",
+      "description": "Insects loud; stealth sounds masked."
+    },
+    {
+      "roll": 2,
+      "name": "Heavy canopy rain",
+      "description": "Travel slower; water plentiful."
+    },
+    {
+      "roll": 3,
+      "name": "Greenish storm light",
+      "description": "Predators become restless."
+    },
+    {
+      "roll": 4,
+      "name": "Hot clear shafted sunlight",
+      "description": "Navigation by sun briefly possible."
+    },
+    {
+      "roll": 5,
+      "name": "Dripping mist",
+      "description": "Perception reduced; tracks preserved."
+    },
+    {
+      "roll": 6,
+      "name": "Muggy insect bloom",
+      "description": "Disease/insect hazard increased."
+    },
+    {
+      "roll": 7,
+      "name": "Thunder without visibility",
+      "description": "Sound direction confusing."
+    },
+    {
+      "roll": 8,
+      "name": "Refreshing downpour",
+      "description": "Exhaustion pressure reduced after shelter."
+    }
+  ]
+}

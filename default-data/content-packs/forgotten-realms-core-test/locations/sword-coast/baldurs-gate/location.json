@@ -1,0 +1,26 @@
+{
+  "id": "baldurs-gate",
+  "worldId": "forgotten-realms",
+  "regionId": "sword-coast",
+  "name": "Baldur's Gate",
+  "type": "location",
+  "themeId": "gothic-mists",
+  "defaultThemeId": "gothic-mists",
+  "background": "scenes/locations/baldurs-gate/background.webp",
+  "summary": "A crowded, tense city of stone streets, watchful powers, corruption and opportunity.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

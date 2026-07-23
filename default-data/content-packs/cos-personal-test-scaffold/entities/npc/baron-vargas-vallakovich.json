@@ -1,0 +1,11 @@
+{
+  "id": "baron-vargas-vallakovich",
+  "entity_type": "npc",
+  "name": "Baron Vargas Vallakovich",
+  "description": "burgomaster of Vallaki. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vallaki-baronial-rule",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,11 @@
+{
+  "id": "karl-wachter",
+  "entity_type": "npc",
+  "name": "Karl Wachter",
+  "description": "Wachter family member. Placeholder for personal verification.",
+  "data": {
+    "factionId": "wachter-cult",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

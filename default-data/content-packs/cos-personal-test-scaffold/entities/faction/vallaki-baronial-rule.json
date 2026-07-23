@@ -1,0 +1,10 @@
+{
+  "id": "vallaki-baronial-rule",
+  "entity_type": "faction",
+  "name": "Vallaki Baronial Rule",
+  "description": "Vallaki's official authority and loyalists.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

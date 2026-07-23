@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Activate MasterForge Studio</title>
+
+  <link
+    rel="stylesheet"
+    href="activation.css"
+  >
+</head>
+
+<body>
+  <main id="activationApp">
+
+    <header class="activationTopbar">
+
+      <div class="activationBrand">
+        <img
+          src="./assets/Logo.png"
+          alt="MasterForge Studio"
+          class="activationLogo"
+        >
+
+        <span>MasterForge Studio</span>
+      </div>
+
+      <div class="activationWindowControls">
+
+        <button
+          id="activationMinBtn"
+          type="button"
+          aria-label="Minimise"
+        >
+          −
+        </button>
+
+        <button
+          id="activationCloseBtn"
+          type="button"
+          aria-label="Close"
+        >
+          ×
+        </button>
+
+      </div>
+
+    </header>
+
+    <section class="activationLayout">
+
+      <div class="activationCard">
+
+        <div class="activationHeading">
+
+          <p class="activationEyebrow">
+            Alpha Access
+          </p>
+
+          <h1>Activate MasterForge Studio</h1>
+
+          <p>
+            Enter the approved email address and access key
+            supplied with your Alpha invitation.
+          </p>
+
+        </div>
+
+        <form
+          id="activationForm"
+          novalidate
+        >
+
+          <div class="activationField">
+
+            <label for="activationEmail">
+              Approved email address
+            </label>
+
+            <input
+              id="activationEmail"
+              name="email"
+              type="email"
+              autocomplete="email"
+              placeholder="you@example.com"
+              required
+            >
+
+          </div>
+
+          <div class="activationField">
+
+            <label for="activationAccessKey">
+              MasterForge access key
+            </label>
+
+            <input
+              id="activationAccessKey"
+              name="accessKey"
+              type="text"
+              autocomplete="off"
+              autocapitalize="characters"
+              spellcheck="false"
+              placeholder="MFS-ALPHA-WIN-XXXX-XXXX-XXXX"
+              required
+            >
+
+          </div>
+
+          <div
+            id="activationMessage"
+            class="activationMessage hidden"
+            role="alert"
+            aria-live="polite"
+          ></div>
+
+          <button
+            id="activateMasterForgeBtn"
+            class="activationSubmit"
+            type="submit"
+          >
+            Activate MasterForge Studio
+          </button>
+
+        </form>
+
+        <div class="activationSupport">
+
+          <p>
+            Activation problems will never delete or alter
+            your campaign data.
+          </p>
+
+          <p>
+            Need help?
+            Contact MasterForge Studio support.
+          </p>
+
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <script src="activation.js"></script>
+
+</body>
+</html>

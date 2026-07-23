@@ -1,0 +1,24 @@
+{
+  "id": "merchant-vessel",
+  "name": "Merchant Vessel",
+  "type": "vessel",
+  "hull": 100,
+  "crewMorale": 75,
+  "suppliesDays": 20,
+  "features": [
+    "Main deck",
+    "Cargo hold",
+    "Captain cabin",
+    "Galley",
+    "Crew quarters",
+    "Crow nest"
+  ],
+  "problems": [
+    "Torn sail",
+    "Spoiled water",
+    "Crew argument",
+    "Hull leak",
+    "Bad chart",
+    "Hidden passenger"
+  ]
+}

@@ -1,0 +1,23 @@
+{
+  "id": "cos-personal-test-scaffold",
+  "name": "Curse of Strahd Personal Test Scaffold",
+  "version": "0.1.0",
+  "author": "Wayne Reed / MasterForge Studio",
+  "type": "campaign-scaffold",
+  "privateUseOnly": true,
+  "notForDistribution": true,
+  "description": "A MasterForge Studio personal-use scaffold for testing entity, relationship and asset workflows against the owner's physical Curse of Strahd book. Contains original short placeholders and structure only; fill/verify details from the book you own.",
+  "min_app_version": "0.2.0-alpha",
+  "collections": [
+    "worlds",
+    "locations",
+    "regions",
+    "npcs",
+    "factions",
+    "encounters",
+    "loot",
+    "weather",
+    "entities",
+    "relationships"
+  ]
+}

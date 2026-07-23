@@ -1,0 +1,35 @@
+{
+  "id": "port-nyanzaru",
+  "name": "Port Nyanzaru",
+  "type": "location",
+  "regionId": "chult",
+  "summary": "A bright, wealthy and dangerous harbour city ruled by merchant princes, filled with dinosaur races, jungle guides and foreign intrigue.",
+  "politics": [
+    "Merchant Princes control trade, guides, beasts, magic and information.",
+    "Foreign powers court favour while avoiding open insult."
+  ],
+  "culture": [
+    "Vibrant markets, colourful dress, public spectacle and sharp commercial instincts define the city.",
+    "Guides, sailors and adventurers gather where jungle rumours can be bought."
+  ],
+  "factions": [
+    "Merchant Princes",
+    "Ytepka Society",
+    "Flaming Fist envoys",
+    "Guides’ guilds",
+    "Foreign merchants"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "lost-jungle-isle",
+  "background": "assets/locations/port-nyanzaru/background.webp"
+}

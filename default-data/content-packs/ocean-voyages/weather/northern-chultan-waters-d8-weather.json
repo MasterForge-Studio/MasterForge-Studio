@@ -1,0 +1,50 @@
+{
+  "id": "northern-chultan-waters-d8-weather",
+  "name": "Northern Chultan Waters d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "northern-chultan-waters",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Heavy Humid Calm",
+      "description": "The air is heavy and wet. Sails hang slack and tempers rise. Ship movement is reduced unless oars, magic or patience are used."
+    },
+    {
+      "roll": "2",
+      "name": "Warm Following Wind",
+      "description": "A steady warm wind fills the sails. Travel is smooth and morale improves."
+    },
+    {
+      "roll": "3",
+      "name": "Rolling Sea Mist",
+      "description": "Low mist rolls over the water. Visibility is reduced and navigation checks become more uncertain."
+    },
+    {
+      "roll": "4",
+      "name": "Tropical Downpour",
+      "description": "Warm rain hammers the deck. The ship remains safe, but footing is poor and anything left unsecured gets soaked."
+    },
+    {
+      "roll": "5",
+      "name": "Strong Coastal Current",
+      "description": "The sea pulls south-west in a powerful current. Good navigation can gain time, poor navigation can lose the route."
+    },
+    {
+      "roll": "6",
+      "name": "Sudden Squall",
+      "description": "A fast storm front hits with sharp rain and hard gusts. Crew must secure rigging and cargo."
+    },
+    {
+      "roll": "7",
+      "name": "Thunder Over Chult",
+      "description": "Lightning flickers over the distant jungle coast. The sea rises and every sailor watches the horizon."
+    },
+    {
+      "roll": "8",
+      "name": "Unnatural Greenish Sky",
+      "description": "The light changes oddly. Birds vanish. The crew becomes quiet. Something about the weather feels wrong."
+    }
+  ]
+}

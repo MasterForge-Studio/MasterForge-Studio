@@ -1,0 +1,348 @@
+:root {
+  --theme-bg-app: url("./background.webp");
+}
+:root {
+  --theme-bg-app: url("./backgrounds/background.webp");
+  --theme-bg-menu: url("./backgrounds/menu.png");
+  --theme-bg-panel: url("./backgrounds/panel.png");
+  --theme-bg-toolbar: url("./backgrounds/toolbar.png");
+
+  --theme-border-outer: url("./borders/outer.png");
+  --theme-border-panel: url("./borders/panel.png");
+  --theme-border-top: url("./borders/top.png");
+
+  --theme-corner-top-left: url("./corners/top-left.png");
+  --theme-corner-top-right: url("./corners/top-right.png");
+  --theme-corner-bottom-left: url("./corners/bottom-left.png");
+  --theme-corner-bottom-right: url("./corners/bottom-right.png");
+
+  --theme-extra-divider: url("./extras/divider.png");
+  --theme-extra-watermark: url("./extras/watermark.png");
+
+  --font-main: Georgia, "Times New Roman", serif;
+  --app-bg: rgba(5, 10, 5, 0.96);
+  --panel-bg: rgba(8, 18, 8, 0.88);
+  --card-bg: rgba(10, 24, 10, 0.78);
+  --text-main: #f5e7c2;
+  --text-muted: #c8b98a;
+  --accent: #d4af37;
+  --border: rgba(212, 175, 55, 0.58);
+  --radius: 16px;
+}
+
+#app {
+  box-shadow:
+    inset 0 0 45px rgba(0, 0, 0, 0.9),
+    0 0 25px rgba(45, 70, 20, 0.6);
+  
+}
+#app {
+  background: transparent;
+
+  box-shadow:
+    inset 0 0 45px rgba(0,0,0,.9),
+    0 0 25px rgba(45,70,20,.6);
+}
+#topbar {
+  background:
+    linear-gradient(90deg, rgba(8, 18, 8, 0.95), rgba(20, 30, 12, 0.95));
+  border-bottom: 1px solid var(--border);
+}
+
+#brand {
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+}
+
+#stateBar,
+#tabs {
+  background:
+    linear-gradient(180deg, rgba(10, 20, 8, 0.95), rgba(3, 9, 4, 0.95));
+}
+
+#tabs {
+  border-right: 1px solid var(--border);
+  box-shadow: inset -12px 0 24px rgba(0, 0, 0, 0.35);
+}
+
+.tab {
+  font-weight: bold;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  background:
+    linear-gradient(180deg, rgba(35, 45, 18, 0.92), rgba(10, 16, 8, 0.95));
+  color: #ead58c;
+  border: 1px solid rgba(212, 175, 55, 0.55);
+  box-shadow:
+    inset 0 0 10px rgba(0, 0, 0, 0.8),
+    0 0 8px rgba(0, 0, 0, 0.35);
+}
+
+.tab:hover {
+  background:
+    linear-gradient(180deg, rgba(55, 85, 24, 0.95), rgba(14, 25, 8, 0.95));
+}
+
+.tab.active {
+  color: #fff4b8;
+  background:
+    linear-gradient(180deg, rgba(65, 110, 28, 0.95), rgba(20, 44, 12, 0.98));
+  border-color: rgba(150, 220, 85, 0.8);
+  box-shadow:
+    inset 0 0 14px rgba(0, 0, 0, 0.9),
+    0 0 14px rgba(90, 150, 45, 0.45);
+}
+
+button,
+select,
+input,
+textarea {
+  border-color: rgba(212, 175, 55, 0.55);
+  background: rgba(8, 12, 6, 0.88);
+  color: #f7e8b4;
+}
+
+button:hover {
+  background: rgba(55, 85, 24, 0.95);
+}
+
+.panel {
+  background:
+    radial-gradient(circle at top left, rgba(60, 110, 35, 0.08), transparent 30%);
+}
+
+.infoCard,
+.characterCard,
+.characterMiniCard,
+.activePartyCard,
+.storyColumn textarea {
+  background:
+    linear-gradient(rgba(4, 10, 4, 0.82), rgba(4, 10, 4, 0.82)),
+    radial-gradient(circle at top left, rgba(95, 130, 45, 0.14), transparent 35%);
+  border: 1px solid rgba(212, 175, 55, 0.45);
+  box-shadow:
+    inset 0 0 20px rgba(0, 0, 0, 0.75),
+    0 0 8px rgba(0, 0, 0, 0.35);
+}
+
+h1,
+h2,
+h3 {
+  color: #d4af37;
+  text-shadow: 0 0 8px rgba(0, 0, 0, 0.9);
+}
+
+.storyColumn h2 {
+  color: #b7e46a;
+}
+
+#storyToolbar {
+  border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  padding-bottom: 10px;
+}
+
+#scriptTitleInput {
+  font-size: 20px;
+  color: #d4af37;
+}
+
+textarea {
+  font-family: Consolas, monospace;
+  line-height: 1.45;
+}
+
+#storyEditorLayout {
+  gap: 16px;
+}
+
+.modalBox {
+  background:
+    linear-gradient(rgba(8, 15, 8, 0.97), rgba(3, 8, 3, 0.97));
+  border-color: rgba(212, 175, 55, 0.7);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.9);
+}
+
+.progressFill {
+  background: linear-gradient(90deg, #244f18, #d4af37);
+}
+
+#app {
+  box-shadow:
+    inset 0 0 45px rgba(0, 0, 0, 0.9),
+    0 0 25px rgba(45, 70, 20, 0.6);
+}
+
+#topbar,
+#stateBar,
+#tabs,
+#storyToolbar {
+  border-color: rgba(128, 100, 38, 0.9);
+}
+
+.panel,
+.infoCard,
+.characterCard,
+.characterMiniCard,
+.activePartyCard,
+.storyColumn textarea,
+#storyPromptLayout {
+  border: 2px solid rgba(128, 100, 38, 0.85);
+  box-shadow:
+    inset 0 0 18px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(43, 80, 28, 0.45);
+}
+/* ===============================
+   LOST JUNGLE ISLE APP BACKGROUND
+================================ */
+
+#app {
+  background: transparent !important;
+}
+
+#app::before {
+  background-image: url("./backgrounds/background.webp") !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  opacity: 1 !important;
+}
+#app {
+  background: transparent !important;
+}
+
+#app::before {
+  opacity: var(--theme-image-opacity) !important;
+}
+
+#topbar,
+#stateBar,
+#tabs,
+.panel,
+.modalBox,
+.infoCard,
+.characterCard,
+.characterMiniCard,
+.activePartyCard,
+.storyColumn textarea,
+#storyPromptLayout,
+#promptNotesPanel,
+button,
+input,
+select,
+textarea {
+  background:
+    rgba(5, 10, 5, var(--app-ui-opacity)) !important;
+}
+
+/* ===============================
+   JUNGLE TOP DIVIDER
+================================ */
+
+#stateBar::after {
+  content: "";
+  position: absolute;
+
+  left: 170px;
+  right: 0;
+  bottom: -34px;
+
+  height: 52px;
+
+  background-image: var(--theme-border-top);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+
+  pointer-events: none;
+  z-index: 20;
+
+  opacity: 0.75;
+}
+#stateBar {
+  position: relative;
+  overflow: visible;
+}
+/* ===============================
+   THEME BACKGROUND ENGINE
+================================ */
+
+#app {
+  position: relative;
+  overflow: hidden;
+  background: transparent !important;
+}
+
+
+#app::before {
+
+  content: "";
+
+  position: fixed;
+
+  top: 0;
+  left: 0;
+
+  width: 100vw;
+  height: 100vh;
+
+  background-image:
+    var(--theme-bg-app);
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  opacity:
+    var(--theme-image-opacity);
+
+  pointer-events: none;
+
+  z-index: -10;
+
+}
+/* ===============================
+   THEME DROPDOWNS
+================================ */
+
+select {
+
+  background:
+    rgba(10, 8, 5, 0.9)
+    !important;
+
+  color:
+    var(--text-main)
+    !important;
+
+  border:
+    1px solid var(--border)
+    !important;
+
+}
+
+
+select option {
+
+  background:
+    rgb(20, 15, 8)
+    !important;
+
+  color:
+    #f6e7c4
+    !important;
+
+}
+
+
+select option:hover,
+select option:checked {
+
+  background:
+    rgb(80, 55, 20)
+    !important;
+
+  color:
+    white
+    !important;
+
+}

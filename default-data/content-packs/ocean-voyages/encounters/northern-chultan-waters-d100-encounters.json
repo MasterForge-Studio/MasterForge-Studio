@@ -1,0 +1,130 @@
+{
+  "id": "northern-chultan-waters-d100-encounters",
+  "name": "Northern Chultan Waters d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "trackless-sea",
+  "regionId": "northern-chultan-waters",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Distant jungle coastline",
+      "description": "Distant jungle coastline. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "6-10",
+      "name": "Floating fruit and broken branches from Chult",
+      "description": "Floating fruit and broken branches from Chult. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "11-15",
+      "name": "Sea birds circling wreckage",
+      "description": "Sea birds circling wreckage. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "16-20",
+      "name": "Chultan fishing canoe",
+      "description": "Chultan fishing canoe. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "21-25",
+      "name": "Hidden reef near the approach",
+      "description": "Hidden reef near the approach. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "26-30",
+      "name": "Dinosaur roar carried from shore",
+      "description": "Dinosaur roar carried from shore. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "31-35",
+      "name": "Merchant vessel heading north",
+      "description": "Merchant vessel heading north. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "36-40",
+      "name": "Storm clouds over the peninsula",
+      "description": "Storm clouds over the peninsula. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "41-45",
+      "name": "Giant shark circles the ship",
+      "description": "Giant shark circles the ship. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "46-50",
+      "name": "Sahuagin scouts beneath the waves",
+      "description": "Sahuagin scouts beneath the waves. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "51-55",
+      "name": "Sick sailor from bad water",
+      "description": "Sick sailor from bad water. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "56-60",
+      "name": "Navigator spots strange lights",
+      "description": "Navigator spots strange lights. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "61-65",
+      "name": "Cargo shifts in humid swell",
+      "description": "Cargo shifts in humid swell. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "66-70",
+      "name": "Drifting carved idol",
+      "description": "Drifting carved idol. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "71-75",
+      "name": "Pirate sail on horizon",
+      "description": "Pirate sail on horizon. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "76-80",
+      "name": "Lost explorer in small boat",
+      "description": "Lost explorer in small boat. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "81-85",
+      "name": "Huge shadow below",
+      "description": "Huge shadow below. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "86-90",
+      "name": "Sudden squall",
+      "description": "Sudden squall. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "91-95",
+      "name": "Wreckage marked with claw marks",
+      "description": "Wreckage marked with claw marks. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "96-100",
+      "name": "Unnatural green fog",
+      "description": "Unnatural green fog. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "id": "vistani",
+  "name": "Vistani",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Travelling communities with complex ties across the valley.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

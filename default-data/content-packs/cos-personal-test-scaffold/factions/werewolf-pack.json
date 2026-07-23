@@ -1,0 +1,14 @@
+{
+  "id": "werewolf-pack",
+  "name": "Werewolf Pack",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Predatory pack tied to the western wilderness.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

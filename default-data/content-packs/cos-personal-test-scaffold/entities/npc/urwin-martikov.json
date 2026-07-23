@@ -1,0 +1,11 @@
+{
+  "id": "urwin-martikov",
+  "entity_type": "npc",
+  "name": "Urwin Martikov",
+  "description": "innkeeper. Placeholder for personal verification.",
+  "data": {
+    "factionId": "keepers-of-the-feather",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

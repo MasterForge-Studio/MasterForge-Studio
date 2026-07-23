@@ -1,0 +1,9 @@
+{
+  "id": "forgotten-realms-core-v2",
+  "name": "Forgotten Realms Core",
+  "version": "2.0.0-alpha",
+  "author": "Reedy's DM Suite",
+  "type": "campaign-setting",
+  "description": "Core Forgotten Realms world structure for MasterForge using World \u2192 Region \u2192 Location hierarchy, with scene background inheritance and location-scoped encounter, loot and weather tables.",
+  "schemaVersion": "0.2-world-region-location"
+}

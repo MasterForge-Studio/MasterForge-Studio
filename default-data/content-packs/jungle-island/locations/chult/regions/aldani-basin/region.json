@@ -1,0 +1,73 @@
+{
+  "id": "aldani-basin",
+  "locationId": "chult",
+  "name": "Aldani Basin",
+  "type": "region",
+  "environment": [
+    "Swampy lowlands",
+    "Reed-choked waterways",
+    "Mosquito clouds",
+    "Stagnant pools",
+    "Half-sunken ruins"
+  ],
+  "weather": [
+    "Suffocating humidity",
+    "Warm swamp fog",
+    "Mosquito-heavy dusk",
+    "Heavy rain that drowns paths"
+  ],
+  "politics": [
+    "The basin belongs to those who know the water.",
+    "Aldani avoid most outsiders but remember insults.",
+    "Predators rule the channels."
+  ],
+  "culture": [
+    "Locals speak quietly on the water.",
+    "Fire, smoke and clean water are prized more than gold."
+  ],
+  "creatures": {
+    "common": [
+      "Giant frogs",
+      "Crocodiles",
+      "Stirges",
+      "Insects",
+      "Constrictor snakes"
+    ],
+    "dangerous": [
+      "Giant crocodiles",
+      "Shambling mounds",
+      "Trolls",
+      "Undead drowned explorers",
+      "Swamp hags"
+    ],
+    "legendary": [
+      "Ancient crocodile spirit",
+      "Hydra",
+      "Forgotten basin guardian"
+    ]
+  },
+  "humanoids": [
+    "Aldani",
+    "Lost canoe traders",
+    "Hermits",
+    "Grung scouts",
+    "Desperate explorers"
+  ],
+  "travelHazards": [
+    "Disease water",
+    "Sucking mud",
+    "Hidden deep pools",
+    "Leeches",
+    "Rotten bridges"
+  ],
+  "rumours": [
+    "The lobster folk know where old treasures sank.",
+    "Something huge sleeps below the reeds.",
+    "A temple bell rings underwater during storms."
+  ],
+  "dmSecrets": [
+    "Aldani may trade guidance for mercy or medicine.",
+    "A submerged ruin contains a clue to a greater route.",
+    "The water itself may carry cursed memories."
+  ]
+}

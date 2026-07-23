@@ -1,0 +1,10 @@
+{
+  "id": "old-bonegrinder",
+  "entity_type": "region",
+  "name": "Old Bonegrinder",
+  "description": "An old windmill with a dreadful reputation.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

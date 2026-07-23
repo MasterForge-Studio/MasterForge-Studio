@@ -1,0 +1,11 @@
+{
+  "id": "parriwimple",
+  "entity_type": "npc",
+  "name": "Parriwimple",
+  "description": "strong helper. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

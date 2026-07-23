@@ -1,0 +1,11 @@
+{
+  "id": "vasilka",
+  "entity_type": "npc",
+  "name": "Vasilka",
+  "description": "constructed bride figure. Placeholder for personal verification.",
+  "data": {
+    "factionId": "abbey-of-saint-markovia",
+    "regionId": "abbey-of-saint-markovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

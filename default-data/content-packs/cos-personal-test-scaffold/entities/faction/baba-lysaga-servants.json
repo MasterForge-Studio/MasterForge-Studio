@@ -1,0 +1,10 @@
+{
+  "id": "baba-lysaga-servants",
+  "entity_type": "faction",
+  "name": "Baba Lysaga's Servants",
+  "description": "Forces and creatures serving the witch of Berez.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

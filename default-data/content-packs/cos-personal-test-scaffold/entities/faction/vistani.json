@@ -1,0 +1,10 @@
+{
+  "id": "vistani",
+  "entity_type": "faction",
+  "name": "Vistani",
+  "description": "Travelling communities with complex ties across the valley.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

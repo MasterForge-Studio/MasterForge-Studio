@@ -1,0 +1,11 @@
+{
+  "id": "victor-vallakovich",
+  "entity_type": "npc",
+  "name": "Victor Vallakovich",
+  "description": "troubled young noble. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vallaki-baronial-rule",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

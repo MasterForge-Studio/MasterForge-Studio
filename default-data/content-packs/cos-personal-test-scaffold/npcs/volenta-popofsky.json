@@ -1,0 +1,14 @@
+{
+  "id": "volenta-popofsky",
+  "name": "Volenta Popofsky",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "castle-ravenloft",
+  "factionId": "castle-ravenloft-court",
+  "role": "Ravenloft bride",
+  "description": "Volenta Popofsky: Ravenloft bride. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

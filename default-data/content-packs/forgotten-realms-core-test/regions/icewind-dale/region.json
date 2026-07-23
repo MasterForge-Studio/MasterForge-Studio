@@ -1,0 +1,17 @@
+{
+  "id": "icewind-dale",
+  "worldId": "forgotten-realms",
+  "name": "Icewind Dale",
+  "type": "region",
+  "themeId": "gothic-mists",
+  "defaultThemeId": "gothic-mists",
+  "background": "scenes/regions/icewind-dale/background.webp",
+  "summary": "A frozen northern frontier of harsh weather, isolated settlements and survival-focused journeys.",
+  "dmTone": [
+    "Exploration",
+    "Regional politics",
+    "Local dangers",
+    "Travel choices"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

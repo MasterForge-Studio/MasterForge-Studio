@@ -1,0 +1,10 @@
+{
+  "id": "yester-hill",
+  "entity_type": "region",
+  "name": "Yester Hill",
+  "description": "A wild hill tied to ancient rites and violent nature cults.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

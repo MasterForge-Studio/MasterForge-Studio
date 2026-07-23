@@ -1,0 +1,13 @@
+{
+  "id": "domains-of-dread",
+  "name": "Domains of Dread",
+  "summary": "Gothic horror demiplanes used as a campaign container for Barovia.",
+  "dmTone": [
+    "Gothic dread",
+    "Isolation",
+    "Temptation",
+    "Tragedy",
+    "Mist-shrouded mystery"
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

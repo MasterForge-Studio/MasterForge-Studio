@@ -1,0 +1,34 @@
+{
+  "id": "leilon",
+  "name": "Leilon",
+  "type": "location",
+  "regionId": "sword-coast",
+  "summary": "A rebuilt coastal settlement on the High Road, vulnerable to raids, storms, old magic and the ambitions of larger powers.",
+  "politics": [
+    "Reconstruction depends on alliances with Neverwinter, local captains and brave settlers.",
+    "Control of the coast road gives Leilon importance beyond its size."
+  ],
+  "culture": [
+    "Settlers value grit, mutual aid and practical defence.",
+    "Many locals have come seeking a second chance."
+  ],
+  "factions": [
+    "Town council",
+    "Neverwinter interests",
+    "Local militia",
+    "Coastal traders"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/leilon/background.webp"
+}

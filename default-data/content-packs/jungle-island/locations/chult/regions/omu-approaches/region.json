@@ -1,0 +1,72 @@
+{
+  "id": "omu-approaches",
+  "locationId": "chult",
+  "name": "Omu Approaches",
+  "type": "region",
+  "environment": [
+    "Forbidden jungle",
+    "Ravines",
+    "Ruined approach roads",
+    "Stone markers",
+    "Predator-dense canopy"
+  ],
+  "weather": [
+    "Heavy oppressive air",
+    "Thunder with no rain",
+    "Low green fog",
+    "Rain that smells of old stone"
+  ],
+  "politics": [
+    "Yuan-ti influence grows closer to Omu.",
+    "Most guides refuse to go further without great cause."
+  ],
+  "culture": [
+    "Names of lost cities are spoken quietly.",
+    "Old warnings are treated as survival instructions."
+  ],
+  "creatures": {
+    "common": [
+      "Velociraptors",
+      "Giant snakes",
+      "Bats",
+      "Carrion birds",
+      "Large insects"
+    ],
+    "dangerous": [
+      "Yuan-ti patrols",
+      "Undead guardians",
+      "Assassin vines",
+      "Allosaurus",
+      "Stone traps"
+    ],
+    "legendary": [
+      "Forbidden city guardian",
+      "Serpent oracle",
+      "Ancient curse manifestation"
+    ]
+  },
+  "humanoids": [
+    "Yuan-ti spies",
+    "Doomed explorers",
+    "Relic hunters",
+    "Cult agents",
+    "Silent guides"
+  ],
+  "travelHazards": [
+    "Curses",
+    "False trails",
+    "Deadfall traps",
+    "Venomous plants",
+    "Ambush ground"
+  ],
+  "rumours": [
+    "A city swallowed by jungle still dreams.",
+    "Serpents watch from carved stones.",
+    "Those who sleep near the markers wake with strange maps in their minds."
+  ],
+  "dmSecrets": [
+    "The party may be watched long before they see enemies.",
+    "Approach markers are part warning, part key.",
+    "A recurring serpent symbol can seed later revelations."
+  ]
+}

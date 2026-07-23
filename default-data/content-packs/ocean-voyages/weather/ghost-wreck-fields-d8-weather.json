@@ -1,0 +1,50 @@
+{
+  "id": "ghost-wreck-fields-d8-weather",
+  "name": "Ghost Wreck Fields d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "ghost-wreck-fields",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Cold Patch",
+      "description": "The air turns cold despite the tropics. Breath fogs briefly."
+    },
+    {
+      "roll": "2",
+      "name": "Still Water",
+      "description": "The water goes mirror-flat around old wreckage."
+    },
+    {
+      "roll": "3",
+      "name": "Drifting Mist",
+      "description": "Mist forms around broken timbers and half-sunk hulls."
+    },
+    {
+      "roll": "4",
+      "name": "Soft Rain",
+      "description": "Rain falls without wind. Sounds feel muffled."
+    },
+    {
+      "roll": "5",
+      "name": "Distant Bell",
+      "description": "A bell is heard across the water, though no visible ship carries it."
+    },
+    {
+      "roll": "6",
+      "name": "Corpse Lights",
+      "description": "Pale lights flicker over the sea at night."
+    },
+    {
+      "roll": "7",
+      "name": "Whispering Wind",
+      "description": "The wind passes through rigging like voices."
+    },
+    {
+      "roll": "8",
+      "name": "Dead Ship Weather",
+      "description": "The sky darkens over a wreck. Compasses twitch and crew refuse to look at it."
+    }
+  ]
+}

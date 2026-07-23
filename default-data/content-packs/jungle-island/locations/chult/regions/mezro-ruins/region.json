@@ -1,0 +1,72 @@
+{
+  "id": "mezro-ruins",
+  "locationId": "chult",
+  "name": "Mezro Ruins",
+  "type": "region",
+  "environment": [
+    "Overgrown city ruins",
+    "Sacred plazas",
+    "Broken causeways",
+    "Vines over carved stone",
+    "Echoing empty streets"
+  ],
+  "weather": [
+    "Still humid air",
+    "Rainwater pooling in plazas",
+    "Strange silence before storms",
+    "Golden light through canopy"
+  ],
+  "politics": [
+    "No living authority openly rules the ruins.",
+    "Factions seek secrets but fear what remains."
+  ],
+  "culture": [
+    "The ruins are sacred to many Chultans.",
+    "Careless looting is viewed as dangerous, not merely rude."
+  ],
+  "creatures": {
+    "common": [
+      "Monkeys",
+      "Flying snakes",
+      "Lizards",
+      "Insect clouds",
+      "Spirit birds"
+    ],
+    "dangerous": [
+      "Undead guardians",
+      "Gargoyles",
+      "Assassin vines",
+      "Spectres",
+      "Construct remnants"
+    ],
+    "legendary": [
+      "Ancient barae echo",
+      "Ubtao maze spirit",
+      "Lost city guardian"
+    ]
+  },
+  "humanoids": [
+    "Scholars",
+    "Treasure seekers",
+    "Priests",
+    "Harpers",
+    "Hidden watchers"
+  ],
+  "travelHazards": [
+    "Collapsing masonry",
+    "Cursed glyphs",
+    "False floors",
+    "Haunted memories",
+    "Maze-like streets"
+  ],
+  "rumours": [
+    "Some streets are not in the same place twice.",
+    "A sacred pool answers questions with reflections.",
+    "A dead priest still guards a sealed door."
+  ],
+  "dmSecrets": [
+    "The ruins can reveal campaign lore in visions.",
+    "Desecration may trigger guardians.",
+    "A faction contact may be hiding in plain sight."
+  ]
+}

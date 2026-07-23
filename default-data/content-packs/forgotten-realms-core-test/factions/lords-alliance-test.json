@@ -1,0 +1,15 @@
+{
+  "id": "lords-alliance-test",
+  "name": "Lords' Alliance Test Faction",
+  "type": "faction",
+  "entity_type": "faction",
+  "worldId": "forgotten-realms",
+  "regionId": "sword-coast",
+  "description": "A test faction record representing lawful city interests, patrols and political pressure.",
+  "goals": [
+    "Secure trade routes",
+    "Maintain influence",
+    "Limit open conflict"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

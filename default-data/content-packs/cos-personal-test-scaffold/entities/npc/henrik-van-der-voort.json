@@ -1,0 +1,11 @@
+{
+  "id": "henrik-van-der-voort",
+  "entity_type": "npc",
+  "name": "Henrik van der Voort",
+  "description": "coffin maker. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

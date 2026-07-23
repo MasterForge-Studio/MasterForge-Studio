@@ -1,0 +1,130 @@
+{
+  "id": "northern-chultan-waters-d100-loot",
+  "name": "Northern Chultan Waters d100 Loot",
+  "type": "loot-table",
+  "locationId": "trackless-sea",
+  "regionId": "northern-chultan-waters",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Coiled silk rope",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "6-10",
+      "name": "Sealed spice jar",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "11-15",
+      "name": "Brass spyglass lens",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "16-20",
+      "name": "Salt-stained map scrap",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "21-25",
+      "name": "Pearl worth 25gp",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "26-30",
+      "name": "Carved bone charm",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "31-35",
+      "name": "Bottle of good rum",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "36-40",
+      "name": "Waterproof scroll tube",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "41-45",
+      "name": "Small pouch of foreign coins",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "46-50",
+      "name": "Coral necklace",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "51-55",
+      "name": "Silver fishhook set",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "56-60",
+      "name": "Ship carpenter tools",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "61-65",
+      "name": "Waxed canvas bundle",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "66-70",
+      "name": "Old captain ring",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "71-75",
+      "name": "Polished shell idol",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "76-80",
+      "name": "Potion bottle in cork float",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "81-85",
+      "name": "Black pearl shard",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "86-90",
+      "name": "Navigator star chart",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "91-95",
+      "name": "Locked sailor chest",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    },
+    {
+      "roll": "96-100",
+      "name": "Ancient sea coin",
+      "description": "Recovered at sea near Northern Chultan Waters. Can be sold, traded, studied, or used as a story hook.",
+      "value": "Varies"
+    }
+  ]
+}

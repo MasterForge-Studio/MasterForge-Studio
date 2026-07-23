@@ -1,0 +1,50 @@
+{
+  "id": "lost-temples-d8-weather",
+  "name": "Lost Temples d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "lost-temples",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Cold temple shade",
+      "description": "Unnatural chill; spirits near."
+    },
+    {
+      "roll": 2,
+      "name": "Rain through broken roof",
+      "description": "Glyphs and tracks reveal."
+    },
+    {
+      "roll": 3,
+      "name": "Thunder like drums",
+      "description": "Ritual magic feels stronger."
+    },
+    {
+      "roll": 4,
+      "name": "Still humid air",
+      "description": "Torches gutter; sound muted."
+    },
+    {
+      "roll": 5,
+      "name": "Sunbeam on altar",
+      "description": "Sacred mechanism clue."
+    },
+    {
+      "roll": 6,
+      "name": "Green fog in halls",
+      "description": "Poison/cursed atmosphere risk."
+    },
+    {
+      "roll": 7,
+      "name": "Dripping darkness",
+      "description": "Stealth and fear heightened."
+    },
+    {
+      "roll": 8,
+      "name": "Warm cleansing rain",
+      "description": "Curses quiet temporarily."
+    }
+  ]
+}

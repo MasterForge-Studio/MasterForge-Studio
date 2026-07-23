@@ -1,0 +1,72 @@
+{
+  "id": "river-lands",
+  "locationId": "chult",
+  "name": "River Lands",
+  "type": "region",
+  "environment": [
+    "Wide brown rivers",
+    "Steep banks",
+    "Flooded jungle",
+    "Waterfalls",
+    "Trading canoe routes"
+  ],
+  "weather": [
+    "River mist at dawn",
+    "Hot open-water glare",
+    "Afternoon rain",
+    "Thunder rolling along valleys"
+  ],
+  "politics": [
+    "Whoever controls boats controls travel.",
+    "Pirates, hunters and scouts use the river as a highway."
+  ],
+  "culture": [
+    "River guides watch the current like others read maps.",
+    "Offerings to river spirits are common before long journeys."
+  ],
+  "creatures": {
+    "common": [
+      "Crocodiles",
+      "Pteranodons",
+      "Giant frogs",
+      "Fish swarms",
+      "Hadrosaurs"
+    ],
+    "dangerous": [
+      "Giant crocodiles",
+      "Water weirds",
+      "Undead boatmen",
+      "Allosaurus at crossings",
+      "Assassin vines"
+    ],
+    "legendary": [
+      "River hydra",
+      "Ancient ferry spirit",
+      "Storm roc overhead"
+    ]
+  },
+  "humanoids": [
+    "Boat guides",
+    "River traders",
+    "Pirates",
+    "Emerald Enclave scouts",
+    "Yuan-ti watchers"
+  ],
+  "travelHazards": [
+    "Capsizing currents",
+    "Hidden rocks",
+    "Waterborne disease",
+    "Flood surges",
+    "Broken rope crossings"
+  ],
+  "rumours": [
+    "A silent canoe follows travellers at dusk.",
+    "A waterfall hides a shrine.",
+    "A pirate cache lies above a bend marked by red stones."
+  ],
+  "dmSecrets": [
+    "The river can shortcut danger or lead into a trap.",
+    "A faction courier is moving along the same route.",
+    "An old shrine offers visions if respected."
+  ]
+}

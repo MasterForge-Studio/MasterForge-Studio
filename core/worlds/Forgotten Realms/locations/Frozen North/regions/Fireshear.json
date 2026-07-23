@@ -1,0 +1,71 @@
+{
+  "name": "Fireshear",
+  "location": "Frozen North",
+  "environment": [
+    "Remote mining settlement",
+    "Cold harbour",
+    "Rocky coastline",
+    "Snow-covered tracks",
+    "Ore stores and warehouses"
+  ],
+  "weather": [
+    "Freezing wind",
+    "Snow flurries",
+    "Icy rain",
+    "Low visibility fog"
+  ],
+  "politics": [
+    "Mining interests dominate local life.",
+    "Travellers, sailors and merchants pass through but rarely stay.",
+    "Local power is practical rather than noble."
+  ],
+  "culture": [
+    "People value warmth, work and honesty.",
+    "Outsiders are watched but tolerated if useful.",
+    "Most locals know the dangers of the north."
+  ],
+  "creatures": {
+    "common": [
+      "Wolves",
+      "Elk",
+      "Giant owls",
+      "Bears"
+    ],
+    "dangerous": [
+      "Winter wolves",
+      "Yetis",
+      "Trolls",
+      "Ogres"
+    ],
+    "legendary": [
+      "White dragons",
+      "Frost giants",
+      "Ancient things under the ice"
+    ]
+  },
+  "humanoids": [
+    "Miners",
+    "Sailors",
+    "Dwarves",
+    "Trappers",
+    "Mercenaries",
+    "Smugglers"
+  ],
+  "travelHazards": [
+    "Exposure",
+    "Thin ice",
+    "Avalanche",
+    "Whiteout",
+    "Food shortages"
+  ],
+  "rumours": [
+    "Ships have seen strange lights out on the ice.",
+    "Miners found something old beneath the rock.",
+    "A caravan vanished north of town."
+  ],
+  "dmSecrets": [
+    "A Harper contact may be watching the docks.",
+    "A faction is using the settlement as a quiet supply point.",
+    "Something old may have been dug up in the mines."
+  ]
+}

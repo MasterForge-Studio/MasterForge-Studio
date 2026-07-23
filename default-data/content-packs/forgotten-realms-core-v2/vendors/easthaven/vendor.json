@@ -1,0 +1,39 @@
+{
+  "id": "easthaven-vendor",
+  "name": "Easthaven Wandering Vendor",
+  "locationId": "easthaven",
+  "names": [
+    "Mara Copperpin",
+    "Old Jaska",
+    "Tarin Bellweather",
+    "Sella Quickhands"
+  ],
+  "vendorTypes": [
+    "provisioner",
+    "curio seller",
+    "guide broker",
+    "travelling peddler"
+  ],
+  "personalities": [
+    "cheerful but evasive",
+    "blunt and practical",
+    "superstitious",
+    "watchful"
+  ],
+  "secrets": [
+    "owes coin to a faction",
+    "saw something impossible last night",
+    "knows a hidden route",
+    "is carrying a sealed message"
+  ],
+  "stock": [
+    "rations",
+    "rope",
+    "healing kit",
+    "local map",
+    "weather cloak",
+    "torch bundle",
+    "antitoxin",
+    "lucky charm"
+  ]
+}

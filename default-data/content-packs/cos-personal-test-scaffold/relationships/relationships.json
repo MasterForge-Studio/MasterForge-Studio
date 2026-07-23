@@ -1,0 +1,1047 @@
+{
+  "id": "cos-relationship-scaffold",
+  "name": "Curse of Strahd Relationship Scaffold",
+  "relationships": [
+    {
+      "id": "npc-count-strahd-von-zarovich-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "count-strahd-von-zarovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-count-strahd-von-zarovich-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "count-strahd-von-zarovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-rahadin-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "rahadin",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-rahadin-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "rahadin",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ireena-kolyana-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "ireena-kolyana",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ireena-kolyana-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "ireena-kolyana",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ismark-kolyanovich-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "ismark-kolyanovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ismark-kolyanovich-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "ismark-kolyanovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kolyan-indirovich-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "kolyan-indirovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kolyan-indirovich-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "kolyan-indirovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-mad-mary-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "mad-mary",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-mad-mary-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "mad-mary",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-gertruda-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "gertruda",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-gertruda-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "gertruda",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-bildrath-cantemir-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "bildrath-cantemir",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-bildrath-cantemir-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "bildrath-cantemir",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-parriwimple-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "parriwimple",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-parriwimple-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "parriwimple",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-father-donavich-member-of-faction-church-of-the-morninglord",
+      "from_type": "npc",
+      "from_id": "father-donavich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "church-of-the-morninglord",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-father-donavich-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "father-donavich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-doru-member-of-faction-church-of-the-morninglord",
+      "from_type": "npc",
+      "from_id": "doru",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "church-of-the-morninglord",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-doru-located-in-region-village-of-barovia",
+      "from_type": "npc",
+      "from_id": "doru",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "village-of-barovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-madam-eva-member-of-faction-vistani",
+      "from_type": "npc",
+      "from_id": "madam-eva",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vistani",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-madam-eva-located-in-region-tser-pool",
+      "from_type": "npc",
+      "from_id": "madam-eva",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "tser-pool",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-arrigal-member-of-faction-vistani",
+      "from_type": "npc",
+      "from_id": "arrigal",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vistani",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-arrigal-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "arrigal",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-luvash-member-of-faction-vistani",
+      "from_type": "npc",
+      "from_id": "luvash",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vistani",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-luvash-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "luvash",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-arabelle-member-of-faction-vistani",
+      "from_type": "npc",
+      "from_id": "arabelle",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vistani",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-arabelle-located-in-region-lake-zarovich",
+      "from_type": "npc",
+      "from_id": "arabelle",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "lake-zarovich",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-baron-vargas-vallakovich-member-of-faction-vallaki-baronial-rule",
+      "from_type": "npc",
+      "from_id": "baron-vargas-vallakovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vallaki-baronial-rule",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-baron-vargas-vallakovich-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "baron-vargas-vallakovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-lydia-vallakovich-member-of-faction-vallaki-baronial-rule",
+      "from_type": "npc",
+      "from_id": "lydia-vallakovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vallaki-baronial-rule",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-lydia-vallakovich-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "lydia-vallakovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-victor-vallakovich-member-of-faction-vallaki-baronial-rule",
+      "from_type": "npc",
+      "from_id": "victor-vallakovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vallaki-baronial-rule",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-victor-vallakovich-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "victor-vallakovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-izek-strazni-member-of-faction-vallaki-baronial-rule",
+      "from_type": "npc",
+      "from_id": "izek-strazni",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "vallaki-baronial-rule",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-izek-strazni-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "izek-strazni",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-lady-fiona-wachter-member-of-faction-wachter-cult",
+      "from_type": "npc",
+      "from_id": "lady-fiona-wachter",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "wachter-cult",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-lady-fiona-wachter-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "lady-fiona-wachter",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-nikolai-wachter-member-of-faction-wachter-cult",
+      "from_type": "npc",
+      "from_id": "nikolai-wachter",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "wachter-cult",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-nikolai-wachter-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "nikolai-wachter",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-karl-wachter-member-of-faction-wachter-cult",
+      "from_type": "npc",
+      "from_id": "karl-wachter",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "wachter-cult",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-karl-wachter-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "karl-wachter",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ernst-larnak-member-of-faction-wachter-cult",
+      "from_type": "npc",
+      "from_id": "ernst-larnak",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "wachter-cult",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ernst-larnak-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "ernst-larnak",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-gadof-blinsky-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "gadof-blinsky",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-gadof-blinsky-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "gadof-blinsky",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-father-lucian-petrovich-member-of-faction-church-of-the-morninglord",
+      "from_type": "npc",
+      "from_id": "father-lucian-petrovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "church-of-the-morninglord",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-father-lucian-petrovich-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "father-lucian-petrovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-yeska-member-of-faction-church-of-the-morninglord",
+      "from_type": "npc",
+      "from_id": "yeska",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "church-of-the-morninglord",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-yeska-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "yeska",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-henrik-van-der-voort-member-of-faction-barovian-commoners",
+      "from_type": "npc",
+      "from_id": "henrik-van-der-voort",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "barovian-commoners",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-henrik-van-der-voort-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "henrik-van-der-voort",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-urwin-martikov-member-of-faction-keepers-of-the-feather",
+      "from_type": "npc",
+      "from_id": "urwin-martikov",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "keepers-of-the-feather",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-urwin-martikov-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "urwin-martikov",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-danika-martikov-member-of-faction-keepers-of-the-feather",
+      "from_type": "npc",
+      "from_id": "danika-martikov",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "keepers-of-the-feather",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-danika-martikov-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "danika-martikov",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-davian-martikov-member-of-faction-keepers-of-the-feather",
+      "from_type": "npc",
+      "from_id": "davian-martikov",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "keepers-of-the-feather",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-davian-martikov-located-in-region-wizard-of-wines",
+      "from_type": "npc",
+      "from_id": "davian-martikov",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "wizard-of-wines",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-muriel-vinshaw-member-of-faction-keepers-of-the-feather",
+      "from_type": "npc",
+      "from_id": "muriel-vinshaw",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "keepers-of-the-feather",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-muriel-vinshaw-located-in-region-svalich-woods",
+      "from_type": "npc",
+      "from_id": "muriel-vinshaw",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "svalich-woods",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-dmitri-krezkov-member-of-faction-krezk-authority",
+      "from_type": "npc",
+      "from_id": "dmitri-krezkov",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "krezk-authority",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-dmitri-krezkov-located-in-region-krezk",
+      "from_type": "npc",
+      "from_id": "dmitri-krezkov",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "krezk",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-anna-krezkova-member-of-faction-krezk-authority",
+      "from_type": "npc",
+      "from_id": "anna-krezkova",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "krezk-authority",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-anna-krezkova-located-in-region-krezk",
+      "from_type": "npc",
+      "from_id": "anna-krezkova",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "krezk",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-the-abbot-member-of-faction-abbey-of-saint-markovia",
+      "from_type": "npc",
+      "from_id": "the-abbot",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "abbey-of-saint-markovia",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-the-abbot-located-in-region-abbey-of-saint-markovia",
+      "from_type": "npc",
+      "from_id": "the-abbot",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "abbey-of-saint-markovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-vasilka-member-of-faction-abbey-of-saint-markovia",
+      "from_type": "npc",
+      "from_id": "vasilka",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "abbey-of-saint-markovia",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-vasilka-located-in-region-abbey-of-saint-markovia",
+      "from_type": "npc",
+      "from_id": "vasilka",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "abbey-of-saint-markovia",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ezmerelda-davenir-member-of-faction-monster-hunters",
+      "from_type": "npc",
+      "from_id": "ezmerelda-davenir",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "monster-hunters",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ezmerelda-davenir-located-in-region-van-richtens-tower",
+      "from_type": "npc",
+      "from_id": "ezmerelda-davenir",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "van-richtens-tower",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-rudolph-van-richten-member-of-faction-monster-hunters",
+      "from_type": "npc",
+      "from_id": "rudolph-van-richten",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "monster-hunters",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-rudolph-van-richten-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "rudolph-van-richten",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kasimir-velikov-member-of-faction-dusk-elves",
+      "from_type": "npc",
+      "from_id": "kasimir-velikov",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "dusk-elves",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kasimir-velikov-located-in-region-vallaki",
+      "from_type": "npc",
+      "from_id": "kasimir-velikov",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "vallaki",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-baba-lysaga-member-of-faction-baba-lysaga-servants",
+      "from_type": "npc",
+      "from_id": "baba-lysaga",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "baba-lysaga-servants",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-baba-lysaga-located-in-region-berez",
+      "from_type": "npc",
+      "from_id": "baba-lysaga",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "berez",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-sir-godfrey-gwilym-member-of-faction-order-of-the-silver-dragon",
+      "from_type": "npc",
+      "from_id": "sir-godfrey-gwilym",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "order-of-the-silver-dragon",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-sir-godfrey-gwilym-located-in-region-argynvostholt",
+      "from_type": "npc",
+      "from_id": "sir-godfrey-gwilym",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "argynvostholt",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-vladimir-horngaard-member-of-faction-order-of-the-silver-dragon",
+      "from_type": "npc",
+      "from_id": "vladimir-horngaard",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "order-of-the-silver-dragon",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-vladimir-horngaard-located-in-region-argynvostholt",
+      "from_type": "npc",
+      "from_id": "vladimir-horngaard",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "argynvostholt",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-escher-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "escher",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-escher-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "escher",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ludmilla-vilisevic-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "ludmilla-vilisevic",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-ludmilla-vilisevic-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "ludmilla-vilisevic",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-anastrasya-karelova-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "anastrasya-karelova",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-anastrasya-karelova-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "anastrasya-karelova",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-volenta-popofsky-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "volenta-popofsky",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-volenta-popofsky-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "volenta-popofsky",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-cyrus-belview-member-of-faction-castle-ravenloft-court",
+      "from_type": "npc",
+      "from_id": "cyrus-belview",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "castle-ravenloft-court",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-cyrus-belview-located-in-region-castle-ravenloft",
+      "from_type": "npc",
+      "from_id": "cyrus-belview",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kiril-stoyanovich-member-of-faction-werewolf-pack",
+      "from_type": "npc",
+      "from_id": "kiril-stoyanovich",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "werewolf-pack",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-kiril-stoyanovich-located-in-region-werewolf-den",
+      "from_type": "npc",
+      "from_id": "kiril-stoyanovich",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "werewolf-den",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-zuleika-toranu-member-of-faction-werewolf-pack",
+      "from_type": "npc",
+      "from_id": "zuleika-toranu",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "werewolf-pack",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-zuleika-toranu-located-in-region-werewolf-den",
+      "from_type": "npc",
+      "from_id": "zuleika-toranu",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "werewolf-den",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-wintersplinter-member-of-faction-druids-of-yester-hill",
+      "from_type": "npc",
+      "from_id": "wintersplinter",
+      "relationship": "member_of",
+      "to_type": "faction",
+      "to_id": "druids-of-yester-hill",
+      "notes": "Faction membership placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-wintersplinter-located-in-region-yester-hill",
+      "from_type": "npc",
+      "from_id": "wintersplinter",
+      "relationship": "located_in",
+      "to_type": "region",
+      "to_id": "yester-hill",
+      "notes": "Default location/region placeholder.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-count-strahd-von-zarovich-rules-location-barovia",
+      "from_type": "npc",
+      "from_id": "count-strahd-von-zarovich",
+      "relationship": "rules",
+      "to_type": "location",
+      "to_id": "barovia",
+      "notes": "Central campaign ruler relationship scaffold.",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "npc-rahadin-serves-npc-count-strahd-von-zarovich",
+      "from_type": "npc",
+      "from_id": "rahadin",
+      "relationship": "serves",
+      "to_type": "npc",
+      "to_id": "count-strahd-von-zarovich",
+      "notes": "",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "faction-castle-ravenloft-court-operates-from-region-castle-ravenloft",
+      "from_type": "faction",
+      "from_id": "castle-ravenloft-court",
+      "relationship": "operates_from",
+      "to_type": "region",
+      "to_id": "castle-ravenloft",
+      "notes": "",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "faction-keepers-of-the-feather-opposes-npc-count-strahd-von-zarovich",
+      "from_type": "faction",
+      "from_id": "keepers-of-the-feather",
+      "relationship": "opposes",
+      "to_type": "npc",
+      "to_id": "count-strahd-von-zarovich",
+      "notes": "",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "faction-wachter-cult-rivals-faction-vallaki-baronial-rule",
+      "from_type": "faction",
+      "from_id": "wachter-cult",
+      "relationship": "rivals",
+      "to_type": "faction",
+      "to_id": "vallaki-baronial-rule",
+      "notes": "",
+      "source_pack": "cos-personal-test-scaffold"
+    },
+    {
+      "id": "faction-order-of-the-silver-dragon-opposes-npc-count-strahd-von-zarovich",
+      "from_type": "faction",
+      "from_id": "order-of-the-silver-dragon",
+      "relationship": "opposes",
+      "to_type": "npc",
+      "to_id": "count-strahd-von-zarovich",
+      "notes": "",
+      "source_pack": "cos-personal-test-scaffold"
+    }
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,73 @@
+{
+  "name": "Mistcliff Coast",
+  "location": "Chult",
+  "environment": [
+    "High mist-covered cliffs",
+    "Broken beaches",
+    "Dense coastal jungle",
+    "Hidden freshwater streams",
+    "Shipwreck debris"
+  ],
+  "weather": [
+    "Heavy warm rain",
+    "Sudden tropical storms",
+    "Rolling sea mist",
+    "Oppressive humidity"
+  ],
+  "politics": [
+    "Almost no formal authority.",
+    "Pirates, smugglers and isolated hunters may know the coast.",
+    "Survival matters more than law."
+  ],
+  "culture": [
+    "Travellers are rare.",
+    "Locals may be suspicious but practical.",
+    "Knowledge of safe paths is valuable."
+  ],
+  "creatures": {
+    "common": [
+      "Flying snakes",
+      "Giant lizards",
+      "Pteranodons",
+      "Velociraptors",
+      "Giant crabs"
+    ],
+    "dangerous": [
+      "Allosaurus",
+      "Assassin vines",
+      "Giant crocodiles",
+      "Giant constrictor snakes",
+      "Shambling mound"
+    ],
+    "legendary": [
+      "Tyrannosaurus rex",
+      "Hydra",
+      "Roc",
+      "Ancient jungle spirit"
+    ]
+  },
+  "humanoids": [
+    "Lost explorers",
+    "Pirates",
+    "Chultan hunters",
+    "Yuan-ti spies",
+    "Grung scouts"
+  ],
+  "travelHazards": [
+    "Poisonous plants",
+    "Quicksand",
+    "Flooded paths",
+    "Disease-carrying insects",
+    "Hidden cliff drops"
+  ],
+  "rumours": [
+    "A huge beast has been heard moving inland.",
+    "The mist hides more than just cliffs.",
+    "Old stonework can be found beneath the roots."
+  ],
+  "dmSecrets": [
+    "The party is far from where they think they are.",
+    "Following the coast the wrong way could take them further from Port Nyanzaru.",
+    "An old ruin near the cliffs may link to the idol legend."
+  ]
+}

@@ -1,0 +1,62 @@
+[
+  {
+    "id": "harpers",
+    "name": "Harpers",
+    "type": "Secret organisation",
+    "alignment": "Good leaning",
+    "summary": "A network of spies, informants and agents who oppose tyranny and dangerous magic.",
+    "leader": "High Harper",
+    "goals": [
+      "Protect innocents",
+      "Oppose tyrants",
+      "Monitor dangerous magic"
+    ],
+    "regions": [
+      "Sword Coast",
+      "Frozen North",
+      "Chult"
+    ],
+    "influence": 60,
+    "progress": 30,
+    "status": "Active",
+    "localContactRoles": [
+      "Innkeeper",
+      "Guide",
+      "Scholar",
+      "Merchant"
+    ]
+  },
+  {
+    "id": "malakar-dominion",
+    "name": "Malakar Dominion",
+    "type": "Villain hierarchy",
+    "alignment": "Evil",
+    "summary": "A shadow empire seeking the Tablets of Fate.",
+    "leader": "Malakar",
+    "companion": "Ancient Shadow Dragon",
+    "goals": [
+      "Find Tablet fragments",
+      "Ascend beyond mortality",
+      "Empower the dragon generals"
+    ],
+    "regions": [
+      "Toril"
+    ],
+    "influence": 75,
+    "progress": 60,
+    "status": "Hidden",
+    "generals": [
+      "Red Dragon General",
+      "Blue Dragon General",
+      "Green Dragon General",
+      "Black Dragon General",
+      "White Dragon General"
+    ],
+    "localContactRoles": [
+      "Spy",
+      "Cult agent",
+      "Mercenary",
+      "Corrupt noble"
+    ]
+  }
+]

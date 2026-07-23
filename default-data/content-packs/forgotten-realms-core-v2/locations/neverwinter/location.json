@@ -1,0 +1,35 @@
+{
+  "id": "neverwinter",
+  "name": "Neverwinter",
+  "type": "location",
+  "regionId": "sword-coast",
+  "summary": "A resilient northern city of warm river mists, rebuilding streets, noble intrigues and looming wilderness beyond its walls.",
+  "politics": [
+    "Lord Neverember’s influence remains strong, though old noble families and merchant interests compete quietly.",
+    "Rebuilding districts create opportunity for adventurers, criminals and ambitious factions."
+  ],
+  "culture": [
+    "Artisans, mercenaries and refugees mingle in rebuilt streets.",
+    "The city values order, trade and visible prosperity after years of disaster."
+  ],
+  "factions": [
+    "Lord Neverember loyalists",
+    "Harpers",
+    "Zhentarim agents",
+    "Neverwinter Guard",
+    "Local guilds"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/neverwinter/background.webp"
+}

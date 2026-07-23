@@ -1,0 +1,50 @@
+{
+  "id": "pirate-waters-d8-weather",
+  "name": "Pirate Waters d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "pirate-waters",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Favourable Wind",
+      "description": "Good speed, clear sea, and enough visibility to spot distant sails."
+    },
+    {
+      "roll": "2",
+      "name": "Hazy Horizon",
+      "description": "Heat haze makes ship identification difficult."
+    },
+    {
+      "roll": "3",
+      "name": "False Calm",
+      "description": "The sea is easy but watch crews feel exposed. A perfect day for pursuit."
+    },
+    {
+      "roll": "4",
+      "name": "Patchy Fog",
+      "description": "Fog banks allow ships to hide, appear or vanish suddenly."
+    },
+    {
+      "roll": "5",
+      "name": "Rain Curtain",
+      "description": "Heavy rain creates moving walls of cover across the sea."
+    },
+    {
+      "roll": "6",
+      "name": "Crosswind Chase",
+      "description": "Fast sailing is possible but risky. Pursuit or escape becomes dramatic."
+    },
+    {
+      "roll": "7",
+      "name": "Lanternless Night",
+      "description": "A dark night with poor moonlight. Stealth at sea becomes easier."
+    },
+    {
+      "roll": "8",
+      "name": "Red Dawn",
+      "description": "The sunrise stains the sea red. Sailors call it a warning."
+    }
+  ]
+}

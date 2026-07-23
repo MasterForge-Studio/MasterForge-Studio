@@ -1,0 +1,68 @@
+{
+  "id": "ocean-npc-generator",
+  "name": "Ocean NPC Generator",
+  "type": "npc-generator",
+  "locationId": "trackless-sea",
+  "names": [
+    "Elias Thorn",
+    "Mira Saltwake",
+    "Bram Kettle",
+    "Sella Reed",
+    "Jorren Mast",
+    "Old Hobb",
+    "Kara Blacktide",
+    "Tavin Shell"
+  ],
+  "species": [
+    "Human",
+    "Half-elf",
+    "Dwarf",
+    "Halfling",
+    "Tiefling",
+    "Dragonborn"
+  ],
+  "roles": [
+    "Captain",
+    "Navigator",
+    "Quartermaster",
+    "Cook",
+    "Deckhand",
+    "Passenger",
+    "Smuggler",
+    "Shipwright"
+  ],
+  "appearances": [
+    "Sun-cracked skin and rope-burned hands",
+    "Salt-stiff coat and sharp eyes",
+    "Barefoot, balanced and always moving",
+    "Tattooed arms marked with old voyages",
+    "A wide hat, tired smile and hidden knife"
+  ],
+  "personalities": [
+    "Blunt but fair",
+    "Cheerful under pressure",
+    "Quietly terrified of deep water",
+    "Superstitious and careful",
+    "Always looking for an angle"
+  ],
+  "secrets": [
+    "Knows the ship is off course",
+    "Has hidden cargo aboard",
+    "Owes money to pirates",
+    "Saw something impossible beneath the waves",
+    "Is travelling under a false name"
+  ],
+  "hooks": [
+    "Needs help securing cargo",
+    "Asks the party to stand watch",
+    "Warns of bad weather",
+    "Offers a rumour about Chult",
+    "Recognises one character from a past port"
+  ],
+  "factions": [
+    "Free Captains",
+    "Pirates",
+    "Merchant Factors",
+    "None"
+  ]
+}

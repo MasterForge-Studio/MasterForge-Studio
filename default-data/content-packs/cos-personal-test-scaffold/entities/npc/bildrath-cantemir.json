@@ -1,0 +1,11 @@
+{
+  "id": "bildrath-cantemir",
+  "entity_type": "npc",
+  "name": "Bildrath Cantemir",
+  "description": "shopkeeper. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

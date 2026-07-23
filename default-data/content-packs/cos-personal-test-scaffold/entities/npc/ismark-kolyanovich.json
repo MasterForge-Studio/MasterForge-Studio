@@ -1,0 +1,11 @@
+{
+  "id": "ismark-kolyanovich",
+  "entity_type": "npc",
+  "name": "Ismark Kolyanovich",
+  "description": "local noble and protector. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,50 @@
+{
+  "id": "open-ocean-d8-weather",
+  "name": "Open Ocean d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "open-ocean",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Flat Calm",
+      "description": "No wind, no waves, no progress. Crew morale drops and small problems become loud ones."
+    },
+    {
+      "roll": "2",
+      "name": "Clear Blue Day",
+      "description": "Perfect visibility and steady travel. The sea feels endless but peaceful."
+    },
+    {
+      "roll": "3",
+      "name": "Glittering Swell",
+      "description": "Sunlight flashes across rolling waves. Travel continues, but loose cargo shifts below deck."
+    },
+    {
+      "roll": "4",
+      "name": "Cloud Bank Ahead",
+      "description": "A wall of cloud approaches. The captain must decide whether to skirt it or sail through."
+    },
+    {
+      "roll": "5",
+      "name": "Night Chill",
+      "description": "The temperature drops after sunset. Watch crews report odd sounds beyond the hull."
+    },
+    {
+      "roll": "6",
+      "name": "Crosswind",
+      "description": "The ship must tack carefully. Travel is slower unless the crew handles the sails well."
+    },
+    {
+      "roll": "7",
+      "name": "Black Rain",
+      "description": "Dark rain stains the deck and leaves a bitter taste. The crew mutters about bad omens."
+    },
+    {
+      "roll": "8",
+      "name": "Deep Water Silence",
+      "description": "The sea becomes strangely still. No birds. No fish. No sound but the ship."
+    }
+  ]
+}

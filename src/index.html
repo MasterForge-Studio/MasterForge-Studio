@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>MasterForge Studio</title>
+  <link rel="stylesheet" href="style.css">
+  <link id="themeStylesheet" rel="stylesheet" href="">
+</head>
+
+<body>
+  <div id="app">
+
+    <header id="topbar">
+  <div class="brand">
+    <img src="./assets/Logo.png" class="brandLogo" alt="MasterForge Studio">
+    <span>MasterForge Studio</span>
+  </div>
+
+  <div id="forgeTopSearch">
+    <input
+      id="forgeGlobalSearchInput"
+      placeholder="Search the Forge..."
+      autocomplete="off"
+    >
+
+    <div id="forgeGlobalSearchResults" class="forgeTopSearchResults hidden">
+      <p class="forgeEmptyState">Type at least 3 letters to search.</p>
+    </div>
+  </div>
+
+  <div id="windowControls">
+    <button id="actionConsoleToggle" type="button" aria-controls="masterForgeActionConsole" aria-expanded="true">Actions</button>
+    <button id="minBtn" type="button" aria-label="Minimise window" title="Minimise window">−</button>
+    <button id="closeBtn" type="button" aria-label="Close MasterForge Studio" title="Close MasterForge Studio">×</button>
+  </div>
+</header>
+
+    <section id="stateBar">
+
+      <div class="stateGroup">
+        <label>Campaign</label>
+        <select id="campaignSelect"></select>
+      </div>
+      
+      <div class="stateGroup">
+        <label>World</label>
+        <select id="worldSelect"></select>
+      </div>
+
+      <div class="stateGroup">
+        <label>Region</label>
+        <select id="regionSelect"></select>
+      </div>
+
+      <div class="stateGroup">
+        <label>Location</label>
+        <select id="locationSelect"></select>
+      </div>
+
+    </section>
+
+    <div id="dataModal" class="hidden">
+      <div id="dataModalBox">
+        <h2>💾 Storage Location</h2>
+        <p id="dataPathDisplay">Loading...</p>
+        <button id="chooseDataPathBtn">Change Folder</button>
+        <button id="closeDataModalBtn">Close</button>
+      </div>
+    </div>
+
+    <div id="mainLayout">
+
+      <nav id="legacyTabs" class="hidden" aria-hidden="true">
+        <button class="tab" data-tab="world">Campaign Atlas</button>
+        <button class="tab" data-tab="region">🗺 Region</button>
+        <button class="tab" data-tab="session">📝 Session Prep</button>
+        <!--<button class="tab active" data-tab="story">📜 Story</button> -->
+        
+        <button class="tab" data-tab="party">👥 Party</button>
+        <button class="tab" data-tab="npc">🧍 NPCs</button>
+        <button class="tab" data-tab="creatures">🦀 Creatures</button>
+        <button class="tab" data-tab="entities">🔗 Entities</button>
+        <button class="tab" data-tab="encounters">🎲 Encounters</button>
+        <button class="tab" data-tab="loot">🎁 Loot</button>
+        <button class="tab" data-tab="settings">⚙ Settings</button>
+      </nav>
+
+      <nav id="tabs" aria-label="MasterForge workspaces">
+        <button class="tab home-tab" data-tab="home">Home</button>
+        <section class="workflow-nav-group" data-workspace-group="in-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-in-game">In Game <span aria-hidden="true">−</span></button><div id="nav-in-game" class="workflow-nav-children"><button class="tab" data-tab="region">Current Location</button><button class="tab" data-tab="party">Party</button><button class="tab" data-tab="combat-operations">Combat Operations Centre</button></div></section>
+        <section class="workflow-nav-group" data-workspace-group="pre-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-pre-game">Pre-Game <span aria-hidden="true">−</span></button><div id="nav-pre-game" class="workflow-nav-children"><button class="tab" data-tab="session">Session Planner</button><button class="tab" data-tab="encounters">Encounter Planner</button><button class="tab" data-tab="story">Narration</button><button class="tab" data-tab="loot">Loot Preparation</button></div></section>
+        <section class="workflow-nav-group" data-workspace-group="world-building"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-world-building">World Building <span aria-hidden="true">−</span></button><div id="nav-world-building" class="workflow-nav-children"><button class="tab" data-tab="world">Campaigns &amp; Worlds</button><button class="tab" data-tab="region">Regions &amp; Locations</button><button class="tab" data-tab="entities">Entity Library</button><button class="tab" data-tab="npc">NPCs</button><button class="tab" data-tab="creatures">Creatures</button><button class="tab" data-tab="party">Parties</button></div></section>
+        <section class="workflow-nav-group" data-workspace-group="settings"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-settings">Settings <span aria-hidden="true">−</span></button><div id="nav-settings" class="workflow-nav-children"><button class="tab" data-tab="settings">Configure MasterForge</button></div></section>
+      </nav>
+
+      <main id="content">
+
+        <section id="home" class="panel">
+          <div class="masterforge-home"><p class="masterforge-home__version">MasterForge Studio v0.3.0-alpha</p><h1>What are you doing today?</h1><div class="masterforge-home__choices">
+            <button type="button" data-home-workspace="in-game"><strong>Run a Game</strong><span>Open the tools needed while your players are at the table.</span></button>
+            <button type="button" data-home-workspace="pre-game"><strong>Prepare a Session</strong><span>Plan sessions, encounters, narration, notes and cast.</span></button>
+            <button type="button" data-home-workspace="world-building"><strong>Build My World</strong><span>Create and manage campaigns, locations, people, creatures and factions.</span></button>
+            <button type="button" data-home-workspace="settings"><strong>Configure MasterForge</strong><span>Manage appearance, systems, content, data and updates.</span></button>
+          </div></div>
+        </section>
+
+        <!-- ==================== STORY ==================== -->
+        <section id="story" class="panel active-panel">
+
+          <div id="storyToolbar">
+            <select id="scriptSelect"></select>
+            <button id="newScriptBtn">New</button>
+            <button id="saveScriptBtn">Save</button>
+            <button id="deleteScriptBtn">Delete</button>
+            <button id="promptModeBtn">Prompt</button>
+            <button id="editModeBtn">Edit</button>
+            <button id="pausePromptBtn">Pause</button>
+            <button id="resetPromptBtn">Reset</button>
+
+            <button id="slowerPromptBtn">−</button>
+            <span id="promptSpeedDisplay">0.6</span>
+            <button id="fasterPromptBtn">+</button>
+
+            <button id="fontDownBtn">A−</button>
+            <span id="fontSizeDisplay">46</span>
+            <button id="fontUpBtn">A+</button>
+
+            <label>Opacity</label>
+            <input id="storyOpacitySlider" type="range" min="0" max="100" value="90">
+            <span id="storyOpacityDisplay">90%</span>
+
+            <label>Notes</label>
+            <input id="notesWidthSlider" type="range" min="20" max="50" value="33">
+            <span id="notesWidthDisplay">33%</span>
+          </div>
+
+          <input id="scriptTitleInput" placeholder="Script title">
+
+          <div id="storyEditorLayout">
+            <div class="storyColumn">
+              <h2>📖 Read Aloud</h2>
+              <textarea id="readAloudInput"></textarea>
+            </div>
+
+            <div class="storyColumn">
+              <h2>📝 GM Notes</h2>
+              <textarea id="dmNotesInput"></textarea>
+            </div>
+          </div>
+
+          <div id="storyPromptLayout" class="hidden">
+  <div id="teleprompterPanel">
+    <div id="teleprompterText"></div>
+  </div>
+
+  <div id="promptNotesPanel">
+    <div id="promptNotesText"></div>
+  </div>
+</div>
+
+        </section>
+
+        <!-- ==================== PARTY ==================== -->
+        <section id="party" class="panel">
+
+          <h1>👥 Party Manager</h1>
+
+          <div id="partyControls">
+            <button id="addPlayerBtn">+ Player</button>
+          </div>
+
+          <h2>Active Party</h2>
+          <div id="activePartyList"></div>
+
+          <h2>Player Vault</h2>
+          <div id="playerVault"></div>
+
+        </section>
+
+        <!-- ==================== REGION ==================== -->
+        <section id="region" class="panel">
+
+          <div class="regionHeader">
+            <div>
+              <h1 id="regionTitle">Regional Intelligence</h1>
+              <p id="regionSummary"></p>
+            </div>
+            <button id="refreshRegionBtn">Refresh Region</button>
+          </div>
+
+          <section id="locationCategoryOverview" class="location-category-overview" aria-label="Location entities">
+            <div id="locationCategoryCounts" class="location-category-counts"></div>
+            <div id="locationCategoryDrilldown" class="infoCard location-category-drilldown" hidden></div>
+          </section>
+
+          <div id="regionGrid">
+
+            <div class="infoCard">
+              <h2>🌦 Environment & Weather</h2>
+              <div id="regionEnvironment"></div>
+              <div id="regionWeather"></div>
+            </div>
+
+            <div class="infoCard">
+              <h2>🏛 Politics & Culture</h2>
+              <div id="regionPolitics"></div>
+              <div id="regionCulture"></div>
+            </div>
+
+            <div class="infoCard">
+              <h2>🐲 Creatures</h2>
+              <div id="regionCreatures"></div>
+            </div>
+
+            <div class="infoCard">
+              <h2>👥 Humanoids & Factions</h2>
+              <div id="regionHumanoids"></div>
+              <div id="regionFactions"></div>
+            </div>
+
+            <div class="infoCard">
+              <h2>⚠ Hazards</h2>
+              <div id="regionHazards"></div>
+            </div>
+
+            <div class="infoCard">
+              <h2>🗣 Rumours</h2>
+              <div id="regionRumours"></div>
+            </div>
+
+            <div class="infoCard secretCard">
+              <h2>🔒 GM Secrets</h2>
+              <div id="regionSecrets"></div>
+            </div>
+
+          </div>
+
+        </section>
+
+<!-- ==================== CREATURES ==================== -->
+<section id="creatures" class="panel">
+  <div id="creatureBuilderRoot"></div>
+</section>
+
+<!-- ==================== NPCS ==================== -->
+<section id="npc" class="panel">
+  <div id="npcBuilderRoot"></div>
+</section>
+
+        <!-- ==================== ENCOUNTERS ==================== -->
+        <section id="encounters" class="panel">
+
+          <h1>🎲 Encounter Lookup</h1>
+
+          <div class="encounterControls">
+            <label>Player d100 Roll</label>
+            <input id="encounterRollInput" type="number" min="1" max="100" value="1">
+            <button id="findEncounterBtn">Find Encounter</button>
+          </div>
+
+          <div id="encounterResult" class="infoCard">
+            <p>Enter a d100 roll and click Find Encounter.</p>
+          </div>
+
+        </section>
+
+        <section id="combat-operations" class="panel" aria-label="Combat Operations Centre"></section>
+
+        <!-- ==================== LOOT ==================== -->
+        <section id="loot" class="panel">
+
+          <h1>🎁 Loot & Vendors</h1>
+
+          <div class="encounterControls">
+            <label>Loot d100 Roll</label>
+            <input id="lootRollInput" type="number" min="1" max="100" value="1">
+            <button id="findLootBtn">Find Loot</button>
+            <button id="generateVendorBtn">Generate Vendor</button>
+          </div>
+
+          <div id="lootResult" class="infoCard">
+            <p>Enter a loot roll or generate a regional vendor.</p>
+          </div>
+
+        </section>
+
+<!-- ==================== SESSION PREP ==================== -->
+<section id="session" class="panel">
+
+  <div id="sessionLayout">
+
+    <!-- LEFT: Session Browser Sidebar -->
+    <aside id="sessionSidebar">
+
+      <div id="sessionSidebarHeader">
+        <h2>📋 Sessions</h2>
+        <button id="newSessionBtn">+ New</button>
+      </div>
+
+      <div id="sessionList">
+        <!-- Populated by renderSessionList() -->
+      </div>
+
+    </aside>
+
+    <!-- RIGHT: Session Editor -->
+    <div id="sessionEditor">
+
+      <div id="sessionEditorHeader">
+        <div id="sessionTitleRow">
+          <input id="sessionTitleInput" placeholder="Session title">
+          <input id="sessionDateInput" type="date">
+          <button id="saveSessionBtn">💾 Save Session</button>
+          <button id="openSessionPrompterBtn" type="button">
+  📖 Prompter
+</button>
+        </div>
+      </div>
+
+      <div class="sessionGrid">
+
+        <div class="infoCard">
+          <h2>🎙 Opening Narration</h2>
+          <textarea id="sessionOpeningInput"></textarea>
+        </div>
+
+        <div class="infoCard">
+          <h2>🎯 Goals / Prep Notes</h2>
+          <textarea id="sessionPrepInput"></textarea>
+        </div>
+
+        <div class="infoCard">
+          <h2>🔐 Secrets & Reveals</h2>
+          <textarea id="sessionSecretsInput"></textarea>
+        </div>
+
+        <div class="infoCard">
+          <h2>✏️ Live Notes</h2>
+          <textarea id="sessionLiveNotesInput"></textarea>
+        </div>
+
+        <div class="infoCard">
+          <h2>📜 Session Summary</h2>
+          <textarea id="sessionSummaryInput"></textarea>
+        </div>
+
+        <div class="infoCard">
+          <h2>➡ Next Session Hook</h2>
+          <textarea id="sessionNextInput"></textarea>
+        </div>
+
+        <div class="infoCard sessionCastCard">
+          <div class="sessionCastHeader">
+            <div>
+              <h2>🎭 Session Cast</h2>
+              <p>Creatures and NPCs expected to appear in this session.</p>
+            </div>
+          </div>
+
+          <div class="sessionCastSummaryGrid">
+
+            <div class="sessionCastSummaryPanel">
+              <div class="sessionCastSectionHeader">
+                <h3>Creatures</h3>
+                <button
+  id="openCreatureCastPickerBtn"
+  type="button"
+>
+  + Add Creature
+</button>
+              </div>
+
+              <div id="selectedSessionCreatures" class="sessionSelectedCastList">
+                No creatures selected.
+              </div>
+            </div>
+
+            <div class="sessionCastSummaryPanel">
+              <div class="sessionCastSectionHeader">
+                <h3>NPCs</h3>
+                <button
+  id="openNpcCastPickerBtn"
+  type="button"
+>
+  + Add NPC
+</button>
+              </div>
+
+              <div id="selectedSessionNpcs" class="sessionSelectedCastList">
+                No NPCs selected.
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div><!-- /.sessionGrid -->
+
+    </div><!-- /#sessionEditor -->
+
+  </div><!-- /#sessionLayout -->
+
+</section>
+
+        <!-- ==================== WORLD ==================== -->
+        <section id="world" class="panel">
+
+          <h1>🌍 World Engine</h1>
+
+          <div class="encounterControls">
+
+            <select id="worldNoteType">
+              <option>Location</option>
+              <option>Region</option>
+              <option>Culture</option>
+              <option>Politics</option>
+              <option>Creature</option>
+              <option>Rumour</option>
+              <option>Secret</option>
+              <option>Lore</option>
+              <option>Travel</option>
+            </select>
+
+            <button id="addWorldNoteBtn">+ Add World Note</button>
+
+          </div>
+
+          <div id="worldNotesList"></div>
+
+        </section>
+
+
+                <!-- ==================== ENTITIES ==================== -->
+        <section id="entities" class="panel">
+
+          <div class="regionHeader">
+            <div>
+              <h1>🔗 Relationship Engine</h1>
+              <p class="muted">
+                Search, inspect, and open relationship views for campaign entities.
+              </p>
+            </div>
+            <button id="refreshEntitiesBtn">Refresh Entities</button>
+          </div>
+
+          <div class="entity-index-panel">
+
+            <div class="entity-index-header">
+              <button id="toggleEntityIndexBtn" type="button">
+                📚 Entity Index ▾
+              </button>
+
+              <input
+                id="entitySearchInput"
+                type="text"
+                placeholder="Search ships, factions, NPCs..."
+              >
+
+              <div class="entity-type-tabs">
+                <button class="entity-type-tab active" data-entity-type="all">All</button>
+                <button class="entity-type-tab" data-entity-type="ship">Ships</button>
+                <button class="entity-type-tab" data-entity-type="faction">Factions</button>
+                <button class="entity-type-tab" data-entity-type="npc">NPCs</button>
+              </div>
+            </div>
+
+            <div id="entityIndexResults" class="entity-index-results">
+              <p class="muted">Loading entities...</p>
+            </div>
+
+          </div>
+
+<div id="entityRelationshipWorkspace" class="entity-relationship-workspace">
+
+  <div id="entityRelationshipTreePanel" class="entity-debug-tree-panel relationship-tree-drawer hidden">
+
+    <div class="entity-debug-tree-header">
+  <div>
+    <h2>🌳 Relationship Trees</h2>
+    <p class="muted">
+      Choose how to view this entity's relationships.
+    </p>
+  </div>
+
+  <button id="hideRelationshipTreeBtn" type="button">
+    Hide Tree
+  </button>
+</div>
+
+<div class="entity-tree-mode-tabs">
+  <button class="entity-tree-mode-tab active" data-tree-mode="command">
+    Command Tree
+  </button>
+  <button class="entity-tree-mode-tab" data-tree-mode="faction">
+    Faction Tree
+  </button>
+  <button class="entity-tree-mode-tab" data-tree-mode="all">
+    All Links
+  </button>
+</div>
+
+    <div id="entity-debug-tree">
+      <p class="muted">Select an entity, then click See Relationships.</p>
+    </div>
+
+  </div>
+
+  <div class="entity-main-detail-panel">
+
+    <div class="entity-main-detail-header">
+      <h2>Selected Entity</h2>
+      <button id="showRelationshipTreeBtn" class="hidden" type="button">
+        🌳 See Relationships
+      </button>
+    </div>
+
+    <div id="entity-debug-selected">
+      <p class="muted">Select an entity to view details.</p>
+    </div>
+
+    <div id="entity-debug-relationships" class="entity-relationship-summary">
+      <p class="muted">No entity selected.</p>
+    </div>
+
+  </div>
+
+</div>
+</section>
+
+<section id="settings" class="panel">
+  <!-- Settings content is injected here by buildThemeSettingsPanel() -->
+</section>
+
+      </main><!-- /#content -->
+      <div id="masterForgeActionConsoleBackdrop" class="masterforge-action-console-backdrop" hidden></div>
+      <aside id="masterForgeActionConsole" class="masterforge-action-console" aria-label="Page actions"></aside>
+    </div><!-- /#mainLayout -->
+
+    <!-- ==================== MODALS ==================== -->
+<div id="sessionCastPickerModal" class="modal hidden">
+  <div class="modalBox sessionCastPickerBox">
+
+    <div class="modalHeader">
+      <h2 id="sessionCastPickerTitle">Add to Session Cast</h2>
+      <button id="closeSessionCastPickerBtn" type="button">×</button>
+    </div>
+
+    <input
+      id="sessionCastPickerSearchInput"
+      placeholder="Search..."
+      autocomplete="off"
+    >
+
+    <div id="sessionCastPickerResults" class="sessionCastPickerResults">
+      Start typing to search.
+    </div>
+
+  </div>
+</div>
+
+    <div id="inputModal" class="hidden">
+      <div class="modalBox">
+        <h2 id="inputModalTitle">Enter Value</h2>
+        <input id="inputModalField">
+        <div>
+          <button id="inputOkBtn">Save</button>
+          <button id="inputCancelBtn">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="worldNoteModal" class="hidden">
+      <div class="modalBox characterModalBox">
+
+        <h2 id="worldNoteTitle">World Note</h2>
+
+        <input type="hidden" id="worldNoteId">
+
+        <label>Player Knowledge</label>
+        <textarea id="worldNoteContent" rows="8"></textarea>
+
+        <label>GM Secrets</label>
+        <textarea id="worldNoteSecrets" rows="8"></textarea>
+
+        <div class="modalActions">
+          <button id="saveWorldNoteBtn">Save</button>
+          <button id="cancelWorldNoteBtn">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+
+    <div id="characterModal" class="hidden">
+      <div class="modalBox characterModalBox">
+
+        <h2 id="characterModalTitle">Create Character</h2>
+
+        <input type="hidden" id="characterIdInput">
+        <input type="hidden" id="characterPlayerIdInput">
+
+        <label>Character Name</label>
+        <input id="characterNameInput">
+
+        <label>Species</label>
+        <div class="hybridGrid">
+          <select id="characterSpeciesInput"></select>
+          <select id="characterSpeciesTwoInput"></select>
+        </div>
+
+        <label class="checkboxLine">
+          <input id="characterHybridInput" type="checkbox">
+          Hybrid species
+        </label>
+
+        <label>Class</label>
+        <select id="characterClassInput"></select>
+
+        <label>Subclass</label>
+        <input id="characterSubclassInput">
+
+        <h3 class="modalSectionTitle">Ability Scores</h3>
+
+        <div class="abilityGrid">
+          <div>
+            <label>STR</label>
+            <input id="strInput" type="number" value="10">
+            <span id="strMod">+0</span>
+          </div>
+          <div>
+            <label>DEX</label>
+            <input id="dexInput" type="number" value="10">
+            <span id="dexMod">+0</span>
+          </div>
+          <div>
+            <label>CON</label>
+            <input id="conInput" type="number" value="10">
+            <span id="conMod">+0</span>
+          </div>
+          <div>
+            <label>INT</label>
+            <input id="intInput" type="number" value="10">
+            <span id="intMod">+0</span>
+          </div>
+          <div>
+            <label>WIS</label>
+            <input id="wisInput" type="number" value="10">
+            <span id="wisMod">+0</span>
+          </div>
+          <div>
+            <label>CHA</label>
+            <input id="chaInput" type="number" value="10">
+            <span id="chaMod">+0</span>
+          </div>
+        </div>
+
+        <h3 class="modalSectionTitle">Skill Proficiencies</h3>
+
+        <div class="skillGrid">
+          <label><input type="checkbox" id="perceptionProf"> Perception</label>
+          <label><input type="checkbox" id="perceptionExpert"> Perception Expertise</label>
+          <label><input type="checkbox" id="investigationProf"> Investigation</label>
+          <label><input type="checkbox" id="investigationExpert"> Investigation Expertise</label>
+          <label><input type="checkbox" id="insightProf"> Insight</label>
+          <label><input type="checkbox" id="insightExpert"> Insight Expertise</label>
+        </div>
+
+        <button id="calculatePassivesBtn" type="button">Calculate Passives</button>
+
+        <div class="formGrid">
+          <div>
+            <label>Level</label>
+            <input id="characterLevelInput" type="number" min="1" max="20" value="1">
+          </div>
+          <div>
+            <label>AC</label>
+            <input id="characterAcInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Max HP</label>
+            <input id="characterMaxHpInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Current HP</label>
+            <input id="characterCurrentHpInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Passive Perception</label>
+            <input id="characterPpInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Passive Investigation</label>
+            <input id="characterPiInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Passive Insight</label>
+            <input id="characterInsightInput" type="number" value="10">
+          </div>
+          <div>
+            <label>Status</label>
+            <select id="characterStatusInput">
+              <option>Alive</option>
+              <option>Dead</option>
+              <option>Missing</option>
+              <option>Retired</option>
+              <option>NPC</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="modalActions">
+          <button id="saveCharacterBtn">Save Character</button>
+          <button id="cancelCharacterBtn">Cancel</button>
+        </div>
+
+      </div>
+    </div>
+<div id="sessionFieldModal" class="hidden">
+  <div id="sessionFieldModalBox">
+ 
+    <div id="sessionFieldModalHeader">
+      <h2 id="sessionFieldModalTitle">Edit</h2>
+      <button id="sessionFieldModalClose">✕ Close</button>
+    </div>
+ 
+    <textarea id="sessionFieldModalTextarea"></textarea>
+ 
+    <div id="sessionFieldModalFooter">
+      <button id="sessionFieldModalSave">💾 Save & Close</button>
+    </div>
+ 
+  </div>
+</div>
+  </div><!-- /#app -->
+
+<script src="state.js"></script>
+<script src="gameSystems.js"></script>
+<script src="dataManager.js"></script>
+<script src="generators.js"></script>
+<script src="forgeSearch.js"></script>
+<script src="combatOps.js"></script>
+<script src="relationships/relationship-types.js"></script>
+<script src="engines/universal-relationship-engine.js"></script>
+<script src="relationships/relationship-metadata.js"></script>
+<script src="configuration/configuration-assets.js"></script>
+<script src="configuration/configuration-reference-helper.js"></script>
+<script src="factions/faction-hierarchy.js"></script>
+<script src="abilities/ability-packs.js"></script>
+<script src="engines/inheritance-engine.js"></script>
+<script src="renderers/relationship-graph-renderer.js"></script>
+<script src="MasterForge_action_console.js"></script>
+<script src="renderer.js"></script>
+
+</body>
+</html>

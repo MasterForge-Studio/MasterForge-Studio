@@ -1,0 +1,10 @@
+{
+  "id": "keepers-of-the-feather",
+  "entity_type": "faction",
+  "name": "Keepers of the Feather",
+  "description": "Secretive raven-linked resistance network.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,34 @@
+{
+  "id": "gwynneth",
+  "name": "Gwynneth",
+  "type": "location",
+  "regionId": "moonshae-isles",
+  "summary": "A deeply green island of ancient forests, fey-touched glades, standing stones and old druidic magic.",
+  "politics": [
+    "Druidic authority and local clan leadership often overlap.",
+    "Fey bargains may matter as much as mortal law."
+  ],
+  "culture": [
+    "Ritual, season, ancestry and respect for hidden places define daily life.",
+    "Travellers are judged by how they treat the land."
+  ],
+  "factions": [
+    "Druid circles",
+    "Fey courts",
+    "Island clans",
+    "Beast spirits"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/gwynneth/background.webp"
+}

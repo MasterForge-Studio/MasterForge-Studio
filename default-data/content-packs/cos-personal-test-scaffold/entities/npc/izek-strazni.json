@@ -1,0 +1,11 @@
+{
+  "id": "izek-strazni",
+  "entity_type": "npc",
+  "name": "Izek Strazni",
+  "description": "brutal enforcer. Placeholder for personal verification.",
+  "data": {
+    "factionId": "vallaki-baronial-rule",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

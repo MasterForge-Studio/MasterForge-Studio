@@ -1,0 +1,11 @@
+{
+  "id": "sir-godfrey-gwilym",
+  "entity_type": "npc",
+  "name": "Sir Godfrey Gwilym",
+  "description": "fallen knight. Placeholder for personal verification.",
+  "data": {
+    "factionId": "order-of-the-silver-dragon",
+    "regionId": "argynvostholt"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

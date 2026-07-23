@@ -1,0 +1,10 @@
+{
+  "id": "abbey-of-saint-markovia",
+  "entity_type": "region",
+  "name": "Abbey of Saint Markovia",
+  "description": "A remote abbey where holiness and horror blur.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

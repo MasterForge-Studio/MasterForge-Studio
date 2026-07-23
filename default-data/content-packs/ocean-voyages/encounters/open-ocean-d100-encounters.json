@@ -1,0 +1,130 @@
+{
+  "id": "open-ocean-d100-encounters",
+  "name": "Open Ocean d100 Encounters",
+  "type": "encounter-table",
+  "locationId": "trackless-sea",
+  "regionId": "open-ocean",
+  "die": "d100",
+  "entries": [
+    {
+      "roll": "1-5",
+      "name": "Dolphins race the bow",
+      "description": "Dolphins race the bow. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "6-10",
+      "name": "Message bottle",
+      "description": "Message bottle. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "11-15",
+      "name": "Floating wreck plank",
+      "description": "Floating wreck plank. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "16-20",
+      "name": "Dead whale carcass",
+      "description": "Dead whale carcass. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "21-25",
+      "name": "Lost albatross follows ship",
+      "description": "Lost albatross follows ship. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "26-30",
+      "name": "Merchant ship requesting news",
+      "description": "Merchant ship requesting news. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "31-35",
+      "name": "Freshwater barrel cracks",
+      "description": "Freshwater barrel cracks. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "36-40",
+      "name": "Crew gambling dispute",
+      "description": "Crew gambling dispute. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "41-45",
+      "name": "Star navigation opportunity",
+      "description": "Star navigation opportunity. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "46-50",
+      "name": "Sea hag omen",
+      "description": "Sea hag omen. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "51-55",
+      "name": "Giant octopus tentacle sighting",
+      "description": "Giant octopus tentacle sighting. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "56-60",
+      "name": "Drifting corpse in sailor uniform",
+      "description": "Drifting corpse in sailor uniform. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "61-65",
+      "name": "Unknown island mirage",
+      "description": "Unknown island mirage. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "66-70",
+      "name": "Flying fish swarm",
+      "description": "Flying fish swarm. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "71-75",
+      "name": "Sail tear in crosswind",
+      "description": "Sail tear in crosswind. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "76-80",
+      "name": "Stowaway discovered",
+      "description": "Stowaway discovered. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "81-85",
+      "name": "Sahuagin javelin found in hull",
+      "description": "Sahuagin javelin found in hull. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "86-90",
+      "name": "Ghost lights at night",
+      "description": "Ghost lights at night. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "91-95",
+      "name": "Huge fin in distance",
+      "description": "Huge fin in distance. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    },
+    {
+      "roll": "96-100",
+      "name": "Ancient shape beneath clear water",
+      "description": "Ancient shape beneath clear water. Use this as a sea travel complication, clue, hazard, social scene or combat seed depending on party choices.",
+      "tier": 1
+    }
+  ]
+}

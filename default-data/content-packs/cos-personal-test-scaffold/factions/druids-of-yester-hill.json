@@ -1,0 +1,14 @@
+{
+  "id": "druids-of-yester-hill",
+  "name": "Druids of Yester Hill",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Wild cultic servants of dark natural power.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

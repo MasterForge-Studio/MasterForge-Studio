@@ -1,0 +1,14 @@
+{
+  "id": "order-of-the-silver-dragon",
+  "name": "Order of the Silver Dragon",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Fallen knights bound to unresolved duty.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

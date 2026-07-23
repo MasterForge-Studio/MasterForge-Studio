@@ -1,0 +1,43 @@
+{
+  "id": "port-nyanzaru-loot",
+  "name": "Port Nyanzaru Loot",
+  "locationId": "port-nyanzaru",
+  "entries": [
+    {
+      "roll": "1-20",
+      "name": "Useful supplies",
+      "item": "Supplies",
+      "description": "Rope, rations, lamp oil, dry clothes or local tools useful in Port Nyanzaru."
+    },
+    {
+      "roll": "21-40",
+      "name": "Local trinket",
+      "item": "Trinket",
+      "description": "A small object with cultural ties to Port Nyanzaru; useful as flavour or clue."
+    },
+    {
+      "roll": "41-60",
+      "name": "Coin and trade goods",
+      "item": "Trade goods",
+      "description": "A modest pouch of coin, gems, trade bars or goods with local value."
+    },
+    {
+      "roll": "61-75",
+      "name": "Potion or charm",
+      "item": "Minor consumable",
+      "description": "A low-power potion, charm, antidote or blessed token."
+    },
+    {
+      "roll": "76-90",
+      "name": "Map fragment",
+      "item": "Map fragment",
+      "description": "A partial map, route note or coded direction connected to Port Nyanzaru."
+    },
+    {
+      "roll": "91-100",
+      "name": "Rare local prize",
+      "item": "Rare prize",
+      "description": "A notable item tied to a faction, ruin or powerful NPC in Port Nyanzaru."
+    }
+  ]
+}

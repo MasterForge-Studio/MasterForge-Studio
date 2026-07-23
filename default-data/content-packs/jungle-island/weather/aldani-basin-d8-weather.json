@@ -1,0 +1,50 @@
+{
+  "id": "aldani-basin-d8-weather",
+  "name": "Aldani Basin d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "aldani-basin",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Low swamp fog",
+      "description": "Visibility poor over water."
+    },
+    {
+      "roll": 2,
+      "name": "Mosquito dusk",
+      "description": "Resting becomes difficult."
+    },
+    {
+      "roll": 3,
+      "name": "Warm stagnant air",
+      "description": "Disease risk heightened."
+    },
+    {
+      "roll": 4,
+      "name": "Heavy rain",
+      "description": "Water levels rise; hidden channels open."
+    },
+    {
+      "roll": 5,
+      "name": "Clear humid noon",
+      "description": "Reeds reveal movement and ripples."
+    },
+    {
+      "roll": 6,
+      "name": "Rot smell wind",
+      "description": "Undead or carrion signs harder to ignore."
+    },
+    {
+      "roll": 7,
+      "name": "Lightning over water",
+      "description": "Open boats become dangerous."
+    },
+    {
+      "roll": 8,
+      "name": "Silent mist",
+      "description": "Predators approach unseen."
+    }
+  ]
+}

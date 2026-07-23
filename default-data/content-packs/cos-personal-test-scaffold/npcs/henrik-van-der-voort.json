@@ -1,0 +1,14 @@
+{
+  "id": "henrik-van-der-voort",
+  "name": "Henrik van der Voort",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "vallaki",
+  "factionId": "barovian-commoners",
+  "role": "coffin maker",
+  "description": "Henrik van der Voort: coffin maker. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

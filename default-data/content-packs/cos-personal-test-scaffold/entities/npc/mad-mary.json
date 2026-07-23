@@ -1,0 +1,11 @@
+{
+  "id": "mad-mary",
+  "entity_type": "npc",
+  "name": "Mad Mary",
+  "description": "grieving villager. Placeholder for personal verification.",
+  "data": {
+    "factionId": "barovian-commoners",
+    "regionId": "village-of-barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

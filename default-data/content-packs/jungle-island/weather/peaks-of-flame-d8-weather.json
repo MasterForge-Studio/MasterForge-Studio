@@ -1,0 +1,50 @@
+{
+  "id": "peaks-of-flame-d8-weather",
+  "name": "Peaks of Flame d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "peaks-of-flame",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Light ashfall",
+      "description": "Visibility reduced; tracks covered."
+    },
+    {
+      "roll": 2,
+      "name": "Choking ash wind",
+      "description": "Con saves or exhaustion pressure."
+    },
+    {
+      "roll": 3,
+      "name": "Clear volcanic glare",
+      "description": "Heat severe but navigation easier."
+    },
+    {
+      "roll": 4,
+      "name": "Red lightning",
+      "description": "Elemental activity increases."
+    },
+    {
+      "roll": 5,
+      "name": "Steam burst weather",
+      "description": "Vents become more dangerous."
+    },
+    {
+      "roll": 6,
+      "name": "Hot dry wind",
+      "description": "Water use increases."
+    },
+    {
+      "roll": 7,
+      "name": "Black cloud overhead",
+      "description": "Possible eruption signs."
+    },
+    {
+      "roll": 8,
+      "name": "Cool mountain pocket",
+      "description": "Temporary safe rest opportunity."
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+{
+  "id": "storm-belt-d8-weather",
+  "name": "Storm Belt d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "storm-belt",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Distant Thunder",
+      "description": "The air is tense. Storm clouds gather but have not yet broken."
+    },
+    {
+      "roll": "2",
+      "name": "Heavy Swell",
+      "description": "Waves rise before the wind. Movement on deck becomes dangerous."
+    },
+    {
+      "roll": "3",
+      "name": "Hard Rain",
+      "description": "Rain lashes the deck. Visibility is poor and torches or lanterns struggle."
+    },
+    {
+      "roll": "4",
+      "name": "Screaming Wind",
+      "description": "Rigging howls and sails strain. Crew checks are needed to avoid damage."
+    },
+    {
+      "roll": "5",
+      "name": "Lightning Strike",
+      "description": "Lightning hits nearby or strikes ship hardware. Panic and damage are possible."
+    },
+    {
+      "roll": "6",
+      "name": "Rogue Wave",
+      "description": "A huge wave slams the vessel. Unsecured crew or cargo may be thrown."
+    },
+    {
+      "roll": "7",
+      "name": "Full Tropical Storm",
+      "description": "Travel is dangerous. The ship must ride the storm or risk hull and mast damage."
+    },
+    {
+      "roll": "8",
+      "name": "Eye of the Storm",
+      "description": "A sudden impossible calm opens inside chaos. Something may be seen in the clouds or sea."
+    }
+  ]
+}

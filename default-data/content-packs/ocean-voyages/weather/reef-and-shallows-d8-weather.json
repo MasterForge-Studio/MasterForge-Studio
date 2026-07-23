@@ -1,0 +1,50 @@
+{
+  "id": "reef-and-shallows-d8-weather",
+  "name": "Reefs & Shallows d8 Weather",
+  "type": "weather-table",
+  "locationId": "trackless-sea",
+  "regionId": "reef-and-shallows",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Crystal Clear Shallows",
+      "description": "The water is bright and clear. Reefs can be seen below, beautiful and dangerous."
+    },
+    {
+      "roll": "2",
+      "name": "Glare on the Water",
+      "description": "Sun glare hides coral heads and rocks. Navigation is harder."
+    },
+    {
+      "roll": "3",
+      "name": "Choppy Shallows",
+      "description": "Short, sharp waves buffet the hull. Small craft become risky."
+    },
+    {
+      "roll": "4",
+      "name": "Low Tide Exposure",
+      "description": "Reefs and sandbars rise close to the surface. The ship must move carefully."
+    },
+    {
+      "roll": "5",
+      "name": "Warm Rain Over Coral",
+      "description": "Rain reduces visibility, but fresh water can be collected."
+    },
+    {
+      "roll": "6",
+      "name": "Hidden Breakers",
+      "description": "Foam lines reveal dangerous rocks at the last moment."
+    },
+    {
+      "roll": "7",
+      "name": "Reef Fog",
+      "description": "Mist clings to shallow water and sound carries strangely."
+    },
+    {
+      "roll": "8",
+      "name": "Bioluminescent Water",
+      "description": "At night the sea glows blue-green around the hull, beautiful and deeply unsettling."
+    }
+  ]
+}

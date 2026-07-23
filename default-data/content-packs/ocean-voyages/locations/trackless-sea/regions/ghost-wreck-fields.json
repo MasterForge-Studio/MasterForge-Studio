@@ -1,0 +1,65 @@
+{
+  "id": "ghost-wreck-fields",
+  "locationId": "trackless-sea",
+  "name": "Ghost Wreck Fields",
+  "type": "region",
+  "summary": "Cold patches, drifting timbers, half-sunk hulls and haunted waters where old disasters refuse to stay quiet.",
+  "environment": [
+    "Rolling ocean swell",
+    "Salt spray",
+    "Open sky",
+    "Creaking rigging",
+    "Limited shelter"
+  ],
+  "weather": [
+    "Changing winds",
+    "Sudden rain",
+    "Sea mist",
+    "Hot sun",
+    "Night squalls"
+  ],
+  "creatures": {
+    "common": [
+      "Dolphins",
+      "Flying fish",
+      "Sea birds",
+      "Reef fish"
+    ],
+    "dangerous": [
+      "Giant shark",
+      "Giant octopus",
+      "Sahuagin scouts",
+      "Sea hag"
+    ],
+    "legendary": [
+      "Dragon turtle",
+      "Ancient leviathan shadow",
+      "Storm-wreathed sea spirit"
+    ]
+  },
+  "humanoids": [
+    "Sailors",
+    "Merchants",
+    "Pirates",
+    "Smugglers",
+    "Shipwreck survivors"
+  ],
+  "travelHazards": [
+    "Slippery decks",
+    "Spoiled supplies",
+    "Bad charts",
+    "Hidden reefs",
+    "Crew fatigue",
+    "Poor visibility"
+  ],
+  "rumours": [
+    "A ship vanished here without wreckage.",
+    "Lights have been seen beneath the waves.",
+    "Some sailors swear the sea speaks during storms."
+  ],
+  "dmSecrets": [
+    "A wreck nearby carries something valuable.",
+    "One crew member may know more than they admit.",
+    "A storm could hide unnatural influence."
+  ]
+}

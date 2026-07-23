@@ -1,0 +1,11 @@
+{
+  "id": "rahadin",
+  "entity_type": "npc",
+  "name": "Rahadin",
+  "description": "chamberlain and enforcer. Placeholder for personal verification.",
+  "data": {
+    "factionId": "castle-ravenloft-court",
+    "regionId": "castle-ravenloft"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

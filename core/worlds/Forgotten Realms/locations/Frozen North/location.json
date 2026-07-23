@@ -1,0 +1,30 @@
+{
+  "name": "Frozen North",
+  "climate": "Arctic wilderness",
+  "summary": "A harsh northern region of snow, ice, mining settlements, isolated towns, ancient dangers and brutal weather.",
+  "politics": [
+    "Settlements tend to be independent and survival-focused.",
+    "Trade routes are fragile.",
+    "Power belongs to those who control food, warmth, metal, magic or transport."
+  ],
+  "culture": [
+    "People are hardy, suspicious and practical.",
+    "Strangers are noticed quickly.",
+    "Promises, supplies and shelter matter."
+  ],
+  "factions": [
+    "Harpers",
+    "Zhentarim",
+    "Arcane Brotherhood",
+    "Dwarven clans",
+    "Local speakers and town councils"
+  ],
+  "dmTone": [
+    "Cold",
+    "Isolation",
+    "Whiteout weather",
+    "Suspicion",
+    "Survival",
+    "Ancient things beneath the ice"
+  ]
+}

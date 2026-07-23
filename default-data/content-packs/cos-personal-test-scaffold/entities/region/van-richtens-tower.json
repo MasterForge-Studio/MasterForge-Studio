@@ -1,0 +1,10 @@
+{
+  "id": "van-richtens-tower",
+  "entity_type": "region",
+  "name": "Van Richten's Tower",
+  "description": "An isolated tower linked to monster hunting and hidden identities.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

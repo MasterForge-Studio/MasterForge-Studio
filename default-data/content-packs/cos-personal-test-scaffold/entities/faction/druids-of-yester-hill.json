@@ -1,0 +1,10 @@
+{
+  "id": "druids-of-yester-hill",
+  "entity_type": "faction",
+  "name": "Druids of Yester Hill",
+  "description": "Wild cultic servants of dark natural power.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

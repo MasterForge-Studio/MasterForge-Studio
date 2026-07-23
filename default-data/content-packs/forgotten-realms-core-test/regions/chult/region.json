@@ -1,0 +1,17 @@
+{
+  "id": "chult",
+  "worldId": "forgotten-realms",
+  "name": "Chult",
+  "type": "region",
+  "themeId": "lost-jungle-isle",
+  "defaultThemeId": "lost-jungle-isle",
+  "background": "scenes/regions/chult/background.webp",
+  "summary": "A humid jungle peninsula of dense rainforest, dinosaurs, lost temples and river expeditions.",
+  "dmTone": [
+    "Exploration",
+    "Regional politics",
+    "Local dangers",
+    "Travel choices"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

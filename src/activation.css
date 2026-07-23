@@ -1,0 +1,301 @@
+:root {
+  color-scheme: dark;
+
+  --background: #090b0e;
+  --panel: rgba(20, 23, 28, 0.96);
+  --panel-light: #1c2026;
+  --border: #8f2635;
+  --border-bright: #c23b4d;
+  --text: #f3eee5;
+  --muted: #aaa49b;
+  --input: #111419;
+  --danger: #ff8794;
+  --success: #8ed6a2;
+  --shadow: rgba(0, 0, 0, 0.55);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+  background:
+    radial-gradient(
+      circle at top,
+      rgba(143, 38, 53, 0.22),
+      transparent 42%
+    ),
+    var(--background);
+  color: var(--text);
+  font-family:
+    Inter,
+    "Segoe UI",
+    Arial,
+    sans-serif;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+#activationApp {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.activationTopbar {
+  display: flex;
+  flex: 0 0 54px;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(194, 59, 77, 0.45);
+  background: rgba(9, 11, 14, 0.95);
+
+  -webkit-app-region: drag;
+  user-select: none;
+}
+
+.activationBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding-left: 16px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.activationLogo {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+}
+
+.activationWindowControls {
+  display: flex;
+  height: 100%;
+
+  -webkit-app-region: no-drag;
+}
+
+.activationWindowControls button {
+  width: 48px;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 21px;
+  line-height: 1;
+}
+
+.activationWindowControls button:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+#activationCloseBtn:hover {
+  background: #b32635;
+}
+
+.activationLayout {
+  display: grid;
+  flex: 1;
+  place-items: center;
+  overflow: auto;
+  padding: 34px 24px;
+}
+
+.activationCard {
+  width: min(100%, 540px);
+  padding: 36px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.025),
+      transparent 45%
+    ),
+    var(--panel);
+  box-shadow:
+    0 24px 70px var(--shadow),
+    0 0 28px rgba(143, 38, 53, 0.12);
+}
+
+.activationHeading {
+  margin-bottom: 30px;
+}
+
+.activationEyebrow {
+  margin: 0 0 10px;
+  color: #dd6b7a;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.activationHeading h1 {
+  margin: 0 0 14px;
+  font-size: clamp(26px, 4vw, 36px);
+  line-height: 1.12;
+}
+
+.activationHeading p:last-child {
+  margin: 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.activationField {
+  margin-bottom: 20px;
+}
+
+.activationField label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.activationField input {
+  width: 100%;
+  min-height: 48px;
+  padding: 11px 13px;
+  border: 1px solid #454b54;
+  border-radius: 7px;
+  outline: none;
+  background: var(--input);
+  color: var(--text);
+  transition:
+    border-color 140ms ease,
+    box-shadow 140ms ease;
+}
+
+.activationField input::placeholder {
+  color: #6f747c;
+}
+
+.activationField input:focus {
+  border-color: var(--border-bright);
+  box-shadow: 0 0 0 3px rgba(194, 59, 77, 0.18);
+}
+
+#activationAccessKey {
+  font-family:
+    Consolas,
+    "Courier New",
+    monospace;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.activationSubmit {
+  width: 100%;
+  min-height: 50px;
+  margin-top: 6px;
+  padding: 12px 18px;
+  border: 1px solid #dc5264;
+  border-radius: 7px;
+  background:
+    linear-gradient(
+      180deg,
+      #a93445,
+      #7f1f2e
+    );
+  color: white;
+  font-weight: 800;
+  transition:
+    transform 120ms ease,
+    filter 120ms ease;
+}
+
+.activationSubmit:hover {
+  filter: brightness(1.12);
+}
+
+.activationSubmit:active {
+  transform: translateY(1px);
+}
+
+.activationSubmit:disabled {
+  cursor: wait;
+  filter: grayscale(0.45);
+  opacity: 0.65;
+}
+
+.activationMessage {
+  margin: 4px 0 16px;
+  padding: 12px 14px;
+  border: 1px solid currentColor;
+  border-radius: 7px;
+  font-size: 14px;
+  line-height: 1.45;
+}
+
+.activationMessage.error {
+  background: rgba(255, 71, 91, 0.09);
+  color: var(--danger);
+}
+
+.activationMessage.success {
+  background: rgba(80, 190, 111, 0.09);
+  color: var(--success);
+}
+
+.activationMessage.info {
+  background: rgba(255, 255, 255, 0.055);
+  color: var(--text);
+}
+
+.activationSupport {
+  margin-top: 26px;
+  padding-top: 20px;
+  border-top: 1px solid #353a42;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.55;
+  text-align: center;
+}
+
+.activationSupport p {
+  margin: 4px 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+  .activationLayout {
+    align-items: start;
+    padding: 22px 14px;
+  }
+
+  .activationCard {
+    padding: 25px 20px;
+  }
+
+  .activationBrand span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

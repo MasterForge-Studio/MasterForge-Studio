@@ -1,0 +1,72 @@
+{
+  "id": "lost-temples",
+  "locationId": "chult",
+  "name": "Lost Temples",
+  "type": "region",
+  "environment": [
+    "Sunken shrines",
+    "Moss-covered steps",
+    "Carved idols",
+    "Root-split sanctuaries",
+    "Silent courtyards"
+  ],
+  "weather": [
+    "Rain dripping through broken roofs",
+    "Still humid air",
+    "Cold shade despite heat",
+    "Thunder that echoes like drums"
+  ],
+  "politics": [
+    "Temples are claimed by memory, monsters and superstition.",
+    "Factions want relics but rarely understand the cost."
+  ],
+  "culture": [
+    "Offerings, taboos and old prayers matter here.",
+    "Locals may refuse to enter without signs of favour."
+  ],
+  "creatures": {
+    "common": [
+      "Bats",
+      "Snakes",
+      "Insects",
+      "Small dinosaurs",
+      "Monkeys"
+    ],
+    "dangerous": [
+      "Undead priests",
+      "Animated statues",
+      "Assassin vines",
+      "Cursed guardians",
+      "Yuan-ti relic seekers"
+    ],
+    "legendary": [
+      "Temple oracle",
+      "Forgotten god-echo",
+      "Ancient stone titan"
+    ]
+  },
+  "humanoids": [
+    "Relic hunters",
+    "Cultists",
+    "Priests",
+    "Lost guides",
+    "Scholars"
+  ],
+  "travelHazards": [
+    "Cursed altars",
+    "Collapsing roofs",
+    "Poison darts",
+    "Maze corridors",
+    "Sacred taboos"
+  ],
+  "rumours": [
+    "One temple answers only in dreams.",
+    "Blood spilled on the wrong altar wakes the dead.",
+    "A golden maze symbol marks safe passage."
+  ],
+  "dmSecrets": [
+    "The idol legend can be seeded strongly here.",
+    "Correct offerings can bypass danger.",
+    "A promoted NPC could gain recurring spiritual ties here."
+  ]
+}

@@ -1,0 +1,72 @@
+{
+  "id": "peaks-of-flame",
+  "locationId": "chult",
+  "name": "Peaks of Flame",
+  "type": "region",
+  "environment": [
+    "Volcanic slopes",
+    "Ash forests",
+    "Lava vents",
+    "Black stone ridges",
+    "Steam cracks"
+  ],
+  "weather": [
+    "Ashfall",
+    "Dry choking heat",
+    "Red lightning storms",
+    "Sudden hot winds"
+  ],
+  "politics": [
+    "Few groups stay long enough to claim the peaks.",
+    "Fire creatures and ancient guardians control key routes."
+  ],
+  "culture": [
+    "Guides respect ash signs and old lava flows.",
+    "Water is wealth; shade is mercy."
+  ],
+  "creatures": {
+    "common": [
+      "Fire beetles",
+      "Pteranodons",
+      "Giant lizards",
+      "Ash snakes",
+      "Magma mephits"
+    ],
+    "dangerous": [
+      "Salamanders",
+      "Fire elementals",
+      "Young red dragon signs",
+      "Lava-dwelling predators",
+      "Ash zombies"
+    ],
+    "legendary": [
+      "Volcanic dragon",
+      "Fire primordial echo",
+      "Sleeping mountain spirit"
+    ]
+  },
+  "humanoids": [
+    "Desperate miners",
+    "Fire cultists",
+    "Lost explorers",
+    "Elemental pilgrims",
+    "Chultan guides"
+  ],
+  "travelHazards": [
+    "Lava flows",
+    "Poison gas",
+    "Ash blindness",
+    "Unstable ridges",
+    "Heat exhaustion"
+  ],
+  "rumours": [
+    "A red glow marks an ancient vault at night.",
+    "Voices speak from steam vents.",
+    "A black glass idol cannot be touched by bare hands."
+  ],
+  "dmSecrets": [
+    "Fire magic may awaken dormant guardians.",
+    "Ashfall hides tracks and reveals hidden inscriptions.",
+    "A lava tunnel could bypass impossible terrain."
+  ]
+}

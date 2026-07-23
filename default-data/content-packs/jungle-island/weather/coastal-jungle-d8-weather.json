@@ -1,0 +1,50 @@
+{
+  "id": "coastal-jungle-d8-weather",
+  "name": "Coastal Jungle d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "coastal-jungle",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Sea breeze through palms",
+      "description": "Heat reduced; sound carries."
+    },
+    {
+      "roll": 2,
+      "name": "Dawn mist",
+      "description": "Trails and ambushes obscured."
+    },
+    {
+      "roll": 3,
+      "name": "Fast coastal shower",
+      "description": "Tracks fresh but fading."
+    },
+    {
+      "roll": 4,
+      "name": "Humid stillness",
+      "description": "Insects and predators active."
+    },
+    {
+      "roll": 5,
+      "name": "Clear bright shore",
+      "description": "Distant movement easier to see."
+    },
+    {
+      "roll": 6,
+      "name": "Tide fog",
+      "description": "Coast and jungle blend together."
+    },
+    {
+      "roll": 7,
+      "name": "Heavy night rain",
+      "description": "Camp security harder."
+    },
+    {
+      "roll": 8,
+      "name": "Storm offshore",
+      "description": "Sea travel risky; inland pressure rises."
+    }
+  ]
+}

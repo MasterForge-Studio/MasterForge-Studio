@@ -1,0 +1,14 @@
+{
+  "id": "baba-lysaga-servants",
+  "name": "Baba Lysaga's Servants",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Forces and creatures serving the witch of Berez.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

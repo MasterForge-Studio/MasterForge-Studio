@@ -1,0 +1,46 @@
+{
+  "id": "chult",
+  "name": "Chult",
+  "type": "region",
+  "worldId": "forgotten-realms",
+  "summary": "A steaming peninsula of deep jungle, lost cities, dinosaurs, undead, merchant princes and dangerous river routes beneath relentless heat.",
+  "dmTone": [
+    "humid jungle",
+    "ancient stone",
+    "bright markets",
+    "predators",
+    "disease and mystery"
+  ],
+  "environment": [
+    "humid jungle",
+    "ancient stone",
+    "bright markets",
+    "predators",
+    "disease and mystery"
+  ],
+  "politics": [
+    "Chult is shaped by local powers, trade needs and old conflicts.",
+    "Adventurers can shift local balances quickly if they earn trust or fear."
+  ],
+  "culture": [
+    "People of Chult carry strong local customs and stories.",
+    "Rumour, reputation and practical help matter to most communities."
+  ],
+  "travelHazards": [
+    "Bad weather",
+    "Bandits or raiders",
+    "Difficult terrain",
+    "Old ruins and hidden magic"
+  ],
+  "rumours": [
+    "Something old has stirred somewhere in Chult.",
+    "A recent disappearance has locals worried.",
+    "A merchant is paying quietly for reliable blades."
+  ],
+  "dmSecrets": [
+    "A hidden faction is exploiting unrest in Chult.",
+    "An old site nearby is connected to a larger campaign mystery."
+  ],
+  "themeId": "lost-jungle-isle",
+  "background": "assets/regions/chult/background.webp"
+}

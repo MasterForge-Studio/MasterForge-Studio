@@ -1,0 +1,10 @@
+{
+  "id": "tser-pool",
+  "entity_type": "region",
+  "name": "Tser Pool Encampment",
+  "description": "A riverside Vistani camp and crossroads of prophecy.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

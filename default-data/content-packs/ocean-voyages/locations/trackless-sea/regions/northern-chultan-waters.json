@@ -1,0 +1,65 @@
+{
+  "id": "northern-chultan-waters",
+  "locationId": "trackless-sea",
+  "name": "Northern Chultan Waters",
+  "type": "region",
+  "summary": "Warm tropical sea north of Chult, where jungle coastlines, humid winds and sudden storms mark the final approach to the peninsula.",
+  "environment": [
+    "Rolling ocean swell",
+    "Salt spray",
+    "Open sky",
+    "Creaking rigging",
+    "Limited shelter"
+  ],
+  "weather": [
+    "Changing winds",
+    "Sudden rain",
+    "Sea mist",
+    "Hot sun",
+    "Night squalls"
+  ],
+  "creatures": {
+    "common": [
+      "Dolphins",
+      "Flying fish",
+      "Sea birds",
+      "Reef fish"
+    ],
+    "dangerous": [
+      "Giant shark",
+      "Giant octopus",
+      "Sahuagin scouts",
+      "Sea hag"
+    ],
+    "legendary": [
+      "Dragon turtle",
+      "Ancient leviathan shadow",
+      "Storm-wreathed sea spirit"
+    ]
+  },
+  "humanoids": [
+    "Sailors",
+    "Merchants",
+    "Pirates",
+    "Smugglers",
+    "Shipwreck survivors"
+  ],
+  "travelHazards": [
+    "Slippery decks",
+    "Spoiled supplies",
+    "Bad charts",
+    "Hidden reefs",
+    "Crew fatigue",
+    "Poor visibility"
+  ],
+  "rumours": [
+    "A ship vanished here without wreckage.",
+    "Lights have been seen beneath the waves.",
+    "Some sailors swear the sea speaks during storms."
+  ],
+  "dmSecrets": [
+    "A wreck nearby carries something valuable.",
+    "One crew member may know more than they admit.",
+    "A storm could hide unnatural influence."
+  ]
+}

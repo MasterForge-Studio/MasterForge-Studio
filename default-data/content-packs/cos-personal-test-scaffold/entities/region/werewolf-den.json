@@ -1,0 +1,10 @@
+{
+  "id": "werewolf-den",
+  "entity_type": "region",
+  "name": "Werewolf Den",
+  "description": "A savage lair tied to abduction, packs and brutality.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,46 @@
+{
+  "id": "icewind-dale",
+  "name": "Icewind Dale",
+  "type": "region",
+  "worldId": "forgotten-realms",
+  "summary": "A frozen northern frontier of isolated towns, brutal weather, old dwarven holds, Reghed tribes and long shadows beneath the Spine of the World.",
+  "dmTone": [
+    "snow glare",
+    "isolation",
+    "hard choices",
+    "thin survival",
+    "northern legends"
+  ],
+  "environment": [
+    "snow glare",
+    "isolation",
+    "hard choices",
+    "thin survival",
+    "northern legends"
+  ],
+  "politics": [
+    "Icewind Dale is shaped by local powers, trade needs and old conflicts.",
+    "Adventurers can shift local balances quickly if they earn trust or fear."
+  ],
+  "culture": [
+    "People of Icewind Dale carry strong local customs and stories.",
+    "Rumour, reputation and practical help matter to most communities."
+  ],
+  "travelHazards": [
+    "Bad weather",
+    "Bandits or raiders",
+    "Difficult terrain",
+    "Old ruins and hidden magic"
+  ],
+  "rumours": [
+    "Something old has stirred somewhere in Icewind Dale.",
+    "A recent disappearance has locals worried.",
+    "A merchant is paying quietly for reliable blades."
+  ],
+  "dmSecrets": [
+    "A hidden faction is exploiting unrest in Icewind Dale.",
+    "An old site nearby is connected to a larger campaign mystery."
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/regions/icewind-dale/background.webp"
+}

@@ -1,0 +1,65 @@
+{
+  "id": "open-ocean",
+  "locationId": "trackless-sea",
+  "name": "Open Ocean",
+  "type": "region",
+  "summary": "Deep blue water far from land, where the horizon surrounds the ship and anything beneath the waves feels impossibly large.",
+  "environment": [
+    "Rolling ocean swell",
+    "Salt spray",
+    "Open sky",
+    "Creaking rigging",
+    "Limited shelter"
+  ],
+  "weather": [
+    "Changing winds",
+    "Sudden rain",
+    "Sea mist",
+    "Hot sun",
+    "Night squalls"
+  ],
+  "creatures": {
+    "common": [
+      "Dolphins",
+      "Flying fish",
+      "Sea birds",
+      "Reef fish"
+    ],
+    "dangerous": [
+      "Giant shark",
+      "Giant octopus",
+      "Sahuagin scouts",
+      "Sea hag"
+    ],
+    "legendary": [
+      "Dragon turtle",
+      "Ancient leviathan shadow",
+      "Storm-wreathed sea spirit"
+    ]
+  },
+  "humanoids": [
+    "Sailors",
+    "Merchants",
+    "Pirates",
+    "Smugglers",
+    "Shipwreck survivors"
+  ],
+  "travelHazards": [
+    "Slippery decks",
+    "Spoiled supplies",
+    "Bad charts",
+    "Hidden reefs",
+    "Crew fatigue",
+    "Poor visibility"
+  ],
+  "rumours": [
+    "A ship vanished here without wreckage.",
+    "Lights have been seen beneath the waves.",
+    "Some sailors swear the sea speaks during storms."
+  ],
+  "dmSecrets": [
+    "A wreck nearby carries something valuable.",
+    "One crew member may know more than they admit.",
+    "A storm could hide unnatural influence."
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "id": "caer-callas",
+  "worldId": "forgotten-realms",
+  "regionId": "moonshae-isles",
+  "name": "Caer Callas",
+  "type": "location",
+  "themeId": "merchant-vessel",
+  "defaultThemeId": "merchant-vessel",
+  "background": "scenes/locations/caer-callas/background.webp",
+  "summary": "A misty island stronghold above cold waves, heather hills and old legends.",
+  "politics": [
+    "Local leaders manage security, trade and outside threats.",
+    "Power often sits with guilds, nobles, captains, councils or ambitious patrons."
+  ],
+  "culture": [
+    "Taverns, markets and rumours are central to daily life.",
+    "Travellers are common but not always trusted."
+  ],
+  "factions": [
+    "Local authorities",
+    "Merchants",
+    "Adventuring patrons",
+    "Criminal interests"
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

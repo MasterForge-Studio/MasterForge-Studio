@@ -1,0 +1,43 @@
+{
+  "id": "icewind-dale-tier-1-encounters",
+  "name": "Icewind Dale Encounters Tier 1",
+  "regionId": "icewind-dale",
+  "entries": [
+    {
+      "roll": "1-15",
+      "name": "Lost Traveller",
+      "description": "A frightened traveller asks for help finding the road or settlement."
+    },
+    {
+      "roll": "16-30",
+      "name": "Suspicious Patrol",
+      "description": "Armed locals question the party's purpose."
+    },
+    {
+      "roll": "31-45",
+      "name": "Predator Sign",
+      "description": "Tracks, disturbed ground or distant cries suggest something dangerous nearby."
+    },
+    {
+      "roll": "46-60",
+      "name": "Ruined Campsite",
+      "description": "An abandoned camp contains clues, supplies and one worrying detail."
+    },
+    {
+      "roll": "61-75",
+      "name": "Faction Messenger",
+      "description": "A courier is carrying a message that could complicate local politics."
+    },
+    {
+      "roll": "76-90",
+      "name": "Environmental Hazard",
+      "description": "Weather, terrain or old magic creates a travel complication."
+    },
+    {
+      "roll": "91-100",
+      "name": "Named NPC Encounter",
+      "description": "Introduce a recurring NPC tied to the region's current problem."
+    }
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

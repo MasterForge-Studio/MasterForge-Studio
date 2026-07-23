@@ -1,0 +1,34 @@
+{
+  "id": "bryn-shander",
+  "name": "Bryn Shander",
+  "type": "location",
+  "regionId": "icewind-dale",
+  "summary": "The largest of Ten-Towns, a walled trading hub where survival, politics and fear gather against the cold.",
+  "politics": [
+    "Town speakers balance cooperation with bitter local rivalries.",
+    "Control of trade goods can mean life or death during hard winters."
+  ],
+  "culture": [
+    "Practical, suspicious and community-minded under pressure.",
+    "Visitors are welcome if they bring coin, food or useful skills."
+  ],
+  "factions": [
+    "Town speakers",
+    "Militia",
+    "Caravan masters",
+    "Dwarven traders"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/bryn-shander/background.webp"
+}

@@ -1,0 +1,10 @@
+{
+  "id": "amber-temple",
+  "entity_type": "region",
+  "name": "Amber Temple",
+  "description": "A forbidden mountain temple filled with ancient corruption.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

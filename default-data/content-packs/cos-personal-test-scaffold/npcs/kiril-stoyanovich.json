@@ -1,0 +1,14 @@
+{
+  "id": "kiril-stoyanovich",
+  "name": "Kiril Stoyanovich",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "werewolf-den",
+  "factionId": "werewolf-pack",
+  "role": "werewolf leader",
+  "description": "Kiril Stoyanovich: werewolf leader. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

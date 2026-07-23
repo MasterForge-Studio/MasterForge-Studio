@@ -1,0 +1,10 @@
+{
+  "id": "barovian-commoners",
+  "entity_type": "faction",
+  "name": "Barovian Commoners",
+  "description": "Fearful locals and settlement folk.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

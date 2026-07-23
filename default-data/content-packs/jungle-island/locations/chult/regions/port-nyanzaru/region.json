@@ -1,0 +1,77 @@
+{
+  "id": "port-nyanzaru",
+  "locationId": "chult",
+  "name": "Port Nyanzaru",
+  "type": "region",
+  "environment": [
+    "Bright harbour city",
+    "Merchant villas",
+    "Crowded markets",
+    "Dinosaur racing streets",
+    "Temple districts",
+    "Docks thick with foreign ships"
+  ],
+  "weather": [
+    "Hot clear mornings",
+    "Humid afternoons",
+    "Sudden heavy showers",
+    "Sea breeze near the harbour"
+  ],
+  "politics": [
+    "Merchant princes rule through wealth, favours and private guards.",
+    "Foreign adventurers are welcomed for coin but watched closely.",
+    "The Flaming Fist influence supply lines but do not rule the city."
+  ],
+  "culture": [
+    "Colour, noise, spice and trade dominate daily life.",
+    "Guides are respected but can be dangerous investments.",
+    "Dinosaur racing is entertainment, gambling, status and chaos rolled together."
+  ],
+  "creatures": {
+    "common": [
+      "Pack dinosaurs",
+      "Flying monkeys",
+      "Stray reptiles",
+      "Dock rats",
+      "Trained hadrosaurs"
+    ],
+    "dangerous": [
+      "Assassins",
+      "Thieves",
+      "Rampaging racing dinosaurs",
+      "Poisoners",
+      "Hidden yuan-ti agents"
+    ],
+    "legendary": [
+      "Merchant prince schemes",
+      "Ancient city spirits",
+      "Ubtao omens"
+    ]
+  },
+  "humanoids": [
+    "Merchant agents",
+    "Guides",
+    "Sailors",
+    "Gladiators",
+    "Priests",
+    "Spies",
+    "Thieves"
+  ],
+  "travelHazards": [
+    "Crowded streets",
+    "Pickpockets",
+    "Heat exhaustion",
+    "Political traps",
+    "Disease in lower alleys"
+  ],
+  "rumours": [
+    "A guide knows a safe route nobody else admits exists.",
+    "A merchant prince is paying quietly for relics from the interior.",
+    "People disappear near the old city walls after midnight."
+  ],
+  "dmSecrets": [
+    "A friendly contact may be testing the party for a faction.",
+    "A harmless market rumour points toward the idol legend.",
+    "A yuan-ti spy has already noticed unusual newcomers."
+  ]
+}

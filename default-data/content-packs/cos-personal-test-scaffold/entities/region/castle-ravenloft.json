@@ -1,0 +1,10 @@
+{
+  "id": "castle-ravenloft",
+  "entity_type": "region",
+  "name": "Castle Ravenloft",
+  "description": "The gothic seat of power overlooking the valley.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

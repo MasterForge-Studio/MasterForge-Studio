@@ -1,0 +1,11 @@
+{
+  "id": "father-lucian-petrovich",
+  "entity_type": "npc",
+  "name": "Father Lucian Petrovich",
+  "description": "Vallaki priest. Placeholder for personal verification.",
+  "data": {
+    "factionId": "church-of-the-morninglord",
+    "regionId": "vallaki"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

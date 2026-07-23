@@ -1,0 +1,33 @@
+{
+  "id": "sword-coast-loot",
+  "name": "Sword Coast Loot",
+  "regionId": "sword-coast",
+  "entries": [
+    {
+      "roll": "1-25",
+      "name": "Useful Supplies",
+      "description": "Rations, rope, lamp oil, chalk, parchment or other practical gear."
+    },
+    {
+      "roll": "26-50",
+      "name": "Local Coin",
+      "description": "A modest purse of mixed coinage or trade tokens."
+    },
+    {
+      "roll": "51-70",
+      "name": "Rumour Object",
+      "description": "A map scrap, signet, symbol or letter pointing toward a local mystery."
+    },
+    {
+      "roll": "71-90",
+      "name": "Unusual Trinket",
+      "description": "A small item with regional flavour and possible story value."
+    },
+    {
+      "roll": "91-100",
+      "name": "Minor Magical Curiosity",
+      "description": "A low-power magical item, charm or consumable with a drawback or mystery."
+    }
+  ],
+  "contentPack": "forgotten-realms-core-test"
+}

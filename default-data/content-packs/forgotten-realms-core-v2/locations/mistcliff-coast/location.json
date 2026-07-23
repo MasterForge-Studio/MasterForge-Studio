@@ -1,0 +1,34 @@
+{
+  "id": "mistcliff-coast",
+  "name": "Mistcliff Coast",
+  "type": "location",
+  "regionId": "chult",
+  "summary": "A rugged jungle coast of sea caves, cliffs, fog banks, wrecks and predator-haunted beaches south-west of Chult.",
+  "politics": [
+    "Few formal powers hold the coast; captains, guides and hidden tribes matter more than law.",
+    "Smugglers and wreckers use the mist as cover."
+  ],
+  "culture": [
+    "Survival knowledge, respect for storms and caution around ruins are essential.",
+    "Sailors treat the coast with superstition."
+  ],
+  "factions": [
+    "Coastal smugglers",
+    "Hidden villages",
+    "Shipwreck survivors",
+    "Predatory tribes"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "lost-jungle-isle",
+  "background": "assets/locations/mistcliff-coast/background.webp"
+}

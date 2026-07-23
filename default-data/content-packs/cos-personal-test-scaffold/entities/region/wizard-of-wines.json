@@ -1,0 +1,10 @@
+{
+  "id": "wizard-of-wines",
+  "entity_type": "region",
+  "name": "Wizard of Wines",
+  "description": "A vital winery whose fate affects the wider valley.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

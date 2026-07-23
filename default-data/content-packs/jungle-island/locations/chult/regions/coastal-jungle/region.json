@@ -1,0 +1,72 @@
+{
+  "id": "coastal-jungle",
+  "locationId": "chult",
+  "name": "Coastal Jungle",
+  "type": "region",
+  "environment": [
+    "Palm-choked trails",
+    "Saltwater lagoons",
+    "Warm rain pools",
+    "Thick flowering vines",
+    "Animal paths from shore to interior"
+  ],
+  "weather": [
+    "Sea breeze mixing with jungle heat",
+    "Fast showers",
+    "Thick dawn mist",
+    "Muggy still afternoons"
+  ],
+  "politics": [
+    "Coastal hunters know more than they admit.",
+    "Pirates and jungle scouts sometimes use the same trails."
+  ],
+  "culture": [
+    "Fish traps, signal fires and hidden footpaths reveal local knowledge.",
+    "Strangers are judged by how they treat water and fire."
+  ],
+  "creatures": {
+    "common": [
+      "Flying snakes",
+      "Giant lizards",
+      "Giant crabs",
+      "Axe beaks",
+      "Small dinosaurs"
+    ],
+    "dangerous": [
+      "Velociraptor packs",
+      "Constrictor snakes",
+      "Assassin vines",
+      "Crocodiles",
+      "Ghoul remains"
+    ],
+    "legendary": [
+      "Old mangrove spirit",
+      "Mist-hidden hydra",
+      "Ancient coastal guardian"
+    ]
+  },
+  "humanoids": [
+    "Chultan hunters",
+    "Smugglers",
+    "Lost sailors",
+    "Grung scouts",
+    "Hermits"
+  ],
+  "travelHazards": [
+    "Mangrove mud",
+    "Hidden sinkholes",
+    "Poison blossoms",
+    "Insect swarms",
+    "Tidal flooding"
+  ],
+  "rumours": [
+    "A path of white shells leads to safety or sacrifice.",
+    "Someone has been leaving fresh fruit at a ruined idol.",
+    "The tide brings bones back every new moon."
+  ],
+  "dmSecrets": [
+    "This can bridge ship survival to deep jungle exploration.",
+    "A local hunter may test the party before offering help.",
+    "A trail sign points to the wrong destination if misread."
+  ]
+}

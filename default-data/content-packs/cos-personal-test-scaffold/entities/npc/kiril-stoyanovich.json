@@ -1,0 +1,11 @@
+{
+  "id": "kiril-stoyanovich",
+  "entity_type": "npc",
+  "name": "Kiril Stoyanovich",
+  "description": "werewolf leader. Placeholder for personal verification.",
+  "data": {
+    "factionId": "werewolf-pack",
+    "regionId": "werewolf-den"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

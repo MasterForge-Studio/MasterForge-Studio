@@ -1,0 +1,10 @@
+{
+  "id": "dusk-elves",
+  "entity_type": "faction",
+  "name": "Dusk Elves",
+  "description": "A wounded people carrying old grief.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

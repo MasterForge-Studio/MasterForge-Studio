@@ -1,0 +1,14 @@
+{
+  "id": "vallaki-baronial-rule",
+  "name": "Vallaki Baronial Rule",
+  "type": "faction",
+  "locationId": "barovia",
+  "description": "Vallaki's official authority and loyalists.",
+  "goals": [
+    "Fill specific campaign goals from your notes/book."
+  ],
+  "relationships": [
+    "Use v0.2 relationship engine to connect members and rivals."
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,50 @@
+{
+  "id": "valley-of-dread-d8-weather",
+  "name": "Valley of Dread d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "valley-of-dread",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Dry thunder",
+      "description": "Large beasts stir and call."
+    },
+    {
+      "roll": 2,
+      "name": "Red mud rain",
+      "description": "Tracks become obvious but movement slows."
+    },
+    {
+      "roll": 3,
+      "name": "Blazing open heat",
+      "description": "Exhaustion risk in exposed ground."
+    },
+    {
+      "roll": 4,
+      "name": "Valley fog",
+      "description": "Predators can close distance unseen."
+    },
+    {
+      "roll": 5,
+      "name": "Clear echoing air",
+      "description": "Roars carry for miles."
+    },
+    {
+      "roll": 6,
+      "name": "Hot gusting wind",
+      "description": "Scent-based predators more active."
+    },
+    {
+      "roll": 7,
+      "name": "Still pressure",
+      "description": "Stampede or storm likely."
+    },
+    {
+      "roll": 8,
+      "name": "Cool rare shower",
+      "description": "Herd animals gather near water."
+    }
+  ]
+}

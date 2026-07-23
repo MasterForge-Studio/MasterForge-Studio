@@ -1,0 +1,49 @@
+{
+  "id": "yester-hill-weather",
+  "name": "Yester Hill d8 Weather",
+  "regionId": "yester-hill",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": "1",
+      "name": "Cold Grey Morning",
+      "description": "Damp cold clings to clothes; morale feels heavier."
+    },
+    {
+      "roll": "2",
+      "name": "Thick Mists",
+      "description": "Visibility drops; travel feels uncertain and sounds carry strangely."
+    },
+    {
+      "roll": "3",
+      "name": "Needle Rain",
+      "description": "Cold rain makes roads slick and campfires miserable."
+    },
+    {
+      "roll": "4",
+      "name": "Dead Calm",
+      "description": "No birdsong, no wind; an unnatural quiet settles."
+    },
+    {
+      "roll": "5",
+      "name": "Wolf-Wind",
+      "description": "A biting wind rises, carrying distant howls."
+    },
+    {
+      "roll": "6",
+      "name": "Candlelit Dusk",
+      "description": "Light fades early; shadows feel longer than they should."
+    },
+    {
+      "roll": "7",
+      "name": "Black Clouds",
+      "description": "Storm clouds gather but never quite break."
+    },
+    {
+      "roll": "8",
+      "name": "Unnatural Chill",
+      "description": "Breath fogs instantly; something nearby feels wrong."
+    }
+  ],
+  "contentPack": "cos-personal-test-scaffold"
+}

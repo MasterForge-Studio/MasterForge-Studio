@@ -1,0 +1,35 @@
+{
+  "id": "baldurs-gate",
+  "name": "Baldur’s Gate",
+  "type": "location",
+  "regionId": "sword-coast",
+  "summary": "A crowded, suspicious and ambitious city on the Chionthar, split between wealth, desperation and ruthless opportunity.",
+  "politics": [
+    "The Council of Four and Flaming Fist maintain order through influence and force.",
+    "Patriars, merchants, criminals and cults all compete beneath the surface."
+  ],
+  "culture": [
+    "Hard-edged, commercial and wary; everyone is selling something or hiding something.",
+    "District identity matters, especially between the Upper City, Lower City and Outer City."
+  ],
+  "factions": [
+    "Flaming Fist",
+    "Patriar families",
+    "Guild criminals",
+    "Merchant houses",
+    "Cult cells"
+  ],
+  "dmTone": [
+    "distinct local atmosphere",
+    "use local rumours",
+    "bring in faction pressure",
+    "show signs of everyday life"
+  ],
+  "environment": [
+    "streets, roads or wilderness approaches",
+    "local landmarks",
+    "weather-shaped details"
+  ],
+  "themeId": "merchant-vessel",
+  "background": "assets/locations/baldurs-gate/background.webp"
+}

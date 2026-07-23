@@ -1,0 +1,10 @@
+{
+  "id": "vallaki",
+  "entity_type": "region",
+  "name": "Vallaki",
+  "description": "A walled town trying desperately to enforce cheerfulness against despair.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

@@ -1,0 +1,50 @@
+{
+  "id": "mezro-ruins-d8-weather",
+  "name": "Mezro Ruins d8 Weather",
+  "type": "weather-table",
+  "locationId": "chult",
+  "regionId": "mezro-ruins",
+  "die": "d8",
+  "entries": [
+    {
+      "roll": 1,
+      "name": "Still sacred air",
+      "description": "Sound carries strangely."
+    },
+    {
+      "roll": 2,
+      "name": "Rain in broken plazas",
+      "description": "Hidden carvings revealed."
+    },
+    {
+      "roll": 3,
+      "name": "Golden shaft light",
+      "description": "Sacred symbols easier to notice."
+    },
+    {
+      "roll": 4,
+      "name": "Sudden silence",
+      "description": "Spirits or guardians near."
+    },
+    {
+      "roll": 5,
+      "name": "Warm mist",
+      "description": "Ruins seem larger and maze-like."
+    },
+    {
+      "roll": 6,
+      "name": "Thunder echo",
+      "description": "Stone structures shake."
+    },
+    {
+      "roll": 7,
+      "name": "Dripping canopy",
+      "description": "Stealth improved."
+    },
+    {
+      "roll": 8,
+      "name": "Cold unnatural breeze",
+      "description": "Haunting or curse sign."
+    }
+  ]
+}

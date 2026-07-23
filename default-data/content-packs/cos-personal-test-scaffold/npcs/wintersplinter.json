@@ -1,0 +1,14 @@
+{
+  "id": "wintersplinter",
+  "name": "Wintersplinter",
+  "type": "npc",
+  "locationId": "barovia",
+  "regionId": "yester-hill",
+  "factionId": "druids-of-yester-hill",
+  "role": "tree blight threat",
+  "description": "Wintersplinter: tree blight threat. Personal scaffold placeholder; verify/fill detail from your physical book.",
+  "voice": "Add voice note in MasterForge.",
+  "personality": "Add concise table-use personality note.",
+  "secret": "Fill only from owned book.",
+  "contentPack": "cos-personal-test-scaffold"
+}

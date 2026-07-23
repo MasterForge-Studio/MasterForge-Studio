@@ -1,0 +1,10 @@
+{
+  "id": "castle-ravenloft-court",
+  "entity_type": "faction",
+  "name": "Castle Ravenloft Court",
+  "description": "Strahd's household, servants and inner court.",
+  "data": {
+    "locationId": "barovia"
+  },
+  "source_pack": "cos-personal-test-scaffold"
+}

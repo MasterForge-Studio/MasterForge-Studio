@@ -1,0 +1,47 @@
+{
+  "id": "ocean-ship-trader",
+  "name": "Ocean Ship Trader",
+  "type": "vendor-table",
+  "locationId": "trackless-sea",
+  "names": [
+    "Mara Vell",
+    "Old Tovin",
+    "Jaska Reed",
+    "Captain Pell",
+    "Nim Salt-Eye",
+    "Rotha Bluewake"
+  ],
+  "vendorTypes": [
+    "Ship chandler",
+    "Dockside trader",
+    "Water seller",
+    "Chart broker",
+    "Fence for salvaged goods"
+  ],
+  "personalities": [
+    "Always watching the horizon",
+    "Cheerful until money is mentioned",
+    "Superstitious about storms",
+    "Speaks in sailor proverbs",
+    "Quiet and practical"
+  ],
+  "secrets": [
+    "Once sailed with pirates",
+    "Knows a hidden cove",
+    "Sold a cursed compass",
+    "Recognises a wanted sailor",
+    "Has seen lights beneath the sea"
+  ],
+  "stock": [
+    "Rope",
+    "Tarred canvas",
+    "Waterskins",
+    "Ship lantern",
+    "Fishing hooks",
+    "Salted meat",
+    "Repair nails",
+    "Spare belaying pins",
+    "Cheap compass",
+    "Storm cloak"
+  ]
+}
