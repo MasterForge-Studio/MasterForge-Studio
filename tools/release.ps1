@@ -120,6 +120,23 @@ try {
 
     Write-Host ""
     Write-Host "Pre-release checks passed."
+    Write-Host ""
+    Write-Host "This will:"
+    Write-Host "  - Build MasterForge Studio $Version"
+    Write-Host "  - Create Git tag $TagName"
+    Write-Host "  - Push the commit and tag to GitHub"
+    Write-Host "  - Publish a GitHub pre-release"
+    Write-Host "  - Upload the Windows installer"
+    Write-Host "  - Trigger the WordPress release sync"
+    Write-Host ""
+
+    $Confirmation = Read-Host "Type RELEASE to continue"
+
+    if ($Confirmation -cne "RELEASE") {
+        throw "Release cancelled. The confirmation text did not match RELEASE."
+    }
+
+    Write-Host ""
     Write-Host "Building Windows installer..."
     Write-Host ""
 
