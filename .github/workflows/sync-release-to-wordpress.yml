@@ -107,7 +107,6 @@ jobs:
 
           curl --fail-with-body \
             --request POST \
-            --header "Content-Type: application/json" \
             --header "X-MasterForge-Release-Token: $SYNC_TOKEN" \
-            --data "$PAYLOAD" \
+            --json "$PAYLOAD" \
             "$SYNC_URL"
