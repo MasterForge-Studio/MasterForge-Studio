@@ -142,29 +142,81 @@ function migrateLegacyVersionedUserData() {
   const permanentUserDataPath = app.getPath("userData");
 
   try {
-    const permanentFolderAlreadyHasData =
-      fs.existsSync(permanentUserDataPath) &&
-      fs.readdirSync(permanentUserDataPath).length > 0;
+    const ignoredExistingEntries = new Set([
+  "blob_storage",
+  "Cache",
+  "Code Cache",
+  "GPUCache",
+  "DawnCache",
+  "DawnGraphiteCache",
+  "DawnWebGPUCache",
+  "GrShaderCache",
+  "ShaderCache",
+  "Crashpad",
+  "Local Storage",
+  "Network",
+  "Session Storage",
+  "Shared Dictionary",
+  "DIPS",
+  "Local State",
+  "Preferences",
+  "SharedStorage",
+]);
 
-    if (permanentFolderAlreadyHasData) {
-      return {
-        migrated: false,
-        reason: "permanent_folder_already_in_use",
-      };
-    }
+const meaningfulPermanentEntries =
+  fs.existsSync(permanentUserDataPath)
+    ? fs.readdirSync(
+        permanentUserDataPath,
+        {
+          withFileTypes: true,
+        }
+      ).filter(entry => {
+        return !ignoredExistingEntries.has(
+          entry.name
+        );
+      })
+    : [];
+
+if (meaningfulPermanentEntries.length > 0) {
+  return {
+    migrated: false,
+    reason: "permanent_folder_already_in_use",
+    existingEntries:
+      meaningfulPermanentEntries.map(
+        entry => entry.name
+      ),
+  };
+}
 
     const legacyFolders = fs
       .readdirSync(appDataPath, {
         withFileTypes: true,
       })
       .filter(entry => {
-        return (
-          entry.isDirectory() &&
-          entry.name.startsWith(LEGACY_USER_DATA_PREFIX) &&
-          entry.name !== PACKAGED_USER_DATA_FOLDER &&
-          entry.name !== "MasterForge Studio Dev"
-        );
-      })
+  const folderName =
+    String(entry.name || "");
+
+  const lowerFolderName =
+    folderName.toLowerCase();
+
+  const isExcludedFolder =
+    lowerFolderName.includes("backup") ||
+    lowerFolderName.includes("old test") ||
+    lowerFolderName.includes("pre-migration") ||
+    lowerFolderName.endsWith(" dev");
+
+  return (
+    entry.isDirectory() &&
+    folderName.startsWith(
+      LEGACY_USER_DATA_PREFIX
+    ) &&
+    folderName !==
+      PACKAGED_USER_DATA_FOLDER &&
+    folderName !==
+      "MasterForge Studio Dev" &&
+    !isExcludedFolder
+  );
+})
       .map(entry => {
         const folderPath = path.join(
           appDataPath,
@@ -727,6 +779,10 @@ async function unlockMasterForgeStudio() {
     throw error;
   }
 }
+
+ipcMain.handle("app:getVersion", () => {
+  return app.getVersion();
+});
 
 ipcMain.handle(
   "activation:getScreenState",

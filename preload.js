@@ -3,10 +3,13 @@ const { contextBridge, ipcRenderer } = require("electron");
 contextBridge.exposeInMainWorld("dmAPI", {
   getMachineId: () => ipcRenderer.invoke("activation:getMachineId"),
 
+  getAppVersion: () =>
+    ipcRenderer.invoke("app:getVersion"),
+
   getActivationScreenState: () =>
-  ipcRenderer.invoke(
-    "activation:getScreenState"
-  ),
+    ipcRenderer.invoke(
+      "activation:getScreenState"
+    ),
   
   activateLicence: (
   email,

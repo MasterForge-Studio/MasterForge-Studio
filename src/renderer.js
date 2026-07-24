@@ -2012,6 +2012,8 @@ async function initialiseApp() {
     .innerText =
     settings.dataPath;
 
+  await renderMasterForgeVersion();
+
 
   loadUiState();
 
@@ -2400,6 +2402,34 @@ async function openHomeOnStartup() {
   const panel = document.querySelector("#home");
 
   activateMainPanel(tab, panel);
+}
+
+
+async function renderMasterForgeVersion() {
+  const versionElement =
+    document.querySelector(
+      "[data-masterforge-version]"
+    );
+
+  if (
+    !versionElement ||
+    !window.dmAPI?.getAppVersion
+  ) {
+    return;
+  }
+
+  try {
+    const version =
+      await window.dmAPI.getAppVersion();
+
+    versionElement.textContent =
+      `MasterForge Studio v${version}`;
+  } catch (error) {
+    console.warn(
+      "Could not display the MasterForge version:",
+      error
+    );
+  }
 }
 
 function setupDataPathButton() {
