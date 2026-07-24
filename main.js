@@ -10,10 +10,14 @@ const path = require("path");
 const fs = require("fs");
 
 const {
+  autoUpdater,
+} = require("electron-updater");
+
+const {
   VERSION,
 } = require("./src/version.js");
 
-const PACKAGED_USER_DATA_FOLDER = `MasterForge Studio ${VERSION}`;
+const PACKAGED_USER_DATA_FOLDER = "MasterForge Studio";
 
 if (app.isPackaged) {
   app.setPath(
@@ -65,6 +69,13 @@ function safePath(basePath, relativePath) {
 }
 
 let win;
+
+let updaterDownloadInProgress = false;
+let updaterReadyToInstall = false;
+
+autoUpdater.autoDownload = false;
+autoUpdater.autoInstallOnAppQuit = true;
+autoUpdater.allowPrerelease = true;
 
 let isStudioUnlocked = false;
 let activationScreenReason = null;
@@ -119,9 +130,374 @@ function ensureFolder(folderPath) {
   }
 }
 
+function migrateLegacyVersionedUserData() {
+  if (!app.isPackaged) {
+    return {
+      migrated: false,
+      reason: "development_build",
+    };
+  }
+
+  const appDataPath = app.getPath("appData");
+  const permanentUserDataPath = app.getPath("userData");
+
+  try {
+    const permanentFolderAlreadyHasData =
+      fs.existsSync(permanentUserDataPath) &&
+      fs.readdirSync(permanentUserDataPath).length > 0;
+
+    if (permanentFolderAlreadyHasData) {
+      return {
+        migrated: false,
+        reason: "permanent_folder_already_in_use",
+      };
+    }
+
+    const legacyFolders = fs
+      .readdirSync(appDataPath, {
+        withFileTypes: true,
+      })
+      .filter(entry => {
+        return (
+          entry.isDirectory() &&
+          entry.name.startsWith(LEGACY_USER_DATA_PREFIX) &&
+          entry.name !== PACKAGED_USER_DATA_FOLDER &&
+          entry.name !== "MasterForge Studio Dev"
+        );
+      })
+      .map(entry => {
+        const folderPath = path.join(
+          appDataPath,
+          entry.name
+        );
+
+        return {
+          name: entry.name,
+          path: folderPath,
+          modifiedAt:
+            fs.statSync(folderPath).mtimeMs,
+        };
+      })
+      .sort((a, b) => {
+        return b.modifiedAt - a.modifiedAt;
+      });
+
+    const newestLegacyFolder =
+      legacyFolders[0];
+
+    if (!newestLegacyFolder) {
+      return {
+        migrated: false,
+        reason: "no_legacy_folder_found",
+      };
+    }
+
+    ensureFolder(permanentUserDataPath);
+
+    const ignoredFolderNames = new Set([
+      "Cache",
+      "Code Cache",
+      "GPUCache",
+      "DawnCache",
+      "DawnGraphiteCache",
+      "GrShaderCache",
+      "ShaderCache",
+      "Crashpad",
+    ]);
+
+    fs.cpSync(
+      newestLegacyFolder.path,
+      permanentUserDataPath,
+      {
+        recursive: true,
+        force: false,
+        errorOnExist: false,
+        filter: sourcePath => {
+          const relativePath = path.relative(
+            newestLegacyFolder.path,
+            sourcePath
+          );
+
+          if (!relativePath) {
+            return true;
+          }
+
+          const firstFolder =
+            relativePath.split(path.sep)[0];
+
+          return !ignoredFolderNames.has(
+            firstFolder
+          );
+        },
+      }
+    );
+
+    console.log(
+      "[MasterForge] Legacy user data migrated:",
+      {
+        from: newestLegacyFolder.path,
+        to: permanentUserDataPath,
+      }
+    );
+
+    return {
+      migrated: true,
+      from: newestLegacyFolder.path,
+      to: permanentUserDataPath,
+    };
+  } catch (error) {
+    console.error(
+      "[MasterForge] Legacy user-data migration failed:",
+      error
+    );
+
+    return {
+      migrated: false,
+      reason: "migration_failed",
+      error:
+        error?.message ||
+        String(error),
+    };
+  }
+}
+
+function configureAutomaticUpdater() {
+  autoUpdater.on(
+    "checking-for-update",
+    () => {
+      console.log(
+        "[MasterForge Updater] Checking for update."
+      );
+    }
+  );
+
+  autoUpdater.on(
+    "update-available",
+    updateInfo => {
+      console.log(
+        "[MasterForge Updater] Update available:",
+        updateInfo?.version
+      );
+    }
+  );
+
+  autoUpdater.on(
+    "update-not-available",
+    updateInfo => {
+      console.log(
+        "[MasterForge Updater] No automatic update available:",
+        updateInfo?.version
+      );
+
+      updaterDownloadInProgress = false;
+
+      if (
+        win &&
+        !win.isDestroyed()
+      ) {
+        win.setProgressBar(-1);
+      }
+    }
+  );
+
+  autoUpdater.on(
+    "download-progress",
+    progress => {
+      const percent = Number(
+        progress?.percent || 0
+      );
+
+      console.log(
+        "[MasterForge Updater] Download progress:",
+        `${percent.toFixed(1)}%`
+      );
+
+      if (
+        win &&
+        !win.isDestroyed()
+      ) {
+        win.setProgressBar(
+          Math.max(
+            0,
+            Math.min(
+              1,
+              percent / 100
+            )
+          )
+        );
+      }
+    }
+  );
+
+  autoUpdater.on(
+    "update-downloaded",
+    async updateInfo => {
+      updaterDownloadInProgress = false;
+      updaterReadyToInstall = true;
+
+      if (
+        win &&
+        !win.isDestroyed()
+      ) {
+        win.setProgressBar(-1);
+      }
+
+      console.log(
+        "[MasterForge Updater] Update downloaded:",
+        updateInfo?.version
+      );
+
+      const result =
+        await dialog.showMessageBox(
+          win,
+          {
+            type: "info",
+            title:
+              "MasterForge Studio Update Ready",
+            message:
+              `MasterForge Studio ${updateInfo?.version || "update"} is ready to install.`,
+            detail:
+              "MasterForge Studio will close, install the update over the existing version, and reopen automatically.",
+            buttons: [
+              "Restart and Install",
+              "Install When I Close MasterForge",
+            ],
+            defaultId: 0,
+            cancelId: 1,
+            noLink: true,
+          }
+        );
+
+      if (result.response === 0) {
+        console.log(
+          "[MasterForge Updater] Restarting to install update."
+        );
+
+        setImmediate(() => {
+          autoUpdater.quitAndInstall(
+            false,
+            true
+          );
+        });
+      }
+    }
+  );
+
+  autoUpdater.on(
+    "error",
+    async error => {
+      updaterDownloadInProgress = false;
+
+      if (
+        win &&
+        !win.isDestroyed()
+      ) {
+        win.setProgressBar(-1);
+      }
+
+      console.error(
+        "[MasterForge Updater] Automatic update failed:",
+        error
+      );
+
+      await dialog.showMessageBox(
+        win,
+        {
+          type: "error",
+          title:
+            "MasterForge Studio Update Failed",
+          message:
+            "The update could not be downloaded automatically.",
+          detail:
+            error?.message ||
+            "Please try again later or download the installer manually.",
+          buttons: [
+            "OK",
+          ],
+          defaultId: 0,
+          noLink: true,
+        }
+      );
+    }
+  );
+}
+
+async function downloadAutomaticUpdate() {
+  if (updaterReadyToInstall) {
+    autoUpdater.quitAndInstall(
+      false,
+      true
+    );
+
+    return {
+      success: true,
+      status: "installing",
+    };
+  }
+
+  if (updaterDownloadInProgress) {
+    return {
+      success: false,
+      status: "download_in_progress",
+    };
+  }
+
+  updaterDownloadInProgress = true;
+
+  try {
+    console.log(
+      "[MasterForge Updater] Starting automatic update check."
+    );
+
+    const updateCheck =
+      await autoUpdater.checkForUpdates();
+
+    if (!updateCheck?.updateInfo) {
+      updaterDownloadInProgress = false;
+
+      throw new Error(
+        "The release metadata did not contain update information."
+      );
+    }
+
+    console.log(
+      "[MasterForge Updater] Downloading update:",
+      updateCheck.updateInfo.version
+    );
+
+    await autoUpdater.downloadUpdate();
+
+    return {
+      success: true,
+      status: "downloading",
+      version:
+        updateCheck.updateInfo.version,
+    };
+  } catch (error) {
+    updaterDownloadInProgress = false;
+
+    if (
+      win &&
+      !win.isDestroyed()
+    ) {
+      win.setProgressBar(-1);
+    }
+
+    console.error(
+      "[MasterForge Updater] Could not start automatic download:",
+      error
+    );
+
+    throw error;
+  }
+}
+
 function prepareApplicationData() {
+  migrateLegacyVersionedUserData();
+
   const settings = readSettings();
   const firstDataLaunch = !fs.existsSync(settings.dataPath);
+
   ensureFolder(settings.dataPath);
   if (firstDataLaunch) {
     const bundledDefaults = bundledDefaultsPath();
@@ -984,6 +1360,8 @@ ipcMain.handle("window:focusMain", event => {
 app.commandLine.appendSwitch("disable-http-cache");
 
 app.whenReady().then(() => {
+  configureAutomaticUpdater();
+
   console.log(
     "[MasterForge] Package version:",
     app.getVersion()
@@ -1070,13 +1448,44 @@ if (
         result.response
       );
 
-      if (
-  result.response === 0 &&
-  updateStatus.downloadUrl
-) {
-  await shell.openExternal(
-    updateStatus.downloadUrl
-  );
+if (result.response === 0) {
+  try {
+    await downloadAutomaticUpdate();
+  } catch (error) {
+    console.error(
+      "[MasterForge Updater] Automatic download could not start:",
+      error
+    );
+
+    if (updateStatus.downloadUrl) {
+      const fallbackResult =
+        await dialog.showMessageBox(
+          win,
+          {
+            type: "warning",
+            title:
+              "Automatic Update Unavailable",
+            message:
+              "MasterForge Studio could not start the automatic update.",
+            detail:
+              "You can try downloading the installer manually instead.",
+            buttons: [
+              "Download Manually",
+              "Cancel",
+            ],
+            defaultId: 0,
+            cancelId: 1,
+            noLink: true,
+          }
+        );
+
+      if (fallbackResult.response === 0) {
+        await shell.openExternal(
+          updateStatus.downloadUrl
+        );
+      }
+    }
+  }
 }
 
 if (result.response === 1) {
@@ -1142,14 +1551,27 @@ if (result.response === 2) {
         result.response
       );
 
-      if (
-        result.response === 0 &&
+      if (result.response === 0) {
+  try {
+    await downloadAutomaticUpdate();
+
+    return;
+  } catch (error) {
+    console.error(
+      "[MasterForge Updater] Required automatic update failed:",
+      error
+    );
+
+    if (updateStatus.downloadUrl) {
+      await shell.openExternal(
         updateStatus.downloadUrl
-      ) {
-        await shell.openExternal(
-          updateStatus.downloadUrl
-        );
-      }
+      );
+    }
+  }
+}
+
+app.quit();
+return;
 
       app.quit();
       return;

@@ -10,12 +10,21 @@
   },
   "dependencies": {
     "adm-zip": "^0.5.17",
-    "better-sqlite3": "^12.11.1"
+    "better-sqlite3": "^12.11.1",
+    "electron-updater": "^6.8.9"
   },
   "type": "commonjs",
   "build": {
     "appId": "studio.masterforge.app",
     "productName": "MasterForge Studio",
+    "publish": [
+  {
+    "provider": "github",
+    "owner": "MasterForge-Studio",
+    "repo": "MasterForge-Studio",
+    "releaseType": "release"
+  }
+],
     "asar": true,
     "directories": {
       "output": "release"
@@ -47,7 +56,9 @@
       "target": [
         {
           "target": "nsis",
-          "arch": ["x64"]
+          "arch": [
+            "x64"
+          ]
         }
       ],
       "icon": "src/assets/Logo.png",
@@ -55,7 +66,8 @@
     },
     "nsis": {
       "oneClick": false,
-      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": false,
       "createDesktopShortcut": true,
       "createStartMenuShortcut": true,
       "shortcutName": "MasterForge Studio",

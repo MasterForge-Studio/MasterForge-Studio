@@ -273,6 +273,14 @@ try {
         $ProjectRoot `
         "release\MasterForge-Studio-Setup-$Version-x64.exe"
 
+    $BlockmapPath = "$InstallerPath.blockmap"
+
+    $LatestYmlPath = Join-Path `
+        $ProjectRoot `
+        "release\latest.yml"
+
+    $ChecksumPath = "$InstallerPath.sha256"
+
     if ($DryRun) {
         Write-Host ""
         Write-Host "Dry run complete."
@@ -381,9 +389,22 @@ try {
     Write-Host ""
     Write-Host "Preparing Windows installer build..."
 
-    if (Test-Path $InstallerPath) {
-        Write-Host "Removing existing installer for version $Version..."
-        Remove-Item $InstallerPath -Force
+    $ExistingBuildAssets = @(
+        $InstallerPath,
+        $BlockmapPath,
+        $LatestYmlPath,
+        $ChecksumPath
+    )
+
+    foreach ($ExistingAssetPath in $ExistingBuildAssets) {
+        if (Test-Path $ExistingAssetPath) {
+            Write-Host "Removing existing build asset:"
+            Write-Host "  $ExistingAssetPath"
+
+            Remove-Item `
+                -Path $ExistingAssetPath `
+                -Force
+        }
     }
 
     Write-Host "Building Windows installer..."
@@ -399,13 +420,47 @@ try {
         throw "Expected installer was not found at: $InstallerPath"
     }
 
+    if (-not (Test-Path $BlockmapPath)) {
+        throw "Expected installer blockmap was not found at: $BlockmapPath"
+    }
+
+    if (-not (Test-Path $LatestYmlPath)) {
+        throw "Expected updater metadata was not found at: $LatestYmlPath"
+    }
+
     $InstallerFile = Get-Item $InstallerPath
 
     if ($InstallerFile.Length -le 0) {
         throw "The installer exists but is empty: $InstallerPath"
     }
 
-    $ChecksumPath = "$InstallerPath.sha256"
+    $BlockmapFile = Get-Item $BlockmapPath
+    $LatestYmlFile = Get-Item $LatestYmlPath
+
+    if ($BlockmapFile.Length -le 0) {
+        throw "The installer blockmap exists but is empty: $BlockmapPath"
+    }
+
+    if ($LatestYmlFile.Length -le 0) {
+        throw "The updater metadata exists but is empty: $LatestYmlPath"
+    }
+
+    $LatestYmlContent = Get-Content `
+        -Path $LatestYmlPath `
+        -Raw
+
+    $ExpectedInstallerName = Split-Path `
+        -Path $InstallerPath `
+        -Leaf
+
+    if ($LatestYmlContent -notmatch [regex]::Escape($ExpectedInstallerName)) {
+        throw "latest.yml does not reference the expected installer: $ExpectedInstallerName"
+    }
+
+    if ($LatestYmlContent -notmatch "version:\s*$([regex]::Escape($Version))") {
+        throw "latest.yml does not contain the expected version: $Version"
+    }
+
     $InstallerChecksum = (
         Get-FileHash `
             -Path $InstallerPath `
@@ -480,6 +535,8 @@ try {
     gh release create `
         $TagName `
         $InstallerPath `
+        $BlockmapPath `
+        $LatestYmlPath `
         $ChecksumPath `
         --verify-tag `
         --prerelease `
