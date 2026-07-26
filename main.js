@@ -284,6 +284,69 @@ if (meaningfulPermanentEntries.length > 0) {
       }
     );
 
+    const activationDirectory = path.join(
+      permanentUserDataPath,
+      "activation"
+    );
+
+    ensureFolder(activationDirectory);
+
+    const legacyLicencePath = path.join(
+      newestLegacyFolder.path,
+      "licence.json"
+    );
+
+    const legacyMachineIdPath = path.join(
+      newestLegacyFolder.path,
+      "machine-id.json"
+    );
+
+    const migratedLicencePath = path.join(
+      activationDirectory,
+      "licence.json"
+    );
+
+    const migratedMachineIdPath = path.join(
+      activationDirectory,
+      "machine-id.json"
+    );
+
+    if (
+      fs.existsSync(legacyLicencePath) &&
+      !fs.existsSync(migratedLicencePath)
+    ) {
+      fs.copyFileSync(
+        legacyLicencePath,
+        migratedLicencePath
+      );
+
+      console.log(
+        "[MasterForge] Legacy licence migrated:",
+        {
+          from: legacyLicencePath,
+          to: migratedLicencePath,
+        }
+      );
+    }
+
+    if (
+      fs.existsSync(legacyMachineIdPath) &&
+      !fs.existsSync(migratedMachineIdPath)
+    ) {
+      fs.copyFileSync(
+        legacyMachineIdPath,
+        migratedMachineIdPath
+      );
+
+      console.log(
+        "[MasterForge] Legacy machine ID migrated:",
+        {
+          from: legacyMachineIdPath,
+          to: migratedMachineIdPath,
+        }
+      );
+    }
+
     console.log(
       "[MasterForge] Legacy user data migrated:",
       {
@@ -1077,7 +1140,7 @@ ipcMain.handle("settings:saveTheme", (event, themeSettings) => {
 });
 
 // =====================================================
-// MasterForge Studio v0.3.0-alpha
+// MasterForge Studio
 // Relationship Engine IPC Handlers
 // =====================================================
 

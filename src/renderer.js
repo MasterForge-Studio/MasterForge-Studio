@@ -13682,7 +13682,7 @@ async function saveWorldNoteEdit() {
 
 }
 // =====================================================
-// MasterForge Studio v0.3.0-alpha
+// MasterForge Studio
 // Entities / Relationship Map
 // =====================================================
 // =====================================================
@@ -20822,7 +20822,7 @@ function escapeHtml(value) {
 window.findWeatherByRoll = findWeatherByRoll;
 
 // =====================================================
-// MasterForge Studio v0.3.0-alpha
+// MasterForge Studio
 // Relationship Engine Basic Tree Viewer
 // =====================================================
 

@@ -10,7 +10,7 @@ on:
       release_tag:
         description: GitHub release tag to sync
         required: true
-        default: v0.3.1-alpha
+        default: v0.3.2-alpha
 
 jobs:
   sync-release:

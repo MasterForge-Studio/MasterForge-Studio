@@ -5,6 +5,7 @@ console.log("combatOps.js loaded");
     const freshState = () => ({ mode: "selection", round: 1, activeIndex: 0, encounterId: "", encounterName: "", combatants: [], encounters: [], deploymentStrategies: {}, deploymentWarnings: [], diagnostic: "Combat module initialised", diagnosticHistory: ["Combat module initialised"], loading: false, error: "" });
     const combatOpsState = freshState();
     let encounterLoadInProgress = false;
+    let pendingDeploymentChoice = null;
     const esc = value => typeof escapeHtml === "function" ? escapeHtml(String(value ?? "")) : String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
     function saveCombatState() {
@@ -165,12 +166,41 @@ console.log("combatOps.js loaded");
         const saved = combatOpsState.deploymentStrategies[participant.id];
         if (saved) return saved;
         updateCombatDiagnostic(`Awaiting deployment choice: ${participant.displayName || "group"}`);
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const modal = document.createElement("div");
             modal.className = "combatDeploymentBackdrop";
-            modal.innerHTML = `<section class="combatDeploymentDialog" role="dialog" aria-modal="true" aria-labelledby="combatDeploymentTitle"><h2 id="combatDeploymentTitle">Deploy ${esc(participant.displayName || "Group")}</h2><p>${quantity} members are planned. Choose one runtime strategy; it will persist with this combat.</p><button type="button" data-deployment="individual"><strong>Deploy Individually</strong><span>Independent HP, conditions, initiative and turns.</span></button><button type="button" data-deployment="individual-counters"><strong>Individual Counters</strong><span>One turn with per-member HP counters.</span></button><button type="button" data-deployment="shared-pool"><strong>Shared Pool</strong><span>One turn and one combined HP pool.</span></button></section>`;
+            modal.innerHTML = `<section class="combatDeploymentDialog" role="dialog" aria-modal="true" aria-labelledby="combatDeploymentTitle" aria-describedby="combatDeploymentDescription"><header><div><h2 id="combatDeploymentTitle">Deploy ${esc(participant.displayName || "Group")}</h2><p id="combatDeploymentDescription">${quantity} members are planned. Choose how they should be tracked in this combat.</p></div><button type="button" data-deployment-cancel aria-label="Close deployment chooser">Close</button></header><button type="button" data-deployment="individual"><strong>Separate combatants</strong><span>${quantity} independent participants with their own HP, conditions, initiative and turns.</span></button><button type="button" data-deployment="grouped"><strong>One grouped combatant</strong><span>One runtime participant retaining the planned quantity as group metadata.</span></button><footer><button type="button" data-deployment-cancel>Cancel encounter load</button></footer></section>`;
             document.body.appendChild(modal);
-            modal.querySelectorAll("[data-deployment]").forEach(button => button.onclick = () => { const strategy = button.dataset.deployment; combatOpsState.deploymentStrategies[participant.id] = strategy; modal.remove(); resolve(strategy); });
+            const previousFocus = document.activeElement;
+            const finish = (strategy = null) => {
+                if (pendingDeploymentChoice?.modal !== modal) return;
+                pendingDeploymentChoice = null;
+                document.removeEventListener("keydown", handleKeydown);
+                modal.remove();
+                previousFocus?.focus?.();
+                if (!strategy) {
+                    const error = new Error("Encounter loading cancelled.");
+                    error.name = "DeploymentChoiceCancelled";
+                    reject(error);
+                    return;
+                }
+                combatOpsState.deploymentStrategies[participant.id] = strategy;
+                resolve(strategy);
+            };
+            const handleKeydown = event => {
+                if (event.key === "Escape") {
+                    event.preventDefault();
+                    finish();
+                }
+            };
+            pendingDeploymentChoice = { modal, cancel: () => finish() };
+            document.addEventListener("keydown", handleKeydown);
+            modal.addEventListener("click", event => {
+                const choice = event.target.closest?.("[data-deployment]");
+                if (choice) finish(choice.dataset.deployment);
+                else if (event.target === modal || event.target.closest?.("[data-deployment-cancel]")) finish();
+            });
+            modal.querySelector("[data-deployment]")?.focus();
         });
     }
     async function deployParticipant(participant, index) {
@@ -184,7 +214,7 @@ console.log("combatOps.js loaded");
         if (!source) combatOpsState.deploymentWarnings.push(`${participant.displayName || "Combatant"}: ${resolved.resolution}; references preserved: ${canonicalIds(participant).join(", ") || "none"}.`);
         const quantity = participant.sourceType === "creature" ? Math.max(1, Number(participant.quantity || 1)) : 1;
         const strategy = await chooseQuantityDeployment(participant, quantity);
-        if (strategy === "individual") return Array.from({ length: quantity }, (_, memberIndex) => makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName} ${memberIndex + 1}` : undefined));
+        if (strategy === "individual") return Array.from({ length: quantity }, (_, memberIndex) => makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName || "Combatant"} ${memberIndex + 1}` : undefined));
         const snapshot = makeSnapshot(participant, source, String(participant.id || `participant-${index}`));
         snapshot.groupQuantity = quantity; snapshot.groupMode = strategy;
         if (strategy === "shared-pool" && snapshot.maxHp != null) { snapshot.standardMemberHp = snapshot.maxHp; snapshot.maxHp *= quantity; snapshot.hp = snapshot.maxHp; }
@@ -235,11 +265,17 @@ console.log("combatOps.js loaded");
             await loadEncounter(String(encounterId || ""));
         } catch (error) {
             Object.assign(combatOpsState, previous);
-            combatOpsState.error = `Encounter could not be loaded: ${error?.message || "Unknown error"}`;
-            combatOpsState.diagnostic = `Error: ${error?.message || "Unknown error"}`;
-            console.error("Combat encounter loading failed:", error);
+            const cancelled = error?.name === "DeploymentChoiceCancelled";
+            combatOpsState.error = cancelled ? "" : `Encounter could not be loaded: ${error?.message || "Unknown error"}`;
+            combatOpsState.diagnostic = cancelled ? "Encounter loading cancelled." : `Error: ${error?.message || "Unknown error"}`;
+            if (!cancelled) console.error("Combat encounter loading failed:", error);
             rerenderCombatOps();
-        } finally { encounterLoadInProgress = false; if (clickedButton?.isConnected) clickedButton.disabled = false; }
+        } finally {
+            pendingDeploymentChoice?.cancel();
+            pendingDeploymentChoice = null;
+            encounterLoadInProgress = false;
+            if (clickedButton?.isConnected) clickedButton.disabled = false;
+        }
     }
 
     function handleCombatOperationsClick(event) {

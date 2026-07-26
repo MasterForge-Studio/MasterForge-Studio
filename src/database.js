@@ -109,7 +109,7 @@ function initialiseDatabase(dataPath) {
   `).run();
 
     // =====================================================
-  // MasterForge Studio v0.3.0-alpha
+  // MasterForge Studio
   // Relationship Engine Foundation Tables
   // =====================================================
 
@@ -280,7 +280,7 @@ function initialiseDatabase(dataPath) {
 
   `).run();
     // =====================================================
-  // MasterForge Studio v0.3.0-alpha
+  // MasterForge Studio
   // Relationship Engine Foundation Tables
   // =====================================================
 
