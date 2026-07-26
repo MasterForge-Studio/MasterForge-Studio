@@ -30,6 +30,7 @@
 
   <div id="windowControls">
     <button id="actionConsoleToggle" type="button" aria-controls="masterForgeActionConsole" aria-expanded="true">Actions</button>
+    <button id="maxBtn" type="button" aria-label="Maximise window" title="Maximise window">&#9633;</button>
     <button id="minBtn" type="button" aria-label="Minimise window" title="Minimise window">−</button>
     <button id="closeBtn" type="button" aria-label="Close MasterForge Studio" title="Close MasterForge Studio">×</button>
   </div>
@@ -542,6 +543,24 @@
     </div><!-- /#mainLayout -->
 
     <!-- ==================== MODALS ==================== -->
+<div id="updateModal" class="masterforgeModalBackdrop hidden" role="presentation">
+  <section class="masterforgeModal updateModalBox" role="dialog" aria-modal="true" aria-labelledby="updateModalTitle" aria-describedby="updateModalMessage">
+    <header>
+      <div>
+        <h2 id="updateModalTitle">MasterForge Studio Update</h2>
+        <p id="updateModalVersion"></p>
+      </div>
+    </header>
+    <p id="updateModalMessage" aria-live="polite"></p>
+    <div id="updateReleaseNotes" class="updateReleaseNotes"></div>
+    <div id="updateProgressWrap" class="updateProgressWrap hidden">
+      <progress id="updateProgress" max="100" value="0"></progress>
+      <span id="updateProgressText">Preparing download…</span>
+    </div>
+    <p id="updateError" class="combatOpsLoadError hidden" role="alert"></p>
+    <footer id="updateModalActions"></footer>
+  </section>
+</div>
 <div id="sessionCastPickerModal" class="modal hidden">
   <div class="modalBox sessionCastPickerBox">
 
@@ -606,10 +625,10 @@
         <label>Character Name</label>
         <input id="characterNameInput">
 
-        <label>Species</label>
+        <label>Primary Species</label>
         <div class="hybridGrid">
           <select id="characterSpeciesInput"></select>
-          <select id="characterSpeciesTwoInput"></select>
+          <select id="characterSpeciesTwoInput" aria-label="Secondary species for hybrid characters" title="Secondary species (hybrid only)"></select>
         </div>
 
         <label class="checkboxLine">

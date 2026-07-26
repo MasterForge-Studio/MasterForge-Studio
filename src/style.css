@@ -1821,6 +1821,35 @@ body[data-manual-visual="true"] #encounters .plannedEncounterWarnings p {
 .combatDeploymentDialog > header button,
 .combatDeploymentDialog > footer button { width: auto; }
 .combatDeploymentDialog button span { font-size: .82rem; }
+.combatDialogField {
+  display: grid;
+  gap: 6px;
+  color: var(--mf-text, var(--text-main));
+  font-weight: 700;
+}
+.combatDialogField :is(input, select) {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  color: var(--mf-input-text, var(--text-main));
+  background: var(--mf-input-bg, var(--card-bg));
+  border-color: var(--mf-border, var(--border));
+}
+.combatDialogChoices {
+  display: grid;
+  gap: 8px;
+}
+.combatDialogChoices button {
+  color: var(--mf-button-text, var(--text-main));
+  background: var(--mf-button-bg, var(--card-bg));
+  border-color: var(--mf-border, var(--border));
+}
+.combatDialogChoices button:hover,
+.combatDialogChoices button:focus-visible {
+  border-color: var(--mf-accent, var(--accent));
+  outline: 2px solid var(--mf-accent, var(--accent));
+  outline-offset: 1px;
+}
 .combatOpsLoadError {
   margin: 0 0 12px;
   padding: 10px 12px;
@@ -9505,4 +9534,196 @@ body.combatOpsMode #combat-operations {
   .combatStatHeader { align-items: flex-start; flex-direction: column; }
   .combatOpsInitiativeSetupItem { grid-template-columns: minmax(0, 1fr) !important; }
   .combatOpsReadinessIdentity { grid-column: auto; }
+}
+
+/* Shared modal, updater and tested usability refinements */
+body.masterforgeModalOpen { overflow: hidden !important; }
+.combatDeploymentBackdrop,
+.masterforgeModalBackdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 100010;
+  width: 100vw;
+  height: 100dvh;
+  display: grid;
+  place-items: center;
+  box-sizing: border-box;
+  padding: clamp(12px, 3vw, 28px);
+  overflow: hidden;
+  background: var(--mf-overlay-bg, rgba(0, 0, 0, .72));
+}
+.combatDeploymentDialog,
+.masterforgeModal {
+  width: min(620px, 100%);
+  max-width: calc(100vw - 24px);
+  max-height: calc(100dvh - 24px);
+  box-sizing: border-box;
+  overflow-x: hidden;
+  overflow-y: auto;
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: var(--radius);
+  background: var(--mf-panel-bg, var(--panel-bg));
+  color: var(--mf-text, var(--text-main));
+  box-shadow: 0 18px 60px rgba(0, 0, 0, .55);
+}
+.masterforgeModal {
+  display: grid;
+  gap: 14px;
+  padding: clamp(16px, 3vw, 24px);
+}
+.masterforgeModal > header,
+.masterforgeModal > footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.masterforgeModal :is(h2, p) { margin: 0; }
+.masterforgeModal > footer { justify-content: flex-end; }
+.updateReleaseNotes {
+  max-height: 28vh;
+  overflow: auto;
+  white-space: pre-wrap;
+  color: var(--mf-text-muted, var(--text-muted));
+}
+.updateProgressWrap { display: grid; gap: 8px; }
+.updateProgressWrap progress { width: 100%; accent-color: var(--mf-accent, var(--accent)); }
+
+#characterModal .characterModalBox,
+#worldNoteModal .characterModalBox,
+#inputModal .modalBox {
+  width: min(780px, calc(100vw - 32px)) !important;
+  max-width: calc(100vw - 32px) !important;
+  max-height: calc(100dvh - 32px) !important;
+  box-sizing: border-box;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  color: var(--mf-text, var(--text-main));
+}
+#characterModal :is(input, select, textarea),
+#worldNoteModal :is(input, select, textarea),
+#inputModal input {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+#inputModal .modalBox { width: min(520px, calc(100vw - 32px)) !important; }
+#inputModal .modalBox h2 { font-size: clamp(1.25rem, 3vw, 1.75rem); }
+#inputModal .modalBox > div:last-child {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+#characterModal :is(.abilityGrid, .skillGrid, .formGrid, .hybridGrid) {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+}
+#characterModal .abilityGrid > div,
+#characterModal .formGrid > div {
+  min-width: 0;
+}
+.modalActions { flex-wrap: wrap; }
+
+.combatOpsCardBadges,
+.combatConditionBadges {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+.combatTypeBadge,
+.combatGroupBadge,
+.combatConditionBadges > span {
+  display: inline-flex;
+  align-items: center;
+  width: fit-content;
+  padding: 3px 7px;
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: 999px;
+  font-size: .72rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+.combatTypeBadge--pc { background: color-mix(in srgb, #3d8bfd 24%, var(--mf-panel-bg)); }
+.combatTypeBadge--npc { background: color-mix(in srgb, #9b6cff 24%, var(--mf-panel-bg)); }
+.combatTypeBadge--creature { background: color-mix(in srgb, #d45c4c 24%, var(--mf-panel-bg)); }
+.combatTypeBadge--vehicle,
+.combatTypeBadge--ship { background: color-mix(in srgb, #d49a36 24%, var(--mf-panel-bg)); }
+.combatTypeBadge--party,
+.combatTypeBadge--party_group { background: color-mix(in srgb, #3f9f69 24%, var(--mf-panel-bg)); }
+.combatGroupBadge {
+  border-color: var(--mf-accent, var(--accent));
+  background: var(--mf-accent, var(--accent));
+  color: var(--mf-button-text, #111);
+}
+.combatConditionBadges { margin-top: 5px; }
+.combatConditionBadges > span {
+  border-color: var(--warning, var(--mf-accent, var(--accent)));
+  background: var(--mf-panel-bg-soft, var(--card-bg));
+  color: var(--mf-text, var(--text-main));
+}
+.combatOpsPortraitFallback {
+  font-size: 1.1rem;
+  color: var(--mf-text-muted, var(--text-muted));
+}
+
+.masterforge-home__choices button {
+  background: var(--mf-panel-bg-soft, var(--card-bg)) !important;
+  color: var(--mf-home-card-text, #f4f1e8) !important;
+}
+.masterforge-home__choices button strong {
+  color: var(--mf-home-card-heading, #fff4d6) !important;
+}
+.masterforge-home__choices button span {
+  color: var(--mf-home-card-text, #f4f1e8) !important;
+  opacity: 1;
+}
+.masterforge-home__choices button:is(:hover, :focus-visible, :active),
+.masterforge-home__choices button:is(:hover, :focus-visible, :active) strong,
+.masterforge-home__choices button:is(:hover, :focus-visible, :active) span {
+  color: var(--mf-home-card-active-text, #ffffff) !important;
+}
+
+.campaignCreateCard .genericEntityFormGrid.two > .campaignCreateNotes {
+  grid-column: 1 / -1;
+  min-width: 0;
+}
+.campaignCreateCard #campaignCreateNotesInput {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 120px;
+  box-sizing: border-box;
+  resize: vertical;
+}
+.campaignNextSteps { display: grid; gap: 12px; }
+.campaignNextStepActions { display: flex; flex-wrap: wrap; gap: 8px; }
+#partyControls { margin-bottom: 16px; }
+#playerVault { display: grid; gap: 14px; }
+#playerVault > .characterCard { padding: clamp(14px, 2vw, 20px); margin-bottom: 0; }
+.characterMiniCard + .characterMiniCard { margin-top: 12px; }
+.playerCardHeader { margin-bottom: 12px; }
+
+#windowControls #actionConsoleToggle { order: 0; }
+#windowControls #minBtn { order: 1; }
+#windowControls #maxBtn { order: 2; }
+#windowControls #closeBtn { order: 3; }
+
+.dmEntityWorkspaceTabs button.active,
+.dmEntityWorkspaceTabs button[aria-pressed="true"],
+body[data-manual-visual="true"] .dmEntityWorkspaceTabs button.active,
+body[data-manual-visual="true"] .dmEntityWorkspaceTabs button[aria-pressed="true"] {
+  background: var(--mf-accent, var(--accent)) !important;
+  color: var(--mf-button-text, #111) !important;
+  border-color: var(--mf-accent, var(--accent)) !important;
+}
+
+@media (max-width: 600px) {
+  #characterModal :is(.abilityGrid, .skillGrid, .formGrid, .hybridGrid) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+  .combatDeploymentDialog,
+  .masterforgeModal { max-height: calc(100dvh - 16px); }
 }

@@ -6,6 +6,37 @@ contextBridge.exposeInMainWorld("dmAPI", {
   getAppVersion: () =>
     ipcRenderer.invoke("app:getVersion"),
 
+  getUpdaterState: () =>
+    ipcRenderer.invoke("updater:getState"),
+  downloadUpdate: () =>
+    ipcRenderer.invoke("updater:download"),
+  installUpdateNow: () =>
+    ipcRenderer.invoke("updater:installNow"),
+  installUpdateOnExit: () =>
+    ipcRenderer.invoke("updater:installOnExit"),
+  cancelUpdate: () =>
+    ipcRenderer.invoke("updater:cancel"),
+  remindUpdateTomorrow: () =>
+    ipcRenderer.invoke("updater:remindTomorrow"),
+  skipUpdateVersion: () =>
+    ipcRenderer.invoke("updater:skipVersion"),
+  onUpdaterState: callback => {
+    const listener = (
+      event,
+      state
+    ) => callback(state);
+    ipcRenderer.on(
+      "updater:state",
+      listener
+    );
+    return () => {
+      ipcRenderer.removeListener(
+        "updater:state",
+        listener
+      );
+    };
+  },
+
   getActivationScreenState: () =>
     ipcRenderer.invoke(
       "activation:getScreenState"
@@ -132,6 +163,7 @@ getRecordScopesForCollection: (collection) =>
 
   closeWindow: () => ipcRenderer.send("window:close"),
   minimizeWindow: () => ipcRenderer.send("window:minimize"),
+  toggleMaximizeWindow: () => ipcRenderer.invoke("window:toggleMaximize"),
 
   focusMainWindow: () =>
     ipcRenderer.invoke("window:focusMain")

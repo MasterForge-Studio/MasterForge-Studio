@@ -48,6 +48,14 @@ async function fetchUpdateInfo() {
       downloadUrl:
         String(data.download_url || "").trim(),
 
+      checksum:
+        String(
+          data.checksum ||
+          data.sha256_checksum ||
+          data.sha256 ||
+          ""
+        ).trim().toLowerCase(),
+
       releaseNotes:
         String(data.release_notes || "").trim(),
 
@@ -115,6 +123,7 @@ function getUpdateStatus(
       latestVersion,
       minimumSupportedVersion,
       downloadUrl: updateInfo.downloadUrl,
+      checksum: updateInfo.checksum,
       releaseNotes: updateInfo.releaseNotes,
     };
   }
@@ -129,6 +138,7 @@ function getUpdateStatus(
       latestVersion,
       minimumSupportedVersion,
       downloadUrl: updateInfo.downloadUrl,
+      checksum: updateInfo.checksum,
       releaseNotes: updateInfo.releaseNotes,
     };
   }

@@ -8,6 +8,10 @@ const {
 
 const path = require("path");
 const fs = require("fs");
+const crypto = require("crypto");
+const { spawn } = require("child_process");
+const { Readable, Transform } = require("stream");
+const { pipeline } = require("stream/promises");
 
 const {
   autoUpdater,
@@ -18,6 +22,7 @@ const {
 } = require("./src/version.js");
 
 const PACKAGED_USER_DATA_FOLDER = "MasterForge Studio";
+const LEGACY_USER_DATA_PREFIX = "MasterForge Studio ";
 
 if (app.isPackaged) {
   app.setPath(
@@ -72,6 +77,19 @@ let win;
 
 let updaterDownloadInProgress = false;
 let updaterReadyToInstall = false;
+let updaterAbortController = null;
+let updaterPartialPath = "";
+let verifiedInstallerPath = "";
+let installOnExitPath = "";
+let installerLaunchStarted = false;
+let currentUpdateStatus = null;
+let updaterUiState = {
+  status: "idle",
+  percent: 0,
+  transferredBytes: 0,
+  totalBytes: 0,
+  message: "",
+};
 
 autoUpdater.autoDownload = false;
 autoUpdater.autoInstallOnAppQuit = true;
@@ -142,81 +160,35 @@ function migrateLegacyVersionedUserData() {
   const permanentUserDataPath = app.getPath("userData");
 
   try {
-    const ignoredExistingEntries = new Set([
-  "blob_storage",
-  "Cache",
-  "Code Cache",
-  "GPUCache",
-  "DawnCache",
-  "DawnGraphiteCache",
-  "DawnWebGPUCache",
-  "GrShaderCache",
-  "ShaderCache",
-  "Crashpad",
-  "Local Storage",
-  "Network",
-  "Session Storage",
-  "Shared Dictionary",
-  "DIPS",
-  "Local State",
-  "Preferences",
-  "SharedStorage",
-]);
-
-const meaningfulPermanentEntries =
-  fs.existsSync(permanentUserDataPath)
-    ? fs.readdirSync(
-        permanentUserDataPath,
-        {
-          withFileTypes: true,
-        }
-      ).filter(entry => {
-        return !ignoredExistingEntries.has(
-          entry.name
-        );
-      })
-    : [];
-
-if (meaningfulPermanentEntries.length > 0) {
-  return {
-    migrated: false,
-    reason: "permanent_folder_already_in_use",
-    existingEntries:
-      meaningfulPermanentEntries.map(
-        entry => entry.name
-      ),
-  };
-}
-
     const legacyFolders = fs
       .readdirSync(appDataPath, {
         withFileTypes: true,
       })
       .filter(entry => {
-  const folderName =
-    String(entry.name || "");
+        const folderName =
+          String(entry.name || "");
 
-  const lowerFolderName =
-    folderName.toLowerCase();
+        const lowerFolderName =
+          folderName.toLowerCase();
 
-  const isExcludedFolder =
-    lowerFolderName.includes("backup") ||
-    lowerFolderName.includes("old test") ||
-    lowerFolderName.includes("pre-migration") ||
-    lowerFolderName.endsWith(" dev");
+        const isExcludedFolder =
+          lowerFolderName.includes("backup") ||
+          lowerFolderName.includes("old test") ||
+          lowerFolderName.includes("pre-migration") ||
+          lowerFolderName.endsWith(" dev");
 
-  return (
-    entry.isDirectory() &&
-    folderName.startsWith(
-      LEGACY_USER_DATA_PREFIX
-    ) &&
-    folderName !==
-      PACKAGED_USER_DATA_FOLDER &&
-    folderName !==
-      "MasterForge Studio Dev" &&
-    !isExcludedFolder
-  );
-})
+        return (
+          entry.isDirectory() &&
+          folderName.startsWith(
+            LEGACY_USER_DATA_PREFIX
+          ) &&
+          folderName !==
+            PACKAGED_USER_DATA_FOLDER &&
+          folderName !==
+            "MasterForge Studio Dev" &&
+          !isExcludedFolder
+        );
+      })
       .map(entry => {
         const folderPath = path.join(
           appDataPath,
@@ -245,6 +217,14 @@ if (meaningfulPermanentEntries.length > 0) {
     }
 
     ensureFolder(permanentUserDataPath);
+
+    console.log(
+      "[MasterForge] Merging legacy user data without overwriting existing files:",
+      {
+        from: newestLegacyFolder.path,
+        to: permanentUserDataPath,
+      }
+    );
 
     const ignoredFolderNames = new Set([
       "Cache",
@@ -607,8 +587,367 @@ async function downloadAutomaticUpdate() {
   }
 }
 
+function publishUpdaterState(patch = {}) {
+  updaterUiState = {
+    ...updaterUiState,
+    ...patch,
+  };
+
+  if (
+    win &&
+    !win.isDestroyed()
+  ) {
+    win.webContents.send(
+      "updater:state",
+      updaterUiState
+    );
+  }
+
+  return updaterUiState;
+}
+
+function updateDownloadDirectory() {
+  return path.join(
+    app.getPath("temp"),
+    "MasterForge Studio Updates"
+  );
+}
+
+function cleanupStaleUpdateDownloads() {
+  const updateDirectory =
+    updateDownloadDirectory();
+
+  if (!fs.existsSync(updateDirectory)) {
+    return 0;
+  }
+
+  let removed = 0;
+  for (
+    const entry of fs.readdirSync(
+      updateDirectory,
+      { withFileTypes: true }
+    )
+  ) {
+    if (
+      entry.isFile() &&
+      entry.name.endsWith(".part") &&
+      removeFileIfPresent(
+        path.join(
+          updateDirectory,
+          entry.name
+        )
+      )
+    ) {
+      removed += 1;
+    }
+  }
+
+  if (removed) {
+    console.log(
+      `[MasterForge Updater] Removed ${removed} stale partial download${removed === 1 ? "" : "s"}.`
+    );
+  }
+
+  return removed;
+}
+
+function removeFileIfPresent(filePath) {
+  try {
+    if (
+      filePath &&
+      fs.existsSync(filePath)
+    ) {
+      fs.rmSync(filePath, {
+        force: true,
+      });
+      return true;
+    }
+  } catch (error) {
+    console.warn(
+      "[MasterForge Updater] Could not remove update file yet:",
+      filePath,
+      error?.message || error
+    );
+  }
+
+  return false;
+}
+
+function calculateFileSha256(filePath) {
+  return new Promise((resolve, reject) => {
+    const hash =
+      crypto.createHash("sha256");
+    const input =
+      fs.createReadStream(filePath);
+
+    input.on("error", reject);
+    input.on("data", chunk => {
+      hash.update(chunk);
+    });
+    input.on("end", () => {
+      resolve(hash.digest("hex"));
+    });
+  });
+}
+
+function launchInstaller(installerPath) {
+  if (
+    !installerPath ||
+    !fs.existsSync(installerPath)
+  ) {
+    throw new Error(
+      "The verified installer is no longer available."
+    );
+  }
+
+  if (installerLaunchStarted) {
+    return;
+  }
+
+  installerLaunchStarted = true;
+
+  const child = spawn(
+    installerPath,
+    [],
+    {
+      detached: true,
+      stdio: "ignore",
+      windowsHide: false,
+    }
+  );
+
+  child.on("error", error => {
+    console.error(
+      "[MasterForge Updater] Installer launch failed:",
+      error
+    );
+  });
+  child.unref();
+}
+
+async function downloadVerifiedUpdate() {
+  if (updaterDownloadInProgress) {
+    return publishUpdaterState({
+      status: "downloading",
+      message: "An update download is already in progress.",
+    });
+  }
+
+  const updateStatus = currentUpdateStatus;
+  const downloadUrl =
+    String(updateStatus?.downloadUrl || "").trim();
+  const expectedChecksum =
+    String(updateStatus?.checksum || "")
+      .trim()
+      .toLowerCase()
+      .replace(/^sha256:/, "");
+
+  if (!downloadUrl) {
+    throw new Error(
+      "The update metadata does not contain an installer URL."
+    );
+  }
+
+  if (!/^[a-f0-9]{64}$/.test(expectedChecksum)) {
+    throw new Error(
+      "The update metadata does not contain a valid SHA-256 checksum."
+    );
+  }
+
+  const updateDirectory =
+    updateDownloadDirectory();
+  ensureFolder(updateDirectory);
+
+  cleanupStaleUpdateDownloads();
+
+  const safeVersion = String(
+    updateStatus.latestVersion ||
+    "update"
+  ).replace(/[^a-z0-9.-]+/gi, "-");
+  const installerPath = path.join(
+    updateDirectory,
+    `MasterForge-Studio-Setup-${safeVersion}-x64.exe`
+  );
+  const partialPath =
+    `${installerPath}.part`;
+
+  removeFileIfPresent(partialPath);
+  removeFileIfPresent(installerPath);
+
+  updaterDownloadInProgress = true;
+  updaterReadyToInstall = false;
+  verifiedInstallerPath = "";
+  updaterPartialPath = partialPath;
+  updaterAbortController =
+    new AbortController();
+
+  publishUpdaterState({
+    status: "downloading",
+    version: updateStatus.latestVersion,
+    releaseNotes: updateStatus.releaseNotes,
+    percent: 0,
+    transferredBytes: 0,
+    totalBytes: 0,
+    message: "Downloading update…",
+  });
+
+  try {
+    const response = await fetch(
+      downloadUrl,
+      {
+        signal:
+          updaterAbortController.signal,
+      }
+    );
+
+    if (
+      !response.ok ||
+      !response.body
+    ) {
+      throw new Error(
+        `Installer download failed with HTTP ${response.status}.`
+      );
+    }
+
+    const totalBytes = Number(
+      response.headers.get(
+        "content-length"
+      ) || 0
+    );
+    let transferredBytes = 0;
+
+    const progressStream =
+      new Transform({
+        transform(
+          chunk,
+          encoding,
+          callback
+        ) {
+          transferredBytes +=
+            chunk.length;
+
+          const percent =
+            totalBytes > 0
+              ? transferredBytes /
+                totalBytes *
+                100
+              : 0;
+
+          publishUpdaterState({
+            status: "downloading",
+            percent,
+            transferredBytes,
+            totalBytes,
+            message:
+              totalBytes > 0
+                ? `Downloading update… ${percent.toFixed(1)}%`
+                : `Downloading update… ${transferredBytes} bytes`,
+          });
+
+          callback(null, chunk);
+        },
+      });
+
+    await pipeline(
+      Readable.fromWeb(response.body),
+      progressStream,
+      fs.createWriteStream(
+        partialPath,
+        { flags: "wx" }
+      )
+    );
+
+    publishUpdaterState({
+      status: "verifying",
+      percent: 100,
+      transferredBytes,
+      totalBytes:
+        totalBytes ||
+        transferredBytes,
+      message:
+        "Verifying installer checksum…",
+    });
+
+    const actualChecksum =
+      await calculateFileSha256(
+        partialPath
+      );
+
+    if (
+      actualChecksum !==
+      expectedChecksum
+    ) {
+      removeFileIfPresent(
+        partialPath
+      );
+
+      throw new Error(
+        "Installer checksum verification failed. The downloaded file was deleted."
+      );
+    }
+
+    fs.renameSync(
+      partialPath,
+      installerPath
+    );
+
+    updaterPartialPath = "";
+    verifiedInstallerPath =
+      installerPath;
+    updaterReadyToInstall = true;
+
+    return publishUpdaterState({
+      status: "ready",
+      installerPath,
+      checksum: actualChecksum,
+      message:
+        "The installer is verified and ready.",
+    });
+  } catch (error) {
+    removeFileIfPresent(
+      partialPath
+    );
+    updaterPartialPath = "";
+
+    if (
+      error?.name ===
+      "AbortError"
+    ) {
+      return publishUpdaterState({
+        status: "available",
+        percent: 0,
+        transferredBytes: 0,
+        totalBytes: 0,
+        message:
+          "Update download cancelled.",
+      });
+    }
+
+    console.error(
+      "[MasterForge Updater] Verified download failed:",
+      error
+    );
+
+    publishUpdaterState({
+      status: "error",
+      error:
+        error?.message ||
+        "The update could not be downloaded.",
+      message:
+        error?.message ||
+        "The update could not be downloaded.",
+    });
+
+    throw error;
+  } finally {
+    updaterDownloadInProgress = false;
+    updaterAbortController = null;
+  }
+}
+
 function prepareApplicationData() {
   migrateLegacyVersionedUserData();
+  cleanupStaleUpdateDownloads();
 
   const settings = readSettings();
   const firstDataLaunch = !fs.existsSync(settings.dataPath);
@@ -768,10 +1107,32 @@ return;
 }
 
 function createWindow() {
-  prepareApplicationData();
+  const settings =
+    prepareApplicationData();
+  const savedBounds =
+    settings.windowBounds || {};
+  const validDimension = (
+    value,
+    fallback
+  ) => Number.isFinite(Number(value))
+    ? Number(value)
+    : fallback;
+
   win = new BrowserWindow({
-    width: 1400,
-    height: 850,
+    width: validDimension(
+      savedBounds.width,
+      1400
+    ),
+    height: validDimension(
+      savedBounds.height,
+      850
+    ),
+    ...(Number.isFinite(Number(savedBounds.x))
+      ? { x: Number(savedBounds.x) }
+      : {}),
+    ...(Number.isFinite(Number(savedBounds.y))
+      ? { y: Number(savedBounds.y) }
+      : {}),
     minWidth: 1000,
     minHeight: 650,
     frame: false,
@@ -783,6 +1144,26 @@ function createWindow() {
       contextIsolation: true,
       nodeIntegration: false
     }
+  });
+
+  if (settings.windowMaximized) {
+    win.maximize();
+  }
+
+  win.on("close", () => {
+    const currentSettings =
+      readSettings();
+    const maximized =
+      win.isMaximized();
+    const bounds = maximized
+      ? win.getNormalBounds()
+      : win.getBounds();
+
+    writeSettings({
+      ...currentSettings,
+      windowBounds: bounds,
+      windowMaximized: maximized,
+    });
   });
 
   handleInitialLicenceState()
@@ -846,6 +1227,148 @@ async function unlockMasterForgeStudio() {
 ipcMain.handle("app:getVersion", () => {
   return app.getVersion();
 });
+
+ipcMain.handle(
+  "updater:getState",
+  () => updaterUiState
+);
+
+ipcMain.handle(
+  "updater:download",
+  async () => {
+    try {
+      return await downloadVerifiedUpdate();
+    } catch (error) {
+      return {
+        ...updaterUiState,
+        success: false,
+        error:
+          error?.message ||
+          "The update could not be downloaded.",
+      };
+    }
+  }
+);
+
+ipcMain.handle(
+  "updater:installNow",
+  () => {
+    if (
+      !updaterReadyToInstall ||
+      !verifiedInstallerPath
+    ) {
+      throw new Error(
+        "No verified installer is ready."
+      );
+    }
+
+    launchInstaller(
+      verifiedInstallerPath
+    );
+    installOnExitPath = "";
+    app.quit();
+
+    return true;
+  }
+);
+
+ipcMain.handle(
+  "updater:installOnExit",
+  () => {
+    if (
+      !updaterReadyToInstall ||
+      !verifiedInstallerPath
+    ) {
+      throw new Error(
+        "No verified installer is ready."
+      );
+    }
+
+    installOnExitPath =
+      verifiedInstallerPath;
+
+    return publishUpdaterState({
+      status: "install-on-exit",
+      message:
+        "The verified installer will launch when MasterForge Studio closes.",
+    });
+  }
+);
+
+ipcMain.handle(
+  "updater:cancel",
+  () => {
+    if (updaterAbortController) {
+      updaterAbortController.abort();
+    }
+
+    removeFileIfPresent(
+      updaterPartialPath
+    );
+    updaterPartialPath = "";
+    installOnExitPath = "";
+
+    if (verifiedInstallerPath) {
+      removeFileIfPresent(
+        verifiedInstallerPath
+      );
+    }
+
+    verifiedInstallerPath = "";
+    updaterReadyToInstall = false;
+
+    return publishUpdaterState({
+      status:
+        currentUpdateStatus
+          ? "available"
+          : "idle",
+      percent: 0,
+      transferredBytes: 0,
+      totalBytes: 0,
+      message:
+        "Update cancelled.",
+    });
+  }
+);
+
+ipcMain.handle(
+  "updater:remindTomorrow",
+  () => {
+    const settings = readSettings();
+    settings.updateReminderAt =
+      new Date(
+        Date.now() +
+        24 * 60 * 60 * 1000
+      ).toISOString();
+    writeSettings(settings);
+    publishUpdaterState({
+      status: "dismissed",
+      message:
+        "Update reminder postponed until tomorrow.",
+    });
+    return true;
+  }
+);
+
+ipcMain.handle(
+  "updater:skipVersion",
+  () => {
+    if (!currentUpdateStatus?.latestVersion) {
+      return false;
+    }
+
+    const settings = readSettings();
+    settings.skippedUpdateVersion =
+      currentUpdateStatus.latestVersion;
+    writeSettings(settings);
+    publishUpdaterState({
+      status: "dismissed",
+      message:
+        "This update version was skipped.",
+    });
+    return true;
+  }
+);
 
 ipcMain.handle(
   "activation:getScreenState",
@@ -1456,6 +1979,23 @@ ipcMain.on("window:minimize", () => {
   if (win) win.minimize();
 });
 
+ipcMain.handle(
+  "window:toggleMaximize",
+  () => {
+    if (!win || win.isDestroyed()) {
+      return false;
+    }
+
+    if (win.isMaximized()) {
+      win.unmaximize();
+      return false;
+    }
+
+    win.maximize();
+    return true;
+  }
+);
+
 ipcMain.handle("window:focusMain", event => {
   if (!win || win.isDestroyed()) {
     return false;
@@ -1479,8 +2019,6 @@ ipcMain.handle("window:focusMain", event => {
 app.commandLine.appendSwitch("disable-http-cache");
 
 app.whenReady().then(() => {
-  configureAutomaticUpdater();
-
   console.log(
     "[MasterForge] Package version:",
     app.getVersion()
@@ -1493,8 +2031,8 @@ app.whenReady().then(() => {
 
   createWindow();
 
- fetchUpdateInfo()
-  .then(async (updateInfo) => {
+  fetchUpdateInfo()
+  .then(updateInfo => {
     const updateStatus =
       getUpdateStatus(
         VERSION,
@@ -1512,188 +2050,86 @@ app.whenReady().then(() => {
     );
 
     if (
+      ![
+        "update_available",
+        "update_required",
+      ].includes(updateStatus.status)
+    ) {
+      return;
+    }
+
+    currentUpdateStatus =
+      updateStatus;
+
+    if (
       updateStatus.status ===
       "update_available"
     ) {
       const settings = readSettings();
+      const reminderTime =
+        settings.updateReminderAt
+          ? new Date(
+              settings.updateReminderAt
+            ).getTime()
+          : 0;
+      const reminderStillActive =
+        reminderTime > Date.now();
+      const versionWasSkipped =
+        settings.skippedUpdateVersion ===
+        updateStatus.latestVersion;
 
-const reminderTime =
-  settings.updateReminderAt
-    ? new Date(settings.updateReminderAt).getTime()
-    : 0;
-
-const reminderStillActive =
-  reminderTime > Date.now();
-
-const versionWasSkipped =
-  settings.skippedUpdateVersion ===
-  updateStatus.latestVersion;
-
-if (
-  reminderStillActive ||
-  versionWasSkipped
-) {
-  console.log(
-    "[MasterForge] Optional update notification suppressed.",
-    {
-      reminderStillActive,
-      versionWasSkipped,
-    }
-  );
-
-  return;
-}
-      const result =
-        await dialog.showMessageBox(win, {
-          type: "info",
-          title: "MasterForge Studio Update Available",
-          message:
-            `MasterForge Studio ${updateStatus.latestVersion} is available.`,
-          detail:
-            updateStatus.releaseNotes ||
-            "A newer version of MasterForge Studio is available.",
-          buttons: [
-            "Download Update",
-            "Remind Me Tomorrow",
-            "Skip This Version",
-          ],
-          defaultId: 0,
-          cancelId: 1,
-          noLink: true,
-        });
-
-      console.log(
-        "[MasterForge] Update dialog choice:",
-        result.response
-      );
-
-if (result.response === 0) {
-  try {
-    await downloadAutomaticUpdate();
-  } catch (error) {
-    console.error(
-      "[MasterForge Updater] Automatic download could not start:",
-      error
-    );
-
-    if (updateStatus.downloadUrl) {
-      const fallbackResult =
-        await dialog.showMessageBox(
-          win,
+      if (
+        reminderStillActive ||
+        versionWasSkipped
+      ) {
+        console.log(
+          "[MasterForge] Optional update notification suppressed.",
           {
-            type: "warning",
-            title:
-              "Automatic Update Unavailable",
-            message:
-              "MasterForge Studio could not start the automatic update.",
-            detail:
-              "You can try downloading the installer manually instead.",
-            buttons: [
-              "Download Manually",
-              "Cancel",
-            ],
-            defaultId: 0,
-            cancelId: 1,
-            noLink: true,
+            reminderStillActive,
+            versionWasSkipped,
           }
         );
-
-      if (fallbackResult.response === 0) {
-        await shell.openExternal(
-          updateStatus.downloadUrl
-        );
+        return;
       }
     }
-  }
-}
 
-if (result.response === 1) {
-  const settings = readSettings();
-
-  settings.updateReminderAt =
-    new Date(
-      Date.now() +
-      24 * 60 * 60 * 1000
-    ).toISOString();
-
-  writeSettings(settings);
-
-  console.log(
-    "[MasterForge] Update reminder saved:",
-    settings.updateReminderAt
-  );
-}
-
-if (result.response === 2) {
-  const settings = readSettings();
-
-  settings.skippedUpdateVersion =
-    updateStatus.latestVersion;
-
-  writeSettings(settings);
-
-  console.log(
-    "[MasterForge] Skipped update version:",
-    updateStatus.latestVersion
-  );
-}
-    }
-
-    if (
-      updateStatus.status ===
-      "update_required"
-    ) {
-      const result =
-        await dialog.showMessageBox(win, {
-          type: "warning",
-          title: "MasterForge Studio Update Required",
-          message:
-            "This version of MasterForge Studio is no longer supported.",
-          detail:
-            `Installed version: ${updateStatus.installedVersion}\n` +
-            `Minimum supported version: ${updateStatus.minimumSupportedVersion}\n\n` +
-            (
-              updateStatus.releaseNotes ||
-              "Please install the latest version to continue."
-            ),
-          buttons: [
-            "Download Required Update",
-            "Close MasterForge Studio",
-          ],
-          defaultId: 0,
-          cancelId: 1,
-          noLink: true,
-        });
-
-      console.log(
-        "[MasterForge] Required update choice:",
-        result.response
-      );
-
-      if (result.response === 0) {
-  try {
-    await downloadAutomaticUpdate();
-
-    return;
-  } catch (error) {
-    console.error(
-      "[MasterForge Updater] Required automatic update failed:",
-      error
-    );
-
-    if (updateStatus.downloadUrl) {
-      await shell.openExternal(
-        updateStatus.downloadUrl
-      );
-    }
-  }
-}
-
-app.quit();
-return;
-
-      app.quit();
-      return;
-    }
+    publishUpdaterState({
+      status: "available",
+      required:
+        updateStatus.status ===
+        "update_required",
+      version:
+        updateStatus.latestVersion,
+      minimumSupportedVersion:
+        updateStatus.minimumSupportedVersion,
+      releaseNotes:
+        updateStatus.releaseNotes,
+      percent: 0,
+      transferredBytes: 0,
+      totalBytes: 0,
+      message:
+        updateStatus.status ===
+        "update_required"
+          ? "This MasterForge Studio version requires an update."
+          : "A MasterForge Studio update is available.",
+    });
   });
+});
+
+app.on("before-quit", () => {
+  if (
+    installOnExitPath &&
+    !installerLaunchStarted
+  ) {
+    try {
+      launchInstaller(
+        installOnExitPath
+      );
+    } catch (error) {
+      console.error(
+        "[MasterForge Updater] Could not launch the installer on exit:",
+        error
+      );
+    }
+  }
 });

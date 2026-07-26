@@ -2013,6 +2013,7 @@ async function initialiseApp() {
     settings.dataPath;
 
   await renderMasterForgeVersion();
+  await setupUpdaterModal();
 
 
   loadUiState();
@@ -2119,6 +2120,15 @@ function setupWindowButtons() {
 
   document.querySelector("#minBtn").onclick = () => {
     window.dmAPI.minimizeWindow();
+  };
+
+  document.querySelector("#maxBtn").onclick = () => {
+    window.dmAPI.toggleMaximizeWindow();
+  };
+
+  document.querySelector("#topbar").ondblclick = event => {
+    if (event.target.closest("button, input, select, #forgeTopSearch")) return;
+    window.dmAPI.toggleMaximizeWindow();
   };
 }
 
@@ -2291,7 +2301,7 @@ function registerMasterForgeActionWorkspaces() {
     { id: "combat-condition-add", label: "Add Condition", groupId: "conditions", groupLabel: "Conditions", groupOrder: 20, order: 10, enabled: hasCombatant, handler: () => combatApi()?.addCondition() },
     { id: "combat-condition-remove", label: "Remove Condition", groupId: "conditions", groupLabel: "Conditions", order: 20, enabled: () => Boolean(combatApi()?.getActiveCombatant()?.conditions?.length), disabledReason: "The active combatant has no conditions.", handler: () => combatApi()?.removeCondition() },
     { id: "combat-unconscious", label: "Mark Unconscious", groupId: "conditions", groupLabel: "Conditions", order: 30, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Unconscious", handler: () => combatApi()?.setActiveStatus("Unconscious") },
-    { id: "combat-active", label: "Restore Active", groupId: "conditions", groupLabel: "Conditions", order: 40, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Active", handler: () => combatApi()?.setActiveStatus("Active") },
+    { id: "combat-active", label: "Restore Active", groupId: "conditions", groupLabel: "Conditions", order: 40, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Active" && Number(combatApi().getActiveCombatant().hp) > 0, disabledReason: "A participant at 0 HP cannot be restored to Active.", handler: () => combatApi()?.setActiveStatus("Active") },
     { id: "combat-participant-add", label: "Add Late Participant", groupId: "participants", groupLabel: "Participants", groupOrder: 30, order: 10, visible: () => combatApi()?.state?.mode !== "selection", handler: () => combatApi()?.addLateParticipant() },
     { id: "combat-participant-remove", label: "Remove Active Participant", groupId: "participants", groupLabel: "Participants", order: 20, danger: true, enabled: hasCombatant, handler: () => combatApi()?.removeActiveParticipant() }
   ] });
@@ -2430,6 +2440,103 @@ async function renderMasterForgeVersion() {
       error
     );
   }
+}
+
+function formatUpdateBytes(value) {
+  const bytes = Number(value || 0);
+  if (!Number.isFinite(bytes) || bytes <= 0) return "0 B";
+  const units = ["B", "KB", "MB", "GB"];
+  const unitIndex = Math.min(Math.floor(Math.log(bytes) / Math.log(1024)), units.length - 1);
+  const amount = bytes / (1024 ** unitIndex);
+  return `${amount.toFixed(unitIndex ? 1 : 0)} ${units[unitIndex]}`;
+}
+
+function renderUpdaterModal(state = {}) {
+  const modal = document.querySelector("#updateModal");
+  if (!modal) return;
+  if (["idle", "dismissed"].includes(state.status)) {
+    modal.classList.add("hidden");
+    document.body.classList.remove("masterforgeModalOpen");
+    return;
+  }
+
+  const title = document.querySelector("#updateModalTitle");
+  const version = document.querySelector("#updateModalVersion");
+  const message = document.querySelector("#updateModalMessage");
+  const notes = document.querySelector("#updateReleaseNotes");
+  const progressWrap = document.querySelector("#updateProgressWrap");
+  const progress = document.querySelector("#updateProgress");
+  const progressText = document.querySelector("#updateProgressText");
+  const error = document.querySelector("#updateError");
+  const actions = document.querySelector("#updateModalActions");
+  const isDownloading = state.status === "downloading";
+  const isVerifying = state.status === "verifying";
+
+  modal.classList.remove("hidden");
+  document.body.classList.add("masterforgeModalOpen");
+  title.textContent = state.required ? "MasterForge Studio Update Required" : "MasterForge Studio Update";
+  version.textContent = state.version ? `Version ${state.version}` : "";
+  message.textContent = state.message || "";
+  notes.textContent = state.releaseNotes || "";
+  notes.classList.toggle("hidden", !state.releaseNotes);
+  progressWrap.classList.toggle("hidden", !isDownloading && !isVerifying);
+  progress.value = Math.max(0, Math.min(100, Number(state.percent || 0)));
+  progressText.textContent = isVerifying
+    ? "Verifying SHA-256 checksum…"
+    : state.totalBytes
+      ? `${formatUpdateBytes(state.transferredBytes)} of ${formatUpdateBytes(state.totalBytes)} (${Number(state.percent || 0).toFixed(1)}%)`
+      : `${formatUpdateBytes(state.transferredBytes)} downloaded`;
+  error.textContent = state.status === "error" ? state.error || state.message || "Update failed." : "";
+  error.classList.toggle("hidden", state.status !== "error");
+
+  if (state.status === "available" || state.status === "error") {
+    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="download">${state.status === "error" ? "Try Again" : "Download Update"}</button>${state.required ? "" : `<button type="button" data-update-action="remind">Remind Me Tomorrow</button><button type="button" data-update-action="skip">Skip This Version</button>`}<button type="button" data-update-action="cancel">Cancel</button>`;
+  } else if (isDownloading) {
+    actions.innerHTML = `<button type="button" data-update-action="cancel">Cancel Download</button>`;
+  } else if (isVerifying) {
+    actions.innerHTML = `<button type="button" disabled>Verifying…</button>`;
+  } else if (state.status === "ready") {
+    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="install-now">Install Now</button><button type="button" data-update-action="install-exit">Install on Exit</button><button type="button" data-update-action="cancel">Cancel</button>`;
+  } else if (state.status === "install-on-exit") {
+    actions.innerHTML = `<button type="button" data-update-action="dismiss">Continue Working</button><button type="button" data-update-action="cancel">Cancel Installation</button>`;
+  } else {
+    actions.innerHTML = "";
+  }
+
+  actions.querySelectorAll("[data-update-action]").forEach(button => {
+    button.onclick = async () => {
+      button.disabled = true;
+      try {
+        const action = button.dataset.updateAction;
+        if (action === "download") renderUpdaterModal(await window.dmAPI.downloadUpdate());
+        if (action === "install-now") await window.dmAPI.installUpdateNow();
+        if (action === "install-exit") renderUpdaterModal(await window.dmAPI.installUpdateOnExit());
+        if (action === "cancel") renderUpdaterModal(await window.dmAPI.cancelUpdate());
+        if (action === "remind") {
+          await window.dmAPI.remindUpdateTomorrow();
+          modal.classList.add("hidden");
+          document.body.classList.remove("masterforgeModalOpen");
+        }
+        if (action === "skip") {
+          await window.dmAPI.skipUpdateVersion();
+          modal.classList.add("hidden");
+          document.body.classList.remove("masterforgeModalOpen");
+        }
+        if (action === "dismiss") {
+          modal.classList.add("hidden");
+          document.body.classList.remove("masterforgeModalOpen");
+        }
+      } catch (updateError) {
+        renderUpdaterModal({ ...state, status: "error", error: updateError?.message || "Update action failed.", message: "The update action failed." });
+      }
+    };
+  });
+}
+
+async function setupUpdaterModal() {
+  if (!window.dmAPI?.getUpdaterState) return;
+  window.dmAPI.onUpdaterState?.(renderUpdaterModal);
+  renderUpdaterModal(await window.dmAPI.getUpdaterState());
 }
 
 function setupDataPathButton() {
@@ -4339,11 +4446,31 @@ async function saveCharacterFromModal() {
   }
 
   const chars = await window.dmStorage.getCharacters();
+  const duplicateCharacter = !idInput && chars.find(character =>
+    String(character.playerId || "") === String(playerId) &&
+    window.dmStorage.slugify(character.name || "") === window.dmStorage.slugify(name)
+  );
+  if (duplicateCharacter) {
+    alert(`A character named ${name} already exists for this player.`);
+    return;
+  }
 
+  const generatedId = window.dmStorage.slugify(`${playerId}-${name}`);
+  if (!idInput && chars.some(character => character.id === generatedId)) {
+    alert("A character with this canonical ID already exists. Edit the existing character or choose a distinct name.");
+    return;
+  }
+  const existingRecord = idInput ? chars.find(character => character.id === idInput) : null;
+  const context = window.dmState.current || {};
   const character = {
-    id: idInput || window.dmStorage.slugify(name),
+    ...(existingRecord || {}),
+    id: idInput || generatedId,
     playerId,
     name,
+    campaignId: String(existingRecord?.campaignId || context.campaign || ""),
+    worldId: String(existingRecord?.worldId || context.world || ""),
+    regionId: String(existingRecord?.regionId || context.region || ""),
+    locationId: String(existingRecord?.locationId || context.location || ""),
 
     species: getSpeciesDisplay(),
     speciesOne: document.querySelector("#characterSpeciesInput").value,
@@ -4357,6 +4484,7 @@ async function saveCharacterFromModal() {
     ac: Number(document.querySelector("#characterAcInput").value),
     maxHP: Number(document.querySelector("#characterMaxHpInput").value),
     currentHP: Number(document.querySelector("#characterCurrentHpInput").value),
+    temporaryHP: Number(existingRecord?.temporaryHP || existingRecord?.tempHP || 0),
 
     passivePerception: Number(document.querySelector("#characterPpInput").value),
     passiveInvestigation: Number(document.querySelector("#characterPiInput").value),
@@ -4398,6 +4526,7 @@ async function saveCharacterFromModal() {
   }
 
   await window.dmStorage.saveCharacters(chars);
+  await syncCharacterEntity(character.id, character);
   closeCharacterModal();
   await renderParty();
 }
@@ -4646,6 +4775,9 @@ async function renderParty() {
       if (!confirmed) return;
 
       await window.dmStorage.deleteDbRecord(btn.dataset.characterId);
+      if (await window.dmAPI.getEntity("pc", btn.dataset.characterId)) {
+        await window.dmAPI.deleteEntity("pc", btn.dataset.characterId);
+      }
 
       const party = await window.dmStorage.getCampaignParty();
 
@@ -12631,7 +12763,7 @@ async function openCampaignCreationWizard() {
     </button>
   </div>
 </div>
-          <div>
+          <div class="campaignCreateNotes">
             <label>Campaign Tone / Notes</label>
             <textarea
               id="campaignCreateNotesInput"
@@ -12678,10 +12810,14 @@ const createLocationBtn = document.querySelector("#createLocationFromCampaignBtn
   const cancelBtn = document.querySelector("#cancelCampaignCreateBtn");
 
   if (nameInput && idInput) {
+    idInput.dataset.autoGenerated = "true";
     nameInput.oninput = () => {
-      if (!idInput.value.trim()) {
+      if (idInput.dataset.autoGenerated === "true") {
         idInput.value = window.dmStorage.slugify(nameInput.value || "");
       }
+    };
+    idInput.oninput = () => {
+      idInput.dataset.autoGenerated = "false";
     };
   }
 
@@ -13281,7 +13417,31 @@ window.dmState.current.location = locationId;
     console.warn("Campaign created, but one refresh step failed:", error);
   }
 
-  alert(`Campaign created: ${name}`);
+  showCampaignCreatedNextSteps(name);
+}
+
+function showCampaignCreatedNextSteps(campaignName) {
+  const shell = document.querySelector("#world .campaignAtlasShell");
+  if (!shell) return;
+  const panel = document.createElement("section");
+  panel.className = "infoCard campaignNextSteps";
+  panel.innerHTML = `<div><h2>${escapeHtml(campaignName)} is ready</h2><p>Choose a useful next step, or skip guided setup and continue in the Campaign Atlas.</p></div><div class="campaignNextStepActions"><button type="button" data-campaign-next="party">Create Party</button><button type="button" data-campaign-next="party">Add Characters</button><button type="button" data-campaign-next="encounters">Build First Encounter</button><button type="button" data-campaign-next="home">Explore Dashboard</button><button type="button" data-campaign-next="skip">Skip guided setup</button></div>`;
+  shell.querySelector(".campaignAtlasHero")?.insertAdjacentElement("afterend", panel);
+  panel.querySelectorAll("[data-campaign-next]").forEach(button => {
+    button.onclick = async () => {
+      const target = button.dataset.campaignNext;
+      if (target === "skip") {
+        panel.remove();
+        return;
+      }
+      const tab = document.querySelector(`#tabs .tab[data-tab="${target}"]`);
+      const targetPanel = document.querySelector(`#${target}`);
+      if (tab && targetPanel) {
+        activateMainPanel(tab, targetPanel);
+        if (target === "encounters") await renderPlannedEncounterWorkspace({ preserveSelection: true });
+      }
+    };
+  });
 }
 function getCampaignAtlasRecords() {
   try {
@@ -14204,7 +14364,12 @@ async function syncCharacterEntity(
       source: "party-character",
       characterId: character.id,
       playerId: character.playerId || "",
+      campaignId: character.campaignId || "",
+      worldId: character.worldId || "",
+      regionId: character.regionId || "",
+      locationId: character.locationId || "",
       character: {
+        ...(existingData.character || {}),
         species: character.species || "",
         class: character.class || "",
         subclass: character.subclass || "",
@@ -14212,7 +14377,14 @@ async function syncCharacterEntity(
         status: character.status || "",
         ac: Number(character.ac || 0),
         maxHP: Number(character.maxHP || 0),
-        currentHP: Number(character.currentHP || 0)
+        currentHP: Number(character.currentHP || 0),
+        temporaryHP: Number(character.temporaryHP || character.tempHP || 0),
+        speed: character.speed || "",
+        abilities: { ...(character.abilities || {}) },
+        passivePerception: Number(character.passivePerception || 0),
+        passiveInvestigation: Number(character.passiveInvestigation || 0),
+        passiveInsight: Number(character.passiveInsight || 0),
+        persistentConditions: [...(character.persistentConditions || character.conditions || [])]
       }
     }
   };

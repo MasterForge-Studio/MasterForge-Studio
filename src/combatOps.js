@@ -6,7 +6,88 @@ console.log("combatOps.js loaded");
     const combatOpsState = freshState();
     let encounterLoadInProgress = false;
     let pendingDeploymentChoice = null;
+    let pendingCombatDialog = null;
+    let combatDialogSequence = 0;
     const esc = value => typeof escapeHtml === "function" ? escapeHtml(String(value ?? "")) : String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+
+    function showCombatDialog({ title, message = "", confirmLabel = "Confirm", cancelLabel = "Cancel", danger = false, input = null, selectOptions = null, choices = null } = {}) {
+        pendingCombatDialog?.cancel();
+        return new Promise(resolve => {
+            const dialogId = `combatDialogTitle-${++combatDialogSequence}`;
+            const backdrop = document.createElement("div");
+            backdrop.className = "combatDeploymentBackdrop combatDialogBackdrop";
+            const inputMarkup = input ? `<label class="combatDialogField">${esc(input.label || "Value")}<input type="${esc(input.type || "text")}" data-combat-dialog-input value="${esc(input.value || "")}" placeholder="${esc(input.placeholder || "")}" ${input.required === false ? "" : "required"}></label>` : "";
+            const selectMarkup = Array.isArray(selectOptions) && selectOptions.length ? `<label class="combatDialogField">${esc(selectOptions.label || "Choose an option")}<select data-combat-dialog-select>${selectOptions.map(option => `<option value="${esc(option.value)}">${esc(option.label)}</option>`).join("")}<option value="__custom">Custom condition…</option></select></label><label class="combatDialogField hidden" data-combat-custom-field>Custom condition<input type="text" data-combat-dialog-custom placeholder="Enter a condition"></label>` : "";
+            const choicesMarkup = Array.isArray(choices) && choices.length ? `<div class="combatDialogChoices">${choices.map(choice => `<button type="button" data-combat-dialog-choice="${esc(choice.value)}"><strong>${esc(choice.label)}</strong>${choice.description ? `<span>${esc(choice.description)}</span>` : ""}</button>`).join("")}</div>` : "";
+            backdrop.innerHTML = `<section class="combatDeploymentDialog combatDialog" role="dialog" aria-modal="true" aria-labelledby="${dialogId}"><header><div><h2 id="${dialogId}">${esc(title || "MasterForge Studio")}</h2>${message ? `<p>${esc(message)}</p>` : ""}</div><button type="button" data-combat-dialog-cancel aria-label="Close dialog">Close</button></header>${inputMarkup}${selectMarkup}${choicesMarkup}${choicesMarkup ? "" : `<footer><button type="button" class="${danger ? "dangerBtn" : "primaryBtn"}" data-combat-dialog-confirm>${esc(confirmLabel)}</button><button type="button" data-combat-dialog-cancel>${esc(cancelLabel)}</button></footer>`}</section>`;
+            document.body.appendChild(backdrop);
+            document.body.classList.add("masterforgeModalOpen");
+            const previousFocus = document.activeElement;
+            const dialog = backdrop.querySelector(".combatDialog");
+            const textInput = backdrop.querySelector("[data-combat-dialog-input]");
+            const select = backdrop.querySelector("[data-combat-dialog-select]");
+            const customField = backdrop.querySelector("[data-combat-custom-field]");
+            const customInput = backdrop.querySelector("[data-combat-dialog-custom]");
+            const finish = value => {
+                if (pendingCombatDialog?.backdrop !== backdrop) return;
+                pendingCombatDialog = null;
+                document.removeEventListener("keydown", handleKeydown);
+                backdrop.remove();
+                if (!pendingDeploymentChoice) document.body.classList.remove("masterforgeModalOpen");
+                previousFocus?.focus?.();
+                resolve(value);
+            };
+            const submit = () => {
+                if (textInput) {
+                    const value = textInput.value.trim();
+                    if (!value && input.required !== false) { textInput.focus(); return; }
+                    finish(value || null);
+                    return;
+                }
+                if (select) {
+                    const value = select.value === "__custom" ? customInput.value.trim() : select.value;
+                    if (!value) { (select.value === "__custom" ? customInput : select).focus(); return; }
+                    finish(value);
+                    return;
+                }
+                finish(true);
+            };
+            const handleKeydown = event => {
+                if (event.key === "Escape") {
+                    event.preventDefault();
+                    finish(null);
+                    return;
+                }
+                if (event.key === "Enter" && event.target.tagName !== "BUTTON" && !choicesMarkup) {
+                    event.preventDefault();
+                    submit();
+                    return;
+                }
+                if (event.key === "Tab") {
+                    const focusable = [...dialog.querySelectorAll("button:not([disabled]), input:not([disabled]):not(.hidden), select:not([disabled])")].filter(element => !element.closest(".hidden"));
+                    if (!focusable.length) return;
+                    const first = focusable[0];
+                    const last = focusable[focusable.length - 1];
+                    if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                    else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+                }
+            };
+            pendingCombatDialog = { backdrop, cancel: () => finish(null) };
+            document.addEventListener("keydown", handleKeydown);
+            backdrop.addEventListener("click", event => {
+                const choice = event.target.closest?.("[data-combat-dialog-choice]");
+                if (choice) finish(choice.dataset.combatDialogChoice);
+                else if (event.target.closest?.("[data-combat-dialog-confirm]")) submit();
+                else if (event.target === backdrop || event.target.closest?.("[data-combat-dialog-cancel]")) finish(null);
+            });
+            select?.addEventListener("change", () => {
+                const custom = select.value === "__custom";
+                customField.classList.toggle("hidden", !custom);
+                if (custom) customInput.focus();
+            });
+            (textInput || select || backdrop.querySelector("[data-combat-dialog-choice]") || backdrop.querySelector("[data-combat-dialog-confirm]"))?.focus();
+        });
+    }
 
     function saveCombatState() {
         try {
@@ -104,11 +185,23 @@ console.log("combatOps.js loaded");
     async function canonicalRecords(type) {
         if (type === "pc") {
             const stored = (await window.dmStorage.getCharacters()) || [];
-            const all = window.dmAPI?.getAllRecordsInCollection ? (await window.dmAPI.getAllRecordsInCollection("characters")) || [] : [];
-            return [...stored, ...all];
+            return stored.map(record => ({ ...record, _combatCanonicalStore: "characters" }));
         }
-        if (type === "npc") return window.dmAPI?.getAllRecordsInCollection ? (await window.dmAPI.getAllRecordsInCollection("npcs")) || [] : (await window.dmStorage.getSavedNpcs()) || [];
-        if (type === "creature") return (await window.dmAPI.getAllRecordsInCollection("creatures")) || [];
+        if (["npc", "creature"].includes(type)) {
+            const entities = window.dmAPI?.getEntitiesByType ? (await window.dmAPI.getEntitiesByType(type)) || [] : [];
+            const collection = `${type}s`;
+            const records = window.dmAPI?.getAllRecordsInCollection ? (await window.dmAPI.getAllRecordsInCollection(collection)) || [] : [];
+            const seen = new Set();
+            return [
+                ...entities.map(record => ({ ...record, _combatCanonicalStore: "entity" })),
+                ...records.map(record => ({ ...record, _combatCanonicalStore: "record" }))
+            ].filter(record => {
+                const id = String(record.id || "").trim();
+                if (!id || seen.has(id)) return false;
+                seen.add(id);
+                return true;
+            });
+        }
         return [];
     }
     async function getCanonicalSource(type, participant) {
@@ -129,20 +222,24 @@ console.log("combatOps.js loaded");
     }
     function makeSnapshot(participant, source, runtimeId, name) {
         const type = participant.sourceType;
-        const stats = source?.stats || {};
-        const abilities = type === "pc" ? (source?.abilities || {}) : stats;
-        const maxHp = type === "pc" ? firstFinite(source?.maxHP, source?.maxHp, stats.maxHp, stats.hp) : firstFinite(stats.maxHp, stats.maximumHp, parseStatNumber(stats.hp), source?.maxHp);
-        const currentHp = firstFinite(source?.currentHP, source?.currentHp, stats.currentHp, maxHp);
-        const ac = firstFinite(source?.ac, parseStatNumber(stats.ac), source?.armourClass, source?.armorClass);
+        const sourceData = source?.data_json || {};
+        const characterData = sourceData.character || {};
+        const canonical = { ...sourceData, ...characterData, ...(source || {}) };
+        const stats = { ...(sourceData.stats || {}), ...(canonical.stats || {}) };
+        const abilities = type === "pc" ? (canonical.abilities || sourceData.abilities || {}) : (canonical.abilities || stats);
+        const maxHp = type === "pc" ? firstFinite(canonical.maxHP, canonical.maxHp, stats.maxHp, stats.hp) : firstFinite(canonical.maxHP, canonical.maxHp, stats.maxHp, stats.maximumHp, parseStatNumber(stats.hp));
+        const currentHp = firstFinite(canonical.currentHP, canonical.currentHp, stats.currentHP, stats.currentHp, maxHp);
+        const ac = firstFinite(canonical.ac, parseStatNumber(stats.ac), canonical.armourClass, canonical.armorClass);
+        const persistentConditions = normaliseEntries(canonical.persistentConditions || canonical.conditions).filter(value => typeof value === "string" && value.trim());
         return {
-            id: runtimeId, sourceParticipantId: String(participant.id || ""), sourceType: type, sourceId: String(source?.id || participant.sourceId || ""), sourceEntityId: String(source?.entityId || source?.id || participant.sourceId || ""), sourceDisplayName: source?.name || participant.displayName || "Combatant", importedAt: new Date().toISOString(), snapshotVersion: 2,
-            name: name || source?.name || participant.displayName || "Combatant", subtitle: participant.subtitle || [source?.size, source?.type || source?.species, source?.class].filter(Boolean).join(" ") || type,
-            portrait: portraitOf(source), systemId: source?.systemId || source?.data_json?.systemId || "", level: source?.level ?? null, cr: source?.cr || "", className: source?.class || "", subtype: source?.species || source?.subtype || "", size: source?.size || "", creatureType: source?.type || "", alignment: source?.alignment || "",
-            initiative: participant.initiativeOverride ?? "", initiativeModifier: abilityModifier(abilities.dex), proficiencyBonus: source?.proficiencyBonus || "", ac, hp: currentHp, maxHp, tempHp: 0, speed: source?.speed || stats.speed || "",
-            abilities: Object.fromEntries(["str","dex","con","int","wis","cha"].map(key => [key, firstFinite(abilities[key])])), savingThrows: source?.savingThrows || "", skills: sourceSkills(source), senses: source?.senses || "", languages: source?.languages || "", passivePerception: firstFinite(source?.passivePerception),
-            damageVulnerabilities: source?.damageVulnerabilities || stats.damageVulnerabilities || "", damageResistances: source?.damageResistances || stats.damageResistances || "", damageImmunities: source?.damageImmunities || stats.damageImmunities || "", conditionImmunities: source?.conditionImmunities || stats.conditionImmunities || "",
-            traits: normaliseEntries(source?.traits), actions: normaliseEntries(source?.actions), bonusActions: normaliseEntries(source?.bonusActions), reactions: normaliseEntries(source?.reactions), legendaryActions: normaliseEntries(source?.legendaryActions), spellcasting: normaliseEntries(source?.spellcasting || source?.spells), equipment: normaliseEntries(source?.equipment),
-            group: participant.disposition === "hostile" ? "Enemies" : participant.disposition === "friendly" ? "Allies" : "Neutral", conditions: [], hidden: Boolean(participant.hidden || participant.startsInvisible), status: ["alive", "active"].includes(String(source?.status || "").toLowerCase()) ? "Active" : source?.status || "Active", notes: [participant.notes, sourceNotes(source)].filter(Boolean).join("\n")
+            id: runtimeId, sourceParticipantId: String(participant.id || ""), sourceType: type, sourceId: String(source?.id || participant.sourceId || ""), sourceEntityId: String(source?.entityId || source?.id || participant.sourceId || ""), sourceStore: source?._combatCanonicalStore || "", sourceScope: String(source?.scope || "global"), sourceWriteBackEligible: Boolean(source?.id), sourceDisplayName: canonical.name || participant.displayName || "Combatant", importedAt: new Date().toISOString(), snapshotVersion: 2,
+            name: name || canonical.name || participant.displayName || "Combatant", subtitle: participant.subtitle || [canonical.size, canonical.type || canonical.species, canonical.class].filter(Boolean).join(" ") || type,
+            portrait: portraitOf(canonical), systemId: canonical.systemId || "", level: canonical.level ?? null, cr: canonical.cr || "", className: canonical.class || "", subtype: canonical.species || canonical.subtype || "", size: canonical.size || "", creatureType: canonical.type || "", alignment: canonical.alignment || "",
+            initiative: participant.initiativeOverride ?? "", initiativeModifier: abilityModifier(abilities.dex), proficiencyBonus: canonical.proficiencyBonus || "", ac, hp: currentHp, maxHp, tempHp: firstFinite(canonical.temporaryHP, canonical.temporaryHp, canonical.tempHP, canonical.tempHp, stats.tempHp, 0), speed: canonical.speed || stats.speed || "",
+            abilities: Object.fromEntries(["str","dex","con","int","wis","cha"].map(key => [key, firstFinite(abilities[key])])), savingThrows: canonical.savingThrows || "", skills: sourceSkills(canonical), senses: canonical.senses || "", languages: canonical.languages || "", passivePerception: firstFinite(canonical.passivePerception), passiveInvestigation: firstFinite(canonical.passiveInvestigation), passiveInsight: firstFinite(canonical.passiveInsight),
+            damageVulnerabilities: canonical.damageVulnerabilities || stats.damageVulnerabilities || "", damageResistances: canonical.damageResistances || stats.damageResistances || "", damageImmunities: canonical.damageImmunities || stats.damageImmunities || "", conditionImmunities: canonical.conditionImmunities || stats.conditionImmunities || "",
+            traits: normaliseEntries(canonical.traits), actions: normaliseEntries(canonical.actions), bonusActions: normaliseEntries(canonical.bonusActions), reactions: normaliseEntries(canonical.reactions), legendaryActions: normaliseEntries(canonical.legendaryActions), spellcasting: normaliseEntries(canonical.spellcasting || canonical.spells), equipment: normaliseEntries(canonical.equipment),
+            group: participant.disposition === "hostile" ? "Enemies" : participant.disposition === "friendly" ? "Allies" : "Neutral", conditions: persistentConditions, hidden: Boolean(participant.hidden || participant.startsInvisible), status: ["alive", "active"].includes(String(canonical.status || "").toLowerCase()) ? "Active" : canonical.status || "Active", notes: [participant.notes, sourceNotes(canonical)].filter(Boolean).join("\n")
         };
     }
     async function resolvePartyMembers(participant) {
@@ -176,6 +273,7 @@ console.log("combatOps.js loaded");
                 if (pendingDeploymentChoice?.modal !== modal) return;
                 pendingDeploymentChoice = null;
                 document.removeEventListener("keydown", handleKeydown);
+                document.body.classList.remove("masterforgeModalOpen");
                 modal.remove();
                 previousFocus?.focus?.();
                 if (!strategy) {
@@ -194,6 +292,7 @@ console.log("combatOps.js loaded");
                 }
             };
             pendingDeploymentChoice = { modal, cancel: () => finish() };
+            document.body.classList.add("masterforgeModalOpen");
             document.addEventListener("keydown", handleKeydown);
             modal.addEventListener("click", event => {
                 const choice = event.target.closest?.("[data-deployment]");
@@ -214,9 +313,13 @@ console.log("combatOps.js loaded");
         if (!source) combatOpsState.deploymentWarnings.push(`${participant.displayName || "Combatant"}: ${resolved.resolution}; references preserved: ${canonicalIds(participant).join(", ") || "none"}.`);
         const quantity = participant.sourceType === "creature" ? Math.max(1, Number(participant.quantity || 1)) : 1;
         const strategy = await chooseQuantityDeployment(participant, quantity);
-        if (strategy === "individual") return Array.from({ length: quantity }, (_, memberIndex) => makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName || "Combatant"} ${memberIndex + 1}` : undefined));
+        if (strategy === "individual") return Array.from({ length: quantity }, (_, memberIndex) => {
+            const snapshot = makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName || "Combatant"} ${memberIndex + 1}` : undefined);
+            if (quantity > 1) snapshot.sourceWriteBackEligible = false;
+            return snapshot;
+        });
         const snapshot = makeSnapshot(participant, source, String(participant.id || `participant-${index}`));
-        snapshot.groupQuantity = quantity; snapshot.groupMode = strategy;
+        snapshot.groupQuantity = quantity; snapshot.groupMode = strategy; snapshot.sourceWriteBackEligible = false;
         if (strategy === "shared-pool" && snapshot.maxHp != null) { snapshot.standardMemberHp = snapshot.maxHp; snapshot.maxHp *= quantity; snapshot.hp = snapshot.maxHp; }
         if (strategy === "individual-counters") { snapshot.standardMemberHp = snapshot.maxHp; snapshot.memberHp = Array.from({ length: quantity }, () => snapshot.maxHp); if (snapshot.maxHp != null) { snapshot.maxHp *= quantity; snapshot.hp = snapshot.maxHp; } }
         return [snapshot];
@@ -231,8 +334,8 @@ console.log("combatOps.js loaded");
             updateCombatDiagnostic(`Combat is active for ${combatOpsState.encounterName || "another encounter"}; end it before loading another.`, "warning");
             return false;
         }
-        if (sameEncounter && combatOpsState.combatants.length && !confirm("Reload this encounter and reset its current combat state?")) { updateCombatDiagnostic("Current combat setup retained."); return false; }
-        if (!sameEncounter && combatOpsState.combatants.length && !confirm(`Replace the current combat setup with ${encounter.name || "this encounter"}?`)) { updateCombatDiagnostic("Current combat setup retained."); return false; }
+        if (sameEncounter && combatOpsState.combatants.length && !await showCombatDialog({ title: "Reload Encounter?", message: "Reloading will reset the current runtime combat state.", confirmLabel: "Reload Encounter", danger: true })) { updateCombatDiagnostic("Current combat setup retained."); return false; }
+        if (!sameEncounter && combatOpsState.combatants.length && !await showCombatDialog({ title: "Replace Combat Setup?", message: `Replace the current combat setup with ${encounter.name || "this encounter"}?`, confirmLabel: "Replace Setup", danger: true })) { updateCombatDiagnostic("Current combat setup retained."); return false; }
         if (!sameEncounter) combatOpsState.deploymentStrategies = {};
         const deploymentWarnings = [];
         combatOpsState.deploymentWarnings = deploymentWarnings;
@@ -298,14 +401,18 @@ console.log("combatOps.js loaded");
     }
 
     function renderInitiativeSetup() {
-        return `<div class="combatOpsShell"><div class="combatOpsTopBar"><div><h2>Combat Readiness</h2><p>${esc(combatOpsState.encounterName)} · initiative, AC and HP are required. Start Combat is available in Actions.</p></div><div class="combatOpsTurnButtons"><button id="combatOpsCancelInitiativeBtn">Back</button></div></div>${combatOpsState.deploymentWarnings.length ? `<div class="combatOpsReadinessWarnings">${combatOpsState.deploymentWarnings.map(esc).join("<br>")}</div>` : ""}<div class="combatOpsInitiativeSetupList">${combatOpsState.combatants.map((c, index) => { const missing = [c.ac == null ? "AC" : "", c.hp == null || c.maxHp == null ? "HP" : ""].filter(Boolean); return `<div class="combatOpsInitiativeSetupItem ${missing.length ? "is-incomplete" : ""}"><div class="combatOpsReadinessIdentity">${renderPortrait(c)}<div><strong>${esc(c.hidden ? "Hidden Enemy" : c.name)}</strong><span>${esc(c.sourceType.toUpperCase())} · ${esc(c.subtitle)}</span>${missing.length ? `<em>Missing ${esc(missing.join(" and "))}</em>` : `<em>${esc(c.status || "Active")}</em>`}</div></div><label>AC<input class="combatOpsReadinessInput" data-readiness-field="ac" data-combatant-index="${index}" type="number" value="${c.ac ?? ""}" placeholder="Not set"></label><label>Current HP<input class="combatOpsReadinessInput" data-readiness-field="hp" data-combatant-index="${index}" type="number" min="0" value="${c.hp ?? ""}" placeholder="Not set"></label><label>Max HP<input class="combatOpsReadinessInput" data-readiness-field="maxHp" data-combatant-index="${index}" type="number" min="1" value="${c.maxHp ?? ""}" placeholder="Not set"></label><label>Initiative<input class="combatOpsInitiativeInput" data-combatant-index="${index}" type="number" value="${esc(c.initiative ?? "")}" placeholder="Init"></label></div>`; }).join("")}</div></div>`;
+        return `<div class="combatOpsShell"><div class="combatOpsTopBar"><div><h2>Combat Readiness</h2><p>${esc(combatOpsState.encounterName)} · initiative, AC and HP are required. Start Combat is available in Actions.</p></div><div class="combatOpsTurnButtons"><button id="combatOpsCancelInitiativeBtn">Back</button></div></div>${combatOpsState.deploymentWarnings.length ? `<div class="combatOpsReadinessWarnings">${combatOpsState.deploymentWarnings.map(esc).join("<br>")}</div>` : ""}<div class="combatOpsInitiativeSetupList">${combatOpsState.combatants.map((c, index) => { const missing = [c.ac == null ? "AC" : "", c.hp == null || c.maxHp == null ? "HP" : ""].filter(Boolean); return `<div class="combatOpsInitiativeSetupItem ${missing.length ? "is-incomplete" : ""}"><div class="combatOpsReadinessIdentity">${renderPortrait(c)}<div><strong>${esc(c.hidden ? "Hidden Enemy" : c.name)}</strong><span>${renderTypeBadge(c)}${renderGroupBadge(c)} ${esc(c.subtitle)}</span>${renderConditionBadges(c)}${missing.length ? `<em>Missing ${esc(missing.join(" and "))}</em>` : `<em>${esc(c.status || "Active")}</em>`}</div></div><label>AC<input class="combatOpsReadinessInput" data-readiness-field="ac" data-combatant-index="${index}" type="number" value="${c.ac ?? ""}" placeholder="Not set"></label><label>Current HP<input class="combatOpsReadinessInput" data-readiness-field="hp" data-combatant-index="${index}" type="number" min="0" value="${c.hp ?? ""}" placeholder="Not set"></label><label>Max HP<input class="combatOpsReadinessInput" data-readiness-field="maxHp" data-combatant-index="${index}" type="number" min="1" value="${c.maxHp ?? ""}" placeholder="Not set"></label><label>Initiative<input class="combatOpsInitiativeInput" data-combatant-index="${index}" type="number" value="${esc(c.initiative ?? "")}" placeholder="Init"></label></div>`; }).join("")}</div></div>`;
     }
 
-    function renderPortrait(c, className = "") { return c.portrait ? `<img class="combatOpsPortraitImage ${className}" src="${esc(c.portrait)}" alt="">` : `<div class="combatOpsPortrait ${className}">${esc((c.sourceType || c.name || "?").charAt(0).toUpperCase())}</div>`; }
+    function combatTypeLabel(type = "") { return ({ pc: "PC", npc: "NPC", creature: "Creature", vehicle: "Vehicle", ship: "Vehicle", party: "Party", party_group: "Party Group" })[type] || "Combatant"; }
+    function renderTypeBadge(c) { return `<span class="combatTypeBadge combatTypeBadge--${esc(c.sourceType || "other")}">${esc(combatTypeLabel(c.sourceType))}</span>`; }
+    function renderGroupBadge(c) { return c.groupQuantity ? `<span class="combatGroupBadge">Group ×${esc(c.groupQuantity)}</span>` : ""; }
+    function renderConditionBadges(c) { return c.conditions?.length ? `<span class="combatConditionBadges">${c.conditions.map(condition => `<span>${esc(condition)}</span>`).join("")}</span>` : ""; }
+    function renderPortrait(c, className = "") { return c.portrait ? `<img class="combatOpsPortraitImage ${className}" src="${esc(c.portrait)}" alt="">` : `<div class="combatOpsPortrait combatOpsPortraitFallback ${className}" aria-label="No participant image">◆</div>`; }
 
     function renderInitiativeCard(c, index) {
         const percent = c.maxHp ? Math.max(0, Math.min(100, c.hp / c.maxHp * 100)) : 0;
-        return `<button class="combatOpsInitiativeCard ${index === combatOpsState.activeIndex ? "active" : ""} ${c.hidden ? "hiddenCombatant" : ""}" data-combatant-index="${index}">${renderPortrait(c)}<div class="combatOpsInitName">${esc(c.hidden ? "Hidden Enemy" : c.name)}</div>${c.hp != null && c.maxHp ? `<div class="combatOpsHpMini"><span style="width:${percent}%"></span></div>` : ""}<div class="combatOpsInitMeta"><span>HP ${c.hp == null || c.maxHp == null ? "Not set" : esc(`${c.hp}/${c.maxHp}`)}</span><span>${esc(c.status || "Active")}${c.conditions?.length ? ` · ${esc(c.conditions.join(", "))}` : ""}</span><span>Init ${esc(c.initiative || "—")}${c.groupQuantity ? ` · Qty ${c.groupQuantity}` : ""}</span></div></button>`;
+        return `<button class="combatOpsInitiativeCard ${index === combatOpsState.activeIndex ? "active" : ""} ${c.hidden ? "hiddenCombatant" : ""}" data-combatant-index="${index}">${renderPortrait(c)}<div class="combatOpsInitName">${esc(c.hidden ? "Hidden Enemy" : c.name)}</div><div class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}</div>${c.hp != null && c.maxHp ? `<div class="combatOpsHpMini"><span style="width:${percent}%"></span></div>` : ""}${renderConditionBadges(c)}<div class="combatOpsInitMeta"><span>HP ${c.hp == null || c.maxHp == null ? "Not set" : esc(`${c.hp}/${c.maxHp}`)}</span><span>${esc(c.status || "Active")}</span><span>Init ${esc(c.initiative || "—")}</span></div></button>`;
     }
 
     function renderReferenceValue(title, value) { return value ? `<section class="combatStatReference"><h3>${esc(title)}</h3><p>${esc(value)}</p></section>` : ""; }
@@ -317,7 +424,7 @@ console.log("combatOps.js loaded");
     }).join("")}</section>` : ""; }
     function renderActiveStatBlock(c) {
         const abilityRow = ["str","dex","con","int","wis","cha"].map(key => { const score = c.abilities?.[key]; const mod = abilityModifier(score); return `<div><strong>${key.toUpperCase()}</strong><span>${score == null ? "—" : `${score} (${mod >= 0 ? "+" : ""}${mod})`}</span></div>`; }).join("");
-        return `<div class="statBlockCard combatStatBlock"><header class="combatStatHeader">${renderPortrait(c, "combatStatPortrait")}<div><h1>${esc(c.hidden ? "Hidden Enemy" : c.name)}</h1><p>${esc([c.size, c.creatureType || c.subtype || c.className, c.alignment].filter(Boolean).join(" · ") || c.subtitle)}</p><small>${esc(c.level ? `Level ${c.level}` : c.cr ? `CR ${c.cr}` : c.sourceType.toUpperCase())} · ${esc(c.status || "Active")}</small></div></header><div class="combatStatDefence"><div><strong>Armour Class</strong><span>${c.ac ?? "Not set"}</span></div><div><strong>Hit Points</strong><span>${c.hp == null || c.maxHp == null ? "Not set" : `${c.hp} / ${c.maxHp}`}</span></div><div><strong>Speed</strong><span>${esc(c.speed || "Not set")}</span></div></div><div class="combatStatAbilities">${abilityRow}</div><div class="combatStatReferences">${renderReferenceValue("Saving Throws", c.savingThrows)}${renderReferenceValue("Skills", typeof c.skills === "string" ? c.skills : "")}${renderReferenceValue("Damage Vulnerabilities", c.damageVulnerabilities)}${renderReferenceValue("Damage Resistances", c.damageResistances)}${renderReferenceValue("Damage Immunities", c.damageImmunities)}${renderReferenceValue("Condition Immunities", c.conditionImmunities)}${renderReferenceValue("Senses", c.senses || (c.passivePerception != null ? `Passive Perception ${c.passivePerception}` : ""))}${renderReferenceValue("Languages", c.languages)}${renderReferenceValue("Challenge / Proficiency Bonus", [c.cr ? `CR ${c.cr}` : "", c.proficiencyBonus ? `PB ${c.proficiencyBonus}` : ""].filter(Boolean).join(" · "))}${renderReferenceEntries("Traits", c.traits)}${renderReferenceEntries("Actions", c.actions)}${renderReferenceEntries("Bonus Actions", c.bonusActions)}${renderReferenceEntries("Reactions", c.reactions)}${renderReferenceEntries("Legendary Actions", c.legendaryActions)}${renderReferenceEntries("Spellcasting", c.spellcasting)}${renderReferenceEntries("Equipment", c.equipment)}${renderReferenceValue("Notes", c.notes)}</div>${c.hidden ? `<button class="combatOpsRevealBtn">Reveal Combatant</button>` : ""}</div>`;
+        return `<div class="statBlockCard combatStatBlock"><header class="combatStatHeader">${renderPortrait(c, "combatStatPortrait")}<div><h1>${esc(c.hidden ? "Hidden Enemy" : c.name)}</h1><div class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}</div>${renderConditionBadges(c)}<p>${esc([c.size, c.creatureType || c.subtype || c.className, c.alignment].filter(Boolean).join(" · ") || c.subtitle)}</p><small>${esc(c.level ? `Level ${c.level}` : c.cr ? `CR ${c.cr}` : combatTypeLabel(c.sourceType))} · ${esc(c.status || "Active")}</small></div></header><div class="combatStatDefence"><div><strong>Armour Class</strong><span>${c.ac ?? "Not set"}</span></div><div><strong>Hit Points</strong><span>${c.hp == null || c.maxHp == null ? "Not set" : `${c.hp} / ${c.maxHp}`}</span></div><div><strong>Speed</strong><span>${esc(c.speed || "Not set")}</span></div></div><div class="combatStatAbilities">${abilityRow}</div><div class="combatStatReferences">${renderReferenceValue("Saving Throws", c.savingThrows)}${renderReferenceValue("Skills", typeof c.skills === "string" ? c.skills : "")}${renderReferenceValue("Passive Scores", [c.passivePerception != null ? `Perception ${c.passivePerception}` : "", c.passiveInvestigation != null ? `Investigation ${c.passiveInvestigation}` : "", c.passiveInsight != null ? `Insight ${c.passiveInsight}` : ""].filter(Boolean).join(" · "))}${renderReferenceValue("Damage Vulnerabilities", c.damageVulnerabilities)}${renderReferenceValue("Damage Resistances", c.damageResistances)}${renderReferenceValue("Damage Immunities", c.damageImmunities)}${renderReferenceValue("Condition Immunities", c.conditionImmunities)}${renderReferenceValue("Senses", c.senses)}${renderReferenceValue("Languages", c.languages)}${renderReferenceValue("Challenge / Proficiency Bonus", [c.cr ? `CR ${c.cr}` : "", c.proficiencyBonus ? `PB ${c.proficiencyBonus}` : ""].filter(Boolean).join(" · "))}${renderReferenceEntries("Traits", c.traits)}${renderReferenceEntries("Actions", c.actions)}${renderReferenceEntries("Bonus Actions", c.bonusActions)}${renderReferenceEntries("Reactions", c.reactions)}${renderReferenceEntries("Legendary Actions", c.legendaryActions)}${renderReferenceEntries("Spellcasting", c.spellcasting)}${renderReferenceEntries("Equipment", c.equipment)}${renderReferenceValue("Notes", c.notes)}</div>${c.hidden ? `<button class="combatOpsRevealBtn">Reveal Combatant</button>` : ""}</div>`;
     }
 
     function renderTrackingPanel(c) {
@@ -335,15 +442,142 @@ console.log("combatOps.js loaded");
     function updateInitiativeValuesFromInputs() { document.querySelectorAll(".combatOpsInitiativeInput").forEach(input => { const c = combatOpsState.combatants[Number(input.dataset.combatantIndex)]; if (c) c.initiative = input.value === "" ? "" : Number(input.value); }); }
     function sortCombatantsByInitiative() { combatOpsState.combatants.sort((a,b) => Number(b.initiative || 0) - Number(a.initiative || 0) || (a.name || "").localeCompare(b.name || "")); }
     function isCombatantReady(c) { return c && c.ac != null && c.hp != null && c.maxHp != null && c.maxHp > 0; }
-    function startCombat() { updateInitiativeValuesFromInputs(); const incomplete = combatOpsState.combatants.filter(c => !isCombatantReady(c)); if (incomplete.length) { alert(`Complete AC and HP for: ${incomplete.map(c => c.name).join(", ")}.`); return; } sortCombatantsByInitiative(); combatOpsState.mode = "active"; combatOpsState.round = 1; combatOpsState.activeIndex = 0; saveCombatState(); rerenderCombatOps(); }
+    async function startCombat() { updateInitiativeValuesFromInputs(); const incomplete = combatOpsState.combatants.filter(c => !isCombatantReady(c)); if (incomplete.length) { await showCombatDialog({ title: "Combatants Not Ready", message: `Complete AC and HP for: ${incomplete.map(c => c.name).join(", ")}.`, confirmLabel: "Return to Readiness", cancelLabel: "Close" }); return; } sortCombatantsByInitiative(); combatOpsState.mode = "active"; combatOpsState.round = 1; combatOpsState.activeIndex = 0; saveCombatState(); rerenderCombatOps(); }
     function nextTurn(delta = 1) { if (!combatOpsState.combatants.length) return; combatOpsState.activeIndex += delta; if (combatOpsState.activeIndex >= combatOpsState.combatants.length) { combatOpsState.activeIndex = 0; combatOpsState.round++; } else if (combatOpsState.activeIndex < 0) { combatOpsState.activeIndex = combatOpsState.combatants.length - 1; combatOpsState.round = Math.max(1, combatOpsState.round - 1); } saveCombatState(); rerenderCombatOps(); }
-    function adjustHp(amount) { const c = getActiveCombatant(); if (!c || c.hp == null || c.maxHp == null) return; const delta = Number(amount); c.hp = Math.max(0, Math.min(c.maxHp, c.hp + delta)); if (c.groupMode === "individual-counters" && Array.isArray(c.memberHp)) { let remaining = Math.abs(delta); if (delta < 0) { for (let i = c.memberHp.length - 1; i >= 0 && remaining > 0; i--) { const applied = Math.min(c.memberHp[i], remaining); c.memberHp[i] -= applied; remaining -= applied; } } else { for (let i = 0; i < c.memberHp.length && remaining > 0; i++) { const capacity = Math.max(0, c.standardMemberHp - c.memberHp[i]); const applied = Math.min(capacity, remaining); c.memberHp[i] += applied; remaining -= applied; } } c.groupQuantity = c.memberHp.filter(value => value > 0).length; } if (c.hp === 0 && c.status === "Active") c.status = "Unconscious"; saveCombatState(); rerenderCombatOps(); }
-    function addCondition() { const c = getActiveCombatant(); const value = prompt("Condition name:")?.trim(); if (c && value && !c.conditions.includes(value)) { c.conditions.push(value); saveCombatState(); rerenderCombatOps(); } }
-    function removeCondition() { const c = getActiveCombatant(); if (!c?.conditions?.length) return; const value = prompt(`Remove which condition?\n${c.conditions.join(", ")}`)?.trim(); if (value) { c.conditions = c.conditions.filter(item => item.toLowerCase() !== value.toLowerCase()); saveCombatState(); rerenderCombatOps(); } }
-    function setActiveStatus(status) { const c = getActiveCombatant(); if (!c) return; c.status = status; saveCombatState(); rerenderCombatOps(); }
-    function addLateParticipant() { const name = prompt("Late participant name:")?.trim(); if (!name) return; combatOpsState.combatants.push({ id: `late-${Date.now()}`, sourceParticipantId: "", sourceType: "other", sourceId: "", sourceEntityId: "", sourceDisplayName: name, importedAt: new Date().toISOString(), snapshotVersion: 2, name, subtitle: "Late participant", portrait: "", initiative: "", ac: null, hp: null, maxHp: null, tempHp: 0, abilities: {}, conditions: [], hidden: false, status: "Active", notes: "", traits: [], actions: [], bonusActions: [], reactions: [], legendaryActions: [], spellcasting: [], equipment: [] }); saveCombatState(); rerenderCombatOps(); }
-    function removeActiveParticipant() { const c = getActiveCombatant(); if (!c || !confirm(`Remove ${c.name} from this combat?`)) return; combatOpsState.combatants.splice(combatOpsState.activeIndex, 1); combatOpsState.activeIndex = Math.max(0, Math.min(combatOpsState.activeIndex, combatOpsState.combatants.length - 1)); saveCombatState(); rerenderCombatOps(); }
-    function endCombat() { if (!confirm("End this combat? The runtime combat state will be cleared; the planned encounter will not be changed.")) return; localStorage.removeItem(STORAGE_KEY); Object.assign(combatOpsState, freshState()); document.body.classList.remove("combatOpsMode"); loadEncounters(); }
+    function adjustHp(amount) { const c = getActiveCombatant(); if (!c || c.hp == null || c.maxHp == null) return; const delta = Number(amount); c.hp = Math.max(0, Math.min(c.maxHp, c.hp + delta)); if (c.groupMode === "individual-counters" && Array.isArray(c.memberHp)) { let remaining = Math.abs(delta); if (delta < 0) { for (let i = c.memberHp.length - 1; i >= 0 && remaining > 0; i--) { const applied = Math.min(c.memberHp[i], remaining); c.memberHp[i] -= applied; remaining -= applied; } } else { for (let i = 0; i < c.memberHp.length && remaining > 0; i++) { const capacity = Math.max(0, c.standardMemberHp - c.memberHp[i]); const applied = Math.min(capacity, remaining); c.memberHp[i] += applied; remaining -= applied; } } c.groupQuantity = c.memberHp.filter(value => value > 0).length; } if (c.hp === 0 && c.status === "Active") c.status = "Unconscious"; else if (delta > 0 && c.hp > 0 && c.status === "Unconscious") c.status = "Active"; saveCombatState(); rerenderCombatOps(); }
+    async function addCondition() {
+        const c = getActiveCombatant();
+        if (!c) return;
+        const registered = window.MasterForgeGameSystems?.getCurrent?.()?.conditions || [];
+        const value = registered.length
+            ? await showCombatDialog({ title: `Add Condition to ${c.name}`, message: "Choose a system condition or enter a temporary custom condition.", confirmLabel: "Add Condition", selectOptions: registered.map(condition => ({ value: condition.name || condition.id, label: condition.name || condition.id })) })
+            : await showCombatDialog({ title: `Add Condition to ${c.name}`, message: "The system condition registry is unavailable. Enter a temporary condition.", confirmLabel: "Add Condition", input: { label: "Condition", placeholder: "Condition name" } });
+        if (value && !c.conditions.some(condition => condition.toLowerCase() === value.toLowerCase())) { c.conditions.push(value); saveCombatState(); rerenderCombatOps(); }
+    }
+    async function removeCondition() {
+        const c = getActiveCombatant();
+        if (!c?.conditions?.length) return;
+        const value = await showCombatDialog({ title: `Remove Condition from ${c.name}`, message: "Choose the condition to remove.", choices: c.conditions.map(condition => ({ value: condition, label: condition })) });
+        if (value) { c.conditions = c.conditions.filter(item => item.toLowerCase() !== value.toLowerCase()); saveCombatState(); rerenderCombatOps(); }
+    }
+    function setActiveStatus(status) { const c = getActiveCombatant(); if (!c || (status === "Active" && Number(c.hp) <= 0)) return; c.status = status; saveCombatState(); rerenderCombatOps(); }
+    async function addLateParticipant() { const name = await showCombatDialog({ title: "Add Late Participant", message: "This participant exists only in the current combat and will not write back to a canonical record.", confirmLabel: "Add Participant", input: { label: "Participant name", placeholder: "Name" } }); if (!name) return; combatOpsState.combatants.push({ id: `late-${Date.now()}`, sourceParticipantId: "", sourceType: "other", sourceId: "", sourceEntityId: "", sourceDisplayName: name, sourceWriteBackEligible: false, importedAt: new Date().toISOString(), snapshotVersion: 2, name, subtitle: "Late participant", portrait: "", initiative: "", ac: null, hp: null, maxHp: null, tempHp: 0, abilities: {}, conditions: [], hidden: false, status: "Active", notes: "", traits: [], actions: [], bonusActions: [], reactions: [], legendaryActions: [], spellcasting: [], equipment: [] }); saveCombatState(); rerenderCombatOps(); }
+    async function removeActiveParticipant() { const c = getActiveCombatant(); if (!c || !await showCombatDialog({ title: "Remove Combat Participant?", message: `Remove ${c.name} from this runtime combat? The planned encounter will not be changed.`, confirmLabel: "Remove Participant", danger: true })) return; combatOpsState.combatants.splice(combatOpsState.activeIndex, 1); combatOpsState.activeIndex = Math.max(0, Math.min(combatOpsState.activeIndex, combatOpsState.combatants.length - 1)); saveCombatState(); rerenderCombatOps(); }
+    function applyCanonicalPcFields(target, combatant) {
+        const updated = { ...target, currentHP: combatant.hp, temporaryHP: combatant.tempHp || 0, status: combatant.status };
+        if (Array.isArray(target?.conditions)) updated.conditions = [...(combatant.conditions || [])];
+        else updated.persistentConditions = [...(combatant.conditions || [])];
+        return updated;
+    }
+    function applyEntityCombatFields(target, combatant) {
+        const updated = { ...target, status: combatant.status };
+        if (Array.isArray(target?.conditions)) updated.conditions = [...(combatant.conditions || [])];
+        else updated.persistentConditions = [...(combatant.conditions || [])];
+        updated.stats = {
+            ...(target?.stats || {}),
+            currentHp: combatant.hp,
+            tempHp: combatant.tempHp || 0
+        };
+        return updated;
+    }
+    async function writeBackCombatant(combatant) {
+        if (!combatant?.sourceWriteBackEligible || combatant.groupMode || !combatant.sourceId || !["pc", "npc", "creature"].includes(combatant.sourceType)) return false;
+        if (combatant.sourceType === "pc") {
+            const characters = await window.dmStorage.getCharacters();
+            const index = characters.findIndex(character => String(character.id) === String(combatant.sourceId));
+            if (index < 0) throw new Error(`Canonical PC not found for ${combatant.name}.`);
+            const originalCharacter = characters[index];
+            characters[index] = applyCanonicalPcFields(characters[index], combatant);
+            await window.dmStorage.saveCharacters(characters);
+
+            const savedCharacters = await window.dmStorage.getCharacters();
+            const savedCharacter = savedCharacters.find(character => String(character.id) === String(combatant.sourceId));
+            if (!savedCharacter || Number(savedCharacter.currentHP) !== Number(combatant.hp)) {
+                throw new Error(`Canonical HP verification failed for ${combatant.name}.`);
+            }
+
+            const entity = await window.dmAPI.getEntity("pc", combatant.sourceId);
+            if (entity) {
+                const data = entity.data_json || {};
+                await window.dmAPI.updateEntity("pc", combatant.sourceId, {
+                    ...entity,
+                    data_json: {
+                        ...data,
+                        character: {
+                            ...(data.character || {}),
+                            currentHP: savedCharacter.currentHP,
+                            temporaryHP: savedCharacter.temporaryHP || 0,
+                            status: savedCharacter.status,
+                            persistentConditions: [...(savedCharacter.persistentConditions || savedCharacter.conditions || [])]
+                        }
+                    }
+                });
+                const savedEntity = await window.dmAPI.getEntity("pc", combatant.sourceId);
+                if (Number(savedEntity?.data_json?.character?.currentHP) !== Number(savedCharacter.currentHP)) {
+                    throw new Error(`PC entity mirror verification failed for ${combatant.name}.`);
+                }
+            }
+            console.info("[MasterForge Combat] PC write-back verified", {
+                runtimeSourceId: combatant.sourceId,
+                matchedCharacterId: savedCharacter.id,
+                hpBeforeWriteBack: originalCharacter.currentHP,
+                runtimeHp: combatant.hp,
+                hpAfterSavedReload: savedCharacter.currentHP
+            });
+            return true;
+        }
+        const entity = await window.dmAPI.getEntity(combatant.sourceType, combatant.sourceId);
+        if (entity) {
+            const data = applyEntityCombatFields(entity.data_json || {}, combatant);
+            await window.dmAPI.updateEntity(combatant.sourceType, combatant.sourceId, { ...entity, data_json: data });
+            return true;
+        }
+        if (combatant.sourceStore === "record") {
+            const collection = `${combatant.sourceType}s`;
+            const record = await window.dmAPI.getRecord(combatant.sourceId);
+            if (!record) throw new Error(`Canonical ${combatant.sourceType} not found for ${combatant.name}.`);
+            await window.dmAPI.saveRecord(collection, combatant.sourceId, applyEntityCombatFields(record, combatant), combatant.sourceScope || "global");
+            return true;
+        }
+        return false;
+    }
+    async function writeBackCombatState() {
+        let persisted = 0;
+        for (const combatant of combatOpsState.combatants) {
+            if (await writeBackCombatant(combatant)) persisted += 1;
+        }
+        return persisted;
+    }
+    async function endCombat() {
+        const confirmed = await showCombatDialog({
+            title: "End Combat?",
+            message: "Current HP, temporary HP, status and persistent conditions will be written back to eligible canonical PCs, NPCs and creatures before runtime combat state is cleared. Grouped combatants, quantity clones, unresolved participants and runtime-only participants will be skipped. The planned encounter will not be changed.",
+            confirmLabel: "Write Back and End Combat",
+            danger: true
+        });
+        if (!confirmed) return;
+        updateCombatDiagnostic("Writing combat results back to canonical records");
+        try {
+            const persisted = await writeBackCombatState();
+            console.info(`[MasterForge Combat] Wrote back ${persisted} canonical participant${persisted === 1 ? "" : "s"}.`);
+            localStorage.removeItem(STORAGE_KEY);
+            Object.assign(combatOpsState, freshState());
+            document.body.classList.remove("combatOpsMode");
+            await loadEncounters();
+            if (typeof window.renderParty === "function") {
+                try {
+                    await window.renderParty();
+                } catch (error) {
+                    console.warn("Combat ended, but Party Manager could not be refreshed:", error);
+                }
+            }
+        } catch (error) {
+            console.error("Combat write-back failed:", error);
+            combatOpsState.error = `Combat could not be ended safely: ${error?.message || "Write-back failed."}`;
+            updateCombatDiagnostic("Combat write-back failed; runtime state was retained.", "error");
+            rerenderCombatOps();
+        }
+    }
 
     function wireCombatOpsControls() {
         document.querySelector("#combatOpsRefreshBtn")?.addEventListener("click", loadEncounters);
@@ -360,7 +594,7 @@ console.log("combatOps.js loaded");
         document.querySelector(".combatOpsRevealBtn")?.addEventListener("click", () => { getActiveCombatant().hidden = false; saveCombatState(); rerenderCombatOps(); });
         const bindNumber = (selector, field, minimum = -Infinity) => document.querySelector(selector)?.addEventListener("change", event => { const c = getActiveCombatant(); c[field] = event.currentTarget.value === "" ? null : Math.max(minimum, Number(event.currentTarget.value)); if (field === "maxHp" && c.hp != null && c.maxHp != null) c.hp = Math.min(c.hp, c.maxHp); saveCombatState(); rerenderCombatOps(); });
         bindNumber("#combatOpsHpInput", "hp", 0); bindNumber("#combatOpsMaxHpInput", "maxHp", 1); bindNumber("#combatOpsTempHpInput", "tempHp", 0); bindNumber("#combatOpsAcInput", "ac");
-        document.querySelector("#combatOpsStatusInput")?.addEventListener("change", event => { getActiveCombatant().status = event.currentTarget.value; saveCombatState(); });
+        document.querySelector("#combatOpsStatusInput")?.addEventListener("change", event => { const c = getActiveCombatant(); if (event.currentTarget.value === "Active" && Number(c.hp) <= 0) { event.currentTarget.value = c.status; return; } c.status = event.currentTarget.value; saveCombatState(); });
         document.querySelector("#combatOpsNotesInput")?.addEventListener("change", event => { getActiveCombatant().notes = event.currentTarget.value; saveCombatState(); });
     }
 
