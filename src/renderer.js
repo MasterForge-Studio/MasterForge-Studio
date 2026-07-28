@@ -533,6 +533,12 @@ async function buildThemeSettingsPanel() {
         </div>
       </div>
 
+      <div class="infoCard">
+        <h2>Game Systems</h2>
+        <p>Inspect installed rules schemas, semantic mappings, conditions and classifications.</p>
+        <button id="openRulesSchemaViewerBtn" type="button">Open Rules Schema Viewer</button>
+      </div>
+
     </div>
   `;
 
@@ -542,6 +548,7 @@ async function buildThemeSettingsPanel() {
   const opacityDisplay = document.querySelector("#backgroundOpacityDisplay");
   const toggleMenusBtn = document.querySelector("#toggleMenusBtn");
   const installContentPackBtn = document.querySelector("#installContentPackBtn");
+  const openRulesSchemaViewerBtn = document.querySelector("#openRulesSchemaViewerBtn");
 const manualAppBackgroundInput =
   document.querySelector("#manualAppBackgroundInput");
 
@@ -553,6 +560,15 @@ const manualBackgroundImageOpacitySlider =
 
 const manualBackgroundImageOpacityDisplay =
   document.querySelector("#manualBackgroundImageOpacityDisplay");
+  if (openRulesSchemaViewerBtn) {
+    openRulesSchemaViewerBtn.onclick = () => {
+      activateMainPanel(
+        document.querySelector('.tab[data-tab="world"]'),
+        document.querySelector("#world")
+      );
+      openGameSystemsPanel();
+    };
+  }
   if (themeModeSelect) {
     themeModeSelect.value = themeSettings.themeMode || "manual";
 
@@ -2177,6 +2193,10 @@ function setupTabs() {
         await window.MasterForgeCombatOps?.open();
       }
 
+      if (targetId === "session-reference") {
+        await renderSessionReference({ preferredSessionId: currentSessionId, preserveDraft: true });
+      }
+
       console.log("Opened tab:", targetId);
       console.log("Active panel:", document.querySelector(".panel.active-panel")?.id);
     };
@@ -2202,14 +2222,23 @@ async function openNarrationWorkspace() {
     await refreshScriptList();
     if (context) context.textContent = "Select or create a session to prepare session-linked narration.";
   }
-  document.querySelector("#openSessionPrompterBtn")?.setAttribute("aria-expanded", "true");
+  const openButton = document.querySelector("#openSessionPrompterBtn");
+  openButton?.setAttribute("aria-expanded", "true");
+  if (openButton) openButton.innerText = "📕 Hide Prompter";
+  activateSessionPrompterActionConsole();
   mount.scrollIntoView({ block: "start" });
 }
 
 function closeNarrationWorkspace() {
   const mount = document.querySelector("#sessionPrompterSlideDown");
   if (mount) mount.classList.add("hidden");
-  document.querySelector("#openSessionPrompterBtn")?.setAttribute("aria-expanded", "false");
+  const openButton = document.querySelector("#openSessionPrompterBtn");
+  openButton?.setAttribute("aria-expanded", "false");
+  if (openButton) openButton.innerText = "📖 Prompter";
+  window.MasterForgeActionConsole?.setActiveWorkspace("session", {
+    pageId: "session",
+    recordId: currentSessionId
+  });
 }
 
 const WORKFLOW_NAV_STORAGE_KEY = "masterforge.workflowNavigation.v1";
@@ -2278,6 +2307,32 @@ function setupWorkflowShell() {
 function registerMasterForgeActionWorkspaces() {
   const consoleApi = window.MasterForgeActionConsole;
   if (!consoleApi) return;
+  refreshBuilderActionWorkspace("npc");
+  refreshBuilderActionWorkspace("creature");
+  refreshPcActionWorkspace();
+  consoleApi.registerWorkspace("session-reference", { title: "Session Reference Actions", actions: [
+    { id: "reference-open-planner", label: "Open Session Planner", groupId: "session", groupLabel: "Session", order: 10, handler: openSessionReferencePlanner },
+    { id: "reference-previous", label: "Previous Session", groupId: "session", groupLabel: "Session", order: 20, enabled: () => sessionReferenceState.sessions.findIndex(item => item.id === sessionReferenceState.sessionId) < sessionReferenceState.sessions.length - 1, disabledReason: "No earlier session is available.", handler: () => selectAdjacentSessionReference(1) },
+    { id: "reference-next", label: "Next Session", groupId: "session", groupLabel: "Session", order: 30, enabled: () => sessionReferenceState.sessions.findIndex(item => item.id === sessionReferenceState.sessionId) > 0, disabledReason: "No later session is available.", handler: () => selectAdjacentSessionReference(-1) },
+    { id: "reference-refresh", label: "Refresh Reference", groupId: "session", groupLabel: "Session", order: 40, handler: () => renderSessionReference({ preferredSessionId: sessionReferenceState.sessionId, preserveDraft: true }) },
+    { id: "reference-save-notes", label: "Save Live Notes", groupId: "notes", groupLabel: "Live Notes", order: 10, enabled: () => Boolean(sessionReferenceState.sessionId && sessionReferenceState.dirty), disabledReason: "Live Notes are already saved.", handler: saveSessionReferenceLiveNotes },
+    { id: "reference-prompter", label: "Open Prompter", groupId: "tools", groupLabel: "Session Tools", order: 10, enabled: () => Boolean(sessionReferenceState.sessionId), disabledReason: "No session is selected.", handler: openSessionReferencePrompter },
+    { id: "reference-add-cast", label: "Add to Cast", groupId: "tools", groupLabel: "Session Tools", order: 20, enabled: () => Boolean(sessionReferenceState.sessionId), disabledReason: "No session is selected.", handler: openSessionReferenceCastPicker }
+  ] });
+  consoleApi.registerWorkspace("session-prompter", { title: "Session Prompter Actions", actions: [
+    { id: "prompter-new", label: "New Script", groupId: "script", groupLabel: "Script", order: 10, enabled: () => Boolean(currentSessionId), disabledReason: "Select or save a session first.", handler: newScript },
+    { id: "prompter-save", label: "Save Script", groupId: "script", groupLabel: "Script", order: 20, enabled: hasUnsavedPrompterChanges, disabledReason: "There are no unsaved script changes.", handler: saveCurrentScript },
+    { id: "prompter-delete", label: "Delete Script", groupId: "script", groupLabel: "Script", order: 30, danger: true, enabled: () => Boolean(currentScriptFile && !prompterDraftState.isNew), disabledReason: "Save this draft before deleting it.", handler: deleteCurrentScript },
+    { id: "prompter-start", label: "Start Prompt", groupId: "playback", groupLabel: "Playback", groupOrder: 10, order: 10, enabled: hasUsablePrompterText, disabledReason: "Add Read Aloud text first.", handler: enterStoryPromptMode },
+    { id: "prompter-edit", label: "Edit", groupId: "playback", groupLabel: "Playback", order: 20, enabled: isStoryPromptModeActive, disabledReason: "The Prompter is already in Edit mode.", handler: enterStoryEditMode },
+    { id: "prompter-play", label: "Play", groupId: "playback", groupLabel: "Playback", order: 30, visible: () => !promptRunning, enabled: () => isStoryPromptModeActive() && hasUsablePrompterText(), disabledReason: "Start Prompt before playing.", handler: togglePrompt },
+    { id: "prompter-pause", label: "Pause", groupId: "playback", groupLabel: "Playback", order: 30, visible: () => promptRunning, handler: togglePrompt },
+    { id: "prompter-reset", label: "Reset", groupId: "playback", groupLabel: "Playback", order: 40, enabled: hasUsablePrompterText, disabledReason: "Add Read Aloud text first.", handler: resetPrompt },
+    { id: "prompter-reference", label: "Return to Session Reference", groupId: "session", groupLabel: "Session", groupOrder: 20, order: 10, enabled: () => Boolean(currentSessionId), disabledReason: "No session is selected.", handler: returnPrompterToSessionReference },
+    { id: "prompter-planner", label: "Open Session Planner", groupId: "session", groupLabel: "Session", order: 20, handler: returnPrompterToSessionPlanner },
+    { id: "prompter-refresh", label: "Refresh Scripts", groupId: "session", groupLabel: "Session", order: 30, handler: refreshPrompterScripts },
+    { id: "prompter-close", label: "Close Prompter", groupId: "session", groupLabel: "Session", order: 40, handler: closeSessionPrompterWithGuard }
+  ] });
   consoleApi.registerWorkspace("encounters", { actions: [
     { id: "new-encounter", label: "New Encounter", groupId: "record", groupLabel: "Encounter", order: 10, handler: startNewPlannedEncounter },
     { id: "save-encounter", label: "Save Encounter", groupId: "record", groupLabel: "Encounter", order: 20, enabled: () => Boolean(plannedEncounterUiState.editorRecord), disabledReason: "Create or select an encounter first.", handler: savePlannedEncounter },
@@ -2291,20 +2346,48 @@ function registerMasterForgeActionWorkspaces() {
   const combatApi = () => window.MasterForgeCombatOps;
   const hasCombatant = () => Boolean(combatApi()?.getActiveCombatant());
   const activeCombat = () => combatApi()?.state?.mode === "active";
-  consoleApi.registerWorkspace("combat-operations", { title: "Combat Actions", actions: [
-    { id: "combat-start", label: "Start Combat", groupId: "combat", groupLabel: "Combat", groupOrder: 0, order: 10, visible: () => combatApi()?.state?.mode === "initiative", enabled: () => Boolean(combatApi()?.state?.combatants?.length) && combatApi().state.combatants.every(combatApi().isCombatantReady), disabledReason: "Complete AC and HP for every combatant.", handler: () => combatApi()?.startCombat() },
+  const combatRules = window.MasterForgeGameSystems?.getRules?.() || {};
+  const combatResourceLabel = window.MasterForgeGameSystems?.statisticForRole?.(null, "currentHealth")?.name || "Resource";
+  const combatConditionsLabel = combatRules.displayLabels?.conditions || "Conditions";
+  consoleApi.registerWorkspace("combat-operations", {
+    title: "Combat Actions",
+    singleOpenAccordion: true,
+    defaultCollapsedGroups: ["combat", "resource", "conditions", "participants", "active-participant-reference"],
+    actions: [
+    { id: "combat-start", label: "Start Combat", groupId: "combat", groupLabel: "Combat", groupOrder: 0, order: 10, visible: () => combatApi()?.state?.mode === "initiative", enabled: () => Boolean(combatApi()?.state?.combatants?.length) && combatApi().state.combatants.every(combatApi().isCombatantReady), disabledReason: "Complete every required system statistic.", handler: () => combatApi()?.startCombat() },
     { id: "combat-previous", label: "Previous Turn", groupId: "combat", groupLabel: "Combat", order: 20, visible: activeCombat, handler: () => combatApi()?.nextTurn(-1) },
     { id: "combat-next", label: "Next Turn", groupId: "combat", groupLabel: "Combat", order: 30, visible: activeCombat, handler: () => combatApi()?.nextTurn(1) },
     { id: "combat-end", label: "End Combat", groupId: "combat", groupLabel: "Combat", order: 40, danger: true, visible: () => ["setup", "initiative", "active"].includes(combatApi()?.state?.mode), handler: () => combatApi()?.endCombat() },
-    ...[1,5,10,20].map((amount, order) => ({ id: `combat-damage-${amount}`, label: `Damage ${amount}`, groupId: "hit-points", groupLabel: "Hit Points", groupOrder: 10, order, enabled: () => hasCombatant() && combatApi().getActiveCombatant().hp != null, disabledReason: "The active combatant has no HP value.", handler: () => combatApi()?.adjustHp(-amount) })),
-    ...[1,5,10].map((amount, order) => ({ id: `combat-heal-${amount}`, label: `Heal ${amount}`, groupId: "hit-points", groupLabel: "Hit Points", groupOrder: 10, order: order + 10, enabled: () => hasCombatant() && combatApi().getActiveCombatant().hp != null, disabledReason: "The active combatant has no HP value.", handler: () => combatApi()?.adjustHp(amount) })),
-    { id: "combat-condition-add", label: "Add Condition", groupId: "conditions", groupLabel: "Conditions", groupOrder: 20, order: 10, enabled: hasCombatant, handler: () => combatApi()?.addCondition() },
-    { id: "combat-condition-remove", label: "Remove Condition", groupId: "conditions", groupLabel: "Conditions", order: 20, enabled: () => Boolean(combatApi()?.getActiveCombatant()?.conditions?.length), disabledReason: "The active combatant has no conditions.", handler: () => combatApi()?.removeCondition() },
-    { id: "combat-unconscious", label: "Mark Unconscious", groupId: "conditions", groupLabel: "Conditions", order: 30, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Unconscious", handler: () => combatApi()?.setActiveStatus("Unconscious") },
-    { id: "combat-active", label: "Restore Active", groupId: "conditions", groupLabel: "Conditions", order: 40, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Active" && Number(combatApi().getActiveCombatant().hp) > 0, disabledReason: "A participant at 0 HP cannot be restored to Active.", handler: () => combatApi()?.setActiveStatus("Active") },
+    ...[1,5,10,20].map((amount, order) => ({ id: `combat-damage-${amount}`, label: `Damage ${amount}`, groupId: "resource", groupLabel: combatResourceLabel, groupOrder: 10, order, enabled: () => hasCombatant() && combatApi().getActiveCombatant().hp != null, disabledReason: `The active combatant has no ${combatResourceLabel} value.`, handler: () => combatApi()?.adjustHp(-amount) })),
+    ...[1,5,10].map((amount, order) => ({ id: `combat-heal-${amount}`, label: `Restore ${amount}`, groupId: "resource", groupLabel: combatResourceLabel, groupOrder: 10, order: order + 10, enabled: () => hasCombatant() && combatApi().getActiveCombatant().hp != null, disabledReason: `The active combatant has no ${combatResourceLabel} value.`, handler: () => combatApi()?.adjustHp(amount) })),
+    { id: "combat-condition-add", label: `Add ${combatConditionsLabel.replace(/s$/, "")}`, groupId: "conditions", groupLabel: combatConditionsLabel, groupOrder: 20, order: 10, enabled: hasCombatant, handler: () => combatApi()?.addCondition() },
+    { id: "combat-condition-remove", label: `Remove ${combatConditionsLabel.replace(/s$/, "")}`, groupId: "conditions", groupLabel: combatConditionsLabel, order: 20, enabled: () => Boolean(combatApi()?.getActiveCombatant()?.conditions?.length), disabledReason: `The active combatant has no ${combatConditionsLabel.toLowerCase()}.`, handler: () => combatApi()?.removeCondition() },
+    { id: "combat-unconscious", label: "Mark Unconscious", groupId: "conditions", groupLabel: combatConditionsLabel, order: 30, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Unconscious", handler: () => combatApi()?.setActiveStatus("Unconscious") },
+    { id: "combat-active", label: "Restore Active", groupId: "conditions", groupLabel: combatConditionsLabel, order: 40, enabled: () => hasCombatant() && combatApi().getActiveCombatant().status !== "Active" && Number(combatApi().getActiveCombatant().hp) > 0, disabledReason: "A participant with no remaining resource cannot be restored to Active.", handler: () => combatApi()?.setActiveStatus("Active") },
     { id: "combat-participant-add", label: "Add Late Participant", groupId: "participants", groupLabel: "Participants", groupOrder: 30, order: 10, visible: () => combatApi()?.state?.mode !== "selection", handler: () => combatApi()?.addLateParticipant() },
-    { id: "combat-participant-remove", label: "Remove Active Participant", groupId: "participants", groupLabel: "Participants", order: 20, danger: true, enabled: hasCombatant, handler: () => combatApi()?.removeActiveParticipant() }
-  ] });
+    { id: "combat-participant-remove", label: "Remove Active Participant", groupId: "participants", groupLabel: "Participants", order: 20, danger: true, enabled: hasCombatant, handler: () => combatApi()?.removeActiveParticipant() },
+    {
+      id: "combat-active-reference",
+      label: "Active Participant Reference",
+      groupId: "active-participant-reference",
+      groupLabel: "Active Participant Reference",
+      groupOrder: 40,
+      order: 10,
+      renderControl: () => {
+        const destinations = combatApi()?.getActiveReferenceDestinations?.() || [];
+        if (!destinations.length) return `<p class="combatReferenceEmpty">No active participant reference is available.</p>`;
+        return `<nav class="combatReferenceNavigation" aria-label="Active participant reference">${destinations.map(destination =>
+          `<button type="button" data-combat-reference-target="${escapeHtml(destination.key)}">${escapeHtml(destination.label)}</button>`
+        ).join("")}</nav>`;
+      },
+      bindControl: host => {
+        host.querySelectorAll("[data-combat-reference-target]").forEach(button => {
+          button.addEventListener("click", () => combatApi()?.navigateActiveReference?.(button.dataset.combatReferenceTarget));
+        });
+      }
+    }
+    ]
+  });
   consoleApi.registerWorkspace("region", { actions: [
     { id: "refresh-location", label: "Refresh Location", groupId: "location", groupLabel: "Location", order: 10, handler: renderRegionInfo },
     { id: "edit-location", label: "Open Full Location Management", groupId: "location", groupLabel: "Location", order: 20, handler: () => document.querySelector('#tabs [data-workspace-group="world-building"] .tab[data-tab="world"]')?.click() }
@@ -2639,6 +2722,10 @@ async function setupStateBar() {
   const previousCampaignId = window.dmState.current.campaign;
 
   if (selectedCampaignId === previousCampaignId) return;
+  if (sessionReferenceState.dirty && !confirm("Discard unsaved Session Reference Live Notes and change campaign?")) {
+    campaignSelect.value = previousCampaignId || "";
+    return;
+  }
 
   if (!confirmDiscardPlannedEncounterChanges()) {
     campaignSelect.value = previousCampaignId || "";
@@ -2686,10 +2773,20 @@ await refreshCurrentContextViews({
   currentSessionId = null;
 currentSessionSelectedCreatureIds = [];
 currentSessionSelectedNpcIds = [];
+Object.assign(sessionReferenceState, {
+  sessionId: null,
+  sessions: [],
+  liveNotes: "",
+  savedLiveNotes: "",
+  dirty: false
+});
 
 await refreshScriptList();
 await renderSessionList();
 await renderSessionCastSelectors();
+if (document.querySelector("#session-reference")?.classList.contains("active-panel")) {
+  await renderSessionReference();
+}
 
 setTimeout(() => {
   setupSessionCastPicker();
@@ -2910,16 +3007,41 @@ let promptY = window.innerHeight;
 
 let promptSpeed = Number(localStorage.getItem("promptSpeed")) || 0.6;
 let promptFontSize = Number(localStorage.getItem("promptFontSize")) || 46;
-let storyOpacity = localStorage.getItem("storyOpacity") !== null
-  ? Number(localStorage.getItem("storyOpacity"))
-  : 90;
-let promptNotesWidth = localStorage.getItem("promptNotesWidth") !== null
-  ? Number(localStorage.getItem("promptNotesWidth"))
-  : 33;
+const clampPrompterSetting = (value, min, max, fallback) => {
+  if (value === null || value === undefined || value === "") return fallback;
+  const numericValue = Number(value);
+  return Number.isFinite(numericValue)
+    ? Math.min(max, Math.max(min, numericValue))
+    : fallback;
+};
+let storyOpacity = clampPrompterSetting(
+  localStorage.getItem("storyOpacity"),
+  0,
+  100,
+  90
+);
+let promptNotesWidth = clampPrompterSetting(
+  localStorage.getItem("promptNotesWidth"),
+  20,
+  50,
+  33
+);
+const prompterDraftState = {
+  isNew: false,
+  dirty: false,
+  baseline: null
+};
 let currentSessionId = null;
 let currentlySelectedEntity = null;
 let currentSessionSelectedCreatureIds = [];
 let currentSessionSelectedNpcIds = [];
+const sessionReferenceState = {
+  sessionId: null,
+  sessions: [],
+  liveNotes: "",
+  savedLiveNotes: "",
+  dirty: false
+};
 
 
 // ===========================
@@ -3085,7 +3207,8 @@ async function toggleSessionPrompterPanel() {
 
   if (!mount) {
     await mountSessionPrompterPanel();
-    return;
+    if (!document.querySelector("#sessionPrompterSlideDown")) return;
+    return toggleSessionPrompterPanel();
   }
 
   if (!currentSessionId) {
@@ -3098,6 +3221,17 @@ async function toggleSessionPrompterPanel() {
   }
 
   const isHidden = mount.classList.contains("hidden");
+
+  if (!isHidden && hasUnsavedPrompterChanges()) {
+    const discard = await confirmPrompterAction({
+      title: "Discard unsaved script changes?",
+      message: "Closing the Prompter will discard the current unsaved draft or edits.",
+      confirmLabel: "Discard Changes",
+      danger: true
+    });
+    if (!discard) return;
+    discardPrompterDraftState();
+  }
 
   mount.classList.toggle("hidden", !isHidden);
 
@@ -3122,6 +3256,12 @@ async function toggleSessionPrompterPanel() {
     mount.scrollIntoView({
       behavior: "smooth",
       block: "start"
+    });
+    activateSessionPrompterActionConsole();
+  } else {
+    window.MasterForgeActionConsole?.setActiveWorkspace("session", {
+      pageId: "session",
+      recordId: currentSessionId
     });
   }
 }
@@ -3154,6 +3294,7 @@ async function ensureDefaultSessionPrompt() {
 
   const openingText =
     session?.opening ||
+    session?.openingNarration ||
     document.querySelector("#sessionOpeningInput")?.value ||
     "";
 
@@ -3186,8 +3327,13 @@ async function saveSessionPrep() {
     "Untitled Session";
 
   const id = currentSessionId || "session-" + Date.now();
+  const existingSession = currentSessionId
+    ? (await window.dmAPI.getRecords("sessions", window.dmState.current.campaign))
+        .find(item => item.id === currentSessionId)
+    : null;
 
   const session = {
+    ...(existingSession || {}),
     id,
     title,
     date: document.querySelector("#sessionDateInput").value,
@@ -3218,6 +3364,9 @@ async function saveSessionPrep() {
   currentSessionId = id;
 
   await renderSessionList();
+  if (document.querySelector("#session-reference")?.classList.contains("active-panel")) {
+    await renderSessionReference({ preferredSessionId: id });
+  }
 
   // Re-highlight the active item in the sidebar
   document.querySelectorAll(".sessionListItem").forEach(el => {
@@ -3304,6 +3453,13 @@ async function renderSessionList() {
 
 
 async function loadSessionPrep(id) {
+  if (currentSessionId && id !== currentSessionId) {
+    const canSwitch = await confirmDiscardPrompterChanges(
+      "Changing sessions will discard the current unsaved Prompter draft or edits."
+    );
+    if (!canSwitch) return false;
+    discardPrompterDraftState();
+  }
 
   const sessions = await window.dmAPI.getRecords(
     "sessions",
@@ -3318,7 +3474,7 @@ async function loadSessionPrep(id) {
 
   document.querySelector("#sessionTitleInput").value = s.title || "";
   document.querySelector("#sessionDateInput").value = s.date || "";
-  document.querySelector("#sessionOpeningInput").value = s.opening || "";
+  document.querySelector("#sessionOpeningInput").value = s.opening || s.openingNarration || "";
   document.querySelector("#sessionPrepInput").value = s.prep || "";
   document.querySelector("#sessionSecretsInput").value = s.secrets || "";
   document.querySelector("#sessionLiveNotesInput").value = s.liveNotes || "";
@@ -3343,9 +3499,289 @@ currentSessionSelectedNpcIds =
 await renderSessionCastSelectors();
 await refreshScriptList();
 
+return true;
+}
+
+async function bindSessionOpeningToPrompter(sessionId) {
+  const sessions = await window.dmAPI.getRecords("sessions", window.dmState.current.campaign);
+  const session = sessions.find(item => item.id === sessionId);
+  if (!session) return false;
+
+  const files = await window.dmStorage.listScripts();
+  let openingFile = null;
+  let openingScript = null;
+  for (const file of files) {
+    const script = await window.dmStorage.loadScript(file);
+    if (script?.sessionId === sessionId && script?.type === "opening") {
+      openingFile = file;
+      openingScript = script;
+      break;
+    }
+  }
+
+  const openingNarration = session.openingNarration ?? session.opening ?? "";
+  const narrationNotes = session.openingNarrationNotes ?? session.narrationNotes ?? "";
+  const saved = await window.dmStorage.saveScript({
+    ...(openingScript || {}),
+    id: openingScript?.id || `prompt-${sessionId}-opening`,
+    title: "Opening Narration",
+    type: "opening",
+    campaignId: window.dmState.current.campaign,
+    sessionId,
+    readAloud: openingNarration,
+    notes: narrationNotes,
+    createdAt: openingScript?.createdAt || new Date().toISOString(),
+    updatedAt: new Date().toISOString()
+  });
+  openingFile = `${saved.id}.json`;
+  await refreshScriptList();
+  await loadScript(openingFile);
+  const els = getStoryEls();
+  if (!openingNarration && els.readAloudInput) {
+    els.readAloudInput.placeholder = "No Opening Narration has been prepared for this session.";
+  }
+  return true;
+}
+
+function sortSessionsForReference(sessions) {
+  return [...sessions].sort((a, b) => {
+    const aKey = a.date || a.updatedAt || a.createdAt || a.id || "";
+    const bKey = b.date || b.updatedAt || b.createdAt || b.id || "";
+    return String(bKey).localeCompare(String(aKey));
+  });
+}
+
+async function resolveSessionReference(preferredSessionId = null) {
+  const sessions = sortSessionsForReference(await window.dmAPI.getRecords(
+    "sessions",
+    window.dmState.current.campaign
+  ));
+  const explicitId = preferredSessionId || currentSessionId;
+  return {
+    sessions,
+    session: sessions.find(item => item.id === explicitId) || sessions[0] || null
+  };
+}
+
+function sessionReferenceSection(title, value, className = "") {
+  const content = String(value || "").trim();
+  if (!content) return "";
+  return `<section class="sessionReferenceCard ${className}"><h2>${escapeHtml(title)}</h2><div class="sessionReferenceText">${escapeHtml(content)}</div></section>`;
+}
+
+async function resolveSessionReferenceCast(session) {
+  const [creatures, npcs, characters] = await Promise.all([
+    getCreatures(),
+    getNpcs(),
+    window.dmStorage.getCharacters()
+  ]);
+  const items = (ids, records, type) => (Array.isArray(ids) ? ids : []).map(id => {
+    const record = records.find(item => String(item.id) === String(id));
+    return record
+      ? { ...record, id, type, name: record.name || record.characterName || "Unnamed cast member" }
+      : null;
+  });
+  return [
+    ...items(session.selectedCreatureIds, creatures, "creature"),
+    ...items(session.selectedNpcIds, npcs, "npc"),
+    ...items(session.selectedCharacterIds || session.selectedPcIds, characters, "pc")
+  ].filter(Boolean);
+}
+
+async function renderSessionReference({ preferredSessionId = null, preserveDraft = false } = {}) {
+  const host = document.querySelector("#sessionReferenceContent");
+  if (!host) return;
+  const { sessions, session } = await resolveSessionReference(preferredSessionId);
+  sessionReferenceState.sessions = sessions;
+  if (!session) {
+    Object.assign(sessionReferenceState, {
+      sessionId: null,
+      liveNotes: "",
+      savedLiveNotes: "",
+      dirty: false
+    });
+    document.querySelector("#sessionReferenceTitle").textContent = "Session Reference";
+    document.querySelector("#sessionReferenceDate").textContent = "";
+    host.innerHTML = `<div class="sessionReferenceEmpty"><h2>No session is available</h2><p>Create a session in Session Planner to populate this in-game reference.</p><button type="button" data-reference-open-planner>Open Session Planner</button></div>`;
+    host.querySelector("[data-reference-open-planner]").onclick = openSessionReferencePlanner;
+    window.MasterForgeActionConsole?.refresh();
+    return;
+  }
+
+  const changedSession = sessionReferenceState.sessionId !== session.id;
+  if (!preserveDraft || changedSession || !sessionReferenceState.dirty) {
+    sessionReferenceState.liveNotes = session.liveNotes || "";
+    sessionReferenceState.savedLiveNotes = session.liveNotes || "";
+    sessionReferenceState.dirty = false;
+  }
+  sessionReferenceState.sessionId = session.id;
+  currentSessionId = session.id;
+  document.querySelector("#sessionReferenceTitle").textContent = session.title || "Untitled Session";
+  document.querySelector("#sessionReferenceDate").textContent = session.date || "";
+  const cast = await resolveSessionReferenceCast(session);
+  const castMarkup = cast.length
+    ? `<section class="sessionReferenceCard sessionReferenceCastCard"><h2>Cast</h2><div class="sessionReferenceCast">${cast.map(item => `<button class="sessionCastEntityCard" type="button" data-reference-cast-type="${item.type}" data-reference-cast-id="${escapeHtml(item.id)}"><span class="sessionCastPortrait" data-session-cast-portrait-id="${escapeHtml(item.id)}"></span><span class="sessionCastEntityIdentity"><span class="sessionCastTypeBadge">${escapeHtml(item.type === "pc" ? "PC" : item.type === "npc" ? "NPC" : "Creature")}</span><strong>${escapeHtml(item.name)}</strong>${sessionCastMetadata(item, item.type).length ? `<small>${sessionCastMetadata(item, item.type).map(escapeHtml).join(" · ")}</small>` : ""}</span></button>`).join("")}</div></section>`
+    : "";
+  host.innerHTML = `
+    <div class="sessionReferenceGrid">
+      ${sessionReferenceSection("Opening Narration", session.opening || session.openingNarration, "sessionReferenceOpening")}
+      ${sessionReferenceSection("Goals / Prep Notes", session.prep, "sessionReferenceGoals")}
+      ${sessionReferenceSection("Secrets & Reveals", session.secrets, "sessionReferenceSecrets")}
+      ${castMarkup}
+      ${sessionReferenceSection("Session Summary", session.summary, "sessionReferenceSummary")}
+      ${sessionReferenceSection("Next Session Hook", session.next, "sessionReferenceNextHook")}
+      <section class="sessionReferenceCard sessionReferenceLiveNotes">
+        <label for="sessionReferenceLiveNotes"><span>Live Notes</span></label>
+        <textarea id="sessionReferenceLiveNotes" placeholder="Capture notes during play.">${escapeHtml(sessionReferenceState.liveNotes)}</textarea>
+        <p class="sessionReferenceSaveState" aria-live="polite">${sessionReferenceState.dirty ? "Unsaved changes" : "Saved"}</p>
+      </section>
+    </div>`;
+  const notes = host.querySelector("#sessionReferenceLiveNotes");
+  notes.oninput = () => {
+    sessionReferenceState.liveNotes = notes.value;
+    sessionReferenceState.dirty = notes.value !== sessionReferenceState.savedLiveNotes;
+    host.querySelector(".sessionReferenceSaveState").textContent = sessionReferenceState.dirty ? "Unsaved changes" : "Saved";
+    window.MasterForgeActionConsole?.refresh();
+  };
+  host.querySelectorAll("[data-reference-cast-id]").forEach(button => {
+    button.onclick = () => openSessionReferenceCastRecord(button.dataset.referenceCastType, button.dataset.referenceCastId);
+  });
+  applySessionCastPortraits(host, new Map(cast.map(item => [String(item.id), item])));
+  window.MasterForgeActionConsole?.refresh();
+}
+
+async function saveSessionReferenceLiveNotes() {
+  if (!sessionReferenceState.sessionId || !sessionReferenceState.dirty) return;
+  const sessions = await window.dmAPI.getRecords("sessions", window.dmState.current.campaign);
+  const session = sessions.find(item => item.id === sessionReferenceState.sessionId);
+  if (!session) throw new Error("The selected session could not be found.");
+  await window.dmAPI.saveRecord(
+    "sessions",
+    session.id,
+    { ...session, liveNotes: sessionReferenceState.liveNotes },
+    window.dmState.current.campaign
+  );
+  const reloaded = (await window.dmAPI.getRecords("sessions", window.dmState.current.campaign))
+    .find(item => item.id === session.id);
+  if (!reloaded || String(reloaded.liveNotes || "") !== sessionReferenceState.liveNotes) {
+    throw new Error("Live Notes could not be verified after saving.");
+  }
+  sessionReferenceState.savedLiveNotes = sessionReferenceState.liveNotes;
+  sessionReferenceState.dirty = false;
+  const plannerNotes = document.querySelector("#sessionLiveNotesInput");
+  if (currentSessionId === session.id && plannerNotes) plannerNotes.value = reloaded.liveNotes || "";
+  await renderSessionReference({ preferredSessionId: session.id, preserveDraft: true });
+}
+
+async function selectAdjacentSessionReference(direction) {
+  if (sessionReferenceState.dirty && !confirm("Discard unsaved Live Notes and change session?")) return;
+  sessionReferenceState.dirty = false;
+  const index = sessionReferenceState.sessions.findIndex(item => item.id === sessionReferenceState.sessionId);
+  const target = sessionReferenceState.sessions[index + direction];
+  if (target) await renderSessionReference({ preferredSessionId: target.id });
+}
+
+async function openSessionReferencePlanner() {
+  if (sessionReferenceState.dirty && !confirm("Discard unsaved Live Notes and open Session Planner?")) return;
+  sessionReferenceState.dirty = false;
+  const tab = document.querySelector('#tabs [data-workspace-group="pre-game"] .tab[data-tab="session"]');
+  const panel = document.querySelector("#session");
+  if (!activateMainPanel(tab, panel)) return;
+  if (sessionReferenceState.sessionId) await loadSessionPrep(sessionReferenceState.sessionId);
+}
+
+async function openSessionReferencePrompter() {
+  if (sessionReferenceState.dirty && !confirm("Discard unsaved Live Notes and open the Prompter?")) return;
+  const canReplace = await confirmDiscardPrompterChanges(
+    "Opening this session's Opening Narration will discard the current unsaved Prompter draft or edits."
+  );
+  if (!canReplace) return;
+  discardPrompterDraftState();
+  sessionReferenceState.dirty = false;
+  const tab = document.querySelector('#tabs [data-workspace-group="pre-game"] .tab[data-tab="session"]');
+  const panel = document.querySelector("#session");
+  if (!activateMainPanel(tab, panel)) return;
+  if (sessionReferenceState.sessionId) await loadSessionPrep(sessionReferenceState.sessionId);
+  await openNarrationWorkspace();
+  await bindSessionOpeningToPrompter(sessionReferenceState.sessionId);
+}
+
+async function openSessionReferenceCastRecord(type, id) {
+  if (type === "npc") return openNpcBuilderByAnyId(id);
+  if (type === "pc") return openCharacterFromForgeSearch(id);
+  if (type === "creature") return openCreatureFromRegionOverview(id);
+}
+
+async function openSessionReferenceCastPicker() {
+  if (sessionReferenceState.dirty && !confirm("Discard unsaved Live Notes and edit the session cast?")) return;
+  sessionReferenceState.dirty = false;
+  const tab = document.querySelector('#tabs [data-workspace-group="pre-game"] .tab[data-tab="session"]');
+  const panel = document.querySelector("#session");
+  if (!activateMainPanel(tab, panel)) return;
+  if (sessionReferenceState.sessionId) await loadSessionPrep(sessionReferenceState.sessionId);
+  document.querySelector(".sessionCastCard")?.scrollIntoView({ block: "start" });
+  document.querySelector("#openNpcCastPickerBtn")?.focus();
 }
 
 let activeSessionCastPickerType = null;
+let sessionCastPickerReturnFocus = null;
+
+function readableSessionCastValue(value) {
+  if (value == null || value === "") return "";
+  if (typeof value === "string" || typeof value === "number") return String(value);
+  if (Array.isArray(value)) return value.map(readableSessionCastValue).filter(Boolean).join(", ");
+  if (typeof value === "object") {
+    return readableSessionCastValue(
+      value.name || value.label || value.source || value.file || value.systemId || value.id
+    );
+  }
+  return "";
+}
+
+function sessionCastPortraitOf(record) {
+  const image = record?.image;
+  return [
+    image?.portrait,
+    record?.portrait,
+    record?.portraitUrl,
+    image?.full,
+    typeof image === "string" ? image : "",
+    record?.tokenImage,
+    image?.token,
+    record?.token
+  ].find(value => typeof value === "string" && value.trim()) || "";
+}
+
+function sessionCastMetadata(record, type) {
+  const values = type === "creature"
+    ? [
+        readableSessionCastValue(record?.classification || record?.type),
+        record?.cr != null && record.cr !== "" ? `CR ${readableSessionCastValue(record.cr)}` : "",
+        readableSessionCastValue(record?.source || record?._loadedFrom || record?.systemId)
+      ]
+    : type === "pc"
+      ? [
+          readableSessionCastValue(record?.species || record?.ancestry),
+          record?.level ? `Level ${readableSessionCastValue(record.level)}` : "",
+          readableSessionCastValue(record?.class || record?.characterClass || record?.role)
+        ]
+      : [
+          readableSessionCastValue(record?.species || record?.classification || record?.type),
+          readableSessionCastValue(record?.rank || record?.level),
+          readableSessionCastValue(record?.role || record?.occupation || record?.source)
+        ];
+  return values.filter(Boolean);
+}
+
+function applySessionCastPortraits(host, recordsById) {
+  host?.querySelectorAll("[data-session-cast-portrait-id]").forEach(layer => {
+    const record = recordsById.get(layer.dataset.sessionCastPortraitId);
+    const portrait = sessionCastPortraitOf(record);
+    if (!portrait) return;
+    layer.style.backgroundImage = `url("${portrait.replace(/["\\\n\r]/g, match => `\\${match}`)}")`;
+    layer.closest(".sessionCastEntityCard")?.classList.add("has-portrait");
+  });
+}
 
 async function renderSessionCastSelectors() {
   await renderSelectedSessionCreatures();
@@ -3360,7 +3796,7 @@ async function renderSelectedSessionCreatures() {
   const creatures = await getCreatures();
 
   const selected = creatures
-    .filter(creature => currentSessionSelectedCreatureIds.includes(creature.id))
+    .filter(creature => currentSessionSelectedCreatureIds.some(id => String(id) === String(creature.id)))
     .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
 
   if (!selected.length) {
@@ -3369,10 +3805,12 @@ async function renderSelectedSessionCreatures() {
   }
 
   wrapper.innerHTML = selected.map(creature => `
-    <div class="sessionSelectedCastItem">
-      <div>
+    <div class="sessionSelectedCastItem sessionCastEntityCard">
+      <div class="sessionCastPortrait" data-session-cast-portrait-id="${escapeHtml(creature.id)}"></div>
+      <div class="sessionCastEntityIdentity">
+        <span class="sessionCastTypeBadge">Creature</span>
         <strong>${escapeHtml(creature.name || "Unnamed Creature")}</strong>
-        <small>CR ${escapeHtml(creature.cr || "?")} · ${escapeHtml(creature.size || "")} ${escapeHtml(creature.type || "")}</small>
+        ${sessionCastMetadata(creature, "creature").length ? `<small>${sessionCastMetadata(creature, "creature").map(escapeHtml).join(" · ")}</small>` : ""}
       </div>
 
       <div class="sessionCastItemActions">
@@ -3404,7 +3842,7 @@ wrapper.querySelectorAll(".openSessionCreatureBtn").forEach(button => {
   wrapper.querySelectorAll(".removeSessionCreatureBtn").forEach(button => {
     button.onclick = async () => {
       currentSessionSelectedCreatureIds =
-        currentSessionSelectedCreatureIds.filter(id => id !== button.dataset.creatureId);
+        currentSessionSelectedCreatureIds.filter(id => String(id) !== button.dataset.creatureId);
 
       await renderSessionCastSelectors();
     };
@@ -3419,7 +3857,7 @@ async function renderSelectedSessionNpcs() {
   const npcs = await getNpcs();
 
   const selected = npcs
-    .filter(npc => currentSessionSelectedNpcIds.includes(npc.id))
+    .filter(npc => currentSessionSelectedNpcIds.some(id => String(id) === String(npc.id)))
     .sort((a, b) => String(a.name || "").localeCompare(String(b.name || "")));
 
   if (!selected.length) {
@@ -3428,10 +3866,12 @@ async function renderSelectedSessionNpcs() {
   }
 
   wrapper.innerHTML = selected.map(npc => `
-    <div class="sessionSelectedCastItem">
-      <div>
+    <div class="sessionSelectedCastItem sessionCastEntityCard">
+      <div class="sessionCastPortrait" data-session-cast-portrait-id="${escapeHtml(npc.id)}"></div>
+      <div class="sessionCastEntityIdentity">
+        <span class="sessionCastTypeBadge">NPC</span>
         <strong>${escapeHtml(npc.name || "Unnamed NPC")}</strong>
-        <small>${escapeHtml(npc.species || "Unknown")} · ${escapeHtml(npc.role || "NPC")}</small>
+        ${sessionCastMetadata(npc, "npc").length ? `<small>${sessionCastMetadata(npc, "npc").map(escapeHtml).join(" · ")}</small>` : ""}
       </div>
 
       <div class="sessionCastItemActions">
@@ -3463,7 +3903,7 @@ async function renderSelectedSessionNpcs() {
   wrapper.querySelectorAll(".removeSessionNpcBtn").forEach(button => {
     button.onclick = async () => {
       currentSessionSelectedNpcIds =
-        currentSessionSelectedNpcIds.filter(id => id !== button.dataset.npcId);
+        currentSessionSelectedNpcIds.filter(id => String(id) !== button.dataset.npcId);
 
       await renderSessionCastSelectors();
     };
@@ -3476,14 +3916,6 @@ function setupSessionCastPicker() {
   const closeBtn = document.querySelector("#closeSessionCastPickerBtn");
   const searchInput = document.querySelector("#sessionCastPickerSearchInput");
   const modal = document.querySelector("#sessionCastPickerModal");
-
-  console.log("SESSION CAST PICKER SETUP", {
-    creatureBtn,
-    npcBtn,
-    closeBtn,
-    searchInput,
-    modal
-  });
 
   if (creatureBtn) {
     creatureBtn.onclick = () => openSessionCastPicker("creatures");
@@ -3507,6 +3939,12 @@ function setupSessionCastPicker() {
         closeSessionCastPicker();
       }
     };
+    modal.onkeydown = event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        closeSessionCastPicker();
+      }
+    };
   }
 }
 async function openNpcFromSessionCast(npcId) {
@@ -3515,6 +3953,9 @@ async function openNpcFromSessionCast(npcId) {
 
 async function openSessionCastPicker(type) {
   activeSessionCastPickerType = type;
+  sessionCastPickerReturnFocus = type === "creatures"
+    ? document.querySelector("#openCreatureCastPickerBtn")
+    : document.querySelector("#openNpcCastPickerBtn");
 
   const modal = document.querySelector("#sessionCastPickerModal");
   const title = document.querySelector("#sessionCastPickerTitle");
@@ -3548,6 +3989,9 @@ function closeSessionCastPicker() {
   }
 
   activeSessionCastPickerType = null;
+  const returnFocus = sessionCastPickerReturnFocus;
+  sessionCastPickerReturnFocus = null;
+  returnFocus?.focus();
 }
 
 async function renderSessionCastPickerResults() {
@@ -3610,18 +4054,15 @@ async function renderCreatureCastPickerResults(results, search) {
   }
 
   results.innerHTML = filtered.map(creature => {
-    const alreadySelected = currentSessionSelectedCreatureIds.includes(creature.id);
+    const alreadySelected = currentSessionSelectedCreatureIds.some(id => String(id) === String(creature.id));
 
     return `
-      <div class="sessionCastPickerItem">
-        <div>
+      <div class="sessionCastPickerItem sessionCastEntityCard">
+        <div class="sessionCastPortrait" data-session-cast-portrait-id="${escapeHtml(creature.id)}"></div>
+        <div class="sessionCastEntityIdentity">
+          <span class="sessionCastTypeBadge">Creature</span>
           <strong>${escapeHtml(creature.name || "Unnamed Creature")}</strong>
-          <small>
-            CR ${escapeHtml(creature.cr || "?")}
-            · ${escapeHtml(creature.size || "")}
-            ${escapeHtml(creature.type || "")}
-            ${creature._loadedFrom ? `· ${escapeHtml(creature._loadedFrom)}` : ""}
-          </small>
+          ${sessionCastMetadata(creature, "creature").length ? `<small>${sessionCastMetadata(creature, "creature").map(escapeHtml).join(" · ")}</small>` : ""}
         </div>
 
         <button
@@ -3635,17 +4076,18 @@ async function renderCreatureCastPickerResults(results, search) {
       </div>
     `;
   }).join("");
+  applySessionCastPortraits(results, new Map(filtered.map(item => [String(item.id), item])));
 
   results.querySelectorAll(".addCreatureToSessionCastBtn").forEach(button => {
     button.onclick = async () => {
       const id = button.dataset.creatureId;
 
-      if (!currentSessionSelectedCreatureIds.includes(id)) {
+      if (!currentSessionSelectedCreatureIds.some(selectedId => String(selectedId) === id)) {
         currentSessionSelectedCreatureIds.push(id);
       }
 
       await renderSessionCastSelectors();
-      await renderSessionCastPickerResults();
+      closeSessionCastPicker();
     };
   });
 }
@@ -3695,18 +4137,15 @@ async function renderNpcCastPickerResults(results, search) {
   }
 
   results.innerHTML = filtered.map(npc => {
-    const alreadySelected = currentSessionSelectedNpcIds.includes(npc.id);
+    const alreadySelected = currentSessionSelectedNpcIds.some(id => String(id) === String(npc.id));
 
     return `
-      <div class="sessionCastPickerItem">
-        <div>
+      <div class="sessionCastPickerItem sessionCastEntityCard">
+        <div class="sessionCastPortrait" data-session-cast-portrait-id="${escapeHtml(npc.id)}"></div>
+        <div class="sessionCastEntityIdentity">
+          <span class="sessionCastTypeBadge">NPC</span>
           <strong>${escapeHtml(npc.name || "Unnamed NPC")}</strong>
-          <small>
-            ${escapeHtml(npc.species || "Unknown")}
-            · ${escapeHtml(npc.role || "NPC")}
-            · ${escapeHtml(npc.status || "Unknown")}
-            ${npc._loadedFrom ? `· ${escapeHtml(npc._loadedFrom)}` : ""}
-          </small>
+          ${sessionCastMetadata(npc, "npc").length ? `<small>${sessionCastMetadata(npc, "npc").map(escapeHtml).join(" · ")}</small>` : ""}
         </div>
 
         <button
@@ -3720,17 +4159,18 @@ async function renderNpcCastPickerResults(results, search) {
       </div>
     `;
   }).join("");
+  applySessionCastPortraits(results, new Map(filtered.map(item => [String(item.id), item])));
 
   results.querySelectorAll(".addNpcToSessionCastBtn").forEach(button => {
     button.onclick = async () => {
       const id = button.dataset.npcId;
 
-      if (!currentSessionSelectedNpcIds.includes(id)) {
+      if (!currentSessionSelectedNpcIds.some(selectedId => String(selectedId) === id)) {
         currentSessionSelectedNpcIds.push(id);
       }
 
       await renderSessionCastSelectors();
-      await renderSessionCastPickerResults();
+      closeSessionCastPicker();
     };
   });
 }
@@ -3757,17 +4197,20 @@ function getStoryEls() {
 
 async function setupStoryModule() {
   applyStoryVisualSettings();
-  await refreshScriptList();
   ensureScriptTypeSelector();
+  await refreshScriptList();
 
-  document.querySelector("#newScriptBtn").onclick = newScript;
-  document.querySelector("#saveScriptBtn").onclick = saveCurrentScript;
-  document.querySelector("#deleteScriptBtn").onclick = () => window.dmStorage.deleteScript(currentScriptFile);
-
-  document.querySelector("#promptModeBtn").onclick = enterStoryPromptMode;
-  document.querySelector("#editModeBtn").onclick = enterStoryEditMode;
-  document.querySelector("#pausePromptBtn").onclick = togglePrompt;
-  document.querySelector("#resetPromptBtn").onclick = resetPrompt;
+  const bindClick = (selector, handler) => {
+    const button = document.querySelector(selector);
+    if (button) button.onclick = handler;
+  };
+  bindClick("#newScriptBtn", newScript);
+  bindClick("#saveScriptBtn", saveCurrentScript);
+  bindClick("#deleteScriptBtn", deleteCurrentScript);
+  bindClick("#promptModeBtn", enterStoryPromptMode);
+  bindClick("#editModeBtn", enterStoryEditMode);
+  bindClick("#pausePromptBtn", togglePrompt);
+  bindClick("#resetPromptBtn", resetPrompt);
 
   document.querySelector("#slowerPromptBtn").onclick = () => {
     promptSpeed = Math.max(0.1, promptSpeed - 0.1);
@@ -3794,17 +4237,18 @@ async function setupStoryModule() {
   };
 
   document.querySelector("#storyOpacitySlider").oninput = (e) => {
-    storyOpacity = Number(e.target.value);
+    storyOpacity = clampPrompterSetting(e.target.value, 0, 100, 90);
     localStorage.setItem("storyOpacity", storyOpacity);
     applyStoryVisualSettings();
   };
 
   document.querySelector("#notesWidthSlider").oninput = (e) => {
-    promptNotesWidth = Number(e.target.value);
+    promptNotesWidth = clampPrompterSetting(e.target.value, 20, 50, 33);
     localStorage.setItem("promptNotesWidth", promptNotesWidth);
     applyStoryVisualSettings();
   };
 
+  bindPrompterDraftInputs();
   animatePrompt();
 }
 
@@ -3830,7 +4274,174 @@ function ensureScriptTypeSelector() {
   els.scriptSelect.insertAdjacentElement("afterend", typeInput);
 }
 
-async function refreshScriptList() {
+function getPrompterDraftSnapshot() {
+  const els = getStoryEls();
+  return {
+    title: els.scriptTitleInput?.value || "",
+    type: document.querySelector("#scriptTypeInput")?.value || "read-aloud",
+    readAloud: els.readAloudInput?.value || "",
+    notes: els.dmNotesInput?.value || ""
+  };
+}
+
+function snapshotsMatch(left, right) {
+  return Boolean(left && right) &&
+    left.title === right.title &&
+    left.type === right.type &&
+    left.readAloud === right.readAloud &&
+    left.notes === right.notes;
+}
+
+function setPrompterDraftBaseline(snapshot = getPrompterDraftSnapshot()) {
+  prompterDraftState.baseline = { ...snapshot };
+  prompterDraftState.dirty = false;
+  refreshPrompterActionConsole();
+}
+
+function updatePrompterDirtyState() {
+  prompterDraftState.dirty = prompterDraftState.isNew ||
+    !snapshotsMatch(getPrompterDraftSnapshot(), prompterDraftState.baseline);
+  refreshPrompterActionConsole();
+}
+
+function hasUnsavedPrompterChanges() {
+  return Boolean(prompterDraftState.dirty);
+}
+
+function hasUsablePrompterText() {
+  return Boolean(getStoryEls().readAloudInput?.value?.trim());
+}
+
+function isStoryPromptModeActive() {
+  return !getStoryEls().storyPromptLayout?.classList.contains("hidden");
+}
+
+function bindPrompterDraftInputs() {
+  const els = getStoryEls();
+  [els.scriptTitleInput, els.readAloudInput, els.dmNotesInput].forEach(input => {
+    if (input) input.oninput = updatePrompterDirtyState;
+  });
+  const typeInput = document.querySelector("#scriptTypeInput");
+  if (typeInput) typeInput.onchange = updatePrompterDirtyState;
+}
+
+function refreshPrompterActionConsole() {
+  window.MasterForgeActionConsole?.refresh();
+}
+
+function activateSessionPrompterActionConsole() {
+  window.MasterForgeActionConsole?.setActiveWorkspace("session-prompter", {
+    pageId: "session-prompter",
+    recordId: currentSessionId,
+    scriptFile: currentScriptFile
+  });
+}
+
+function confirmPrompterAction({
+  title,
+  message,
+  confirmLabel = "Continue",
+  cancelLabel = "Cancel",
+  danger = false
+}) {
+  return new Promise(resolve => {
+    document.querySelector(".prompterConfirmBackdrop")?.remove();
+    const returnFocus = document.activeElement;
+    const backdrop = document.createElement("div");
+    backdrop.className = "prompterConfirmBackdrop";
+    backdrop.innerHTML = `
+      <section class="prompterConfirmDialog" role="dialog" aria-modal="true" aria-labelledby="prompterConfirmTitle">
+        <h3 id="prompterConfirmTitle">${escapeHtml(title)}</h3>
+        <p>${escapeHtml(message)}</p>
+        <div class="prompterConfirmActions">
+          <button type="button" data-prompter-confirm-cancel>${escapeHtml(cancelLabel)}</button>
+          <button type="button" class="${danger ? "danger" : ""}" data-prompter-confirm-accept>${escapeHtml(confirmLabel)}</button>
+        </div>
+      </section>
+    `;
+    document.body.appendChild(backdrop);
+
+    const finish = value => {
+      document.removeEventListener("keydown", onKeyDown);
+      backdrop.remove();
+      if (returnFocus?.isConnected) returnFocus.focus();
+      resolve(value);
+    };
+    const onKeyDown = event => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        finish(false);
+      }
+    };
+    backdrop.onclick = event => {
+      if (event.target === backdrop) finish(false);
+    };
+    backdrop.querySelector("[data-prompter-confirm-cancel]").onclick = () => finish(false);
+    backdrop.querySelector("[data-prompter-confirm-accept]").onclick = () => finish(true);
+    document.addEventListener("keydown", onKeyDown);
+    requestAnimationFrame(() => backdrop.querySelector("[data-prompter-confirm-cancel]")?.focus());
+  });
+}
+
+async function confirmDiscardPrompterChanges(message) {
+  if (!hasUnsavedPrompterChanges()) return true;
+  return confirmPrompterAction({
+    title: "Discard unsaved script changes?",
+    message,
+    confirmLabel: "Discard Changes",
+    danger: true
+  });
+}
+
+function discardPrompterDraftState() {
+  prompterDraftState.isNew = false;
+  prompterDraftState.dirty = false;
+  prompterDraftState.baseline = getPrompterDraftSnapshot();
+}
+
+async function closeSessionPrompterWithGuard() {
+  const canClose = await confirmDiscardPrompterChanges(
+    "Closing the Prompter will discard the current unsaved draft or edits."
+  );
+  if (!canClose) return;
+  discardPrompterDraftState();
+  closeNarrationWorkspace();
+}
+
+async function returnPrompterToSessionReference() {
+  const canLeave = await confirmDiscardPrompterChanges(
+    "Returning to Session Reference will discard the current unsaved draft or edits."
+  );
+  if (!canLeave) return;
+  discardPrompterDraftState();
+  closeNarrationWorkspace();
+  const tab = document.querySelector('#tabs [data-workspace-group="in-game"] .tab[data-tab="session-reference"]');
+  const panel = document.querySelector("#session-reference");
+  if (!activateMainPanel(tab, panel)) return;
+  await renderSessionReference({ preferredSessionId: currentSessionId });
+}
+
+async function returnPrompterToSessionPlanner() {
+  const canLeave = await confirmDiscardPrompterChanges(
+    "Returning to Session Planner will discard the current unsaved draft or edits."
+  );
+  if (!canLeave) return;
+  discardPrompterDraftState();
+  closeNarrationWorkspace();
+  const tab = document.querySelector('#tabs [data-workspace-group="pre-game"] .tab[data-tab="session"]');
+  const panel = document.querySelector("#session");
+  if (!activateMainPanel(tab, panel)) return;
+  if (currentSessionId) await loadSessionPrep(currentSessionId);
+}
+
+async function refreshPrompterScripts() {
+  await refreshScriptList({
+    preferredFile: currentScriptFile,
+    preserveDraft: hasUnsavedPrompterChanges()
+  });
+}
+
+async function refreshScriptList({ preferredFile = currentScriptFile, preserveDraft = false } = {}) {
   const els = getStoryEls();
 
   if (!els.scriptSelect) return;
@@ -3858,7 +4469,7 @@ async function refreshScriptList() {
 
   if (!sessionFiles.length && currentSessionId) {
     await ensureDefaultSessionPrompt();
-    return refreshScriptList();
+    return refreshScriptList({ preferredFile, preserveDraft });
   }
 
   for (const item of sessionFiles) {
@@ -3868,15 +4479,28 @@ async function refreshScriptList() {
     els.scriptSelect.appendChild(option);
   }
 
-  if (sessionFiles.length) {
-    await loadScript(sessionFiles[0].file);
+  const preferredExists = sessionFiles.some(item => item.file === preferredFile);
+  if (preserveDraft && hasUnsavedPrompterChanges()) {
+    els.scriptSelect.value = preferredExists ? preferredFile : "";
+  } else if (sessionFiles.length) {
+    await loadScript(preferredExists ? preferredFile : sessionFiles[0].file);
   } else {
-    newScript();
+    populateNewScriptDraft({ dirty: Boolean(currentSessionId) });
   }
 
   els.scriptSelect.onchange = async () => {
-    await loadScript(els.scriptSelect.value);
+    const nextFile = els.scriptSelect.value;
+    if (nextFile === currentScriptFile) return;
+    const canSwitch = await confirmDiscardPrompterChanges(
+      "Switching scripts will discard the current unsaved draft or edits."
+    );
+    if (!canSwitch) {
+      els.scriptSelect.value = currentScriptFile || "";
+      return;
+    }
+    await loadScript(nextFile);
   };
+  refreshPrompterActionConsole();
 }
 
 function setupSessionFieldModal() {
@@ -4004,32 +4628,48 @@ async function loadScript(fileName) {
   if (typeInput) {
     typeInput.value = script.type || "read-aloud";
   }
+  prompterDraftState.isNew = false;
+  setPrompterDraftBaseline();
+  refreshPrompterActionConsole();
+}
+
+async function createUniquePrompterScriptId(title) {
+  const existingFiles = new Set(await window.dmStorage.listScripts());
+  for (let attempt = 0; attempt < 10; attempt += 1) {
+    const uniquePart = globalThis.crypto?.randomUUID?.() ||
+      `${Date.now()}-${attempt}-${Math.random().toString(36).slice(2, 10)}`;
+    const id = window.dmStorage.slugify(`${currentSessionId}-${title}-${uniquePart}`);
+    if (!existingFiles.has(`${id}.json`)) return id;
+  }
+  throw new Error("Could not create a unique script ID.");
 }
 
 async function saveCurrentScript() {
   const els = getStoryEls();
 
   if (!currentSessionId) {
-    await saveSessionPrep();
-
-    if (!currentSessionId) {
-      alert("Save or select a session before saving a prompt.");
-      return;
-    }
+    await confirmPrompterAction({
+      title: "Session required",
+      message: "Select or save a session before saving a Prompter script.",
+      confirmLabel: "OK",
+      cancelLabel: "Close"
+    });
+    return;
   }
 
   const title =
     els.scriptTitleInput?.value?.trim() ||
     "Untitled Script";
 
-  const existingId = currentScriptFile
-    ? currentScriptFile.replace(".json", "")
-    : "";
+  const existingScript = currentScriptFile
+    ? await window.dmStorage.loadScript(currentScriptFile)
+    : null;
+  const existingId = existingScript?.id || "";
+  const scriptId = existingId || await createUniquePrompterScriptId(title);
 
   const script = {
-    id: existingId || window.dmStorage.slugify(
-      `${currentSessionId}-${title}-${Date.now()}`
-    ),
+    ...(existingScript || {}),
+    id: scriptId,
 
     title,
     type: document.querySelector("#scriptTypeInput")?.value || "read-aloud",
@@ -4040,6 +4680,7 @@ async function saveCurrentScript() {
     readAloud: els.readAloudInput?.value || "",
     notes: els.dmNotesInput?.value || "",
 
+    createdAt: existingScript?.createdAt || new Date().toISOString(),
     updatedAt: new Date().toISOString()
   };
 
@@ -4047,20 +4688,39 @@ async function saveCurrentScript() {
 
   currentScriptFile = `${saved.id}.json`;
 
-  await refreshScriptList();
-
-  if (els.scriptSelect) {
-    els.scriptSelect.value = currentScriptFile;
+  if (script.type === "opening") {
+    const sessions = await window.dmAPI.getRecords("sessions", window.dmState.current.campaign);
+    const session = sessions.find(item => item.id === currentSessionId);
+    if (session) {
+      const updatedSession = {
+        ...session,
+        opening: script.readAloud,
+        openingNarrationNotes: script.notes
+      };
+      await window.dmAPI.saveRecord(
+        "sessions",
+        session.id,
+        updatedSession,
+        window.dmState.current.campaign
+      );
+      const plannerOpening = document.querySelector("#sessionOpeningInput");
+      if (plannerOpening) plannerOpening.value = script.readAloud;
+    }
   }
+
+  prompterDraftState.isNew = false;
+  await refreshScriptList({ preferredFile: currentScriptFile });
+  setPrompterDraftBaseline();
 }
 
-function newScript() {
+function populateNewScriptDraft({ dirty = true } = {}) {
   const els = getStoryEls();
 
   currentScriptFile = null;
+  prompterDraftState.isNew = dirty;
 
   if (els.scriptTitleInput) {
-    els.scriptTitleInput.value = "New Script";
+    els.scriptTitleInput.value = "";
     els.scriptTitleInput.disabled = false;
     els.scriptTitleInput.readOnly = false;
   }
@@ -4078,6 +4738,42 @@ function newScript() {
   if (typeInput) {
     typeInput.value = "read-aloud";
   }
+  if (els.scriptSelect) {
+    els.scriptSelect.selectedIndex = -1;
+  }
+  prompterDraftState.baseline = null;
+  prompterDraftState.dirty = dirty;
+  refreshPrompterActionConsole();
+}
+
+async function newScript() {
+  if (!currentSessionId) return;
+  const canReplace = await confirmDiscardPrompterChanges(
+    "Creating a new script will discard the current unsaved draft or edits."
+  );
+  if (!canReplace) return;
+  enterStoryEditMode();
+  populateNewScriptDraft();
+  requestAnimationFrame(() => getStoryEls().scriptTitleInput?.focus());
+}
+
+async function deleteCurrentScript() {
+  if (!currentScriptFile || prompterDraftState.isNew) return;
+  const selectedFile = currentScriptFile;
+  const title = getStoryEls().scriptTitleInput?.value?.trim() || "this script";
+  const confirmed = await confirmPrompterAction({
+    title: "Delete script?",
+    message: `Delete “${title}”? The selected session record will not be deleted.`,
+    confirmLabel: "Delete Script",
+    danger: true
+  });
+  if (!confirmed) return;
+  await window.dmStorage.deleteScript(selectedFile);
+  currentScriptFile = null;
+  prompterDraftState.isNew = false;
+  prompterDraftState.dirty = false;
+  prompterDraftState.baseline = null;
+  await refreshScriptList({ preferredFile: null });
 }
 
 function enterStoryPromptMode() {
@@ -4098,6 +4794,7 @@ function enterStoryPromptMode() {
   }
 
   resetPrompt();
+  refreshPrompterActionConsole();
 }
 
 function enterStoryEditMode() {
@@ -4108,12 +4805,16 @@ function enterStoryEditMode() {
   els.storyPromptLayout.classList.add("hidden");
 
   promptRunning = false;
-  document.querySelector("#pausePromptBtn").innerText = "Play";
+  const pauseBtn = document.querySelector("#pausePromptBtn");
+  if (pauseBtn) pauseBtn.innerText = "Play";
+  refreshPrompterActionConsole();
 }
 
 function togglePrompt() {
   promptRunning = !promptRunning;
-  document.querySelector("#pausePromptBtn").innerText = promptRunning ? "Pause" : "Play";
+  const pauseBtn = document.querySelector("#pausePromptBtn");
+  if (pauseBtn) pauseBtn.innerText = promptRunning ? "Pause" : "Play";
+  refreshPrompterActionConsole();
 }
 
 function resetPrompt() {
@@ -4131,6 +4832,7 @@ function resetPrompt() {
   promptY = panelHeight - 40;
 
   els.teleprompterText.style.top = promptY + "px";
+  refreshPrompterActionConsole();
 }
 
 function applyStoryVisualSettings() {
@@ -4145,10 +4847,10 @@ function applyStoryVisualSettings() {
 
   els.storyOpacitySlider.value = storyOpacity;
   els.storyOpacityDisplay.innerText = storyOpacity + "%";
-  const opacityValue = storyOpacity / 100;
+  const opacityValue = clampPrompterSetting(storyOpacity, 0, 100, 90) / 100;
 
   document.documentElement.style.setProperty(
-    "--story-panel-opacity",
+    "--prompter-overlay-opacity",
     opacityValue
   );
 
@@ -4229,6 +4931,28 @@ async function setupPartyModule() {
   document.querySelector("#saveCharacterBtn").onclick = saveCharacterFromModal;
   document.querySelector("#cancelCharacterBtn").onclick = closeCharacterModal;
   document.querySelector("#calculatePassivesBtn").onclick = calculateAndFillPassives;
+  document.querySelector("#chooseCharacterPortraitBtn").onclick = () => {
+    document.querySelector("#characterPortraitInput").click();
+  };
+  document.querySelector("#removeCharacterPortraitBtn").onclick = () => renderCharacterPortrait("");
+  document.querySelector("#characterPortraitInput").onchange = event => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = () => renderCharacterPortrait(String(reader.result || ""));
+    reader.readAsDataURL(file);
+    event.target.value = "";
+  };
+  const characterModal = document.querySelector("#characterModal");
+  characterModal.addEventListener("click", event => {
+    if (event.target === characterModal) closeCharacterModal();
+  });
+  characterModal.addEventListener("keydown", event => {
+    if (event.key === "Escape") {
+      event.preventDefault();
+      closeCharacterModal();
+    }
+  });
 
   [
     "#strInput",
@@ -4360,8 +5084,172 @@ function calculateAndFillPassives() {
   );
 }
 
+const pcEditorState = {
+  activeSection: "overview",
+  portrait: "",
+  returnFocus: null,
+  selectedCharacterId: null
+};
+
+async function openSelectedPcDmWorkspace(defaultTab = "overview") {
+  const characterId = pcEditorState.selectedCharacterId;
+  if (!characterId) return;
+  let host = document.querySelector('[data-canonical-dm-workspace-host="pc"]');
+  if (!host) return;
+  const entity = await window.dmAPI.getEntity("pc", characterId);
+  if (!entity) return;
+  await renderDmEntityWorkspace(entity, { mount: host, hostContext: "pc", defaultTab });
+  host.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function refreshPcActionWorkspace() {
+  const consoleApi = window.MasterForgeActionConsole;
+  if (!consoleApi) return;
+  const selected = () => pcEditorState.selectedCharacterId;
+  const modalOpen = () => !document.querySelector("#characterModal")?.classList.contains("hidden");
+  consoleApi.registerWorkspace("party", {
+    title: "PC Actions",
+    actions: [
+      { id: "pc-new", label: "New Character", groupId: "record", groupLabel: "Character", order: 10, handler: async () => {
+        const players = await window.dmStorage.getPlayers();
+        const current = (await window.dmStorage.getCharacters()).find(item => item.id === selected());
+        const player = players.find(item => item.id === current?.playerId) || players[0];
+        if (player) await createCharacterForPlayer(player.id, player.name);
+      }},
+      { id: "pc-save", label: "Save Character", groupId: "record", groupLabel: "Character", order: 20, enabled: modalOpen, disabledReason: "Open a character editor first.", handler: saveCharacterFromModal },
+      { id: "pc-delete", label: "Delete Character", groupId: "record", groupLabel: "Character", order: 30, danger: true, enabled: () => Boolean(selected()), disabledReason: "Select a character first.", handler: () => document.querySelector(`.deleteCharacterBtn[data-character-id="${CSS.escape(selected())}"]`)?.click() },
+      { id: "pc-change-image", label: "Choose / Change Image", groupId: "image", groupLabel: "Image", order: 10, enabled: modalOpen, disabledReason: "Open a character editor first.", handler: () => document.querySelector("#characterPortraitInput")?.click() },
+      { id: "pc-remove-image", label: "Remove Image", groupId: "image", groupLabel: "Image", order: 20, enabled: () => modalOpen() && Boolean(pcEditorState.portrait), disabledReason: "The open character has no portrait.", handler: () => renderCharacterPortrait("") },
+      { id: "pc-open-dm", label: "Open DM Workspace", groupId: "management", groupLabel: "Management", order: 10, enabled: () => Boolean(selected()), handler: () => openSelectedPcDmWorkspace("overview") },
+      { id: "pc-membership", label: "Manage Campaign Membership", groupId: "management", groupLabel: "Management", order: 20, enabled: () => Boolean(selected()), handler: () => document.querySelector(`.activeCharacterToggle[data-character-id="${CSS.escape(selected())}"]`)?.focus() },
+      { id: "pc-location", label: "Change Location", groupId: "management", groupLabel: "Management", order: 30, enabled: () => Boolean(selected()), handler: () => openSelectedPcDmWorkspace("overview") },
+      { id: "pc-affiliations", label: "Manage Affiliations", groupId: "management", groupLabel: "Management", order: 40, enabled: () => Boolean(selected()), handler: () => openSelectedPcDmWorkspace("affiliations") },
+      { id: "pc-relationship", label: "Add Relationship", groupId: "management", groupLabel: "Management", order: 50, enabled: () => Boolean(selected()), handler: () => openSelectedPcDmWorkspace("relationships") },
+      { id: "pc-session", label: "Add to Session", groupId: "use", groupLabel: "Use Character", order: 10, enabled: () => Boolean(selected()), handler: () => openSelectedPcDmWorkspace("session-use") },
+      { id: "pc-encounter", label: "Add to Encounter", groupId: "use", groupLabel: "Use Character", order: 20, enabled: () => Boolean(selected()), handler: () => document.querySelector('.tab[data-tab="encounters"]')?.click() }
+    ]
+  });
+}
+
+function characterValue(character, key, fallback = "") {
+  return character?.[key] ?? character?.characterSheet?.[key] ?? fallback;
+}
+
+function setCharacterEditorSection(sectionId) {
+  pcEditorState.activeSection = sectionId || "overview";
+  document.querySelectorAll("[data-character-section]").forEach(section => {
+    section.classList.toggle("hidden", section.dataset.characterSection !== pcEditorState.activeSection);
+  });
+  document.querySelectorAll("[data-character-section-button]").forEach(button => {
+    const active = button.dataset.characterSectionButton === pcEditorState.activeSection;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-current", active ? "page" : "false");
+  });
+}
+
+function renderCharacterEditorSections(character = null) {
+  const system = window.MasterForgeGameSystems?.get?.(character?.systemId || getCurrentSystemId());
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+  const categoryIds = new Set((rules.capabilityCategories || []).filter(item => item.enabled !== false).map(item => item.id));
+  const sections = [
+    ["overview", "Overview", true],
+    ["identity", "Identity", true],
+    ["attributes", rules.displayLabels?.attributes || "Attributes", Boolean((rules.attributes || []).some(item => item.enabled !== false))],
+    ["defence-resources", "Defence and Resources", Boolean((rules.statistics || []).some(item => item.enabled !== false))],
+    ["skills-saves", "Skills and Saves", Boolean((rules.skills || []).length || (rules.savingThrows || []).length)],
+    ["features", "Features and Traits", categoryIds.has("traits") || categoryIds.has("actions")],
+    ["equipment", "Equipment", categoryIds.has("equipment")],
+    ["spellcasting", "Spellcasting", categoryIds.has("spellcasting") || categoryIds.has("innate-spellcasting")],
+    ["biography", "Biography", true],
+    ["notes-links", "Notes and Links", true]
+  ].filter(([, , visible]) => visible);
+  const nav = document.querySelector("#characterEditorSections");
+  nav.innerHTML = sections.map(([id, label]) => `<button type="button" data-character-section-button="${escapeHtml(id)}">${escapeHtml(label)}</button>`).join("");
+  nav.querySelectorAll("[data-character-section-button]").forEach(button => {
+    button.onclick = () => setCharacterEditorSection(button.dataset.characterSectionButton);
+  });
+  if (!sections.some(([id]) => id === pcEditorState.activeSection)) pcEditorState.activeSection = "overview";
+  setCharacterEditorSection(pcEditorState.activeSection);
+}
+
+function renderCharacterPortrait(src = "") {
+  pcEditorState.portrait = src || "";
+  const preview = document.querySelector("#characterPortraitPreview");
+  if (!preview) return;
+  preview.innerHTML = src
+    ? `<img src="${escapeHtml(src)}" alt="Character portrait">`
+    : `<span>No portrait</span>`;
+  document.querySelector("#removeCharacterPortraitBtn")?.toggleAttribute("disabled", !src);
+}
+
+function setCharacterModalError(message = "") {
+  const error = document.querySelector("#characterModalError");
+  if (!error) return;
+  error.textContent = message;
+  error.classList.toggle("hidden", !message);
+}
+
+function configureCharacterSystemFields(character = null) {
+  const systemId = character?.systemId || getCurrentSystemId();
+  const system = window.MasterForgeGameSystems?.get?.(systemId);
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+  const attributes = window.MasterForgeGameSystems?.enabled?.(rules.attributes) || [];
+  const abilitySlots = [...document.querySelectorAll("#characterModal .abilityGrid > div")];
+  abilitySlots.forEach((slot, index) => {
+    const definition = attributes[index];
+    slot.classList.toggle("hidden", !definition);
+    if (!definition) return;
+    const input = slot.querySelector("input");
+    slot.querySelector("label").textContent = definition.shortLabel || definition.name;
+    input.dataset.systemAttributeId = definition.id;
+    input.value = window.MasterForgeGameSystems?.readAttribute?.(character || {}, definition.id, system) ?? definition.defaultValue ?? "";
+    slot.querySelector("span").classList.toggle("hidden", definition.calculationKey !== "ability-modifier");
+  });
+  const attributeHeading = document.querySelector("#characterModal .abilityGrid")?.previousElementSibling;
+  if (attributeHeading) attributeHeading.textContent = attributes.length ? "Attributes" : "Attributes unavailable for this system";
+
+  [
+    ["#characterAcInput", "primaryDefence"],
+    ["#characterCurrentHpInput", "currentHealth"],
+    ["#characterMaxHpInput", "maximumHealth"],
+    ["#characterTemporaryHpInput", "temporaryHealth"],
+    ["#characterSpeedInput", "movement"],
+    ["#characterInitiativeInput", "initiative"],
+    ["#characterLevelInput", "levelRank"]
+  ].forEach(([selector, role]) => {
+    const input = document.querySelector(selector);
+    const definition = window.MasterForgeGameSystems?.statisticForRole?.(system, role);
+    if (!input?.parentElement) return;
+    input.parentElement.classList.toggle("hidden", !definition || definition.enabled === false);
+    if (definition) input.parentElement.querySelector("label").textContent = definition.name;
+  });
+  const passiveInputs = ["#characterPpInput", "#characterPiInput", "#characterInsightInput"];
+  passiveInputs.forEach((selector, index) => {
+    const input = document.querySelector(selector);
+    const definition = (window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || [])[index];
+    if (!input?.parentElement) return;
+    input.parentElement.classList.toggle("hidden", !definition);
+    if (definition) {
+      input.parentElement.querySelector("label").textContent = definition.name;
+      const legacyId = rules.compatibility?.passiveLegacyIds?.[definition.id];
+      input.value = character?.systemValues?.passiveScores?.[definition.id] ?? (legacyId ? character?.[legacyId] : undefined) ?? 0;
+    }
+  });
+  const skillGrid = document.querySelector("#characterModal .skillGrid");
+  const skillHeading = skillGrid?.previousElementSibling;
+  const passiveButton = document.querySelector("#calculatePassivesBtn");
+  const supportsLegacySkillEditor = ["dnd-2024", "dnd-5e"].includes(systemId);
+  skillGrid?.classList.toggle("hidden", !supportsLegacySkillEditor);
+  skillHeading?.classList.toggle("hidden", !supportsLegacySkillEditor);
+  passiveButton?.classList.toggle("hidden", !supportsLegacySkillEditor);
+}
+
 async function openCharacterModal({ playerId, playerName, character = null }) {
   await populateCharacterDropdowns();
+  pcEditorState.returnFocus = document.activeElement;
+  pcEditorState.selectedCharacterId = character?.id || null;
+  pcEditorState.activeSection = "overview";
+  setCharacterModalError("");
 
   document.querySelector("#characterModalTitle").innerText =
     character ? `Edit ${character.name}` : `Create Character for ${playerName}`;
@@ -4403,6 +5291,47 @@ async function openCharacterModal({ playerId, playerName, character = null }) {
 
   document.querySelector("#characterStatusInput").value =
     character?.status || "Alive";
+  const fieldValues = {
+    characterPronounsInput: characterValue(character, "pronouns"),
+    characterAgeInput: characterValue(character, "age"),
+    characterCultureInput: characterValue(character, "culture"),
+    characterBackgroundInput: characterValue(character, "background"),
+    characterOccupationInput: characterValue(character, "occupation"),
+    characterAlignmentInput: characterValue(character, "alignment"),
+    characterTemporaryHpInput: character?.temporaryHP ?? character?.tempHP ?? 0,
+    characterSpeedInput: characterValue(character, "speed"),
+    characterInitiativeInput: characterValue(character, "initiative"),
+    characterResistancesInput: characterValue(character, "resistances"),
+    characterImmunitiesInput: characterValue(character, "immunities"),
+    characterVulnerabilitiesInput: characterValue(character, "vulnerabilities"),
+    characterConditionsInput: (character?.persistentConditions || character?.conditions || []).join(", "),
+    characterSavingThrowsInput: characterValue(character, "savingThrows"),
+    characterOtherSkillsInput: characterValue(character, "otherSkills"),
+    characterProficienciesInput: characterValue(character, "proficiencies"),
+    characterLanguagesInput: characterValue(character, "languages"),
+    characterSensesInput: characterValue(character, "senses"),
+    characterFeaturesInput: characterValue(character, "featuresAndTraits"),
+    characterEquipmentInput: characterValue(character, "equipmentNotes"),
+    characterSpellcastingInput: characterValue(character, "spellcastingNotes"),
+    characterAppearanceInput: characterValue(character, "appearance"),
+    characterPersonalityInput: characterValue(character, "personality"),
+    characterIdealsInput: characterValue(character, "ideals"),
+    characterBondsInput: characterValue(character, "bonds"),
+    characterFlawsInput: characterValue(character, "flaws"),
+    characterGoalsInput: characterValue(character, "goals"),
+    characterFearsInput: characterValue(character, "fears"),
+    characterBackstoryInput: characterValue(character, "backstory"),
+    characterAlliesInput: characterValue(character, "allies"),
+    characterEnemiesInput: characterValue(character, "enemies"),
+    characterOrganisationsInput: characterValue(character, "organisations"),
+    characterPublicNotesInput: characterValue(character, "publicNotes"),
+    characterGmNotesInput: characterValue(character, "gmNotes") || characterValue(character, "secrets"),
+    characterNotesInput: characterValue(character, "notes")
+  };
+  Object.entries(fieldValues).forEach(([id, value]) => {
+    const input = document.getElementById(id);
+    if (input) input.value = value ?? "";
+  });
 
   const abilities = character?.abilities || {
     str: 10, dex: 10, con: 10, int: 10, wis: 10, cha: 10
@@ -4426,13 +5355,22 @@ async function openCharacterModal({ playerId, playerName, character = null }) {
   document.querySelector("#insightProf").checked = skills.insight?.proficient || false;
   document.querySelector("#insightExpert").checked = skills.insight?.expertise || false;
 
+  configureCharacterSystemFields(character);
+  renderCharacterEditorSections(character);
+  renderCharacterPortrait(character?.image?.portrait || character?.portrait || "");
   updateAbilityModifiersDisplay();
 
   document.querySelector("#characterModal").classList.remove("hidden");
+  document.querySelector("#characterNameInput")?.focus();
+  refreshPcActionWorkspace();
 }
 
 function closeCharacterModal() {
   document.querySelector("#characterModal").classList.add("hidden");
+  setCharacterModalError("");
+  window.MasterForgeActionConsole?.refresh();
+  const returnFocus = pcEditorState.returnFocus;
+  if (returnFocus?.isConnected) returnFocus.focus();
 }
 
 async function saveCharacterFromModal() {
@@ -4441,7 +5379,9 @@ async function saveCharacterFromModal() {
   const name = document.querySelector("#characterNameInput").value.trim();
 
   if (!name) {
-    alert("Character name is required.");
+    setCharacterModalError("Character name is required.");
+    setCharacterEditorSection("overview");
+    document.querySelector("#characterNameInput")?.focus();
     return;
   }
 
@@ -4451,22 +5391,58 @@ async function saveCharacterFromModal() {
     window.dmStorage.slugify(character.name || "") === window.dmStorage.slugify(name)
   );
   if (duplicateCharacter) {
-    alert(`A character named ${name} already exists for this player.`);
+    setCharacterModalError(`A character named ${name} already exists for this player.`);
     return;
   }
 
   const generatedId = window.dmStorage.slugify(`${playerId}-${name}`);
   if (!idInput && chars.some(character => character.id === generatedId)) {
-    alert("A character with this canonical ID already exists. Edit the existing character or choose a distinct name.");
+    setCharacterModalError("A character with this canonical ID already exists. Edit the existing character or choose a distinct name.");
     return;
   }
   const existingRecord = idInput ? chars.find(character => character.id === idInput) : null;
   const context = window.dmState.current || {};
+  const systemId = existingRecord?.systemId || getCurrentSystemId();
+  const system = window.MasterForgeGameSystems?.get?.(systemId);
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+  const systemAttributes = Object.fromEntries(
+    [...document.querySelectorAll("#characterModal [data-system-attribute-id]")]
+      .filter(input => !input.closest(".hidden"))
+      .map(input => [input.dataset.systemAttributeId, input.type === "number" ? Number(input.value || 0) : input.value])
+  );
+  const systemStatistics = {
+    ...(existingRecord?.systemValues?.statistics || {})
+  };
+  const systemPassiveScores = {
+    ...(existingRecord?.systemValues?.passiveScores || {})
+  };
+  ["#characterPpInput", "#characterPiInput", "#characterInsightInput"].forEach((selector, index) => {
+    const definition = (window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || [])[index];
+    const input = document.querySelector(selector);
+    if (definition && input) systemPassiveScores[definition.id] = Number(input.value || 0);
+  });
+  [
+    ["primaryDefence", "#characterAcInput"],
+    ["currentHealth", "#characterCurrentHpInput"],
+    ["maximumHealth", "#characterMaxHpInput"],
+    ["temporaryHealth", "#characterTemporaryHpInput"],
+    ["movement", "#characterSpeedInput"],
+    ["initiative", "#characterInitiativeInput"]
+  ].forEach(([role, selector]) => {
+    const definition = window.MasterForgeGameSystems?.statisticForRole?.(system, role);
+    const input = document.querySelector(selector);
+    if (definition && input) {
+      systemStatistics[definition.id] = definition.valueType === "number"
+        ? Number(input.value || 0)
+        : input.value;
+    }
+  });
   const character = {
     ...(existingRecord || {}),
     id: idInput || generatedId,
     playerId,
     name,
+    systemId,
     campaignId: String(existingRecord?.campaignId || context.campaign || ""),
     worldId: String(existingRecord?.worldId || context.world || ""),
     regionId: String(existingRecord?.regionId || context.region || ""),
@@ -4484,7 +5460,20 @@ async function saveCharacterFromModal() {
     ac: Number(document.querySelector("#characterAcInput").value),
     maxHP: Number(document.querySelector("#characterMaxHpInput").value),
     currentHP: Number(document.querySelector("#characterCurrentHpInput").value),
-    temporaryHP: Number(existingRecord?.temporaryHP || existingRecord?.tempHP || 0),
+    temporaryHP: Number(document.querySelector("#characterTemporaryHpInput").value || 0),
+    speed: document.querySelector("#characterSpeedInput").value.trim(),
+    initiative: document.querySelector("#characterInitiativeInput").value.trim(),
+    savingThrows: document.querySelector("#characterSavingThrowsInput").value.trim(),
+    languages: document.querySelector("#characterLanguagesInput").value.trim(),
+    senses: document.querySelector("#characterSensesInput").value.trim(),
+    resistances: document.querySelector("#characterResistancesInput").value.trim(),
+    immunities: document.querySelector("#characterImmunitiesInput").value.trim(),
+    vulnerabilities: document.querySelector("#characterVulnerabilitiesInput").value.trim(),
+    persistentConditions: document.querySelector("#characterConditionsInput").value.split(",").map(value => value.trim()).filter(Boolean),
+    image: {
+      ...(existingRecord?.image || {}),
+      portrait: pcEditorState.portrait || ""
+    },
 
     passivePerception: Number(document.querySelector("#characterPpInput").value),
     passiveInvestigation: Number(document.querySelector("#characterPiInput").value),
@@ -4501,7 +5490,7 @@ async function saveCharacterFromModal() {
       cha: Number(document.querySelector("#chaInput").value)
     },
 
-    skills: {
+    skills: ["dnd-2024", "dnd-5e"].includes(systemId) ? {
       perception: {
         proficient: document.querySelector("#perceptionProf").checked,
         expertise: document.querySelector("#perceptionExpert").checked
@@ -4514,6 +5503,42 @@ async function saveCharacterFromModal() {
         proficient: document.querySelector("#insightProf").checked,
         expertise: document.querySelector("#insightExpert").checked
       }
+    } : { ...(existingRecord?.skills || {}) },
+    characterSheet: {
+      ...(existingRecord?.characterSheet || {}),
+      pronouns: document.querySelector("#characterPronounsInput").value.trim(),
+      age: document.querySelector("#characterAgeInput").value.trim(),
+      culture: document.querySelector("#characterCultureInput").value.trim(),
+      background: document.querySelector("#characterBackgroundInput").value.trim(),
+      occupation: document.querySelector("#characterOccupationInput").value.trim(),
+      alignment: document.querySelector("#characterAlignmentInput").value.trim(),
+      otherSkills: document.querySelector("#characterOtherSkillsInput").value.trim(),
+      proficiencies: document.querySelector("#characterProficienciesInput").value.trim(),
+      featuresAndTraits: document.querySelector("#characterFeaturesInput").value.trim(),
+      equipmentNotes: document.querySelector("#characterEquipmentInput").value.trim(),
+      spellcastingNotes: document.querySelector("#characterSpellcastingInput").value.trim(),
+      appearance: document.querySelector("#characterAppearanceInput").value.trim(),
+      personality: document.querySelector("#characterPersonalityInput").value.trim(),
+      ideals: document.querySelector("#characterIdealsInput").value.trim(),
+      bonds: document.querySelector("#characterBondsInput").value.trim(),
+      flaws: document.querySelector("#characterFlawsInput").value.trim(),
+      goals: document.querySelector("#characterGoalsInput").value.trim(),
+      fears: document.querySelector("#characterFearsInput").value.trim(),
+      backstory: document.querySelector("#characterBackstoryInput").value.trim(),
+      allies: document.querySelector("#characterAlliesInput").value.trim(),
+      enemies: document.querySelector("#characterEnemiesInput").value.trim(),
+      organisations: document.querySelector("#characterOrganisationsInput").value.trim(),
+      publicNotes: document.querySelector("#characterPublicNotesInput").value.trim(),
+      gmNotes: document.querySelector("#characterGmNotesInput").value.trim(),
+      notes: document.querySelector("#characterNotesInput").value.trim()
+    },
+    systemValues: {
+      ...(existingRecord?.systemValues || {}),
+      systemId,
+      schemaVersion: rules.schemaVersion || 1,
+      attributes: systemAttributes,
+      statistics: systemStatistics,
+      passiveScores: systemPassiveScores
     }
   };
 
@@ -4656,18 +5681,31 @@ async function renderParty() {
 
     activeChars.forEach((c) => {
       const player = players.find((p) => p.id === c.playerId);
+      const system = window.MasterForgeGameSystems?.get?.(c.systemId || getCurrentSystemId());
+      const currentHealth = window.MasterForgeGameSystems?.readSemantic?.(c, "currentHealth", system) ?? c.currentHP;
+      const maximumHealth = window.MasterForgeGameSystems?.readSemantic?.(c, "maximumHealth", system) ?? c.maxHP;
+      const healthLabel = window.MasterForgeGameSystems?.statisticForRole?.(system, "currentHealth")?.shortLabel || "Resource";
+      const defenceLabel = window.MasterForgeGameSystems?.statisticForRole?.(system, "primaryDefence")?.shortLabel || "Defence";
+      const defence = window.MasterForgeGameSystems?.readSemantic?.(c, "primaryDefence", system) ?? c.ac;
+      const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+      const passiveSummary = (window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || []).map(definition => {
+        const legacyId = rules.compatibility?.passiveLegacyIds?.[definition.id];
+        const value = c.systemValues?.passiveScores?.[definition.id] ?? (legacyId ? c[legacyId] : undefined);
+        return value == null ? "" : `<span>${escapeHtml(definition.shortLabel || definition.name)} ${escapeHtml(value)}</span>`;
+      }).filter(Boolean).join("");
 
       activeGrid.innerHTML += `
-        <div class="activePartyCard">
+        <div class="activePartyCard" data-character-id="${escapeHtml(c.id)}">
+          <div class="characterCardPortrait">${c.image?.portrait ? `<img src="${escapeHtml(c.image.portrait)}" alt="${escapeHtml(c.name)} portrait">` : `<span aria-hidden="true">PC</span>`}</div>
           <h3>${c.name}</h3>
           <p>${player?.name || "Unknown Player"}</p>
           <p>${c.species || "Unknown Species"} ${c.class || "Unknown Class"} ${c.subclass ? `(${c.subclass})` : ""}</p>
 
           <div class="characterStats">
             <span>Lv ${c.level}</span>
-            <span>❤️ ${c.currentHP || 0}/${c.maxHP || 0}</span>
-            <span>🛡 AC ${c.ac}</span>
-            <span>👁 PP ${c.passivePerception}</span>
+            <span>${escapeHtml(healthLabel)} ${currentHealth ?? 0}/${maximumHealth ?? 0}</span>
+            <span>${escapeHtml(defenceLabel)} ${defence ?? "—"}</span>
+            ${passiveSummary}
           </div>
         </div>
       `;
@@ -4704,18 +5742,29 @@ async function renderParty() {
 
     owned.forEach((c) => {
       const checked = party.characters.includes(c.id) ? "checked" : "";
+      const system = window.MasterForgeGameSystems?.get?.(c.systemId || getCurrentSystemId());
+      const currentHealth = window.MasterForgeGameSystems?.readSemantic?.(c, "currentHealth", system) ?? c.currentHP;
+      const maximumHealth = window.MasterForgeGameSystems?.readSemantic?.(c, "maximumHealth", system) ?? c.maxHP;
+      const healthLabel = window.MasterForgeGameSystems?.statisticForRole?.(system, "currentHealth")?.shortLabel || "Resource";
+      const defenceLabel = window.MasterForgeGameSystems?.statisticForRole?.(system, "primaryDefence")?.shortLabel || "Defence";
+      const defence = window.MasterForgeGameSystems?.readSemantic?.(c, "primaryDefence", system) ?? c.ac;
+      const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+      const passiveSummary = (window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || []).map(definition => {
+        const legacyId = rules.compatibility?.passiveLegacyIds?.[definition.id];
+        const value = c.systemValues?.passiveScores?.[definition.id] ?? (legacyId ? c[legacyId] : undefined);
+        return value == null ? "" : `<span>${escapeHtml(definition.shortLabel || definition.name)} ${escapeHtml(value)}</span>`;
+      }).filter(Boolean).join("");
 
       html += `
         <div class="characterMiniCard" data-character-id="${c.id}">
+  <div class="characterCardPortrait">${c.image?.portrait ? `<img src="${escapeHtml(c.image.portrait)}" alt="${escapeHtml(c.name)} portrait">` : `<span aria-hidden="true">PC</span>`}</div>
   <b>${c.name}</b><br>
           ${c.species || "Unknown Species"} ${c.class || "Unknown Class"} ${c.subclass ? `(${c.subclass})` : ""} Lv ${c.level}
 
           <div class="characterStats">
-            <span>❤️ ${c.currentHP || 0}/${c.maxHP || 0}</span>
-            <span>🛡 AC ${c.ac}</span>
-            <span>👁 PP ${c.passivePerception}</span>
-            <span>🔎 PI ${c.passiveInvestigation || 10}</span>
-            <span>🧠 Insight ${c.passiveInsight || 10}</span>
+            <span>${escapeHtml(healthLabel)} ${currentHealth ?? 0}/${maximumHealth ?? 0}</span>
+            <span>${escapeHtml(defenceLabel)} ${defence ?? "—"}</span>
+            ${passiveSummary}
           </div>
 
           <div class="characterActions">
@@ -6514,15 +7563,502 @@ let npcBuilderState = {
 
 let activeNpcScopeFilter = "current-system";
 
+function getBuilderCapabilityCategories(entityType, record = null) {
+  const system = window.MasterForgeGameSystems?.get?.(
+    record?.systemId || getCurrentSystemId()
+  );
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+
+  return (rules.capabilityCategories || [])
+    .filter(category =>
+      category.enabled !== false &&
+      category.builderEditable !== false &&
+      (!category.entityTypes?.length || category.entityTypes.includes(entityType))
+    )
+    .sort((left, right) =>
+      Number(left.order || 0) - Number(right.order || 0) ||
+      String(left.pluralLabel || left.name || left.id).localeCompare(
+        String(right.pluralLabel || right.name || right.id)
+      )
+    );
+}
+
+function getBuilderCapabilityCategory(entityType, categoryId, record = null) {
+  return getBuilderCapabilityCategories(entityType, record)
+    .find(category => category.id === categoryId) || null;
+}
+
+function readBuilderCapabilityItems(record, category) {
+  const canonical = record?.systemCapabilities?.[category.id];
+  if (Array.isArray(canonical)) return canonical;
+  if (canonical && typeof canonical === "object") return [canonical];
+
+  for (const key of category.sourceKeys || []) {
+    if (Array.isArray(record?.[key])) return record[key];
+    if (record?.[key] && typeof record[key] === "object") return [record[key]];
+    if (typeof record?.[key] === "string" && record[key].trim()) {
+      return [{
+        id: `${category.id}-legacy`,
+        name: category.singularLabel || category.name,
+        description: record[key]
+      }];
+    }
+  }
+
+  return [];
+}
+
+function writeBuilderCapabilityItems(record, category, items) {
+  record.systemCapabilities = {
+    ...(record.systemCapabilities || {}),
+    [category.id]: items
+  };
+
+  const primaryLegacyKey = category.sourceKeys?.[0];
+  if (primaryLegacyKey) record[primaryLegacyKey] = items;
+}
+
+function getBuilderSections(entityType, record = null) {
+  const capabilities = getBuilderCapabilityCategories(entityType, record)
+    .map(category => ({
+      id: category.id,
+      label: category.pluralLabel || category.name || category.id,
+      category
+    }));
+  const nonCapabilitySections = entityType === "npc"
+    ? [
+        { id: "overview", label: "Overview" },
+        { id: "personality", label: "Personality" },
+        { id: "entityLinks", label: "Entity Links" }
+      ]
+    : [
+        { id: "overview", label: "Overview" },
+        { id: "loot", label: "Loot" },
+        { id: "notes", label: "Notes" },
+        { id: "entityLinks", label: "Entity Links" }
+      ];
+
+  return [
+    nonCapabilitySections[0],
+    ...capabilities,
+    ...nonCapabilitySections.slice(1)
+  ];
+}
+
+function getBuilderActionConfiguration(entityType) {
+  if (entityType === "npc") {
+    return {
+      workspaceId: "npc",
+      label: "NPC",
+      state: npcBuilderState,
+      active: () => npcBuilderState.activeNpc,
+      selectedId: () => npcBuilderState.currentNpcId,
+      create: newNpc,
+      save: saveNpc,
+      remove: deleteNpc,
+      switchSection: switchNpcWorkspace,
+      portraitInputId: "npcPortraitInput",
+      removeImage: () => {
+        if (!npcBuilderState.activeNpc) return;
+        npcBuilderState.activeNpc.image = {
+          ...(npcBuilderState.activeNpc.image || {}),
+          portrait: ""
+        };
+        renderNpcImagePreview("");
+      }
+    };
+  }
+
+  return {
+    workspaceId: "creatures",
+    label: "Creature",
+    state: creatureBuilderState,
+    active: () => creatureBuilderState.activeCreature,
+    selectedId: () => creatureBuilderState.currentCreatureId,
+    create: newCreature,
+    save: saveCreature,
+    remove: deleteCreature,
+    switchSection: switchCreatureWorkspace,
+    portraitInputId: "creaturePortraitInput",
+    removeImage: () => {
+      if (!creatureBuilderState.activeCreature) return;
+      creatureBuilderState.activeCreature.image = {
+        ...(creatureBuilderState.activeCreature.image || {}),
+        portrait: ""
+      };
+      renderCreatureImagePreview("");
+    }
+  };
+}
+
+const builderSaveLocks = { npc: false, creature: false };
+const builderSaveStatusTimers = new Map();
+
+function setBuilderSaveLock(entityType, locked) {
+  builderSaveLocks[entityType] = locked;
+  const root = document.querySelector(entityType === "npc" ? "#npc" : "#creatures");
+  root?.setAttribute("aria-busy", String(locked));
+  window.MasterForgeActionConsole?.refresh();
+}
+
+function showBuilderSaveStatus(entityType, message, status = "success") {
+  const title = document.querySelector(entityType === "npc" ? "#npcEditorTitle" : "#creatureEditorTitle");
+  if (!title) return;
+  let output = title.parentElement?.querySelector(`[data-builder-save-status="${entityType}"]`);
+  if (!output) {
+    output = document.createElement("small");
+    output.dataset.builderSaveStatus = entityType;
+    output.setAttribute("role", "status");
+    output.setAttribute("aria-live", "polite");
+    title.insertAdjacentElement("afterend", output);
+  }
+  output.dataset.status = status;
+  output.textContent = message;
+  clearTimeout(builderSaveStatusTimers.get(entityType));
+  builderSaveStatusTimers.set(entityType, setTimeout(() => {
+    if (output.isConnected && output.textContent === message) output.textContent = "";
+    builderSaveStatusTimers.delete(entityType);
+  }, 3000));
+}
+
+function refreshBuilderActionWorkspace(entityType) {
+  const consoleApi = window.MasterForgeActionConsole;
+  if (!consoleApi) return;
+  const config = getBuilderActionConfiguration(entityType);
+  const sections = getBuilderSections(entityType, config.active());
+  const sectionActions = sections.map((section, index) => {
+    const sectionId = section.id;
+    return {
+      id: `${config.workspaceId}-section-${sectionId}`,
+      label: section.label,
+      groupId: "builder-sections",
+      groupLabel: `${config.label} Sections`,
+      groupOrder: 5,
+      order: index * 10,
+      badge: () => config.state.activeWorkspace === sectionId ? "Active" : null,
+      handler: () => config.switchSection(sectionId)
+    };
+  });
+
+  document.querySelectorAll("[data-character-id]").forEach(card => {
+    card.addEventListener("click", () => {
+      pcEditorState.selectedCharacterId = card.dataset.characterId;
+      window.MasterForgeActionConsole?.updateContext({
+        pageId: "party",
+        recordType: "pc",
+        recordId: pcEditorState.selectedCharacterId,
+        selectionType: "pc",
+        selectionId: pcEditorState.selectedCharacterId
+      });
+      window.MasterForgeActionConsole?.refresh();
+    });
+  });
+
+  consoleApi.registerWorkspace(config.workspaceId, {
+    title: `${config.label} Actions`,
+    actions: [
+      ...sectionActions,
+      { id: `new-${config.workspaceId}`, label: `New ${config.label}`, groupId: "record", groupLabel: config.label, order: 10, handler: config.create },
+      { id: `save-${config.workspaceId}`, label: `Save ${config.label}`, groupId: "record", groupLabel: config.label, order: 20, enabled: () => Boolean(config.active()) && !builderSaveLocks[entityType], disabledReason: `Create or select a ${config.label.toLowerCase()} first.`, handler: config.save },
+      { id: `delete-${config.workspaceId}`, label: `Delete ${config.label}`, groupId: "lifecycle", groupLabel: "Lifecycle", order: 10, danger: true, enabled: () => Boolean(config.selectedId()), disabledReason: `Select a saved ${config.label.toLowerCase()} first.`, handler: config.remove },
+      { id: `change-${config.workspaceId}-image`, label: "Change Image", groupId: "image", groupLabel: "Image", order: 10, enabled: () => Boolean(config.active()), disabledReason: `Create or select a ${config.label.toLowerCase()} first.`, handler: () => document.querySelector(`#${config.portraitInputId}`)?.click() },
+      { id: `remove-${config.workspaceId}-image`, label: "Remove Image", groupId: "image", groupLabel: "Image", order: 20, enabled: () => Boolean(config.active()?.image?.portrait), disabledReason: "There is no image to remove.", handler: config.removeImage }
+    ]
+  });
+}
+
+let repeatableEditorCardSequence = 0;
+
+function compactRepeatableSummary(value, maxLength = 110) {
+  const text = String(value || "").trim().split(/\r?\n/)[0];
+  return text.length > maxLength ? `${text.slice(0, maxLength - 1).trimEnd()}…` : text;
+}
+
+function getRepeatableEditorSummary(card, kind) {
+  if (kind === "action") {
+    const parts = [
+      card.querySelector(".actionAttackBonus")?.value && `Attack ${card.querySelector(".actionAttackBonus").value}`,
+      card.querySelector(".actionDamage")?.value && `Damage ${card.querySelector(".actionDamage").value}`,
+      card.querySelector(".actionRecharge")?.value
+    ].filter(Boolean);
+    return parts.join(" · ") || compactRepeatableSummary(card.querySelector(".actionDescription")?.value);
+  }
+  if (kind === "spellcasting") {
+    return [
+      card.querySelector(".spellcastingAbility")?.value,
+      card.querySelector(".spellcastingSaveDc")?.value && `Save DC ${card.querySelector(".spellcastingSaveDc").value}`,
+      card.querySelector(".spellcastingLevel")?.value && `Level ${card.querySelector(".spellcastingLevel").value}`
+    ].filter(Boolean).join(" · ") ||
+      compactRepeatableSummary(card.querySelector(".spellcastingDescription")?.value);
+  }
+  if (kind === "loot") {
+    return [
+      card.querySelector(".lootQuantity")?.value && `Quantity ${card.querySelector(".lootQuantity").value}`,
+      card.querySelector(".lootValue")?.value && `Value ${card.querySelector(".lootValue").value}`
+    ].filter(Boolean).join(" · ") || compactRepeatableSummary(card.querySelector(".lootNotes")?.value);
+  }
+  if (kind === "generic") {
+    const detail = compactRepeatableSummary(
+      card.querySelector(".systemCapabilitySummary")?.value ||
+      card.querySelector(".systemCapabilityDescription")?.value
+    );
+    return [
+      card.querySelector(".systemCapabilityUses")?.value &&
+        `Uses / Quantity ${card.querySelector(".systemCapabilityUses").value}`,
+      card.querySelector(".systemCapabilityRecharge")?.value &&
+        `Recharge / Cost ${card.querySelector(".systemCapabilityRecharge").value}`,
+      detail
+    ].filter(Boolean).join(" · ");
+  }
+  return compactRepeatableSummary(card.querySelector(".forgeObjectDescription")?.value);
+}
+
+function configureRepeatableEditorCard(card, {
+  label = "Entry",
+  kind = "simple",
+  nameSelector = "input",
+  expanded = false
+} = {}) {
+  if (!card || card.classList.contains("forgeRepeatableEditorCard")) return card;
+
+  const body = document.createElement("div");
+  const bodyId = `repeatable-editor-body-${++repeatableEditorCardSequence}`;
+  body.id = bodyId;
+  body.className = "forgeRepeatableEditorBody";
+  while (card.firstChild) body.appendChild(card.firstChild);
+
+  const removeButton = body.querySelector(
+    ".forgeRemoveObjectBtn, .removeSystemCapabilityBtn, .removeSpellcastingBlockBtn"
+  );
+  const summaryRow = document.createElement("div");
+  summaryRow.className = "forgeRepeatableEditorSummary";
+  summaryRow.innerHTML = `
+    <div class="forgeRepeatableEditorSummaryText">
+      <strong></strong>
+      <small></small>
+    </div>
+    <div class="forgeRepeatableEditorActions">
+      <button type="button" class="forgeRepeatableEditorToggle" aria-controls="${bodyId}"></button>
+    </div>
+  `;
+  if (removeButton) summaryRow.querySelector(".forgeRepeatableEditorActions").appendChild(removeButton);
+  card.classList.add("forgeRepeatableEditorCard");
+  card.prepend(summaryRow, body);
+
+  const nameInput = body.querySelector(nameSelector);
+  const title = summaryRow.querySelector("strong");
+  const detail = summaryRow.querySelector("small");
+  const toggle = summaryRow.querySelector(".forgeRepeatableEditorToggle");
+  const updateSummary = () => {
+    title.textContent = nameInput?.value?.trim() || `New ${label}`;
+    const summary = getRepeatableEditorSummary(card, kind);
+    detail.textContent = summary;
+    detail.hidden = !summary;
+  };
+  const setExpanded = (nextExpanded, { collapseSiblings = false, scroll = false } = {}) => {
+    if (collapseSiblings) {
+      [...card.parentElement?.children || []].forEach(sibling => {
+        if (sibling !== card) sibling.setRepeatableEditorExpanded?.(false);
+      });
+    }
+    card.classList.toggle("is-expanded", nextExpanded);
+    body.hidden = !nextExpanded;
+    toggle.setAttribute("aria-expanded", String(nextExpanded));
+    toggle.textContent = nextExpanded ? "Show Less" : "Show More";
+    if (scroll) {
+      requestAnimationFrame(() => card.scrollIntoView({
+        block: "nearest",
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+      }));
+    }
+  };
+  card.setRepeatableEditorExpanded = setExpanded;
+  toggle.onclick = () => setExpanded(!card.classList.contains("is-expanded"), {
+    collapseSiblings: true,
+    scroll: true
+  });
+  card.addEventListener("input", updateSummary);
+  card.addEventListener("change", updateSummary);
+  updateSummary();
+  setExpanded(expanded);
+  return card;
+}
+
+function insertNewRepeatableEditorCard(list, card, focusSelector) {
+  if (!list || !card) return;
+  list.querySelector(".forgeEmptyState")?.remove();
+  list.prepend(card);
+  card.setRepeatableEditorExpanded?.(true, { collapseSiblings: true });
+  requestAnimationFrame(() => {
+    card.scrollIntoView({
+      block: "nearest",
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth"
+    });
+    card.querySelector(focusSelector)?.focus();
+  });
+}
+
+function renderGenericCapabilityWorkspace(record, category) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "forgeWorkspace";
+  wrapper.dataset.capabilityCategoryId = category.id;
+  const items = readBuilderCapabilityItems(record, category);
+
+  wrapper.innerHTML = `
+    <div class="forgeWorkspaceHeader">
+      <div>
+        <h2>${escapeHtml(category.pluralLabel || category.name)}</h2>
+        <p>${escapeHtml(category.description || "Structured system capability entries.")}</p>
+      </div>
+      <button class="addSystemCapabilityBtn" type="button">+ Add ${escapeHtml(category.singularLabel || "Entry")}</button>
+    </div>
+    <div class="forgeCardList systemCapabilityCardList"></div>
+  `;
+
+  const list = wrapper.querySelector(".systemCapabilityCardList");
+  const createCard = (rawItem, expanded = false) => {
+    const item = typeof rawItem === "string"
+      ? { name: rawItem }
+      : (rawItem || {});
+    const card = document.createElement("article");
+    card.className = "forgeObjectCard systemCapabilityCard";
+    card.dataset.capabilityCategoryId = category.id;
+    card.dataset.id = item.id || `${category.id}-${Date.now()}`;
+    card.innerHTML = `
+      <div class="forgeObjectHeader">
+        <input class="systemCapabilityName" value="${escapeHtml(item.name || "")}" placeholder="${escapeHtml(category.singularLabel || "Name")}">
+        <button class="dangerBtn removeSystemCapabilityBtn" type="button">Remove</button>
+      </div>
+      <label>Summary</label>
+      <input class="systemCapabilitySummary" value="${escapeHtml(item.summary || "")}">
+      <label>Description</label>
+      <textarea class="systemCapabilityDescription">${escapeHtml(item.description || "")}</textarea>
+      <div class="forgeSmallStatGrid">
+        <div><label>Uses</label><input class="systemCapabilityUses" value="${escapeHtml(item.uses || "")}"></div>
+        <div><label>Recharge / Cost</label><input class="systemCapabilityRecharge" value="${escapeHtml(item.recharge || item.cost || "")}"></div>
+      </div>
+      <label>Source / Rules Text</label>
+      <textarea class="systemCapabilitySourceText">${escapeHtml(item.sourceText || "")}</textarea>
+    `;
+    card.querySelector(".removeSystemCapabilityBtn").onclick = () => card.remove();
+    return configureRepeatableEditorCard(card, {
+      label: category.singularLabel || "Entry",
+      kind: "generic",
+      nameSelector: ".systemCapabilityName",
+      expanded
+    });
+  };
+
+  if (items.length) items.forEach(item => list.appendChild(createCard(item)));
+  else list.innerHTML = `<p class="forgeEmptyState">No ${escapeHtml((category.pluralLabel || "entries").toLowerCase())} yet.</p>`;
+
+  wrapper.querySelector(".addSystemCapabilityBtn").onclick = () => {
+    insertNewRepeatableEditorCard(
+      list,
+      createCard({}, true),
+      ".systemCapabilityName"
+    );
+  };
+  return wrapper;
+}
+
+function renderSpellcastingCapabilityWorkspace(record, category) {
+  const wrapper = document.createElement("div");
+  wrapper.className = "forgeWorkspace";
+  wrapper.dataset.capabilityCategoryId = category.id;
+  const items = readBuilderCapabilityItems(record, category);
+
+  wrapper.innerHTML = `
+    <div class="forgeWorkspaceHeader">
+      <div><h2>${escapeHtml(category.pluralLabel || category.name)}</h2><p>Structured spellcasting blocks; multiple sources are supported.</p></div>
+      <button class="addSpellcastingBlockBtn" type="button">+ Add Spellcasting Block</button>
+    </div>
+    <div class="forgeCardList spellcastingBlockList"></div>
+  `;
+
+  const list = wrapper.querySelector(".spellcastingBlockList");
+  const createCard = (rawItem, expanded = false) => {
+    const item = typeof rawItem === "string"
+      ? { name: rawItem }
+      : (rawItem || {});
+    const card = document.createElement("article");
+    card.className = "forgeObjectCard spellcastingCapabilityCard";
+    card.dataset.capabilityCategoryId = category.id;
+    card.dataset.id = item.id || `${category.id}-${Date.now()}`;
+    card.innerHTML = `
+      <div class="forgeObjectHeader">
+        <input class="spellcastingName" value="${escapeHtml(item.name || "")}" placeholder="Spellcasting source">
+        <button class="dangerBtn removeSpellcastingBlockBtn" type="button">Remove</button>
+      </div>
+      <div class="forgeSmallStatGrid">
+        <div><label>Casting Ability</label><input class="spellcastingAbility" value="${escapeHtml(item.castingAbility || "")}"></div>
+        <div><label>Caster Level</label><input class="spellcastingLevel" type="number" min="0" value="${escapeHtml(item.casterLevel ?? "")}"></div>
+        <div><label>Save DC</label><input class="spellcastingSaveDc" type="number" min="0" value="${escapeHtml(item.saveDC ?? "")}"></div>
+        <div><label>Spell Attack Bonus</label><input class="spellcastingAttackBonus" value="${escapeHtml(item.spellAttackBonus || "")}"></div>
+      </div>
+      <label>Description</label><textarea class="spellcastingDescription">${escapeHtml(item.description || "")}</textarea>
+      <label>At-will Spells</label><textarea class="spellcastingAtWill">${escapeHtml(item.atWillSpells || "")}</textarea>
+      <label>Uses per Day</label><textarea class="spellcastingUses">${escapeHtml(item.usesPerDay || "")}</textarea>
+      <label>Spell Slots</label><textarea class="spellcastingSlots">${escapeHtml(item.spellSlots || "")}</textarea>
+      <label>Prepared / Known Spells</label><textarea class="spellcastingPrepared">${escapeHtml(item.preparedSpells || "")}</textarea>
+      <label>Recharge Notes</label><input class="spellcastingRecharge" value="${escapeHtml(item.rechargeNotes || "")}">
+      <label>Source / Rules Text</label><textarea class="spellcastingSourceText">${escapeHtml(item.sourceText || "")}</textarea>
+    `;
+    card.querySelector(".removeSpellcastingBlockBtn").onclick = () => card.remove();
+    return configureRepeatableEditorCard(card, {
+      label: category.singularLabel || "Spellcasting Feature",
+      kind: "spellcasting",
+      nameSelector: ".spellcastingName",
+      expanded
+    });
+  };
+
+  if (items.length) items.forEach(item => list.appendChild(createCard(item)));
+  else list.innerHTML = `<p class="forgeEmptyState">No spellcasting blocks yet.</p>`;
+  wrapper.querySelector(".addSpellcastingBlockBtn").onclick = () => {
+    insertNewRepeatableEditorCard(
+      list,
+      createCard({}, true),
+      ".spellcastingName"
+    );
+  };
+  return wrapper;
+}
+
+function collectBuilderCapabilityItems(category) {
+  const categorySelector = `[data-capability-category-id="${category.id}"]`;
+  if (category.editorType === "spellcasting") {
+    return [...document.querySelectorAll(`.spellcastingCapabilityCard${categorySelector}`)].map(card => ({
+      id: card.dataset.id,
+      name: card.querySelector(".spellcastingName")?.value || "",
+      castingAbility: card.querySelector(".spellcastingAbility")?.value || "",
+      casterLevel: Number(card.querySelector(".spellcastingLevel")?.value || 0),
+      saveDC: Number(card.querySelector(".spellcastingSaveDc")?.value || 0),
+      spellAttackBonus: card.querySelector(".spellcastingAttackBonus")?.value || "",
+      description: card.querySelector(".spellcastingDescription")?.value || "",
+      atWillSpells: card.querySelector(".spellcastingAtWill")?.value || "",
+      usesPerDay: card.querySelector(".spellcastingUses")?.value || "",
+      spellSlots: card.querySelector(".spellcastingSlots")?.value || "",
+      preparedSpells: card.querySelector(".spellcastingPrepared")?.value || "",
+      rechargeNotes: card.querySelector(".spellcastingRecharge")?.value || "",
+      sourceText: card.querySelector(".spellcastingSourceText")?.value || ""
+    }));
+  }
+
+  return [...document.querySelectorAll(`.systemCapabilityCard${categorySelector}`)].map(card => ({
+    id: card.dataset.id,
+    name: card.querySelector(".systemCapabilityName")?.value || "",
+    summary: card.querySelector(".systemCapabilitySummary")?.value || "",
+    description: card.querySelector(".systemCapabilityDescription")?.value || "",
+    uses: card.querySelector(".systemCapabilityUses")?.value || "",
+    recharge: card.querySelector(".systemCapabilityRecharge")?.value || "",
+    sourceText: card.querySelector(".systemCapabilitySourceText")?.value || ""
+  }));
+}
+
 const npcWorkspaceRenderers = {
   overview: renderNpcOverviewWorkspace,
   personality: renderNpcPersonalityWorkspace,
-  traits: renderNpcTraitsWorkspace,
-  actions: renderNpcActionsWorkspace,
-  bonus: renderNpcBonusActionsWorkspace,
-  reactions: renderNpcReactionsWorkspace,
-  legendary: renderNpcLegendaryWorkspace,
-  lair: renderNpcLairWorkspace,
   entityLinks: renderNpcEntityLinksWorkspace
 };
 
@@ -6676,6 +8212,21 @@ const MASTERFORGE_SOURCE_OPTIONS = [
     value: "official-reference",
     label: "Official Reference",
     className: "builderSourceBadgeOfficial"
+  },
+  {
+    value: "third-party",
+    label: "Third-Party",
+    className: "builderSourceBadgeUnknown"
+  },
+  {
+    value: "imported",
+    label: "Imported",
+    className: "builderSourceBadgeUnknown"
+  },
+  {
+    value: "custom",
+    label: "Custom",
+    className: "builderSourceBadgeUnknown"
   }
 ];
 
@@ -6711,10 +8262,20 @@ function getSourceMeta(value = "") {
   );
 }
 
+function updateSourceReferenceVisibility(container, sourceValue) {
+  const isHomebrew = normaliseSourceValue(sourceValue) === "homebrew";
+  container?.querySelectorAll?.("[data-builder-source-reference-field]").forEach(field => {
+    field.classList.toggle("hidden", isHomebrew);
+  });
+}
+
 function renderSourceOptions(selectedValue = "homebrew") {
   const selected = normaliseSourceValue(selectedValue);
+  const options = MASTERFORGE_SOURCE_OPTIONS.some(option => option.value === selected)
+    ? MASTERFORGE_SOURCE_OPTIONS
+    : [...MASTERFORGE_SOURCE_OPTIONS, getSourceMeta(selected)];
 
-  return MASTERFORGE_SOURCE_OPTIONS.map(option => `
+  return options.map(option => `
     <option
       value="${escapeHtml(option.value)}"
       ${option.value === selected ? "selected" : ""}
@@ -6760,25 +8321,7 @@ function setupNpcModule() {
 
   root.innerHTML = renderNpcBuilderShell();
 
-  document.querySelector("#newNpcBtn").onclick = newNpc;
-  document.querySelector("#saveNpcBuilderBtn").onclick = saveNpc;
-  document.querySelector("#deleteNpcBuilderBtn").onclick = deleteNpc;
-  document.querySelector("#changeNpcImageBtn").onclick = () => {
-  document.querySelector("#npcPortraitInput").click();
-};
-
 document.querySelector("#npcPortraitInput").onchange = handleNpcPortraitSelected;
-
-document.querySelector("#removeNpcImageBtn").onclick = () => {
-  if (!npcBuilderState.activeNpc) return;
-
-  npcBuilderState.activeNpc.image = {
-    ...(npcBuilderState.activeNpc.image || {}),
-    portrait: ""
-  };
-
-  renderNpcImagePreview("");
-};
 
   document.querySelector("#npcSearchInput").oninput = renderNpcList;
 document.querySelector("#npcFilterInput").onchange = renderNpcList;
@@ -6794,9 +8337,11 @@ if (npcScopeFilterInput) {
   };
 }
 
-document.querySelectorAll(".npc-workspace-tab").forEach(tab => {
-  tab.onclick = () => switchNpcWorkspace(tab.dataset.workspace);
-});
+document.querySelector(".npc-workspace-tab")?.closest(".forgeWorkspaceTabs")
+  ?.addEventListener("click", event => {
+    const tab = event.target.closest(".npc-workspace-tab");
+    if (tab) switchNpcWorkspace(tab.dataset.workspace);
+  });
 
   [
   "#npcNameInput",
@@ -6828,7 +8373,6 @@ function renderNpcBuilderShell() {
       <aside class="forgeBuilderSidebar infoCard">
         <div class="forgeSidebarHeader">
           <h1>🧍 NPC Builder</h1>
-          <button id="newNpcBtn">+ New</button>
         </div>
 
         <input id="npcSearchInput" placeholder="Search NPCs...">
@@ -6874,13 +8418,6 @@ function renderNpcBuilderShell() {
     <div class="builderHeroActions">
   ${renderSourceBadge("homebrew", "npcSourceBadge")}
 
-  <button id="saveNpcBuilderBtn" type="button">
-    💾 Save NPC
-  </button>
-
-  <button id="deleteNpcBuilderBtn" class="dangerBtn" type="button">
-    Delete
-  </button>
 </div>
   </div>
 </section>
@@ -6951,6 +8488,14 @@ function renderNpcBuilderShell() {
     ${renderSourceOptions("homebrew")}
   </select>
 </div>
+          <div data-builder-source-reference-field>
+            <label>Source Title</label>
+            <input id="npcSourceTitleInput" placeholder="Dungeon Master’s Guide">
+          </div>
+          <div data-builder-source-reference-field>
+            <label>Source Reference</label>
+            <input id="npcSourceReferenceInput" placeholder="Page 76, Chapter 4, Appendix B, etc.">
+          </div>
         </section>
 
         <section class="forgeStatSummary">
@@ -6961,8 +8506,6 @@ function renderNpcBuilderShell() {
     </div>
 
     <div class="forgeImageActions">
-      <button id="changeNpcImageBtn" type="button">Change Image</button>
-      <button id="removeNpcImageBtn" type="button">Remove</button>
       <input id="npcPortraitInput" type="file" accept="image/*" hidden>
     </div>
   </div>
@@ -7012,16 +8555,8 @@ function renderNpcBuilderShell() {
           </div>
 
         </section>
-        <nav class="forgeWorkspaceTabs">
+<nav class="forgeWorkspaceTabs">
   <button class="npc-workspace-tab active" data-workspace="overview">Overview</button>
-  <button class="npc-workspace-tab" data-workspace="personality">Personality</button>
-  <button class="npc-workspace-tab" data-workspace="traits">Traits</button>
-  <button class="npc-workspace-tab" data-workspace="actions">Actions</button>
-  <button class="npc-workspace-tab" data-workspace="bonus">Bonus Actions</button>
-  <button class="npc-workspace-tab" data-workspace="reactions">Reactions</button>
-  <button class="npc-workspace-tab" data-workspace="legendary">Legendary</button>
-  <button class="npc-workspace-tab" data-workspace="lair">Lair</button>
-  <button class="npc-workspace-tab" data-workspace="entityLinks">Entity Links</button>
 </nav>
 
         <section id="npcWorkspaceMount" class="forgeWorkspaceMount"></section>
@@ -7086,6 +8621,8 @@ function getDefaultNpc() {
     cr: "",
     status: "Alive",
     source: "homebrew",
+    sourceTitle: "",
+    sourceReference: "",
 
     image: {
   portrait: "",
@@ -7169,6 +8706,8 @@ function normaliseNpc(npc) {
     ...npc,
 
     source: normaliseSourceValue(npc?.source || base.source || "homebrew"),
+    sourceTitle: String(npc?.sourceTitle || ""),
+    sourceReference: String(npc?.sourceReference || ""),
 
     entityId: npc?.entityId || npc?.entity?.id || "",
 
@@ -8757,6 +10296,11 @@ function fillNpcForm(npc) {
   document.querySelector("#npcCrInput").value = normalised.cr || "";
   document.querySelector("#npcStatusInput").value = normalised.status || "Alive";
   const npcSourceInput = document.querySelector("#npcSourceInput");
+  const npcSourceTitleInput = document.querySelector("#npcSourceTitleInput");
+  const npcSourceReferenceInput = document.querySelector("#npcSourceReferenceInput");
+
+  if (npcSourceTitleInput) npcSourceTitleInput.value = normalised.sourceTitle || "";
+  if (npcSourceReferenceInput) npcSourceReferenceInput.value = normalised.sourceReference || "";
 
 if (npcSourceInput) {
   npcSourceInput.value = normaliseSourceValue(
@@ -8765,9 +10309,11 @@ if (npcSourceInput) {
 
   npcSourceInput.onchange = () => {
     updateSourceBadge("#npcSourceBadge", npcSourceInput.value);
+    updateSourceReferenceVisibility(document, npcSourceInput.value);
   };
 
   updateSourceBadge("#npcSourceBadge", npcSourceInput.value);
+  updateSourceReferenceVisibility(document, npcSourceInput.value);
 }
 
   document.querySelector("#npcAcInput").value = normalised.stats?.ac || "";
@@ -8791,7 +10337,9 @@ updateNpcHeroCard();
 updateNpcHeroLocationCard(normalised);
 renderNpcWorldStateWarnings(normalised);
 
-switchNpcWorkspace(npcBuilderState.activeWorkspace || "overview", false);
+npcBuilderState.activeWorkspace = "overview";
+refreshBuilderActionWorkspace("npc");
+switchNpcWorkspace("overview", false);
 renderNpcList();
 void mountCanonicalDmWorkspace("npc", normalised, "npc").catch(error => console.warn("NPC DM Workspace could not be mounted:", error));
 }
@@ -8902,6 +10450,8 @@ function syncNpcFormToState() {
   npc.source = normaliseSourceValue(
   document.querySelector("#npcSourceInput")?.value || "homebrew"
 );
+  npc.sourceTitle = document.querySelector("#npcSourceTitleInput")?.value.trim() ?? npc.sourceTitle ?? "";
+  npc.sourceReference = document.querySelector("#npcSourceReferenceInput")?.value.trim() ?? npc.sourceReference ?? "";
 
   npc.stats = {
     ac: document.querySelector("#npcAcInput")?.value || "",
@@ -9056,36 +10606,35 @@ function syncActiveNpcWorkspace() {
     };
   }
 
-  if (workspace === "traits") {
-  npc.traits = collectSimpleCards("npcTrait");
-}
-if (workspace === "actions") {
-  npc.actions = collectActionCards(".npcActionCard");
-}
+  const capabilityCategory = getBuilderCapabilityCategory("npc", workspace, npc);
+  let capabilityItems = null;
+  if (workspace === "traits") capabilityItems = collectSimpleCards("npcTrait");
+  if (workspace === "actions") capabilityItems = collectActionCards(".npcActionCard");
+  if (workspace === "bonus-actions") capabilityItems = collectActionCards(".npcBonusActionCard");
+  if (workspace === "reactions") capabilityItems = collectActionCards(".npcReactionCard");
+  if (workspace === "legendary-actions") capabilityItems = collectActionCards(".npcLegendaryActionCard");
+  if (workspace === "lair-actions") capabilityItems = collectActionCards(".npcLairActionCard");
+  if (capabilityCategory && capabilityItems === null) {
+    capabilityItems = capabilityCategory.editorType === "action"
+      ? collectActionCards(".systemCapabilityActionCard")
+      : collectBuilderCapabilityItems(capabilityCategory);
+  }
+  if (capabilityCategory && capabilityItems !== null) {
+    writeBuilderCapabilityItems(npc, capabilityCategory, capabilityItems);
+  }
 
-if (workspace === "bonus") {
-  npc.bonusActions = collectActionCards(".npcBonusActionCard");
-}
-
-if (workspace === "reactions") {
-  npc.reactions = collectActionCards(".npcReactionCard");
-}
-if (workspace === "legendary") {
+if (workspace === "legendary-actions") {
   npc.flags = {
     ...(npc.flags || {}),
     legendaryNpc: document.querySelector("#npcLegendaryEnabledInput")?.checked || false
   };
-
-  npc.legendaryActions = collectActionCards(".npcLegendaryActionCard");
 }
 
-if (workspace === "lair") {
+if (workspace === "lair-actions") {
   npc.flags = {
     ...(npc.flags || {}),
     hasLair: document.querySelector("#npcHasLairEnabledInput")?.checked || false
   };
-
-  npc.lairActions = collectActionCards(".npcLairActionCard");
 }
 
 }
@@ -9799,6 +11348,50 @@ if (isPartyContextEntity) {
 }
 }
 
+function renderBuilderCapabilityWorkspace(entityType, record, category) {
+  const items = readBuilderCapabilityItems(record, category);
+  const primaryLegacyKey = category.sourceKeys?.[0];
+  if (primaryLegacyKey && record?.systemCapabilities?.[category.id]) {
+    record[primaryLegacyKey] = items;
+  }
+
+  const specialised = {
+    npc: {
+      traits: renderNpcTraitsWorkspace,
+      actions: renderNpcActionsWorkspace,
+      "bonus-actions": renderNpcBonusActionsWorkspace,
+      reactions: renderNpcReactionsWorkspace,
+      "legendary-actions": renderNpcLegendaryWorkspace,
+      "lair-actions": renderNpcLairWorkspace
+    },
+    creature: {
+      traits: renderCreatureTraitsWorkspace,
+      actions: renderCreatureActionsWorkspace,
+      "bonus-actions": renderCreatureBonusActionsWorkspace,
+      reactions: renderCreatureReactionsWorkspace,
+      "legendary-actions": renderCreatureLegendaryWorkspace,
+      "lair-actions": renderCreatureLairWorkspace
+    }
+  }[entityType]?.[category.id];
+
+  if (specialised) return specialised(record);
+  if (category.editorType === "spellcasting") {
+    return renderSpellcastingCapabilityWorkspace(record, category);
+  }
+  if (category.editorType === "action") {
+    return renderActionFamilyWorkspace({
+      title: category.pluralLabel || category.name,
+      description: category.description || "Structured system action entries.",
+      addLabel: `+ Add ${category.singularLabel || "Action"}`,
+      listId: `${entityType}-${category.id}-card-list`,
+      buttonId: `add-${entityType}-${category.id}`,
+      cardClass: "systemCapabilityActionCard",
+      items
+    });
+  }
+  return renderGenericCapabilityWorkspace(record, category);
+}
+
 function switchNpcWorkspace(workspaceKey, shouldSync = true) {
   if (shouldSync) {
     syncNpcFormToState();
@@ -9817,16 +11410,26 @@ function switchNpcWorkspace(workspaceKey, shouldSync = true) {
   mount.innerHTML = "";
 
   const renderer = npcWorkspaceRenderers[workspaceKey];
+  const category = getBuilderCapabilityCategory(
+    "npc",
+    workspaceKey,
+    npcBuilderState.activeNpc
+  );
 
-  if (!renderer) {
+  if (!renderer && !category) {
     mount.innerHTML = `<div class="forgeEmptyState">NPC workspace not found.</div>`;
     return;
   }
 
-  mount.appendChild(renderer(npcBuilderState.activeNpc));
+  mount.appendChild(
+    category
+      ? renderBuilderCapabilityWorkspace("npc", npcBuilderState.activeNpc, category)
+      : renderer(npcBuilderState.activeNpc)
+  );
   if (workspaceKey === "overview") {
   populateNpcLocationControls(npcBuilderState.activeNpc);
 }
+  window.MasterForgeActionConsole?.refresh();
 }
 
 async function populateNpcLocationControls(npc) {
@@ -11828,6 +13431,9 @@ async function syncNpcToEntity(npc) {
 },
 
   visibility: normaliseVisibility(npc.visibility),
+  canonicalSource: normaliseSourceValue(npc.source || "homebrew"),
+  sourceTitle: npc.sourceTitle || "",
+  sourceReference: npc.sourceReference || "",
 
   species: npc.species || "",
       type: npc.type || "",
@@ -12099,6 +13705,57 @@ async function openNpcBuilderByAnyId(npcIdOrEntityId) {
 
 
 async function saveNpc() {
+  if (builderSaveLocks.npc) return false;
+  setBuilderSaveLock("npc", true);
+  window.MasterForgeActionConsole?.close();
+  try {
+    const npc = syncNpcFormToState();
+    if (!npc.name) {
+      showBuilderSaveStatus("npc", "NPC name is required.", "error");
+      return false;
+    }
+
+    npc.id = npcBuilderState.currentNpcId || window.dmStorage.slugify(npc.name || "new-npc");
+    npcBuilderState.currentNpcId = npc.id;
+    npcBuilderState.activeNpc = npc;
+
+    await window.dmAPI.saveRecord("npcs", npc.id, npc, window.dmState.current.campaign);
+    await window.dmAPI.saveRecord("npcs", npc.id, npc, npc.world || window.dmState.current.world);
+    await syncNpcToEntity(npc);
+    await syncNpcLocationEntityRelationship(npc);
+
+    showBuilderSaveStatus("npc", "NPC saved.");
+    void refreshNpcPostSaveViews(npc);
+    return true;
+  } catch (error) {
+    console.error("NPC save failed:", error);
+    showBuilderSaveStatus("npc", `NPC could not be saved: ${error?.message || "Unknown error"}`, "error");
+    return false;
+  } finally {
+    setBuilderSaveLock("npc", false);
+  }
+}
+
+async function refreshNpcPostSaveViews(npc) {
+  try {
+    await mountCanonicalDmWorkspace("npc", npc, "npc");
+    await renderNpcList();
+    if (typeof loadEntityDebugPanel === "function") await loadEntityDebugPanel();
+    if (
+      currentlySelectedEntity &&
+      currentlySelectedEntity.entity_type === npc.locationState?.entityType &&
+      currentlySelectedEntity.id === npc.locationState?.entityId &&
+      typeof showEntityDebugDetails === "function"
+    ) {
+      const entity = await window.dmAPI.getEntity(npc.locationState.entityType, npc.locationState.entityId);
+      if (entity) await showEntityDebugDetails(entity);
+    }
+  } catch (error) {
+    console.warn("NPC saved, but post-save views could not be refreshed:", error);
+  }
+}
+
+async function saveNpcBlockingLegacy() {
   const npc = syncNpcFormToState();
 
   if (!npc.name) {
@@ -13595,6 +15252,7 @@ function renderGameSystemsListHtml(systems = getGameSystems()) {
         <h3>${escapeHtml(system.name || system.id)}</h3>
         <p>${escapeHtml(system.description || "No description recorded.")}</p>
         <code>${escapeHtml(system.id)}</code>
+        ${system.rules ? renderGameSystemRulesSchema(system) : `<p class="forgeEmptyState">This system uses the safe fallback schema until rules definitions are added.</p>`}
       </div>
 
       <div class="gameSystemCardActions">
@@ -13610,13 +15268,40 @@ function renderGameSystemsListHtml(systems = getGameSystems()) {
           class="archiveGameSystemBtn"
           type="button"
           data-system-id="${escapeHtml(system.id)}"
-          ${system.id === "system-neutral" ? "disabled" : ""}
+          ${system.bundled || system.id === "system-neutral" ? "disabled" : ""}
         >
           ${system.archived ? "Unarchive" : "Archive"}
         </button>
       </div>
     </div>
   `).join("");
+  applySessionCastPortraits(wrapper, new Map(selected.map(item => [String(item.id), item])));
+  applySessionCastPortraits(wrapper, new Map(selected.map(item => [String(item.id), item])));
+}
+
+function renderGameSystemRulesSchema(system) {
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+  const list = (items, describe = item => item.shortLabel || item.name) =>
+    (items || []).length
+      ? `<ul>${items.map(item => `<li><strong>${escapeHtml(item.name || item.id)}</strong><span>${escapeHtml(describe(item) || item.id)}${item.enabled === false ? " · Disabled" : ""}</span></li>`).join("")}</ul>`
+      : `<p class="forgeEmptyState">None defined.</p>`;
+  const mappings = Object.entries(rules.semanticMappings || {});
+  const classifications = rules.classifications || {};
+
+  return `
+    <details class="gameSystemSchema">
+      <summary>Rules schema v${escapeHtml(rules.schemaVersion || 1)}</summary>
+      <section><h4>Attributes</h4>${list(rules.attributes, item => `${item.shortLabel || item.name} · ${item.valueType}`)}</section>
+      <section><h4>Defence and resources</h4>${list(rules.statistics, item => `${item.shortLabel || item.name} · ${item.category}${item.combatWriteBack ? " · combat write-back" : ""}`)}</section>
+      <section><h4>Skills and passive scores</h4>${list([...(rules.skills || []), ...(rules.passiveScores || [])], item => item.governingAttributeId || item.skillId || item.calculationKey)}</section>
+      <section><h4>Saving throws and checks</h4>${list([...(rules.savingThrows || []), ...(rules.checks || [])], item => item.attributeId || item.rollLabel || item.calculationKey)}</section>
+      <section><h4>Conditions</h4>${list(rules.conditions, item => item.summary)}</section>
+      <section><h4>Combat capabilities</h4>${list(rules.capabilityCategories, item => `${item.displayGroup} · ${item.canTrackUses ? "tracks uses" : "reference"}${item.canRecharge ? " · recharge" : ""}`)}</section>
+      <section><h4>Classifications</h4>${list([...(classifications.sizes || []), ...(classifications.creatureTypes || []), ...(classifications.alignments || [])], item => item.id)}</section>
+      <section><h4>Semantic mappings</h4>${mappings.length ? `<ul>${mappings.map(([role, mapping]) => `<li><strong>${escapeHtml(role)}</strong><span>${escapeHtml(mapping?.fieldId || "Not mapped")}</span></li>`).join("")}</ul>` : `<p class="forgeEmptyState">None defined.</p>`}</section>
+      <p class="forgeEmptyState">Bundled schema definitions are read-only. Full custom schema editing is deferred until validation and formula tooling are available.</p>
+    </details>
+  `;
 }
 
 function setupGameSystemsPanelControls() {
@@ -13941,13 +15626,25 @@ const defaultGameSystems = [
 ];
 
 function getGameSystems() {
+  const bundledSystems = Object.values(
+    window.MasterForgeGameSystems?.getAll?.() || {}
+  ).map(system => ({
+    ...system,
+    archived: false,
+    bundled: true
+  }));
+
   try {
     const saved = JSON.parse(
       localStorage.getItem("masterForgeGameSystems")
     );
 
     if (Array.isArray(saved) && saved.length) {
-      return saved;
+      const bundledIds = new Set(bundledSystems.map(system => system.id));
+      return [
+        ...bundledSystems,
+        ...saved.filter(system => !bundledIds.has(system.id))
+      ];
     }
   } catch (error) {
     console.warn("Could not read saved game systems:", error);
@@ -13958,7 +15655,11 @@ function getGameSystems() {
     JSON.stringify(defaultGameSystems)
   );
 
-  return defaultGameSystems;
+  const bundledIds = new Set(bundledSystems.map(system => system.id));
+  return [
+    ...bundledSystems,
+    ...defaultGameSystems.filter(system => !bundledIds.has(system.id))
+  ];
 }
 
 function saveGameSystems(systems) {
@@ -14363,11 +16064,16 @@ async function syncCharacterEntity(
       ...existingData,
       source: "party-character",
       characterId: character.id,
+      systemId: character.systemId || getCurrentSystemId(),
       playerId: character.playerId || "",
+      species: character.species || "",
+      status: character.status || "",
       campaignId: character.campaignId || "",
       worldId: character.worldId || "",
       regionId: character.regionId || "",
       locationId: character.locationId || "",
+      portrait: character.image?.portrait || character.portrait || "",
+      publicNotes: character.characterSheet?.publicNotes || "",
       character: {
         ...(existingData.character || {}),
         species: character.species || "",
@@ -14380,10 +16086,20 @@ async function syncCharacterEntity(
         currentHP: Number(character.currentHP || 0),
         temporaryHP: Number(character.temporaryHP || character.tempHP || 0),
         speed: character.speed || "",
+        initiative: character.initiative || "",
+        image: { ...(character.image || {}) },
+        characterSheet: { ...(character.characterSheet || {}) },
+        savingThrows: character.savingThrows || "",
+        languages: character.languages || "",
+        senses: character.senses || "",
+        resistances: character.resistances || "",
+        immunities: character.immunities || "",
+        vulnerabilities: character.vulnerabilities || "",
         abilities: { ...(character.abilities || {}) },
         passivePerception: Number(character.passivePerception || 0),
         passiveInvestigation: Number(character.passiveInvestigation || 0),
         passiveInsight: Number(character.passiveInsight || 0),
+        systemValues: { ...(character.systemValues || {}) },
         persistentConditions: [...(character.persistentConditions || character.conditions || [])]
       }
     }
@@ -16634,6 +18350,19 @@ function renderDmEntityOverview(entity) {
   const location = position.mode === "entity"
     ? `Aboard / inside ${position.entityId || "an entity"}`
     : position.locationId || data.currentLocationId || "Unknown location";
+  const character = data.character || {};
+  const sheet = character.characterSheet || {};
+  const pcSections = entity.entity_type === "pc"
+    ? [
+        ["Identity", [["Pronouns", sheet.pronouns], ["Age", sheet.age], ["Culture / Heritage", sheet.culture], ["Background", sheet.background], ["Occupation / Role", sheet.occupation], ["Outlook", sheet.alignment]]],
+        ["Biography", [["Appearance", sheet.appearance], ["Personality", sheet.personality], ["Ideals", sheet.ideals], ["Bonds", sheet.bonds], ["Flaws", sheet.flaws], ["Goals", sheet.goals], ["Fears", sheet.fears], ["Backstory", sheet.backstory]]],
+        ["Notes and Links", [["Allies", sheet.allies], ["Enemies", sheet.enemies], ["Organisations", sheet.organisations], ["Player-facing Notes", sheet.publicNotes], ["GM-only Notes", sheet.gmNotes], ["Notes", sheet.notes]]]
+      ].map(([title, fields]) => {
+        const populated = fields.filter(([, value]) => String(value || "").trim());
+        if (!populated.length) return "";
+        return `<section class="dmPcSheetSection"><h3>${escapeHtml(title)}</h3>${populated.map(([label, value]) => `<div><small>${escapeHtml(label)}</small><p>${escapeHtml(value)}</p></div>`).join("")}</section>`;
+      }).join("")
+    : "";
   return `<div class="dmEntityWorkspacePanel"><h2>Overview</h2>
     <div class="dmEntityOverviewGrid">
       <div><small>Type</small><strong>${escapeHtml(formatEntityTypeLabel(entity.entity_type))}</strong></div>
@@ -16646,6 +18375,7 @@ function renderDmEntityOverview(entity) {
       <div><small>Region</small><strong>${escapeHtml(context.scope?.regionId || "—")}</strong></div>
     </div>
     <p class="dmEntitySummary">${escapeHtml(entity.description || data.publicNotes || "No concise notes recorded.")}</p>
+    ${pcSections}
     <div class="dmEntityQuickActions">
       <button type="button" data-dm-action="edit">Edit Entity</button><button type="button" data-dm-action="location">Change Location</button><button type="button" data-dm-tab-link="affiliations">Manage Affiliations</button><button type="button" data-dm-action="relationship">Add Relationship</button><button type="button" data-dm-tab-link="session-use">Add to Session</button><button type="button" disabled title="Deferred until an existing encounter insertion API is available">Add to Encounter — Deferred</button>
     </div>
@@ -17118,7 +18848,8 @@ function setupDmEntityWorkspace(entity, workspace = document.querySelector(".dmE
 
 function renderDmEntityWorkspaceShell(entity, { hostContext = "entity-library", defaultTab = "overview", compact = false } = {}) {
   const tabs = [["overview", "Overview"], ["features", "Features"], ["affiliations", "Affiliations"], ["relationships", "Relationships"], ["session-use", "Session Use"]];
-  return `<section class="dmEntityWorkspace${compact ? " compact" : ""}" data-dm-workspace-host="${escapeHtml(hostContext)}" data-dm-workspace-entity-type="${escapeHtml(entity.entity_type)}" data-dm-workspace-entity-id="${escapeHtml(entity.id)}"><header class="dmSharedWorkspaceHeader"><div><h2>DM Workspace</h2><p>Canonical details, inherited features and relationships for ${escapeHtml(entity.presentationDisplayName || entity.name || entity.id)}.</p></div>${pendingDmWorkspaceReturn ? `<button type="button" class="dmWorkspaceReturn" data-dm-workspace-return>${escapeHtml(pendingDmWorkspaceReturn.label)}</button>` : ""}</header><nav class="dmEntityWorkspaceTabs" aria-label="${escapeHtml(formatEntityTypeLabel(entity.entity_type))} DM workspace">${tabs.map(([key, label]) => `<button type="button" data-dm-entity-tab="${key}" class="${key === defaultTab ? "active" : ""}" aria-pressed="${key === defaultTab}">${label}</button>`).join("")}</nav><div data-dm-workspace-mount></div></section>`;
+  const portrait = entity.data_json?.character?.image?.portrait || entity.data_json?.portrait || "";
+  return `<section class="dmEntityWorkspace${compact ? " compact" : ""}" data-dm-workspace-host="${escapeHtml(hostContext)}" data-dm-workspace-entity-type="${escapeHtml(entity.entity_type)}" data-dm-workspace-entity-id="${escapeHtml(entity.id)}"><header class="dmSharedWorkspaceHeader">${entity.entity_type === "pc" ? `<div class="characterCardPortrait">${portrait ? `<img src="${escapeHtml(portrait)}" alt="">` : `<span aria-hidden="true">PC</span>`}</div>` : ""}<div><h2>DM Workspace</h2><p>Canonical details, inherited features and relationships for ${escapeHtml(entity.presentationDisplayName || entity.name || entity.id)}.</p></div>${pendingDmWorkspaceReturn ? `<button type="button" class="dmWorkspaceReturn" data-dm-workspace-return>${escapeHtml(pendingDmWorkspaceReturn.label)}</button>` : ""}</header><nav class="dmEntityWorkspaceTabs" aria-label="${escapeHtml(formatEntityTypeLabel(entity.entity_type))} DM workspace">${tabs.map(([key, label]) => `<button type="button" data-dm-entity-tab="${key}" class="${key === defaultTab ? "active" : ""}" aria-pressed="${key === defaultTab}">${label}</button>`).join("")}</nav><div data-dm-workspace-mount></div></section>`;
 }
 
 async function renderDmEntityWorkspace(entityOrType, entityIdOrOptions = {}, maybeOptions = {}) {
@@ -22117,6 +23848,9 @@ async function syncCreatureToEntity(creature) {
       scope,
       currentPosition,
       visibility,
+      canonicalSource: normaliseSourceValue(creature.source || "homebrew"),
+      sourceTitle: creature.sourceTitle || "",
+      sourceReference: creature.sourceReference || "",
       size: creature.size || "",
       type: creature.type || "",
       alignment: creature.alignment || "",
@@ -22161,12 +23895,6 @@ async function migrateCreatureEntities() {
 
 const creatureWorkspaceRenderers = {
   overview: renderCreatureOverviewWorkspace,
-  traits: renderCreatureTraitsWorkspace,
-  actions: renderCreatureActionsWorkspace,
-  bonus: renderCreatureBonusActionsWorkspace,
-  reactions: renderCreatureReactionsWorkspace,
-  legendary: renderCreatureLegendaryWorkspace,
-  lair: renderCreatureLairWorkspace,
   loot: renderCreatureLootWorkspace,
   notes: renderCreatureNotesWorkspace,
   entityLinks: renderCreatureEntityLinksWorkspace
@@ -22182,25 +23910,7 @@ function setupCreatureModule() {
 
   root.innerHTML = renderCreatureBuilderShell();
 
-  document.querySelector("#newCreatureBtn").onclick = newCreature;
-  document.querySelector("#saveCreatureBtn").onclick = saveCreature;
-  document.querySelector("#deleteCreatureBtn").onclick = deleteCreature;
-  document.querySelector("#changeCreatureImageBtn").onclick = () => {
-  document.querySelector("#creaturePortraitInput").click();
-};
-
 document.querySelector("#creaturePortraitInput").onchange = handleCreaturePortraitSelected;
-
-document.querySelector("#removeCreatureImageBtn").onclick = () => {
-  if (!creatureBuilderState.activeCreature) return;
-
-  creatureBuilderState.activeCreature.image = {
-    ...(creatureBuilderState.activeCreature.image || {}),
-    portrait: ""
-  };
-
-  renderCreatureImagePreview("");
-};
 
   const searchInput = document.querySelector("#creatureSearchInput");
 const filterInput = document.querySelector("#creatureFilterInput");
@@ -22223,9 +23933,11 @@ if (creatureScopeFilterInput) {
   };
 }
 
-  document.querySelectorAll(".mf-workspace-tab").forEach(tab => {
-    tab.onclick = () => switchCreatureWorkspace(tab.dataset.workspace);
-  });
+  document.querySelector(".mf-workspace-tab")?.closest(".forgeWorkspaceTabs")
+    ?.addEventListener("click", event => {
+      const tab = event.target.closest(".mf-workspace-tab");
+      if (tab) switchCreatureWorkspace(tab.dataset.workspace);
+    });
 
   document.querySelector("#creatureNameInput").oninput = () => {
     const name = document.querySelector("#creatureNameInput").value || "New Creature";
@@ -22294,7 +24006,6 @@ function renderCreatureBuilderShell() {
 
         <div class="forgeSidebarHeader">
           <h1>🦀 Creature Builder</h1>
-          <button id="newCreatureBtn">+ New</button>
         </div>
 
         <input id="creatureSearchInput" placeholder="Search creatures...">
@@ -22332,10 +24043,6 @@ function renderCreatureBuilderShell() {
           </div>
 
           <div class="forgeHeaderActions">
-  <button id="saveCreatureBtn">💾 Save Creature</button>
-  <button id="duplicateCreatureBtn" disabled>Duplicate</button>
-  <button id="exportCreatureBtn" disabled>Export</button>
-  <button id="deleteCreatureBtn" class="dangerBtn">Delete</button>
 </div>
 
         </header>
@@ -22422,8 +24129,6 @@ function renderCreatureBuilderShell() {
             </div>
 
             <div class="forgeImageActions">
-  <button id="changeCreatureImageBtn" type="button">Change Image</button>
-  <button id="removeCreatureImageBtn" type="button">Remove</button>
   <input id="creaturePortraitInput" type="file" accept="image/*" hidden>
 </div>
           </div>
@@ -22478,15 +24183,6 @@ function renderCreatureBuilderShell() {
 
         <nav class="forgeWorkspaceTabs">
           <button class="mf-workspace-tab active" data-workspace="overview">Overview</button>
-          <button class="mf-workspace-tab" data-workspace="traits">Traits</button>
-          <button class="mf-workspace-tab" data-workspace="actions">Actions</button>
-          <button class="mf-workspace-tab" data-workspace="bonus">Bonus Actions</button>
-          <button class="mf-workspace-tab" data-workspace="reactions">Reactions</button>
-          <button class="mf-workspace-tab" data-workspace="legendary">Legendary</button>
-          <button class="mf-workspace-tab" data-workspace="lair">Lair</button>
-          <button class="mf-workspace-tab" data-workspace="loot">Loot</button>
-          <button class="mf-workspace-tab" data-workspace="notes">Notes</button>
-          <button class="mf-workspace-tab" data-workspace="entityLinks">Entity Links</button>
         </nav>
 
         <section id="creatureWorkspaceMount" class="forgeWorkspaceMount"></section>
@@ -22536,6 +24232,8 @@ function getDefaultCreature() {
     description: "",
     environment: "",
     source: "Homebrew",
+    sourceTitle: "",
+    sourceReference: "",
     tags: "",
 
     traits: [],
@@ -22574,7 +24272,10 @@ function normaliseCreature(creature) {
   const base = getDefaultCreature();
   const merged = {
     ...base,
-    ...creature,source: normaliseSourceValue(creature?.source || base.source || "homebrew"),
+    ...creature,
+    source: normaliseSourceValue(creature?.source || base.source || "homebrew"),
+    sourceTitle: String(creature?.sourceTitle || ""),
+    sourceReference: String(creature?.sourceReference || ""),
     image: {
       ...base.image,
       ...(creature?.image || {})
@@ -22942,8 +24643,50 @@ function newCreature() {
   fillCreatureForm(creature);
 }
 
+function configureCreatureSystemFields(creature) {
+  const systemId = creature?.systemId || getCurrentSystemId();
+  const system = window.MasterForgeGameSystems?.get?.(systemId);
+  const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+  const setOptions = (selector, values, currentValue) => {
+    const select = document.querySelector(selector);
+    if (!select || !(values || []).length) return;
+    select.innerHTML = values.filter(item => item.enabled !== false).map(item => `<option value="${escapeHtml(item.name)}">${escapeHtml(item.name)}</option>`).join("");
+    select.value = currentValue || values.find(item => item.enabled !== false)?.name || "";
+  };
+  setOptions("#creatureSizeInput", rules.classifications?.sizes, creature?.size);
+  setOptions("#creatureTypeInput", rules.classifications?.creatureTypes, creature?.type);
+  setOptions("#creatureAlignmentInput", rules.classifications?.alignments, creature?.alignment);
+
+  const attributes = window.MasterForgeGameSystems?.enabled?.(rules.attributes) || [];
+  [...document.querySelectorAll(".forgeAbilityGrid > div")].forEach((slot, index) => {
+    const definition = attributes[index];
+    slot.classList.toggle("hidden", !definition);
+    if (!definition) return;
+    const input = slot.querySelector("input");
+    slot.querySelector("label").textContent = definition.shortLabel || definition.name;
+    input.dataset.systemAttributeId = definition.id;
+  });
+  [
+    ["#creatureAcInput", "primaryDefence"],
+    ["#creatureHpInput", "maximumHealth"],
+    ["#creatureSpeedInput", "movement"],
+    ["#creatureCrInput", "threat"],
+    ["#creatureProficiencyInput", "proficiency"]
+  ].forEach(([selector, role]) => {
+    const input = document.querySelector(selector);
+    const definition = window.MasterForgeGameSystems?.statisticForRole?.(system, role);
+    if (!input) return;
+    const label = input.previousElementSibling;
+    input.classList.toggle("hidden", !definition || definition.enabled === false);
+    label?.classList.toggle("hidden", !definition || definition.enabled === false);
+    if (definition && label?.tagName === "LABEL") label.textContent = definition.name;
+  });
+  return { system, rules, attributes };
+}
+
 function fillCreatureForm(creature) {
   const normalised = normaliseCreature(creature || getDefaultCreature());
+  const systemConfiguration = configureCreatureSystemFields(normalised);
 
   creatureBuilderState.currentCreatureId = normalised.id || null;
   creatureBuilderState.activeCreature = normalised;
@@ -22970,6 +24713,10 @@ function fillCreatureForm(creature) {
   document.querySelector("#creatureIntInput").value = normalised.stats?.int || "";
   document.querySelector("#creatureWisInput").value = normalised.stats?.wis || "";
   document.querySelector("#creatureChaInput").value = normalised.stats?.cha || "";
+  [...document.querySelectorAll(".forgeAbilityGrid [data-system-attribute-id]")].forEach(input => {
+    const definition = systemConfiguration.attributes.find(item => item.id === input.dataset.systemAttributeId);
+    input.value = window.MasterForgeGameSystems?.readAttribute?.(normalised, definition.id, systemConfiguration.system) ?? definition.defaultValue ?? "";
+  });
 
   document.querySelector("#creatureSavingThrowsInput").value = normalised.savingThrows || "";
 document.querySelector("#creatureSkillsInput").value = normalised.skills || "";
@@ -22983,7 +24730,9 @@ updateSourceBadge(
   normalised.source || "homebrew"
 );
 
-switchCreatureWorkspace(creatureBuilderState.activeWorkspace || "overview", false);
+creatureBuilderState.activeWorkspace = "overview";
+refreshBuilderActionWorkspace("creature");
+switchCreatureWorkspace("overview", false);
 renderCreatureList();
 void mountCanonicalDmWorkspace("creature", normalised, "creature").catch(error => console.warn("Creature DM Workspace could not be mounted:", error));
 }
@@ -23004,17 +24753,54 @@ function syncCreatureFormToState() {
   creature.source ||
   "homebrew"
 );
+  creature.sourceTitle = document.querySelector("#creatureSourceTitleInput")?.value.trim() ?? creature.sourceTitle ?? "";
+  creature.sourceReference = document.querySelector("#creatureSourceReferenceInput")?.value.trim() ?? creature.sourceReference ?? "";
 
-  creature.stats = {
+  const legacyStats = {
+    ...(creature.stats || {}),
     ac: document.querySelector("#creatureAcInput")?.value || "",
     hp: document.querySelector("#creatureHpInput")?.value || "",
-    speed: document.querySelector("#creatureSpeedInput")?.value || "",
-    str: Number(document.querySelector("#creatureStrInput")?.value || 10),
-    dex: Number(document.querySelector("#creatureDexInput")?.value || 10),
-    con: Number(document.querySelector("#creatureConInput")?.value || 10),
-    int: Number(document.querySelector("#creatureIntInput")?.value || 10),
-    wis: Number(document.querySelector("#creatureWisInput")?.value || 10),
-    cha: Number(document.querySelector("#creatureChaInput")?.value || 10)
+    speed: document.querySelector("#creatureSpeedInput")?.value || ""
+  };
+  const creatureSystemId = creature.systemId || getCurrentSystemId();
+  if (["dnd-2024", "dnd-5e"].includes(creatureSystemId)) {
+    Object.assign(legacyStats, {
+      str: Number(document.querySelector("#creatureStrInput")?.value || 10),
+      dex: Number(document.querySelector("#creatureDexInput")?.value || 10),
+      con: Number(document.querySelector("#creatureConInput")?.value || 10),
+      int: Number(document.querySelector("#creatureIntInput")?.value || 10),
+      wis: Number(document.querySelector("#creatureWisInput")?.value || 10),
+      cha: Number(document.querySelector("#creatureChaInput")?.value || 10)
+    });
+  }
+  creature.stats = legacyStats;
+  const creatureSystem = window.MasterForgeGameSystems?.get?.(creatureSystemId);
+  const creatureRules = window.MasterForgeGameSystems?.getRules?.(creatureSystem) || {};
+  const stableAttributes = Object.fromEntries(
+    [...document.querySelectorAll(".forgeAbilityGrid [data-system-attribute-id]")]
+      .filter(input => !input.closest(".hidden"))
+      .map(input => [input.dataset.systemAttributeId, Number(input.value || 0)])
+  );
+  const stableStatistics = { ...(creature.systemValues?.statistics || {}) };
+  [
+    ["primaryDefence", "#creatureAcInput"],
+    ["maximumHealth", "#creatureHpInput"],
+    ["currentHealth", "#creatureHpInput"],
+    ["movement", "#creatureSpeedInput"],
+    ["threat", "#creatureCrInput"],
+    ["proficiency", "#creatureProficiencyInput"]
+  ].forEach(([role, selector]) => {
+    const definition = window.MasterForgeGameSystems?.statisticForRole?.(creatureSystem, role);
+    const input = document.querySelector(selector);
+    if (definition && input) stableStatistics[definition.id] = definition.valueType === "number" ? Number(input.value || 0) : input.value;
+  });
+  creature.systemId = creatureSystemId;
+  creature.systemValues = {
+    ...(creature.systemValues || {}),
+    systemId: creatureSystemId,
+    schemaVersion: creatureRules.schemaVersion || 1,
+    attributes: stableAttributes,
+    statistics: stableStatistics
   };
 
   creature.savingThrows = document.querySelector("#creatureSavingThrowsInput")?.value || "";
@@ -23129,38 +24915,35 @@ if (mode === "entity") {
   };
 }
 
-  if (workspace === "traits") {
-    creature.traits = collectSimpleCards("trait");
+  const capabilityCategory = getBuilderCapabilityCategory("creature", workspace, creature);
+  let capabilityItems = null;
+  if (workspace === "traits") capabilityItems = collectSimpleCards("trait");
+  if (workspace === "actions") capabilityItems = collectActionCards(".creatureActionCard");
+  if (workspace === "bonus-actions") capabilityItems = collectActionCards(".creatureBonusActionCard");
+  if (workspace === "reactions") capabilityItems = collectActionCards(".creatureReactionCard");
+  if (workspace === "legendary-actions") capabilityItems = collectActionCards(".creatureLegendaryActionCard");
+  if (workspace === "lair-actions") capabilityItems = collectActionCards(".creatureLairActionCard");
+  if (capabilityCategory && capabilityItems === null) {
+    capabilityItems = capabilityCategory.editorType === "action"
+      ? collectActionCards(".systemCapabilityActionCard")
+      : collectBuilderCapabilityItems(capabilityCategory);
+  }
+  if (capabilityCategory && capabilityItems !== null) {
+    writeBuilderCapabilityItems(creature, capabilityCategory, capabilityItems);
   }
 
-  if (workspace === "actions") {
-  creature.actions = collectActionCards(".creatureActionCard");
-}
-
-if (workspace === "bonus") {
-  creature.bonusActions = collectActionCards(".creatureBonusActionCard");
-}
-
-if (workspace === "reactions") {
-  creature.reactions = collectActionCards(".creatureReactionCard");
-}
-
-if (workspace === "legendary") {
+if (workspace === "legendary-actions") {
   creature.flags = {
     ...(creature.flags || {}),
     legendaryCreature: document.querySelector("#creatureLegendaryEnabledInput")?.checked || false
   };
-
-  creature.legendaryActions = collectActionCards(".creatureLegendaryActionCard");
 }
 
-if (workspace === "lair") {
+if (workspace === "lair-actions") {
   creature.flags = {
     ...(creature.flags || {}),
     hasLair: document.querySelector("#creatureHasLairInput")?.checked || false
   };
-
-  creature.lairActions = collectActionCards(".creatureLairActionCard");
 }
 
   if (workspace === "loot") {
@@ -23193,13 +24976,27 @@ function switchCreatureWorkspace(workspaceKey, shouldSync = true) {
   mount.innerHTML = "";
 
   const renderer = creatureWorkspaceRenderers[workspaceKey];
+  const category = getBuilderCapabilityCategory(
+    "creature",
+    workspaceKey,
+    creatureBuilderState.activeCreature
+  );
 
-  if (!renderer) {
+  if (!renderer && !category) {
     mount.innerHTML = `<div class="forgeEmptyState">Workspace not found.</div>`;
     return;
   }
 
-  mount.appendChild(renderer(creatureBuilderState.activeCreature, workspaceKey));
+  mount.appendChild(
+    category
+      ? renderBuilderCapabilityWorkspace(
+          "creature",
+          creatureBuilderState.activeCreature,
+          category
+        )
+      : renderer(creatureBuilderState.activeCreature, workspaceKey)
+  );
+  window.MasterForgeActionConsole?.refresh();
 }
 
 function renderCreatureOverviewWorkspace(creature) {
@@ -23223,6 +25020,14 @@ function renderCreatureOverviewWorkspace(creature) {
 <select id="creatureSourceInput">
   ${renderSourceOptions(creature?.source || "homebrew")}
 </select>
+        <div data-builder-source-reference-field>
+          <label>Source Title</label>
+          <input id="creatureSourceTitleInput" value="${escapeHtml(creature.sourceTitle || "")}" placeholder="Dungeon Master’s Guide">
+        </div>
+        <div data-builder-source-reference-field>
+          <label>Source Reference</label>
+          <input id="creatureSourceReferenceInput" value="${escapeHtml(creature.sourceReference || "")}" placeholder="Page 76, Chapter 4, Appendix B, etc.">
+        </div>
 
         <label>Tags</label>
 <input id="creatureTagsInput" value="${escapeHtml(creature.tags || "")}" placeholder="Beast, Aquatic, Coastal">
@@ -23257,12 +25062,14 @@ setTimeout(() => {
         "#creatureSourceBadge",
         creatureSourceInput.value
       );
+      updateSourceReferenceVisibility(wrapper, creatureSourceInput.value);
     };
 
     updateSourceBadge(
       "#creatureSourceBadge",
       creatureSourceInput.value
     );
+    updateSourceReferenceVisibility(wrapper, creatureSourceInput.value);
   }
 }, 0);
   return wrapper;
@@ -23302,7 +25109,7 @@ function renderCreatureActionsWorkspace(creature) {
     list.innerHTML = `<p class="forgeEmptyState">No actions yet.</p>`;
   } else {
     actions.forEach(action => {
-      list.appendChild(renderActionCard(action));
+      list.appendChild(renderActionCard(action, "creatureActionCard", { label: "Action" }));
     });
   }
 
@@ -23317,10 +25124,12 @@ function renderCreatureActionsWorkspace(creature) {
       damageType: "",
       recharge: "",
       description: ""
+    }, "creatureActionCard", {
+      label: "Action",
+      expanded: true
     });
 
-    list.querySelector(".forgeEmptyState")?.remove();
-    list.appendChild(card);
+    insertNewRepeatableEditorCard(list, card, ".actionName");
   };
 
   return wrapper;
@@ -23444,7 +25253,9 @@ function renderActionFamilyWorkspace({
     list.innerHTML = `<p class="forgeEmptyState">No ${escapeHtml(title.toLowerCase())} yet.</p>`;
   } else {
     items.forEach(action => {
-      list.appendChild(renderActionCard(action, cardClass));
+      list.appendChild(renderActionCard(action, cardClass, {
+        label: addLabel.replace(/^\+\s*Add\s+/i, "")
+      }));
     });
   }
 
@@ -23459,10 +25270,12 @@ function renderActionFamilyWorkspace({
       damageType: "",
       recharge: "",
       description: ""
-    }, cardClass);
+    }, cardClass, {
+      label: addLabel.replace(/^\+\s*Add\s+/i, ""),
+      expanded: true
+    });
 
-    list.querySelector(".forgeEmptyState")?.remove();
-    list.appendChild(card);
+    insertNewRepeatableEditorCard(list, card, ".actionName");
   };
 
   return wrapper;
@@ -23497,7 +25310,9 @@ function renderActionFamilyWorkspace({
     list.innerHTML = `<p class="forgeEmptyState">No ${escapeHtml(title.toLowerCase())} yet.</p>`;
   } else {
     items.forEach(action => {
-      list.appendChild(renderActionCard(action, cardClass));
+      list.appendChild(renderActionCard(action, cardClass, {
+        label: addLabel.replace(/^\+\s*Add\s+/i, "")
+      }));
     });
   }
 
@@ -23512,10 +25327,12 @@ function renderActionFamilyWorkspace({
       damageType: "",
       recharge: "",
       description: ""
-    }, cardClass);
+    }, cardClass, {
+      label: addLabel.replace(/^\+\s*Add\s+/i, ""),
+      expanded: true
+    });
 
-    list.querySelector(".forgeEmptyState")?.remove();
-    list.appendChild(card);
+    insertNewRepeatableEditorCard(list, card, ".actionName");
   };
 
   return wrapper;
@@ -23561,10 +25378,9 @@ function renderCreatureLootWorkspace(creature) {
       dc: "",
       producesItem: "",
       notes: ""
-    });
+    }, { expanded: true });
 
-    list.querySelector(".forgeEmptyState")?.remove();
-    list.appendChild(card);
+    insertNewRepeatableEditorCard(list, card, ".lootName");
   };
 
   return wrapper;
@@ -24022,7 +25838,7 @@ function renderSimpleCardWorkspace({ title, addLabel, type, items, emptyText }) 
     list.innerHTML = `<p class="forgeEmptyState">${escapeHtml(emptyText)}</p>`;
   } else {
     items.forEach(item => {
-      list.appendChild(renderSimpleCard(type, item));
+      list.appendChild(renderSimpleCard(type, item, { label: addLabel.replace(/^\+\s*Add\s+/i, "") }));
     });
   }
 
@@ -24031,16 +25847,18 @@ function renderSimpleCardWorkspace({ title, addLabel, type, items, emptyText }) 
       id: `${type}-${Date.now()}`,
       name: "",
       description: ""
+    }, {
+      label: addLabel.replace(/^\+\s*Add\s+/i, ""),
+      expanded: true
     });
 
-    list.querySelector(".forgeEmptyState")?.remove();
-    list.appendChild(card);
+    insertNewRepeatableEditorCard(list, card, ".forgeObjectName");
   };
 
   return wrapper;
 }
 
-function renderSimpleCard(type, item) {
+function renderSimpleCard(type, item, { label = "Entry", expanded = false } = {}) {
   const card = document.createElement("div");
   card.className = "forgeObjectCard";
   card.dataset.type = type;
@@ -24057,10 +25875,19 @@ function renderSimpleCard(type, item) {
 
   card.querySelector(".forgeRemoveObjectBtn").onclick = () => card.remove();
 
-  return card;
+  return configureRepeatableEditorCard(card, {
+    label,
+    kind: "simple",
+    nameSelector: ".forgeObjectName",
+    expanded
+  });
 }
 
-function renderActionCard(action, extraClass = "creatureActionCard") {
+function renderActionCard(
+  action,
+  extraClass = "creatureActionCard",
+  { label = "Action", expanded = false } = {}
+) {
   const card = document.createElement("div");
   card.className = `forgeObjectCard ${extraClass}`;
   card.dataset.id = action.id || "action-" + Date.now();
@@ -24109,10 +25936,15 @@ function renderActionCard(action, extraClass = "creatureActionCard") {
 
   card.querySelector(".forgeRemoveObjectBtn").onclick = () => card.remove();
 
-  return card;
+  return configureRepeatableEditorCard(card, {
+    label,
+    kind: "action",
+    nameSelector: ".actionName",
+    expanded
+  });
 }
 
-function renderLootCard(item) {
+function renderLootCard(item, { expanded = false } = {}) {
   const card = document.createElement("div");
   card.className = "forgeObjectCard creatureLootCard";
   card.dataset.id = item.id || "loot-" + Date.now();
@@ -24166,7 +25998,12 @@ function renderLootCard(item) {
 
   card.querySelector(".forgeRemoveObjectBtn").onclick = () => card.remove();
 
-  return card;
+  return configureRepeatableEditorCard(card, {
+    label: "Harvest Item",
+    kind: "loot",
+    nameSelector: ".lootName",
+    expanded
+  });
 }
 
 function collectSimpleCards(type) {
@@ -24208,6 +26045,78 @@ function collectLootCards() {
 }
 
 async function saveCreature() {
+  if (builderSaveLocks.creature) return false;
+  setBuilderSaveLock("creature", true);
+  window.MasterForgeActionConsole?.close();
+  try {
+    const creature = syncCreatureFormToState();
+    if (!creature.name) {
+      showBuilderSaveStatus("creature", "Creature name is required.", "error");
+      return false;
+    }
+
+    creature.id =
+      creatureBuilderState.currentCreatureId ||
+      window.dmStorage.slugify(creature.name || "new-creature");
+    creature.foundInLocationIds = [
+      ...new Set(
+        [...document.querySelectorAll(".creatureFoundLocationInput:checked")]
+          .map(input => String(input.value))
+      )
+    ];
+    creatureBuilderState.currentCreatureId = creature.id;
+    creatureBuilderState.activeCreature = creature;
+    creature.world = creature.world || window.dmState.current.world;
+    creature.region = creature.region || window.dmState.current.region;
+    creature.location =
+      creature.foundInLocationIds[0] ||
+      creature.location ||
+      window.dmState.current.location;
+    creature.campaign = "";
+    creature.systemId = creature.systemId || getCurrentSystemId();
+    creature.scope = {
+      campaignId: creature.campaign || window.dmState.current.campaign || "",
+      worldId: creature.world || window.dmState.current.world || "",
+      regionId: creature.region || window.dmState.current.region || "",
+      locationId:
+        creature.locationId ||
+        creature.location ||
+        window.dmState.current.location ||
+        ""
+    };
+    creature.visibility = normaliseVisibility(creature.visibility || {});
+
+    await window.dmAPI.saveRecord(
+      "creatures",
+      creature.id,
+      creature,
+      creature.world || window.dmState.current.world
+    );
+    await syncCreatureToEntity(creature);
+
+    showBuilderSaveStatus("creature", "Creature saved.");
+    void refreshCreaturePostSaveViews(creature);
+    return true;
+  } catch (error) {
+    console.error("Creature save failed:", error);
+    showBuilderSaveStatus("creature", `Creature could not be saved: ${error?.message || "Unknown error"}`, "error");
+    return false;
+  } finally {
+    setBuilderSaveLock("creature", false);
+  }
+}
+
+async function refreshCreaturePostSaveViews(creature) {
+  try {
+    await mountCanonicalDmWorkspace("creature", creature, "creature");
+    await renderCreatureList();
+    await renderRegionInfo();
+  } catch (error) {
+    console.warn("Creature saved, but post-save views could not be refreshed:", error);
+  }
+}
+
+async function saveCreatureBlockingLegacy() {
   const creature = syncCreatureFormToState();
 
   if (!creature.name) {

@@ -88,8 +88,8 @@
 
       <nav id="tabs" aria-label="MasterForge workspaces">
         <button class="tab home-tab" data-tab="home">Home</button>
-        <section class="workflow-nav-group" data-workspace-group="in-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-in-game">In Game <span aria-hidden="true">−</span></button><div id="nav-in-game" class="workflow-nav-children"><button class="tab" data-tab="region">Current Location</button><button class="tab" data-tab="party">Party</button><button class="tab" data-tab="combat-operations">Combat Operations Centre</button></div></section>
-        <section class="workflow-nav-group" data-workspace-group="pre-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-pre-game">Pre-Game <span aria-hidden="true">−</span></button><div id="nav-pre-game" class="workflow-nav-children"><button class="tab" data-tab="session">Session Planner</button><button class="tab" data-tab="encounters">Encounter Planner</button><button class="tab" data-tab="story">Narration</button><button class="tab" data-tab="loot">Loot Preparation</button></div></section>
+        <section class="workflow-nav-group" data-workspace-group="in-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-in-game">In Game <span aria-hidden="true">−</span></button><div id="nav-in-game" class="workflow-nav-children"><button class="tab" data-tab="region">Current Location</button><button class="tab" data-tab="party">Party</button><button class="tab" data-tab="session-reference">Session Reference</button><button class="tab" data-tab="combat-operations">Combat Operations Centre</button></div></section>
+        <section class="workflow-nav-group" data-workspace-group="pre-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-pre-game">Pre-Game <span aria-hidden="true">−</span></button><div id="nav-pre-game" class="workflow-nav-children"><button class="tab" data-tab="session">Session Planner</button><button class="tab" data-tab="encounters">Encounter Planner</button><button class="tab" data-tab="loot">Loot Preparation</button></div></section>
         <section class="workflow-nav-group" data-workspace-group="world-building"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-world-building">World Building <span aria-hidden="true">−</span></button><div id="nav-world-building" class="workflow-nav-children"><button class="tab" data-tab="world">Campaigns &amp; Worlds</button><button class="tab" data-tab="region">Regions &amp; Locations</button><button class="tab" data-tab="entities">Entity Library</button><button class="tab" data-tab="npc">NPCs</button><button class="tab" data-tab="creatures">Creatures</button><button class="tab" data-tab="party">Parties</button></div></section>
         <section class="workflow-nav-group" data-workspace-group="settings"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-settings">Settings <span aria-hidden="true">−</span></button><div id="nav-settings" class="workflow-nav-children"><button class="tab" data-tab="settings">Configure MasterForge</button></div></section>
       </nav>
@@ -114,30 +114,35 @@
         <section id="story" class="panel active-panel">
 
           <div id="storyToolbar">
-            <select id="scriptSelect"></select>
-            <button id="newScriptBtn">New</button>
-            <button id="saveScriptBtn">Save</button>
-            <button id="deleteScriptBtn">Delete</button>
-            <button id="promptModeBtn">Prompt</button>
-            <button id="editModeBtn">Edit</button>
-            <button id="pausePromptBtn">Pause</button>
-            <button id="resetPromptBtn">Reset</button>
+            <div class="prompterControlGroup prompterScriptControls">
+              <span class="prompterControlGroupLabel">Script</span>
+              <select id="scriptSelect" aria-label="Script"></select>
+            </div>
 
-            <button id="slowerPromptBtn">−</button>
-            <span id="promptSpeedDisplay">0.6</span>
-            <button id="fasterPromptBtn">+</button>
+            <div class="prompterControlGroup prompterPlaybackControls">
+              <span class="prompterControlGroupLabel">Playback Speed</span>
+              <button id="slowerPromptBtn" aria-label="Decrease prompt speed">−</button>
+              <span id="promptSpeedDisplay">0.6</span>
+              <button id="fasterPromptBtn" aria-label="Increase prompt speed">+</button>
+            </div>
 
-            <button id="fontDownBtn">A−</button>
-            <span id="fontSizeDisplay">46</span>
-            <button id="fontUpBtn">A+</button>
+            <div class="prompterControlGroup prompterTextControls">
+              <span class="prompterControlGroupLabel">Text</span>
+              <button id="fontDownBtn" aria-label="Decrease text size">A−</button>
+              <span id="fontSizeDisplay">46</span>
+              <button id="fontUpBtn" aria-label="Increase text size">A+</button>
+            </div>
 
-            <label>Opacity</label>
-            <input id="storyOpacitySlider" type="range" min="0" max="100" value="90">
-            <span id="storyOpacityDisplay">90%</span>
+            <div class="prompterControlGroup prompterDisplayControls">
+              <span class="prompterControlGroupLabel">Display</span>
+              <label for="storyOpacitySlider">Backdrop Opacity</label>
+              <input id="storyOpacitySlider" type="range" min="0" max="100" value="90">
+              <span id="storyOpacityDisplay">90%</span>
 
-            <label>Notes</label>
-            <input id="notesWidthSlider" type="range" min="20" max="50" value="33">
-            <span id="notesWidthDisplay">33%</span>
+              <label for="notesWidthSlider">Notes Width</label>
+              <input id="notesWidthSlider" type="range" min="20" max="50" value="33">
+              <span id="notesWidthDisplay">33%</span>
+            </div>
           </div>
 
           <input id="scriptTitleInput" placeholder="Script title">
@@ -181,6 +186,17 @@
           <h2>Player Vault</h2>
           <div id="playerVault"></div>
 
+        </section>
+
+        <section id="session-reference" class="panel" aria-label="In-Game Session Reference">
+          <div class="sessionReferenceHeader">
+            <div>
+              <p class="sessionReferenceEyebrow">In-Game Reference</p>
+              <h1 id="sessionReferenceTitle">Session Reference</h1>
+              <p id="sessionReferenceDate" class="sessionReferenceDate"></p>
+            </div>
+          </div>
+          <div id="sessionReferenceContent" class="sessionReferenceContent"></div>
         </section>
 
         <!-- ==================== REGION ==================== -->
@@ -616,35 +632,51 @@
 
     <div id="characterModal" class="hidden">
       <div class="modalBox characterModalBox">
-
-        <h2 id="characterModalTitle">Create Character</h2>
+        <header class="characterEditorHeader">
+          <div>
+            <h2 id="characterModalTitle">Create Character</h2>
+            <p id="characterModalError" class="characterEditorError hidden" role="alert"></p>
+          </div>
+        </header>
 
         <input type="hidden" id="characterIdInput">
         <input type="hidden" id="characterPlayerIdInput">
+        <input id="characterPortraitInput" type="file" accept="image/*" hidden>
 
-        <label>Character Name</label>
-        <input id="characterNameInput">
+        <div class="characterEditorLayout">
+          <nav id="characterEditorSections" class="characterEditorSections" aria-label="Character sections"></nav>
+          <div class="characterEditorSectionViewport">
+            <section class="characterEditorSection" data-character-section="overview">
+              <div class="characterPortraitEditor">
+                <div id="characterPortraitPreview" class="characterPortraitPreview"><span>No portrait</span></div>
+                <div><button id="chooseCharacterPortraitBtn" type="button">Choose Image</button><button id="removeCharacterPortraitBtn" type="button">Remove Image</button></div>
+              </div>
+              <div class="formGrid">
+                <div><label>Character Name</label><input id="characterNameInput"></div>
+                <div><label>Status</label><select id="characterStatusInput"><option>Alive</option><option>Dead</option><option>Missing</option><option>Retired</option><option>NPC</option></select></div>
+                <div><label>Level / Rank</label><input id="characterLevelInput" type="number" min="1" max="20" value="1"></div>
+                <div><label>Occupation / Role</label><input id="characterOccupationInput"></div>
+              </div>
+            </section>
 
-        <label>Primary Species</label>
-        <div class="hybridGrid">
-          <select id="characterSpeciesInput"></select>
-          <select id="characterSpeciesTwoInput" aria-label="Secondary species for hybrid characters" title="Secondary species (hybrid only)"></select>
-        </div>
+            <section class="characterEditorSection hidden" data-character-section="identity">
+              <div class="formGrid">
+                <div><label>Pronouns</label><input id="characterPronounsInput"></div>
+                <div><label>Age</label><input id="characterAgeInput"></div>
+                <div><label>Primary Species</label><select id="characterSpeciesInput"></select></div>
+                <div><label>Secondary Species</label><select id="characterSpeciesTwoInput"></select></div>
+                <div><label class="checkboxLine"><input id="characterHybridInput" type="checkbox"> Hybrid species</label></div>
+                <div><label>Culture / Heritage</label><input id="characterCultureInput"></div>
+                <div><label>Class / Archetype</label><select id="characterClassInput"></select></div>
+                <div><label>Subclass</label><input id="characterSubclassInput"></div>
+                <div><label>Background</label><input id="characterBackgroundInput"></div>
+                <div><label>Alignment / Outlook</label><input id="characterAlignmentInput"></div>
+              </div>
+            </section>
 
-        <label class="checkboxLine">
-          <input id="characterHybridInput" type="checkbox">
-          Hybrid species
-        </label>
-
-        <label>Class</label>
-        <select id="characterClassInput"></select>
-
-        <label>Subclass</label>
-        <input id="characterSubclassInput">
-
-        <h3 class="modalSectionTitle">Ability Scores</h3>
-
-        <div class="abilityGrid">
+            <section class="characterEditorSection hidden" data-character-section="attributes">
+              <h3 class="modalSectionTitle">Attributes</h3>
+              <div class="abilityGrid">
           <div>
             <label>STR</label>
             <input id="strInput" type="number" value="10">
@@ -675,59 +707,70 @@
             <input id="chaInput" type="number" value="10">
             <span id="chaMod">+0</span>
           </div>
-        </div>
+              </div>
+            </section>
 
-        <h3 class="modalSectionTitle">Skill Proficiencies</h3>
+            <section class="characterEditorSection hidden" data-character-section="defence-resources">
+              <div class="formGrid">
+                <div><label>AC</label><input id="characterAcInput" type="number" value="10"></div>
+                <div><label>Max HP</label><input id="characterMaxHpInput" type="number" value="10"></div>
+                <div><label>Current HP</label><input id="characterCurrentHpInput" type="number" value="10"></div>
+                <div><label>Temporary HP</label><input id="characterTemporaryHpInput" type="number" min="0" value="0"></div>
+                <div><label>Speed / Movement</label><input id="characterSpeedInput"></div>
+                <div><label>Initiative</label><input id="characterInitiativeInput"></div>
+                <div><label>Resistances</label><input id="characterResistancesInput"></div>
+                <div><label>Immunities</label><input id="characterImmunitiesInput"></div>
+                <div><label>Vulnerabilities</label><input id="characterVulnerabilitiesInput"></div>
+                <div><label>Persistent Conditions</label><input id="characterConditionsInput"></div>
+              </div>
+            </section>
 
-        <div class="skillGrid">
+            <section class="characterEditorSection hidden" data-character-section="skills-saves">
+              <h3 class="modalSectionTitle">Skill Proficiencies</h3>
+              <div class="skillGrid">
           <label><input type="checkbox" id="perceptionProf"> Perception</label>
           <label><input type="checkbox" id="perceptionExpert"> Perception Expertise</label>
           <label><input type="checkbox" id="investigationProf"> Investigation</label>
           <label><input type="checkbox" id="investigationExpert"> Investigation Expertise</label>
           <label><input type="checkbox" id="insightProf"> Insight</label>
           <label><input type="checkbox" id="insightExpert"> Insight Expertise</label>
-        </div>
+              </div>
+              <button id="calculatePassivesBtn" type="button">Calculate Passives</button>
+              <div class="formGrid">
+                <div><label>Passive Perception</label><input id="characterPpInput" type="number" value="10"></div>
+                <div><label>Passive Investigation</label><input id="characterPiInput" type="number" value="10"></div>
+                <div><label>Passive Insight</label><input id="characterInsightInput" type="number" value="10"></div>
+                <div><label>Saving Throws</label><textarea id="characterSavingThrowsInput"></textarea></div>
+                <div><label>Other Skills</label><textarea id="characterOtherSkillsInput"></textarea></div>
+                <div><label>Proficiencies</label><textarea id="characterProficienciesInput"></textarea></div>
+                <div><label>Languages</label><textarea id="characterLanguagesInput"></textarea></div>
+                <div><label>Senses</label><textarea id="characterSensesInput"></textarea></div>
+              </div>
+            </section>
 
-        <button id="calculatePassivesBtn" type="button">Calculate Passives</button>
-
-        <div class="formGrid">
-          <div>
-            <label>Level</label>
-            <input id="characterLevelInput" type="number" min="1" max="20" value="1">
-          </div>
-          <div>
-            <label>AC</label>
-            <input id="characterAcInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Max HP</label>
-            <input id="characterMaxHpInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Current HP</label>
-            <input id="characterCurrentHpInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Passive Perception</label>
-            <input id="characterPpInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Passive Investigation</label>
-            <input id="characterPiInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Passive Insight</label>
-            <input id="characterInsightInput" type="number" value="10">
-          </div>
-          <div>
-            <label>Status</label>
-            <select id="characterStatusInput">
-              <option>Alive</option>
-              <option>Dead</option>
-              <option>Missing</option>
-              <option>Retired</option>
-              <option>NPC</option>
-            </select>
+            <section class="characterEditorSection hidden" data-character-section="features"><label>Features and Traits</label><textarea id="characterFeaturesInput" rows="12"></textarea></section>
+            <section class="characterEditorSection hidden" data-character-section="equipment"><label>Equipment</label><textarea id="characterEquipmentInput" rows="12"></textarea></section>
+            <section class="characterEditorSection hidden" data-character-section="spellcasting"><label>Spellcasting and Resources</label><textarea id="characterSpellcastingInput" rows="12"></textarea></section>
+            <section class="characterEditorSection hidden" data-character-section="biography">
+              <div class="formGrid">
+                <div><label>Appearance</label><textarea id="characterAppearanceInput"></textarea></div>
+                <div><label>Personality</label><textarea id="characterPersonalityInput"></textarea></div>
+                <div><label>Ideals</label><textarea id="characterIdealsInput"></textarea></div>
+                <div><label>Bonds</label><textarea id="characterBondsInput"></textarea></div>
+                <div><label>Flaws</label><textarea id="characterFlawsInput"></textarea></div>
+                <div><label>Goals</label><textarea id="characterGoalsInput"></textarea></div>
+                <div><label>Fears</label><textarea id="characterFearsInput"></textarea></div>
+                <div><label>Backstory</label><textarea id="characterBackstoryInput"></textarea></div>
+              </div>
+            </section>
+            <section class="characterEditorSection hidden" data-character-section="notes-links">
+              <label>Allies</label><textarea id="characterAlliesInput"></textarea>
+              <label>Enemies</label><textarea id="characterEnemiesInput"></textarea>
+              <label>Organisations and Factions</label><textarea id="characterOrganisationsInput"></textarea>
+              <label>Player-facing Notes</label><textarea id="characterPublicNotesInput"></textarea>
+              <label>GM-only Notes and Secrets</label><textarea id="characterGmNotesInput"></textarea>
+              <label>General Notes</label><textarea id="characterNotesInput"></textarea>
+            </section>
           </div>
         </div>
 

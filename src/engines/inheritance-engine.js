@@ -47,10 +47,14 @@
     return {
       id,
       featureType,
+      capabilitySection: section,
       name: String(source.name || source.title || `${category || featureType} ${index + 1}`),
       description: String(source.description || source.text || source.notes || ""),
       category: String(source.category || category || ""),
       active: source.active !== false,
+      secret: source.secret === true,
+      gmOnly: source.gmOnly === true || source.visibility === "gm",
+      hidden: source.hidden === true,
       tags: safeArray(source.tags).map(String),
       sourceData: { ...source }
     };
@@ -63,6 +67,10 @@
     Object.freeze({ keys: ["reactions"], section: "reactions", featureType: "ability", category: "Reaction" }),
     Object.freeze({ keys: ["legendaryActions", "legendary_actions"], section: "legendary-actions", featureType: "ability", category: "Legendary Action" }),
     Object.freeze({ keys: ["lairActions", "lair_actions"], section: "lair-actions", featureType: "ability", category: "Lair Action" }),
+    Object.freeze({ keys: ["mythicActions", "mythic_actions"], section: "mythic-actions", featureType: "ability", category: "Mythic Action" }),
+    Object.freeze({ keys: ["spellcasting", "spells"], section: "spellcasting", featureType: "ability", category: "Spellcasting" }),
+    Object.freeze({ keys: ["innateSpellcasting", "innate_spellcasting"], section: "innate-spellcasting", featureType: "ability", category: "Innate Spellcasting" }),
+    Object.freeze({ keys: ["equipmentActions", "equipment"], section: "equipment", featureType: "ability", category: "Equipment" }),
     Object.freeze({ keys: ["features", "personalFeatures"], section: "features", featureType: "trait", category: "Feature" }),
     Object.freeze({ keys: ["abilities", "personalAbilities"], section: "abilities", featureType: "ability", category: "Ability" })
   ]);
@@ -73,6 +81,11 @@
     PERSONAL_SECTIONS.forEach(definition => {
       let items = [];
       for (const record of records) {
+        const canonicalItems = record?.systemCapabilities?.[definition.section];
+        if (Array.isArray(canonicalItems)) {
+          items = canonicalItems;
+          break;
+        }
         const key = definition.keys.find(candidate => Array.isArray(record?.[candidate]));
         if (key) { items = record[key]; break; }
       }
@@ -148,7 +161,10 @@
     const winners = new Map();
 
     sorted.forEach(candidate => {
-      if (candidate._eligible === false || (!settings.includeInactive && candidate.active === false)) return;
+      if (candidate._eligible === false ||
+          (!settings.includeInactive && candidate.active === false) ||
+          (!settings.includeHidden && candidate.hidden === true) ||
+          (settings.visibilityMode === "public" && (candidate.secret === true || candidate.gmOnly === true))) return;
       const winner = winners.get(candidate.id);
       if (!winner) {
         winners.set(candidate.id, candidate);
@@ -196,6 +212,7 @@
       name: String(source.name || source.title || "Unnamed feature"),
       description: String(source.description || source.text || source.rulesText || ""),
       category: String(source.category || context.category || ""),
+      capabilitySection: String(source.capabilitySection || context.capabilitySection || ""),
       active: source.active !== false && context.sourceActive !== false,
       tags: safeArray(source.tags).map(String),
       sourceType: context.sourceType,
@@ -206,8 +223,9 @@
       hierarchyNodeId: context.hierarchyNodeId || null,
       hierarchyNodeName: context.hierarchyNodeName || null,
       relationshipId: context.relationshipId || null,
-      secret: context.secret === true,
-      hidden: context.hidden === true,
+      secret: context.secret === true || source.secret === true || source.gmOnly === true,
+      gmOnly: context.secret === true || source.gmOnly === true || source.visibility === "gm",
+      hidden: context.hidden === true || source.hidden === true,
       precedence: context.precedence,
       inherited: context.inherited !== false,
       overriddenBy: null,
@@ -392,6 +410,93 @@
     return (await resolveForEntity(entityType, entityId, options)).sources;
   }
 
+  function capabilityFingerprint(feature) {
+    const source = { ...(feature.sourceData || {}) };
+    ["id", "featureId", "sourceId", "sourceName", "inherited", "duplicateSources"].forEach(key => delete source[key]);
+    return JSON.stringify({
+      name: normaliseName(feature.name),
+      description: feature.description,
+      category: normaliseName(feature.category),
+      source
+    });
+  }
+
+  function capabilityProvenance(feature) {
+    if (!feature.inherited) return "";
+    if (["factionAbilityPack", "hierarchyAbilityPack"].includes(feature.sourceType)) {
+      return `From Ability Pack: ${feature.sourceName || "Unnamed Pack"}`;
+    }
+    if (feature.sourceType === "hierarchyNode") return `Granted by ${feature.hierarchyNodeName || feature.sourceName}`;
+    if (feature.sourceType === "faction") return `Inherited from ${feature.factionName || feature.sourceName}`;
+    if (feature.sourceName) return `Inherited from ${feature.sourceName}`;
+    return "Inherited";
+  }
+
+  function matchCapabilityCategory(feature, categories) {
+    const section = normaliseName(feature.capabilitySection).replace(/\s+/g, "-");
+    const category = normaliseName(feature.category);
+    return categories.find(definition =>
+      definition.id === section ||
+      safeArray(definition.sourceKeys).some(key => normaliseName(key).replace(/\s+/g, "-") === section) ||
+      safeArray(definition.categoryAliases).some(alias => normaliseName(alias) === category)
+    ) || categories.find(definition => definition.id === (feature.featureType === "trait" ? "traits" : "actions"));
+  }
+
+  async function resolveCombatProfile(entity, options = {}) {
+    const system = window.MasterForgeGameSystems?.get?.(
+      options.systemId || entity?.data_json?.systemId || entity?.systemId || window.dmState?.current?.systemId
+    );
+    const rules = window.MasterForgeGameSystems?.getRules?.(system) || {};
+    const categories = safeArray(rules.capabilityCategories)
+      .filter(item => item.enabled !== false && item.appearsInCombat !== false)
+      .sort((a, b) => Number(a.order || 0) - Number(b.order || 0));
+    const resolution = await resolveForEntityRecord(entity, {
+      visibilityMode: options.visibilityMode || "gm",
+      includeInactive: false,
+      includeHidden: options.includeHidden !== false,
+      includeDiagnostics: options.includeDiagnostics === true
+    });
+    const buckets = new Map(categories.map(definition => [definition.id, { ...definition, entries: [] }]));
+    const fingerprints = new Map();
+
+    [...resolution.effective.traits, ...resolution.effective.abilities].forEach(feature => {
+      const definition = matchCapabilityCategory(feature, categories);
+      if (!definition) return;
+      const fingerprint = `${definition.id}:${capabilityFingerprint(feature)}`;
+      const existing = fingerprints.get(fingerprint);
+      const entry = {
+        ...(feature.sourceData || {}),
+        id: feature.id,
+        name: feature.name,
+        description: feature.description || feature.sourceData?.rulesText || "",
+        categoryId: definition.id,
+        inherited: feature.inherited === true,
+        provenance: capabilityProvenance(feature),
+        sourceName: feature.sourceName || "",
+        sourceType: feature.sourceType || "",
+        secret: feature.secret === true || feature.gmOnly === true,
+        hidden: feature.hidden === true,
+        duplicateSources: [...safeArray(feature.duplicateSources)]
+      };
+      if (existing) {
+        existing.duplicateSources.push(sourceSummary(feature));
+        return;
+      }
+      fingerprints.set(fingerprint, entry);
+      buckets.get(definition.id)?.entries.push(entry);
+    });
+
+    return {
+      systemId: system?.id || "system-neutral",
+      source: entity?.data_json?.canonicalSource || entity?.source || "",
+      sourceTitle: entity?.data_json?.sourceTitle || entity?.sourceTitle || "",
+      sourceReference: entity?.data_json?.sourceReference || entity?.sourceReference || "",
+      categories: [...buckets.values()].filter(category => category.entries.length),
+      warnings: resolution.warnings,
+      conflicts: resolution.conflicts
+    };
+  }
+
   function clearCache() {
     // No cache in Slice 4. Kept as a stable API for future cache implementations.
   }
@@ -418,6 +523,7 @@
   window.MasterForgeInheritanceEngine = Object.freeze({
     VERSION, PRECEDENCE, DEFAULT_OPTIONS,
     resolveForEntity, resolveForEntityRecord, getInheritanceSources, clearCache,
+    resolveCombatProfile,
     adaptNpcPersonalFeatures, adaptCreaturePersonalFeatures, adaptPcPersonalFeatures, adaptGenericPersonalFeatures,
     resolveFeatureCandidates, runPureDiagnostic
   });

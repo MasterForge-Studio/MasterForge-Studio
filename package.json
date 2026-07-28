@@ -1,7 +1,7 @@
 {
   "name": "masterforge-studio",
   "productName": "MasterForge Studio",
-  "version": "0.3.3-alpha",
+  "version": "0.3.4-alpha",
   "description": "MasterForge Studio — offline-first campaign management for Game Masters.",
   "main": "main.js",
   "scripts": {
@@ -18,13 +18,13 @@
     "appId": "studio.masterforge.app",
     "productName": "MasterForge Studio",
     "publish": [
-  {
-    "provider": "github",
-    "owner": "MasterForge-Studio",
-    "repo": "MasterForge-Studio",
-    "releaseType": "release"
-  }
-],
+      {
+        "provider": "github",
+        "owner": "MasterForge-Studio",
+        "repo": "MasterForge-Studio",
+        "releaseType": "release"
+      }
+    ],
     "asar": true,
     "directories": {
       "output": "release"

@@ -4,9 +4,11 @@ console.log("combatOps.js loaded");
     const STORAGE_KEY = "masterforge.combatOperations.v1";
     const freshState = () => ({ mode: "selection", round: 1, activeIndex: 0, encounterId: "", encounterName: "", combatants: [], encounters: [], deploymentStrategies: {}, deploymentWarnings: [], diagnostic: "Combat module initialised", diagnosticHistory: ["Combat module initialised"], loading: false, error: "" });
     const combatOpsState = freshState();
+    let focusModeScrollPosition = 0;
     let encounterLoadInProgress = false;
     let pendingDeploymentChoice = null;
     let pendingCombatDialog = null;
+    const referenceHighlightTimers = new WeakMap();
     let combatDialogSequence = 0;
     const esc = value => typeof escapeHtml === "function" ? escapeHtml(String(value ?? "")) : String(value ?? "").replace(/[&<>"']/g, char => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 
@@ -157,7 +159,17 @@ console.log("combatOps.js loaded");
         return match ? Number(match[0]) : null;
     }
     function abilityModifier(score) { return Number.isFinite(Number(score)) ? Math.floor((Number(score) - 10) / 2) : null; }
-    function portraitOf(source = {}) { source = source || {}; return source.image?.portrait || source.image?.token || source.portrait || source.token || ""; }
+    function portraitOf(source = {}) {
+        source = source || {};
+        return source.image?.portrait ||
+            source.data_json?.character?.image?.portrait ||
+            source.data_json?.portrait ||
+            source.portrait ||
+            source.image?.token ||
+            source.data_json?.character?.image?.token ||
+            source.token ||
+            "";
+    }
     function normaliseEntries(value) { return Array.isArray(value) ? value : value ? [value] : []; }
     function sourceNotes(source = {}) {
         source = source || {};
@@ -174,6 +186,23 @@ console.log("combatOps.js loaded");
             .filter(value => value !== null && value !== undefined && String(value).trim()).map(String);
     }
     function normalisedName(value) { return String(value || "").normalize("NFKD").replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]+/gi, " ").trim().toLowerCase(); }
+    function formatSourceReference(source, sourceTitle, sourceReference) {
+        if (String(source || "").trim().toLowerCase().replace(/\s+/g, "-") === "homebrew") return "";
+        const title = String(sourceTitle || "").trim();
+        const reference = String(sourceReference || "").trim();
+        if (title && reference) return `Source: ${title} · ${reference}`;
+        if (title) return `Source: ${title}`;
+        if (reference) return `Source Reference: ${reference}`;
+        return "";
+    }
+    function combatSystem(systemId) { return window.MasterForgeGameSystems?.get?.(systemId) || window.MasterForgeGameSystems?.getCurrent?.() || {}; }
+    function combatRules(systemId) { return window.MasterForgeGameSystems?.getRules?.(combatSystem(systemId)) || {}; }
+    function semanticStat(systemId, role) { return window.MasterForgeGameSystems?.statisticForRole?.(combatSystem(systemId), role) || null; }
+    function semanticLabel(systemId, role, fallback, short = false) {
+        const definition = semanticStat(systemId, role);
+        return (short ? definition?.shortLabel : definition?.name) || definition?.name || fallback;
+    }
+    function readSemantic(source, role, systemId) { return window.MasterForgeGameSystems?.readSemantic?.(source, role, combatSystem(systemId)); }
     function sourceScopeMatches(record, participant) {
         const current = window.dmState?.current || {};
         const scope = record.scope || {};
@@ -185,16 +214,28 @@ console.log("combatOps.js loaded");
     async function canonicalRecords(type) {
         if (type === "pc") {
             const stored = (await window.dmStorage.getCharacters()) || [];
-            return stored.map(record => ({ ...record, _combatCanonicalStore: "characters" }));
+            const records = window.dmAPI?.getAllRecordsInCollection
+                ? (await window.dmAPI.getAllRecordsInCollection("characters")) || []
+                : [];
+            const seen = new Set();
+            return [
+                ...stored.map(record => ({ ...record, _combatCanonicalStore: "characters" })),
+                ...records.map(record => ({ ...record, _combatCanonicalStore: "record" }))
+            ].filter(record => {
+                const id = String(record.id || "").trim();
+                if (!id || seen.has(id)) return false;
+                seen.add(id);
+                return true;
+            });
         }
-        if (["npc", "creature"].includes(type)) {
+        if (["npc", "creature", "vehicle", "ship"].includes(type)) {
             const entities = window.dmAPI?.getEntitiesByType ? (await window.dmAPI.getEntitiesByType(type)) || [] : [];
             const collection = `${type}s`;
             const records = window.dmAPI?.getAllRecordsInCollection ? (await window.dmAPI.getAllRecordsInCollection(collection)) || [] : [];
             const seen = new Set();
             return [
-                ...entities.map(record => ({ ...record, _combatCanonicalStore: "entity" })),
-                ...records.map(record => ({ ...record, _combatCanonicalStore: "record" }))
+                ...records.map(record => ({ ...record, _combatCanonicalStore: "record" })),
+                ...entities.map(record => ({ ...record, _combatCanonicalStore: "entity" }))
             ].filter(record => {
                 const id = String(record.id || "").trim();
                 if (!id || seen.has(id)) return false;
@@ -220,25 +261,110 @@ console.log("combatOps.js loaded");
         if (named.length === 1) return { source: named[0], resolution: "unambiguous scoped name" };
         return { source: null, resolution: named.length > 1 ? `ambiguous canonical source (${named.length} name matches)` : "canonical source not found", references };
     }
-    function makeSnapshot(participant, source, runtimeId, name) {
+    async function refreshMissingSourceReferences() {
+        let changed = false;
+        for (const combatant of combatOpsState.combatants) {
+            if (!["npc", "creature"].includes(combatant?.sourceType)) continue;
+            if (normalisedName(combatant.source) === "homebrew") continue;
+            if (String(combatant.sourceTitle || "").trim() || String(combatant.sourceReference || "").trim()) continue;
+            try {
+                const { source } = await getCanonicalSource(combatant.sourceType, combatant);
+                if (!source) continue;
+                const canonical = { ...(source.data_json || {}), ...(source || {}) };
+                const profile = await resolveCombatProfile(
+                    combatant.sourceType,
+                    source,
+                    combatant.systemId || canonical.systemId
+                );
+                const canonicalSource = canonical.canonicalSource || profile.source || canonical.source || "";
+                const sourceTitle = canonical.sourceTitle || profile.sourceTitle || "";
+                const sourceReference = canonical.sourceReference || profile.sourceReference || "";
+                if (!formatSourceReference(canonicalSource, sourceTitle, sourceReference)) continue;
+                combatant.source = canonicalSource;
+                combatant.sourceTitle = sourceTitle;
+                combatant.sourceReference = sourceReference;
+                changed = true;
+            } catch (error) {
+                console.warn(`Could not refresh source reference for ${combatant.name || combatant.id}:`, error);
+            }
+        }
+        if (changed) saveCombatState();
+        return changed;
+    }
+    function initialiseCapabilityRuntime(profile = {}, canonical = {}) {
+        const legendaryMaximum = firstFinite(canonical.legendaryActionPoints, canonical.legendaryActionsPerRound, canonical.flags?.legendaryActionPoints);
+        return {
+            ...profile,
+            resources: {
+                legendaryActions: legendaryMaximum == null ? null : { maximum: legendaryMaximum, remaining: legendaryMaximum },
+                spellSlots: canonical.spellSlots && typeof canonical.spellSlots === "object" ? JSON.parse(JSON.stringify(canonical.spellSlots)) : null
+            },
+            categories: (profile.categories || []).map(category => ({
+                ...category,
+                entries: (category.entries || []).map(entry => {
+                    const usesValue = entry.usesRemaining ?? entry.remainingUses ?? entry.maxUses ?? entry.uses;
+                    const parsedUses = typeof usesValue === "number" ? usesValue : Number(String(usesValue || "").match(/\d+/)?.[0]);
+                    const maximumUses = Number.isFinite(parsedUses) ? Math.max(0, parsedUses) : null;
+                    const persisted = category.persistentRuntime ? canonical.systemValues?.capabilityRuntime?.[category.id]?.[entry.id] : null;
+                    return {
+                        ...entry,
+                        runtime: category.canTrackUses ? {
+                            maximumUses,
+                            usesRemaining: maximumUses,
+                            rechargeState: entry.recharge ? "ready" : "",
+                            usedThisTurn: false,
+                            usedThisRound: false,
+                            ...(persisted || {})
+                        } : null
+                    };
+                })
+            }))
+        };
+    }
+    async function resolveCombatProfile(type, source, systemId) {
+        const engine = window.MasterForgeInheritanceEngine;
+        if (!engine?.resolveCombatProfile || !source?.id) return { systemId, categories: [], warnings: [], conflicts: [] };
+        const entity = source.entity_type
+            ? source
+            : await window.dmAPI?.getEntity?.(type, source.id) || {
+                id: source.id,
+                entity_type: type,
+                name: source.name || source.id,
+                data_json: type === "pc" ? { characterId: source.id, systemId } : { [`${type}Id`]: source.id, systemId }
+            };
+        return engine.resolveCombatProfile(entity, { systemId, visibilityMode: "gm", includeHidden: true });
+    }
+    async function makeSnapshot(participant, source, runtimeId, name) {
         const type = participant.sourceType;
         const sourceData = source?.data_json || {};
         const characterData = sourceData.character || {};
         const canonical = { ...sourceData, ...characterData, ...(source || {}) };
         const stats = { ...(sourceData.stats || {}), ...(canonical.stats || {}) };
+        const systemId = canonical.systemId || sourceData.systemId || participant.systemId || window.dmState?.current?.systemId || "system-neutral";
+        const rules = combatRules(systemId);
         const abilities = type === "pc" ? (canonical.abilities || sourceData.abilities || {}) : (canonical.abilities || stats);
-        const maxHp = type === "pc" ? firstFinite(canonical.maxHP, canonical.maxHp, stats.maxHp, stats.hp) : firstFinite(canonical.maxHP, canonical.maxHp, stats.maxHp, stats.maximumHp, parseStatNumber(stats.hp));
-        const currentHp = firstFinite(canonical.currentHP, canonical.currentHp, stats.currentHP, stats.currentHp, maxHp);
-        const ac = firstFinite(canonical.ac, parseStatNumber(stats.ac), canonical.armourClass, canonical.armorClass);
+        const attributes = Object.fromEntries((window.MasterForgeGameSystems?.enabled?.(rules.attributes) || []).map(definition => [
+            definition.id,
+            firstFinite(window.MasterForgeGameSystems?.readAttribute?.(canonical, definition.id, combatSystem(systemId)), definition.defaultValue)
+        ]));
+        const maxHp = firstFinite(readSemantic(canonical, "maximumHealth", systemId), parseStatNumber(stats.hp));
+        const currentHp = firstFinite(readSemantic(canonical, "currentHealth", systemId), maxHp);
+        const ac = firstFinite(readSemantic(canonical, "primaryDefence", systemId));
+        const passiveScores = Object.fromEntries((window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || []).map(definition => {
+            const legacyId = rules.compatibility?.passiveLegacyIds?.[definition.id];
+            return [definition.id, canonical.systemValues?.passiveScores?.[definition.id] ?? (legacyId ? canonical[legacyId] : undefined)];
+        }));
+        const capabilityProfile = initialiseCapabilityRuntime(await resolveCombatProfile(type, source, systemId), canonical);
         const persistentConditions = normaliseEntries(canonical.persistentConditions || canonical.conditions).filter(value => typeof value === "string" && value.trim());
         return {
             id: runtimeId, sourceParticipantId: String(participant.id || ""), sourceType: type, sourceId: String(source?.id || participant.sourceId || ""), sourceEntityId: String(source?.entityId || source?.id || participant.sourceId || ""), sourceStore: source?._combatCanonicalStore || "", sourceScope: String(source?.scope || "global"), sourceWriteBackEligible: Boolean(source?.id), sourceDisplayName: canonical.name || participant.displayName || "Combatant", importedAt: new Date().toISOString(), snapshotVersion: 2,
             name: name || canonical.name || participant.displayName || "Combatant", subtitle: participant.subtitle || [canonical.size, canonical.type || canonical.species, canonical.class].filter(Boolean).join(" ") || type,
-            portrait: portraitOf(canonical), systemId: canonical.systemId || "", level: canonical.level ?? null, cr: canonical.cr || "", className: canonical.class || "", subtype: canonical.species || canonical.subtype || "", size: canonical.size || "", creatureType: canonical.type || "", alignment: canonical.alignment || "",
-            initiative: participant.initiativeOverride ?? "", initiativeModifier: abilityModifier(abilities.dex), proficiencyBonus: canonical.proficiencyBonus || "", ac, hp: currentHp, maxHp, tempHp: firstFinite(canonical.temporaryHP, canonical.temporaryHp, canonical.tempHP, canonical.tempHp, stats.tempHp, 0), speed: canonical.speed || stats.speed || "",
-            abilities: Object.fromEntries(["str","dex","con","int","wis","cha"].map(key => [key, firstFinite(abilities[key])])), savingThrows: canonical.savingThrows || "", skills: sourceSkills(canonical), senses: canonical.senses || "", languages: canonical.languages || "", passivePerception: firstFinite(canonical.passivePerception), passiveInvestigation: firstFinite(canonical.passiveInvestigation), passiveInsight: firstFinite(canonical.passiveInsight),
+            portrait: portraitOf(canonical), systemId, level: readSemantic(canonical, "levelRank", systemId) ?? null, cr: readSemantic(canonical, "threat", systemId) || "", className: canonical.class || "", subtype: canonical.species || canonical.subtype || "", size: canonical.size || "", creatureType: canonical.type || "", alignment: canonical.alignment || "",
+            source: canonical.canonicalSource || capabilityProfile.source || canonical.source || "", sourceTitle: canonical.sourceTitle || capabilityProfile.sourceTitle || "", sourceReference: canonical.sourceReference || capabilityProfile.sourceReference || "",
+            initiative: participant.initiativeOverride ?? "", initiativeModifier: abilityModifier(abilities.dex), proficiencyBonus: readSemantic(canonical, "proficiency", systemId) || "", ac, hp: currentHp, maxHp, tempHp: firstFinite(readSemantic(canonical, "temporaryHealth", systemId), 0), speed: readSemantic(canonical, "movement", systemId) || "",
+            attributes, abilities, savingThrows: canonical.savingThrows || "", skills: sourceSkills(canonical), senses: canonical.senses || "", languages: canonical.languages || "", passiveScores, capabilityProfile,
             damageVulnerabilities: canonical.damageVulnerabilities || stats.damageVulnerabilities || "", damageResistances: canonical.damageResistances || stats.damageResistances || "", damageImmunities: canonical.damageImmunities || stats.damageImmunities || "", conditionImmunities: canonical.conditionImmunities || stats.conditionImmunities || "",
-            traits: normaliseEntries(canonical.traits), actions: normaliseEntries(canonical.actions), bonusActions: normaliseEntries(canonical.bonusActions), reactions: normaliseEntries(canonical.reactions), legendaryActions: normaliseEntries(canonical.legendaryActions), spellcasting: normaliseEntries(canonical.spellcasting || canonical.spells), equipment: normaliseEntries(canonical.equipment),
+            traits: normaliseEntries(canonical.systemCapabilities?.traits ?? canonical.traits), actions: normaliseEntries(canonical.systemCapabilities?.actions ?? canonical.actions), bonusActions: normaliseEntries(canonical.systemCapabilities?.["bonus-actions"] ?? canonical.bonusActions), reactions: normaliseEntries(canonical.systemCapabilities?.reactions ?? canonical.reactions), legendaryActions: normaliseEntries(canonical.systemCapabilities?.["legendary-actions"] ?? canonical.legendaryActions), lairActions: normaliseEntries(canonical.systemCapabilities?.["lair-actions"] ?? canonical.lairActions), mythicActions: normaliseEntries(canonical.systemCapabilities?.["mythic-actions"] ?? canonical.mythicActions), spellcasting: normaliseEntries(canonical.systemCapabilities?.spellcasting ?? canonical.spellcasting ?? canonical.spells), innateSpellcasting: normaliseEntries(canonical.systemCapabilities?.["innate-spellcasting"] ?? canonical.innateSpellcasting), equipment: normaliseEntries(canonical.systemCapabilities?.equipment ?? canonical.equipmentActions ?? canonical.equipment), loot: normaliseEntries(canonical.loot ?? canonical.harvest ?? canonical.harvestLoot),
             group: participant.disposition === "hostile" ? "Enemies" : participant.disposition === "friendly" ? "Allies" : "Neutral", conditions: persistentConditions, hidden: Boolean(participant.hidden || participant.startsInvisible), status: ["alive", "active"].includes(String(canonical.status || "").toLowerCase()) ? "Active" : canonical.status || "Active", notes: [participant.notes, sourceNotes(canonical)].filter(Boolean).join("\n")
         };
     }
@@ -306,19 +432,19 @@ console.log("combatOps.js loaded");
         if (["party", "party_group"].includes(participant.sourceType)) {
             const members = await resolvePartyMembers(participant);
             if (!members.length) { combatOpsState.deploymentWarnings.push(`${participant.displayName || "Party"}: no resolvable active PC members.`); return []; }
-            return members.map(member => makeSnapshot({ ...participant, sourceType: "pc", sourceId: member.id }, member, `${participant.id}-pc-${member.id}`, member.name));
+            return Promise.all(members.map(member => makeSnapshot({ ...participant, sourceType: "pc", sourceId: member.id }, member, `${participant.id}-pc-${member.id}`, member.name)));
         }
         const resolved = await getCanonicalSource(participant.sourceType, participant);
         const source = resolved.source;
         if (!source) combatOpsState.deploymentWarnings.push(`${participant.displayName || "Combatant"}: ${resolved.resolution}; references preserved: ${canonicalIds(participant).join(", ") || "none"}.`);
         const quantity = participant.sourceType === "creature" ? Math.max(1, Number(participant.quantity || 1)) : 1;
         const strategy = await chooseQuantityDeployment(participant, quantity);
-        if (strategy === "individual") return Array.from({ length: quantity }, (_, memberIndex) => {
-            const snapshot = makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName || "Combatant"} ${memberIndex + 1}` : undefined);
+        if (strategy === "individual") return Promise.all(Array.from({ length: quantity }, async (_, memberIndex) => {
+            const snapshot = await makeSnapshot(participant, source, quantity > 1 ? `${participant.id}-${memberIndex + 1}` : String(participant.id || `participant-${index}`), quantity > 1 ? `${source?.name || participant.displayName || "Combatant"} ${memberIndex + 1}` : undefined);
             if (quantity > 1) snapshot.sourceWriteBackEligible = false;
             return snapshot;
-        });
-        const snapshot = makeSnapshot(participant, source, String(participant.id || `participant-${index}`));
+        }));
+        const snapshot = await makeSnapshot(participant, source, String(participant.id || `participant-${index}`));
         snapshot.groupQuantity = quantity; snapshot.groupMode = strategy; snapshot.sourceWriteBackEligible = false;
         if (strategy === "shared-pool" && snapshot.maxHp != null) { snapshot.standardMemberHp = snapshot.maxHp; snapshot.maxHp *= quantity; snapshot.hp = snapshot.maxHp; }
         if (strategy === "individual-counters") { snapshot.standardMemberHp = snapshot.maxHp; snapshot.memberHp = Array.from({ length: quantity }, () => snapshot.maxHp); if (snapshot.maxHp != null) { snapshot.maxHp *= quantity; snapshot.hp = snapshot.maxHp; } }
@@ -401,34 +527,151 @@ console.log("combatOps.js loaded");
     }
 
     function renderInitiativeSetup() {
-        return `<div class="combatOpsShell"><div class="combatOpsTopBar"><div><h2>Combat Readiness</h2><p>${esc(combatOpsState.encounterName)} · initiative, AC and HP are required. Start Combat is available in Actions.</p></div><div class="combatOpsTurnButtons"><button id="combatOpsCancelInitiativeBtn">Back</button></div></div>${combatOpsState.deploymentWarnings.length ? `<div class="combatOpsReadinessWarnings">${combatOpsState.deploymentWarnings.map(esc).join("<br>")}</div>` : ""}<div class="combatOpsInitiativeSetupList">${combatOpsState.combatants.map((c, index) => { const missing = [c.ac == null ? "AC" : "", c.hp == null || c.maxHp == null ? "HP" : ""].filter(Boolean); return `<div class="combatOpsInitiativeSetupItem ${missing.length ? "is-incomplete" : ""}"><div class="combatOpsReadinessIdentity">${renderPortrait(c)}<div><strong>${esc(c.hidden ? "Hidden Enemy" : c.name)}</strong><span>${renderTypeBadge(c)}${renderGroupBadge(c)} ${esc(c.subtitle)}</span>${renderConditionBadges(c)}${missing.length ? `<em>Missing ${esc(missing.join(" and "))}</em>` : `<em>${esc(c.status || "Active")}</em>`}</div></div><label>AC<input class="combatOpsReadinessInput" data-readiness-field="ac" data-combatant-index="${index}" type="number" value="${c.ac ?? ""}" placeholder="Not set"></label><label>Current HP<input class="combatOpsReadinessInput" data-readiness-field="hp" data-combatant-index="${index}" type="number" min="0" value="${c.hp ?? ""}" placeholder="Not set"></label><label>Max HP<input class="combatOpsReadinessInput" data-readiness-field="maxHp" data-combatant-index="${index}" type="number" min="1" value="${c.maxHp ?? ""}" placeholder="Not set"></label><label>Initiative<input class="combatOpsInitiativeInput" data-combatant-index="${index}" type="number" value="${esc(c.initiative ?? "")}" placeholder="Init"></label></div>`; }).join("")}</div></div>`;
+        const currentSystemId = combatOpsState.combatants[0]?.systemId;
+        const required = (combatRules(currentSystemId).statistics || []).filter(item => item.enabled !== false && item.requiredForCombat);
+        const requiredNames = required.map(item => item.shortLabel || item.name);
+        const readinessFields = [
+            { role: "primaryDefence", runtime: "ac" },
+            { role: "currentHealth", runtime: "hp", min: 0 },
+            { role: "maximumHealth", runtime: "maxHp", min: 1 }
+        ].filter(item => semanticStat(currentSystemId, item.role)?.enabled !== false && semanticStat(currentSystemId, item.role)?.requiredForCombat);
+        return `<div class="combatOpsShell"><div class="combatOpsTopBar"><div><h2>Combat Readiness</h2><p>${esc(combatOpsState.encounterName)} · ${esc(requiredNames.length ? `${requiredNames.join(", ")} are required` : "no system statistics are required")}. Start Combat is available in Actions.</p></div><div class="combatOpsTurnButtons"><button id="combatOpsCancelInitiativeBtn">Back</button></div></div>${combatOpsState.deploymentWarnings.length ? `<div class="combatOpsReadinessWarnings">${combatOpsState.deploymentWarnings.map(esc).join("<br>")}</div>` : ""}<div class="combatOpsInitiativeSetupList">${combatOpsState.combatants.map((c, index) => { const missing = readinessFields.filter(item => c[item.runtime] == null || (item.runtime === "maxHp" && Number(c[item.runtime]) <= 0)).map(item => semanticLabel(c.systemId, item.role, item.runtime)); return `<div class="combatOpsInitiativeSetupItem ${missing.length ? "is-incomplete" : ""}"><div class="combatOpsReadinessIdentity">${renderPortrait(c)}<div><strong>${esc(c.hidden ? "Hidden Enemy" : c.name)}</strong><span>${renderTypeBadge(c)}${renderGroupBadge(c)} ${esc(c.subtitle)}</span>${renderConditionBadges(c)}${missing.length ? `<em>Missing ${esc(missing.join(" and "))}</em>` : `<em>${esc(c.status || "Active")}</em>`}</div></div>${readinessFields.map(item => `<label>${esc(semanticLabel(c.systemId, item.role, item.runtime))}<input class="combatOpsReadinessInput" data-readiness-field="${item.runtime}" data-combatant-index="${index}" type="number" ${item.min != null ? `min="${item.min}"` : ""} value="${c[item.runtime] ?? ""}" placeholder="Not set"></label>`).join("")}<label>${esc(semanticLabel(c.systemId, "initiative", "Initiative"))}<input class="combatOpsInitiativeInput" data-combatant-index="${index}" type="number" value="${esc(c.initiative ?? "")}" placeholder="${esc(semanticLabel(c.systemId, "initiative", "Init", true))}"></label></div>`; }).join("")}</div></div>`;
     }
 
     function combatTypeLabel(type = "") { return ({ pc: "PC", npc: "NPC", creature: "Creature", vehicle: "Vehicle", ship: "Vehicle", party: "Party", party_group: "Party Group" })[type] || "Combatant"; }
     function renderTypeBadge(c) { return `<span class="combatTypeBadge combatTypeBadge--${esc(c.sourceType || "other")}">${esc(combatTypeLabel(c.sourceType))}</span>`; }
     function renderGroupBadge(c) { return c.groupQuantity ? `<span class="combatGroupBadge">Group ×${esc(c.groupQuantity)}</span>` : ""; }
+    function renderQuickBadge(c) { return c.quickParticipant ? `<span class="combatQuickBadge">Quick · Temporary</span>` : ""; }
     function renderConditionBadges(c) { return c.conditions?.length ? `<span class="combatConditionBadges">${c.conditions.map(condition => `<span>${esc(condition)}</span>`).join("")}</span>` : ""; }
     function renderPortrait(c, className = "") { return c.portrait ? `<img class="combatOpsPortraitImage ${className}" src="${esc(c.portrait)}" alt="">` : `<div class="combatOpsPortrait combatOpsPortraitFallback ${className}" aria-label="No participant image">◆</div>`; }
+    function combatantStateClasses(c, index = -1) {
+        const status = String(c?.status || "active").trim().toLowerCase().replace(/[^a-z0-9]+/g, "-");
+        return [
+            "no-portrait",
+            c?.hidden ? "is-hidden" : "",
+            c?.groupQuantity ? "is-grouped" : "",
+            ["unconscious", "inactive", "defeated", "dead"].includes(status) ? `is-${status}` : "",
+            index === combatOpsState.activeIndex ? "is-active-turn selected-participant" : ""
+        ].filter(Boolean).join(" ");
+    }
+    function participantClassification(c) {
+        return [c?.subtype, c?.creatureType, c?.className, c?.size]
+            .filter(Boolean)
+            .filter((value, index, values) => values.indexOf(value) === index)
+            .join(" · ") || c?.subtitle || combatTypeLabel(c?.sourceType);
+    }
 
     function renderInitiativeCard(c, index) {
         const percent = c.maxHp ? Math.max(0, Math.min(100, c.hp / c.maxHp * 100)) : 0;
-        return `<button class="combatOpsInitiativeCard ${index === combatOpsState.activeIndex ? "active" : ""} ${c.hidden ? "hiddenCombatant" : ""}" data-combatant-index="${index}">${renderPortrait(c)}<div class="combatOpsInitName">${esc(c.hidden ? "Hidden Enemy" : c.name)}</div><div class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}</div>${c.hp != null && c.maxHp ? `<div class="combatOpsHpMini"><span style="width:${percent}%"></span></div>` : ""}${renderConditionBadges(c)}<div class="combatOpsInitMeta"><span>HP ${c.hp == null || c.maxHp == null ? "Not set" : esc(`${c.hp}/${c.maxHp}`)}</span><span>${esc(c.status || "Active")}</span><span>Init ${esc(c.initiative || "—")}</span></div></button>`;
+        const visibleName = c.hidden ? "Hidden Enemy" : c.name;
+        const healthText = c.hp == null || c.maxHp == null ? "Not set" : `${c.hp} / ${c.maxHp}`;
+        const temporaryHpText = Number(c.tempHp) > 0 ? ` · Temp ${c.tempHp}` : "";
+        const initiativeText = c.initiative === "" || c.initiative == null ? "—" : c.initiative;
+        const keyCombatLine = `HP ${healthText}${temporaryHpText} · Init ${initiativeText}`;
+        const ariaLabel = `${visibleName}, ${combatTypeLabel(c.sourceType)}, ${keyCombatLine}, ${c.status || "Active"}`;
+        return `<button type="button" class="combatOpsInitiativeCard ${combatantStateClasses(c, index)}" data-combatant-index="${index}" aria-label="${esc(ariaLabel)}" aria-pressed="${index === combatOpsState.activeIndex}"><span class="combatOpsCardImage" data-combat-portrait-index="${index}" aria-hidden="true"></span><span class="combatOpsCardOverlay" aria-hidden="true"></span><span class="combatOpsCardTop"><span class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}${renderQuickBadge(c)}</span>${renderConditionBadges(c)}</span><span class="combatOpsCardIdentity"><strong class="combatOpsInitName">${esc(visibleName)}</strong><small>${esc(participantClassification(c))}</small><span class="combatOpsInitMeta"><span class="combatOpsKeyStats">${esc(keyCombatLine)}</span><span class="combatOpsCardStatus">${esc(c.status || "Active")}</span></span></span>${c.hp != null && c.maxHp ? `<span class="combatOpsHpMini" aria-label="${esc(`${semanticLabel(c.systemId, "currentHealth", "Resource")} ${healthText}`)}"><span style="width:${percent}%"></span></span>` : ""}</button>`;
     }
 
-    function renderReferenceValue(title, value) { return value ? `<section class="combatStatReference"><h3>${esc(title)}</h3><p>${esc(value)}</p></section>` : ""; }
-    function renderReferenceEntries(title, entries) { return entries?.length ? `<section class="combatStatReference"><h3>${esc(title)}</h3>${entries.map(entry => {
+    function renderReferenceValue(title, value, reference = "") { return value ? `<section class="combatStatReference"${reference ? ` data-combat-reference="${esc(reference)}"` : ""}><h3>${esc(title)}</h3><p>${esc(value)}</p></section>` : ""; }
+    function renderReferenceEntries(title, entries, reference = "") { return entries?.length ? `<section class="combatStatReference"${reference ? ` data-combat-reference="${esc(reference)}"` : ""}><h3>${esc(title)}</h3>${entries.map(entry => {
         if (typeof entry === "string") return `<p>${esc(entry)}</p>`;
         const details = [entry.attackType || entry.type, entry.attackBonus !== null && entry.attackBonus !== undefined && entry.attackBonus !== "" ? `Attack ${entry.attackBonus}` : "", entry.reach || entry.range, entry.target || entry.targets, entry.damage, entry.damageType, entry.saveDC != null ? `Save DC ${entry.saveDC}` : "", entry.recharge, entry.usage].filter(Boolean).join(" · ");
         const description = entry.description || entry.notes || entry.automationNotes || "";
         return `<article><strong>${esc(entry.name || entry.title || title)}</strong>${details ? `<small>${esc(details)}</small>` : ""}${description ? `<p>${esc(description)}</p>` : ""}</article>`;
     }).join("")}</section>` : ""; }
+    function renderCapabilityTracking(category, entry) {
+        if (!entry.runtime) return "";
+        const uses = entry.runtime.maximumUses != null
+            ? `<span class="combatCapabilityUses"><button type="button" data-capability-action="decrement" aria-label="Use ${esc(entry.name)}">−</button><strong>${esc(entry.runtime.usesRemaining)} / ${esc(entry.runtime.maximumUses)}</strong><button type="button" data-capability-action="increment" aria-label="Restore use of ${esc(entry.name)}">+</button></span>`
+            : "";
+        const recharge = entry.recharge
+            ? `<button type="button" data-capability-action="recharge" class="${entry.runtime.rechargeState === "spent" ? "is-spent" : ""}">${esc(entry.recharge)} · ${entry.runtime.rechargeState === "spent" ? "Spent" : "Ready"}</button>`
+            : "";
+        const turn = entry.oncePerTurn ? `<button type="button" data-capability-action="turn">${entry.runtime.usedThisTurn ? "Used this turn" : "Available this turn"}</button>` : "";
+        const round = entry.oncePerRound ? `<button type="button" data-capability-action="round">${entry.runtime.usedThisRound ? "Used this round" : "Available this round"}</button>` : "";
+        return uses || recharge || turn || round ? `<div class="combatCapabilityTracking">${uses}${recharge}${turn}${round}</div>` : "";
+    }
+    function renderCapabilityEntry(category, entry) {
+        const details = [
+            entry.activation || entry.actionType || entry.attackType || entry.type,
+            entry.attackBonus !== null && entry.attackBonus !== undefined && entry.attackBonus !== "" ? `Attack ${entry.attackBonus}` : "",
+            entry.reach || entry.range,
+            entry.target || entry.targets,
+            entry.damage,
+            entry.damageType,
+            entry.healing,
+            entry.saveDC != null ? `Save DC ${entry.saveDC}` : "",
+            entry.recharge,
+            entry.uses
+        ].filter(Boolean).join(" · ");
+        const rulesText = entry.rulesText || entry.description || entry.text || entry.notes || "";
+        return `<article class="combatCapabilityEntry" data-capability-id="${esc(entry.id)}"><header><strong>${esc(entry.name || category.singularLabel)}</strong>${entry.provenance ? `<small>${esc(entry.provenance)}</small>` : ""}</header>${details ? `<p class="combatCapabilitySummary">${esc(details)}</p>` : ""}${rulesText ? `<p>${esc(rulesText)}</p>` : ""}${renderCapabilityTracking(category, entry)}</article>`;
+    }
+    function renderCapabilityProfile(c) {
+        const categories = c.capabilityProfile?.categories || [];
+        if (!categories.length) return "";
+        const populated = categories.filter(category => category.entries?.length);
+        if (!populated.length) return "";
+        const index = `<nav class="combatCapabilityIndex" aria-label="Combat capabilities">${populated.map(category => `<a href="#combat-capability-${esc(category.id)}">${esc(category.pluralLabel || category.name)} <span>${category.entries.length}</span></a>`).join("")}</nav>`;
+        const resources = c.capabilityProfile?.resources || {};
+        const legendaryLabel = populated.find(category => category.id === "legendary-actions")?.resourceLabel || "Resource";
+        const spellSlotLabel = populated.find(category => category.id === "spellcasting")?.resourceLabel || "Spell Resources";
+        const resourcePanel = `${resources.legendaryActions ? `<div class="combatCapabilityResource" data-capability-resource="legendaryActions"><strong>${esc(legendaryLabel)}</strong><button type="button" data-resource-action="decrement">−</button><span>${esc(resources.legendaryActions.remaining)} / ${esc(resources.legendaryActions.maximum)}</span><button type="button" data-resource-action="increment">+</button></div>` : ""}${resources.spellSlots ? `<div class="combatCapabilityResource combatSpellSlots" data-capability-resource="spellSlots"><strong>${esc(spellSlotLabel)}</strong>${Object.entries(resources.spellSlots).map(([level, value]) => { const current = typeof value === "object" ? value.remaining ?? value.current ?? value.max ?? 0 : value; const maximum = typeof value === "object" ? value.maximum ?? value.max ?? value.total ?? current : current; return `<span data-resource-key="${esc(level)}"><small>${esc(level)}</small><button type="button" data-resource-action="decrement">−</button><b>${esc(current)} / ${esc(maximum)}</b><button type="button" data-resource-action="increment">+</button></span>`; }).join("")}</div>` : ""}`;
+        return `<section class="combatCapabilities">${index}${resourcePanel}${populated.map(category => `<details id="combat-capability-${esc(category.id)}" data-combat-reference="${esc(category.id)}" class="combatCapabilitySection ${category.prominent ? "is-prominent" : ""}" ${category.prominent ? "open" : ""}><summary><span>${category.icon ? `${esc(category.icon)} ` : ""}${esc(category.pluralLabel || category.name)}</span><small>${category.entries.length}</small></summary><div>${category.entries.map(entry => renderCapabilityEntry(category, entry)).join("")}</div></details>`).join("")}</section>`;
+    }
     function renderActiveStatBlock(c) {
-        const abilityRow = ["str","dex","con","int","wis","cha"].map(key => { const score = c.abilities?.[key]; const mod = abilityModifier(score); return `<div><strong>${key.toUpperCase()}</strong><span>${score == null ? "—" : `${score} (${mod >= 0 ? "+" : ""}${mod})`}</span></div>`; }).join("");
-        return `<div class="statBlockCard combatStatBlock"><header class="combatStatHeader">${renderPortrait(c, "combatStatPortrait")}<div><h1>${esc(c.hidden ? "Hidden Enemy" : c.name)}</h1><div class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}</div>${renderConditionBadges(c)}<p>${esc([c.size, c.creatureType || c.subtype || c.className, c.alignment].filter(Boolean).join(" · ") || c.subtitle)}</p><small>${esc(c.level ? `Level ${c.level}` : c.cr ? `CR ${c.cr}` : combatTypeLabel(c.sourceType))} · ${esc(c.status || "Active")}</small></div></header><div class="combatStatDefence"><div><strong>Armour Class</strong><span>${c.ac ?? "Not set"}</span></div><div><strong>Hit Points</strong><span>${c.hp == null || c.maxHp == null ? "Not set" : `${c.hp} / ${c.maxHp}`}</span></div><div><strong>Speed</strong><span>${esc(c.speed || "Not set")}</span></div></div><div class="combatStatAbilities">${abilityRow}</div><div class="combatStatReferences">${renderReferenceValue("Saving Throws", c.savingThrows)}${renderReferenceValue("Skills", typeof c.skills === "string" ? c.skills : "")}${renderReferenceValue("Passive Scores", [c.passivePerception != null ? `Perception ${c.passivePerception}` : "", c.passiveInvestigation != null ? `Investigation ${c.passiveInvestigation}` : "", c.passiveInsight != null ? `Insight ${c.passiveInsight}` : ""].filter(Boolean).join(" · "))}${renderReferenceValue("Damage Vulnerabilities", c.damageVulnerabilities)}${renderReferenceValue("Damage Resistances", c.damageResistances)}${renderReferenceValue("Damage Immunities", c.damageImmunities)}${renderReferenceValue("Condition Immunities", c.conditionImmunities)}${renderReferenceValue("Senses", c.senses)}${renderReferenceValue("Languages", c.languages)}${renderReferenceValue("Challenge / Proficiency Bonus", [c.cr ? `CR ${c.cr}` : "", c.proficiencyBonus ? `PB ${c.proficiencyBonus}` : ""].filter(Boolean).join(" · "))}${renderReferenceEntries("Traits", c.traits)}${renderReferenceEntries("Actions", c.actions)}${renderReferenceEntries("Bonus Actions", c.bonusActions)}${renderReferenceEntries("Reactions", c.reactions)}${renderReferenceEntries("Legendary Actions", c.legendaryActions)}${renderReferenceEntries("Spellcasting", c.spellcasting)}${renderReferenceEntries("Equipment", c.equipment)}${renderReferenceValue("Notes", c.notes)}</div>${c.hidden ? `<button class="combatOpsRevealBtn">Reveal Combatant</button>` : ""}</div>`;
+        const rules = combatRules(c.systemId);
+        const abilityRow = (window.MasterForgeGameSystems?.enabled?.(rules.attributes) || []).map(definition => { const score = c.attributes?.[definition.id]; const mod = definition.calculationKey === "ability-modifier" ? abilityModifier(score) : null; return `<div><strong>${esc(definition.shortLabel || definition.name)}</strong><span>${score == null ? "—" : `${score}${mod == null ? "" : ` (${mod >= 0 ? "+" : ""}${mod})`}`}</span></div>`; }).join("");
+        const passiveText = (window.MasterForgeGameSystems?.enabled?.(rules.passiveScores) || []).map(definition => c.passiveScores?.[definition.id] != null ? `${definition.name} ${c.passiveScores[definition.id]}` : "").filter(Boolean).join(" · ");
+        const progressLabel = c.level ? `${rules.classifications?.levelLabel || "Rank"} ${c.level}` : c.cr ? `${rules.classifications?.threatLabel || "Threat"} ${c.cr}` : combatTypeLabel(c.sourceType);
+        const savingThrows = renderReferenceValue(rules.displayLabels?.savingThrows || "Saving Throws", c.savingThrows, "saving-throws");
+        const skills = renderReferenceValue(rules.displayLabels?.skills || "Skills", typeof c.skills === "string" ? c.skills : "", "skills");
+        const sensesAndLanguages = c.senses || c.languages
+            ? `<section class="combatStatReference combatStatReferenceGroup" data-combat-reference="senses-languages"><h3>Senses and Languages</h3>${c.senses ? `<p><strong>Senses</strong> ${esc(c.senses)}</p>` : ""}${c.languages ? `<p><strong>Languages</strong> ${esc(c.languages)}</p>` : ""}</section>`
+            : "";
+        const progression = [c.cr ? `${semanticLabel(c.systemId, "threat", "Threat", true)} ${c.cr}` : "", c.proficiencyBonus ? `${semanticLabel(c.systemId, "proficiency", "Bonus", true)} ${c.proficiencyBonus}` : ""].filter(Boolean).join(" · ");
+        const sourceReference = formatSourceReference(c.source, c.sourceTitle, c.sourceReference);
+        return `
+          <div class="statBlockCard combatStatBlock ${combatantStateClasses(c)}" data-combat-reference="overview">
+            <header class="combatStatHeader">
+              <span class="combatStatHeroImage" data-combat-active-portrait aria-hidden="true"></span>
+              <span class="combatStatHeroOverlay" aria-hidden="true"></span>
+              <div class="combatStatHeroContent">
+                <div class="combatOpsCardBadges">${renderTypeBadge(c)}${renderGroupBadge(c)}${renderQuickBadge(c)}</div>
+                ${renderConditionBadges(c)}
+                <h1>${esc(c.hidden ? "Hidden Enemy" : c.name)}</h1>
+                <p>${esc(participantClassification(c))}</p>
+                <small>${esc(progressLabel)} · ${esc(c.status || "Active")}</small>
+                ${sourceReference ? `<small data-combat-source-reference>${esc(sourceReference)}</small>` : ""}
+              </div>
+            </header>
+            <div class="combatStatDefence">
+              ${semanticStat(c.systemId, "primaryDefence")?.enabled !== false ? `<div><strong>${esc(semanticLabel(c.systemId, "primaryDefence", "Defence"))}</strong><span>${c.ac ?? "Not set"}</span></div>` : ""}
+              ${semanticStat(c.systemId, "currentHealth")?.enabled !== false ? `<div><strong>${esc(semanticLabel(c.systemId, "currentHealth", "Resource"))}</strong><span>${c.hp == null || c.maxHp == null ? "Not set" : `${c.hp} / ${c.maxHp}`}</span>${Number(c.tempHp) > 0 ? `<small class="combatTempHpSummary" data-combat-temp-hp-summary>+ ${esc(c.tempHp)} Temporary HP</small>` : ""}</div>` : ""}
+              ${semanticStat(c.systemId, "movement")?.enabled !== false ? `<div><strong>${esc(semanticLabel(c.systemId, "movement", "Movement"))}</strong><span>${esc(c.speed || "Not set")}</span></div>` : ""}
+            </div>
+            ${abilityRow ? `<div class="combatStatAbilities">${abilityRow}</div>` : ""}
+            <div class="combatStatReferences">
+              ${savingThrows}
+              ${skills}
+              ${renderReferenceValue(rules.displayLabels?.passiveScores || "Derived Scores", passiveText)}
+              ${renderReferenceValue("Damage Vulnerabilities", c.damageVulnerabilities)}
+              ${renderReferenceValue("Damage Resistances", c.damageResistances)}
+              ${renderReferenceValue("Damage Immunities", c.damageImmunities)}
+              ${renderReferenceValue("Condition Immunities", c.conditionImmunities)}
+              ${sensesAndLanguages}
+              ${renderReferenceValue("Progression / Threat", progression)}
+              ${renderCapabilityProfile(c)}
+              ${renderReferenceEntries("Harvest / Loot", c.loot, "harvest-loot")}
+              ${renderReferenceValue("Notes", c.notes, "notes")}
+            </div>
+            ${c.hidden ? `<button class="combatOpsRevealBtn">Reveal Combatant</button>` : ""}
+          </div>`;
     }
 
     function renderTrackingPanel(c) {
-        return `<div class="combatOpsPanel"><h3>HP / Conditions / Tracking</h3><label>Current HP<input id="combatOpsHpInput" type="number" value="${c.hp ?? ""}" placeholder="Not set"></label><label>Maximum HP<input id="combatOpsMaxHpInput" type="number" min="1" value="${c.maxHp ?? ""}" placeholder="Not set"></label><label>Temporary HP<input id="combatOpsTempHpInput" type="number" min="0" value="${esc(c.tempHp || 0)}"></label><label>Armour Class<input id="combatOpsAcInput" type="number" value="${c.ac ?? ""}" placeholder="Not set"></label><label>Conditions</label><div class="combatOpsConditionList">${(c.conditions || []).length ? c.conditions.map(condition => `<span>${esc(condition)}</span>`).join("") : `<em>None</em>`}</div><label>Status<select id="combatOpsStatusInput">${["Active", "Unconscious", "Defeated", "Dead", "Fled"].map(status => `<option ${c.status === status ? "selected" : ""}>${status}</option>`).join("")}</select></label><label>Notes<textarea id="combatOpsNotesInput">${esc(c.notes || "")}</textarea></label></div>`;
+        const labels = combatRules(c.systemId).displayLabels || {};
+        return `<div class="combatOpsPanel"><h3>Combat Tracking</h3>${semanticStat(c.systemId, "currentHealth")?.enabled !== false ? `<label>${esc(semanticLabel(c.systemId, "currentHealth", "Current Resource"))}<input id="combatOpsHpInput" type="number" value="${c.hp ?? ""}" placeholder="Not set"></label>` : ""}${semanticStat(c.systemId, "maximumHealth")?.enabled !== false ? `<label>${esc(semanticLabel(c.systemId, "maximumHealth", "Maximum Resource"))}<input id="combatOpsMaxHpInput" type="number" min="1" value="${c.maxHp ?? ""}" placeholder="Not set"></label>` : ""}${semanticStat(c.systemId, "temporaryHealth")?.enabled !== false ? `<label>${esc(semanticLabel(c.systemId, "temporaryHealth", "Temporary Resource"))}<input id="combatOpsTempHpInput" type="number" min="0" value="${esc(c.tempHp || 0)}"></label>` : ""}${semanticStat(c.systemId, "primaryDefence")?.enabled !== false ? `<label>${esc(semanticLabel(c.systemId, "primaryDefence", "Defence"))}<input id="combatOpsAcInput" type="number" value="${c.ac ?? ""}" placeholder="Not set"></label>` : ""}<label>${esc(labels.conditions || "Conditions")}</label><div class="combatOpsConditionList">${(c.conditions || []).length ? c.conditions.map(condition => `<span>${esc(condition)}</span>`).join("") : `<em>None</em>`}</div><label>${esc(labels.status || "Status")}<select id="combatOpsStatusInput">${["Active", "Unconscious", "Defeated", "Dead", "Fled"].map(status => `<option ${c.status === status ? "selected" : ""}>${status}</option>`).join("")}</select></label><label>Notes<textarea id="combatOpsNotesInput">${esc(c.notes || "")}</textarea></label></div>`;
     }
 
     function renderCombatOperationsCentre() {
@@ -438,17 +681,186 @@ console.log("combatOps.js loaded");
         return `<div class="combatOpsShell"><div class="combatOpsTopBar"><div><h2>Combat Operations Centre</h2><p>${esc(combatOpsState.encounterName)} · ${combatOpsState.mode === "active" ? `Round ${combatOpsState.round} · ${active.name} is active` : "Encounter loaded · Set initiative when ready"}</p></div><div class="combatOpsTurnButtons"><button id="combatOpsChooseEncounterBtn">Encounters</button><button id="toggleCombatOpsModeBtn">${document.body.classList.contains("combatOpsMode") ? "Exit Focus" : "Focus Mode"}</button>${combatOpsState.mode === "setup" ? `<button id="combatOpsSetInitiativeBtn" class="primaryBtn">Set Initiative</button>` : ""}</div></div><div class="combatOpsInitiativeRibbon">${combatOpsState.combatants.map(renderInitiativeCard).join("")}</div><div class="combatOpsWorkspace"><section class="combatOpsStatBlock">${renderActiveStatBlock(active)}</section><aside class="combatOpsTracker">${renderTrackingPanel(active)}</aside></div></div>`;
     }
 
-    function rerenderCombatOps() { const container = getContainer(); if (!container) return; container.innerHTML = `${combatOpsState.error ? `<p class="combatOpsLoadError" role="alert">${esc(combatOpsState.error)}</p>` : ""}${renderCombatOperationsCentre()}`; container.querySelector(".combatOpsTopBar")?.insertAdjacentHTML("afterend", `<p class="combatOpsDiagnostic" data-combat-diagnostic data-status="info" aria-live="polite">${esc(combatOpsState.diagnostic || "Combat module initialised")}</p>`); wireCombatOpsControls(); window.MasterForgeActionConsole?.refresh(); }
+    function applyPortraitBackground(layer, portrait, owner) {
+        const value = typeof portrait === "string" ? portrait.trim() : "";
+        owner?.classList.remove("has-portrait");
+        owner?.classList.add("no-portrait");
+        layer.style.backgroundImage = "";
+        if (!value) return;
+
+        layer.style.backgroundImage = `url(${JSON.stringify(value)})`;
+        const probe = new Image();
+        probe.onload = () => {
+            if (!layer.isConnected) return;
+            owner?.classList.remove("no-portrait");
+            owner?.classList.add("has-portrait");
+        };
+        probe.onerror = () => {
+            if (!layer.isConnected) return;
+            layer.style.backgroundImage = "";
+            owner?.classList.remove("has-portrait");
+            owner?.classList.add("no-portrait");
+        };
+        probe.src = value;
+    }
+
+    function applyCombatPortraitLayers(container) {
+        container.querySelectorAll("[data-combat-portrait-index]").forEach(layer => {
+            const combatant = combatOpsState.combatants[Number(layer.dataset.combatPortraitIndex)];
+            applyPortraitBackground(layer, combatant?.portrait, layer.closest(".combatOpsInitiativeCard"));
+        });
+        const heroLayer = container.querySelector("[data-combat-active-portrait]");
+        if (heroLayer) {
+            applyPortraitBackground(heroLayer, getActiveCombatant()?.portrait, heroLayer.closest(".combatStatBlock"));
+        }
+    }
+
+    function getActiveReferenceDestinations() {
+        const combatant = getActiveCombatant();
+        if (!combatant || !["setup", "active"].includes(combatOpsState.mode)) return [];
+        const destinations = [{ key: "overview", label: "Overview" }];
+        if (String(combatant.savingThrows || "").trim()) destinations.push({ key: "saving-throws", label: "Saving Throws" });
+        if (typeof combatant.skills === "string" && combatant.skills.trim()) destinations.push({ key: "skills", label: "Skills" });
+        if (String(combatant.senses || "").trim() || String(combatant.languages || "").trim()) destinations.push({ key: "senses-languages", label: "Senses and Languages" });
+        (combatant.capabilityProfile?.categories || [])
+            .filter(category => category.entries?.length)
+            .forEach(category => destinations.push({
+                key: String(category.id),
+                label: category.pluralLabel || category.name || category.id
+            }));
+        if (combatant.loot?.length) destinations.push({ key: "harvest-loot", label: "Harvest / Loot" });
+        if (String(combatant.notes || "").trim()) destinations.push({ key: "notes", label: "Notes" });
+        return destinations;
+    }
+
+    function navigateActiveReference(reference) {
+        const container = getContainer();
+        const destination = [...(container?.querySelectorAll("[data-combat-reference]") || [])]
+            .find(element => element.dataset.combatReference === reference);
+        if (!destination) return false;
+        const previousTimer = referenceHighlightTimers.get(destination);
+        if (previousTimer) clearTimeout(previousTimer);
+        destination.classList.remove("combatReferenceHighlight");
+        void destination.offsetWidth;
+        destination.classList.add("combatReferenceHighlight");
+        const reducedMotion = window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
+        destination.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start", inline: "nearest" });
+        referenceHighlightTimers.set(destination, setTimeout(() => {
+            destination.classList.remove("combatReferenceHighlight");
+            referenceHighlightTimers.delete(destination);
+        }, 1500));
+        return true;
+    }
+
+    function rerenderCombatOps() {
+        const container = getContainer();
+        if (!container) return;
+        container.innerHTML = `${combatOpsState.error ? `<p class="combatOpsLoadError" role="alert">${esc(combatOpsState.error)}</p>` : ""}${renderCombatOperationsCentre()}`;
+        container.querySelector(".combatOpsTopBar")?.insertAdjacentHTML("afterend", `<p class="combatOpsDiagnostic" data-combat-diagnostic data-status="info" aria-live="polite">${esc(combatOpsState.diagnostic || "Combat module initialised")}</p>`);
+        applyCombatPortraitLayers(container);
+        wireCombatOpsControls();
+        window.MasterForgeActionConsole?.refresh();
+    }
     function updateInitiativeValuesFromInputs() { document.querySelectorAll(".combatOpsInitiativeInput").forEach(input => { const c = combatOpsState.combatants[Number(input.dataset.combatantIndex)]; if (c) c.initiative = input.value === "" ? "" : Number(input.value); }); }
     function sortCombatantsByInitiative() { combatOpsState.combatants.sort((a,b) => Number(b.initiative || 0) - Number(a.initiative || 0) || (a.name || "").localeCompare(b.name || "")); }
-    function isCombatantReady(c) { return c && c.ac != null && c.hp != null && c.maxHp != null && c.maxHp > 0; }
-    async function startCombat() { updateInitiativeValuesFromInputs(); const incomplete = combatOpsState.combatants.filter(c => !isCombatantReady(c)); if (incomplete.length) { await showCombatDialog({ title: "Combatants Not Ready", message: `Complete AC and HP for: ${incomplete.map(c => c.name).join(", ")}.`, confirmLabel: "Return to Readiness", cancelLabel: "Close" }); return; } sortCombatantsByInitiative(); combatOpsState.mode = "active"; combatOpsState.round = 1; combatOpsState.activeIndex = 0; saveCombatState(); rerenderCombatOps(); }
-    function nextTurn(delta = 1) { if (!combatOpsState.combatants.length) return; combatOpsState.activeIndex += delta; if (combatOpsState.activeIndex >= combatOpsState.combatants.length) { combatOpsState.activeIndex = 0; combatOpsState.round++; } else if (combatOpsState.activeIndex < 0) { combatOpsState.activeIndex = combatOpsState.combatants.length - 1; combatOpsState.round = Math.max(1, combatOpsState.round - 1); } saveCombatState(); rerenderCombatOps(); }
-    function adjustHp(amount) { const c = getActiveCombatant(); if (!c || c.hp == null || c.maxHp == null) return; const delta = Number(amount); c.hp = Math.max(0, Math.min(c.maxHp, c.hp + delta)); if (c.groupMode === "individual-counters" && Array.isArray(c.memberHp)) { let remaining = Math.abs(delta); if (delta < 0) { for (let i = c.memberHp.length - 1; i >= 0 && remaining > 0; i--) { const applied = Math.min(c.memberHp[i], remaining); c.memberHp[i] -= applied; remaining -= applied; } } else { for (let i = 0; i < c.memberHp.length && remaining > 0; i++) { const capacity = Math.max(0, c.standardMemberHp - c.memberHp[i]); const applied = Math.min(capacity, remaining); c.memberHp[i] += applied; remaining -= applied; } } c.groupQuantity = c.memberHp.filter(value => value > 0).length; } if (c.hp === 0 && c.status === "Active") c.status = "Unconscious"; else if (delta > 0 && c.hp > 0 && c.status === "Unconscious") c.status = "Active"; saveCombatState(); rerenderCombatOps(); }
+    function isCombatantReady(c) {
+        if (!c) return false;
+        const requiredRoles = [
+            ["primaryDefence", "ac"],
+            ["currentHealth", "hp"],
+            ["maximumHealth", "maxHp"]
+        ].filter(([role]) => semanticStat(c.systemId, role)?.enabled !== false && semanticStat(c.systemId, role)?.requiredForCombat);
+        return requiredRoles.every(([, field]) => c[field] != null && (field !== "maxHp" || Number(c[field]) > 0));
+    }
+    async function startCombat() { updateInitiativeValuesFromInputs(); const incomplete = combatOpsState.combatants.filter(c => !isCombatantReady(c)); if (incomplete.length) { await showCombatDialog({ title: "Combatants Not Ready", message: `Complete the active system's required combat statistics for: ${incomplete.map(c => c.name).join(", ")}.`, confirmLabel: "Return to Readiness", cancelLabel: "Close" }); return; } sortCombatantsByInitiative(); combatOpsState.mode = "active"; combatOpsState.round = 1; combatOpsState.activeIndex = 0; saveCombatState(); rerenderCombatOps(); }
+    function resetCapabilityUsage(combatant, period) {
+        combatant?.capabilityProfile?.categories?.forEach(category => category.entries?.forEach(entry => {
+            if (!entry.runtime) return;
+            if (period === "turn") entry.runtime.usedThisTurn = false;
+            if (period === "round") entry.runtime.usedThisRound = false;
+        }));
+    }
+    function nextTurn(delta = 1) {
+        if (!combatOpsState.combatants.length) return;
+        const priorRound = combatOpsState.round;
+        combatOpsState.activeIndex += delta;
+        if (combatOpsState.activeIndex >= combatOpsState.combatants.length) { combatOpsState.activeIndex = 0; combatOpsState.round++; }
+        else if (combatOpsState.activeIndex < 0) { combatOpsState.activeIndex = combatOpsState.combatants.length - 1; combatOpsState.round = Math.max(1, combatOpsState.round - 1); }
+        resetCapabilityUsage(getActiveCombatant(), "turn");
+        if (combatOpsState.round !== priorRound) combatOpsState.combatants.forEach(combatant => resetCapabilityUsage(combatant, "round"));
+        saveCombatState();
+        rerenderCombatOps();
+    }
+    function resolveHitPointAdjustment(combatant, amount) {
+        const delta = Number(amount);
+        if (!combatant || combatant.hp == null || combatant.maxHp == null || !Number.isFinite(delta)) return null;
+        if (delta < 0) {
+            const damage = Math.abs(delta);
+            const temporaryHp = Math.max(0, Number(combatant.tempHp) || 0);
+            const absorbed = Math.min(temporaryHp, damage);
+            combatant.tempHp = temporaryHp - absorbed;
+            const currentHpDamage = damage - absorbed;
+            combatant.hp = Math.max(0, Number(combatant.hp) - currentHpDamage);
+            return { currentHpDelta: -currentHpDamage, temporaryHpDelta: -absorbed };
+        }
+        const previousHp = Number(combatant.hp);
+        combatant.hp = Math.max(0, Math.min(Number(combatant.maxHp), previousHp + delta));
+        return { currentHpDelta: combatant.hp - previousHp, temporaryHpDelta: 0 };
+    }
+    function adjustHp(amount) {
+        const c = getActiveCombatant();
+        const result = resolveHitPointAdjustment(c, amount);
+        if (!result) return;
+        const currentHpDelta = result.currentHpDelta;
+        if (c.groupMode === "individual-counters" && Array.isArray(c.memberHp)) {
+            let remaining = Math.abs(currentHpDelta);
+            if (currentHpDelta < 0) {
+                for (let i = c.memberHp.length - 1; i >= 0 && remaining > 0; i--) { const applied = Math.min(c.memberHp[i], remaining); c.memberHp[i] -= applied; remaining -= applied; }
+            } else {
+                for (let i = 0; i < c.memberHp.length && remaining > 0; i++) { const capacity = Math.max(0, c.standardMemberHp - c.memberHp[i]); const applied = Math.min(capacity, remaining); c.memberHp[i] += applied; remaining -= applied; }
+            }
+            c.groupQuantity = c.memberHp.filter(value => value > 0).length;
+        }
+        if (c.hp === 0 && c.status === "Active") c.status = "Unconscious";
+        else if (currentHpDelta > 0 && c.hp > 0 && c.status === "Unconscious") c.status = "Active";
+        saveCombatState();
+        rerenderCombatOps();
+    }
+    function updateCapabilityRuntime(categoryId, entryId, action) {
+        const c = getActiveCombatant();
+        const category = c?.capabilityProfile?.categories?.find(item => item.id === categoryId);
+        const entry = category?.entries?.find(item => String(item.id) === String(entryId));
+        if (!entry?.runtime) return;
+        if (action === "decrement" && entry.runtime.usesRemaining != null) entry.runtime.usesRemaining = Math.max(0, entry.runtime.usesRemaining - 1);
+        if (action === "increment" && entry.runtime.usesRemaining != null) entry.runtime.usesRemaining = Math.min(entry.runtime.maximumUses, entry.runtime.usesRemaining + 1);
+        if (action === "recharge") entry.runtime.rechargeState = entry.runtime.rechargeState === "spent" ? "ready" : "spent";
+        if (action === "turn") entry.runtime.usedThisTurn = !entry.runtime.usedThisTurn;
+        if (action === "round") entry.runtime.usedThisRound = !entry.runtime.usedThisRound;
+        saveCombatState();
+        rerenderCombatOps();
+    }
+    function updateCapabilityResource(resourceId, key, delta) {
+        const resources = getActiveCombatant()?.capabilityProfile?.resources;
+        if (!resources) return;
+        if (resourceId === "legendaryActions" && resources.legendaryActions) {
+            resources.legendaryActions.remaining = Math.max(0, Math.min(resources.legendaryActions.maximum, resources.legendaryActions.remaining + delta));
+        }
+        if (resourceId === "spellSlots" && resources.spellSlots?.[key] != null) {
+            const slot = resources.spellSlots[key];
+            if (typeof slot === "number") resources.spellSlots[key] = Math.max(0, slot + delta);
+            else {
+                const maximum = Number(slot.maximum ?? slot.max ?? slot.total ?? slot.remaining ?? slot.current ?? 0);
+                const currentKey = Object.prototype.hasOwnProperty.call(slot, "remaining") ? "remaining" : "current";
+                slot[currentKey] = Math.max(0, Math.min(maximum, Number(slot[currentKey] ?? maximum) + delta));
+            }
+        }
+        saveCombatState();
+        rerenderCombatOps();
+    }
     async function addCondition() {
         const c = getActiveCombatant();
         if (!c) return;
-        const registered = window.MasterForgeGameSystems?.getCurrent?.()?.conditions || [];
+        const registered = window.MasterForgeGameSystems?.enabled?.(combatRules(c.systemId).conditions) || [];
         const value = registered.length
             ? await showCombatDialog({ title: `Add Condition to ${c.name}`, message: "Choose a system condition or enter a temporary custom condition.", confirmLabel: "Add Condition", selectOptions: registered.map(condition => ({ value: condition.name || condition.id, label: condition.name || condition.id })) })
             : await showCombatDialog({ title: `Add Condition to ${c.name}`, message: "The system condition registry is unavailable. Enter a temporary condition.", confirmLabel: "Add Condition", input: { label: "Condition", placeholder: "Condition name" } });
@@ -461,16 +873,426 @@ console.log("combatOps.js loaded");
         if (value) { c.conditions = c.conditions.filter(item => item.toLowerCase() !== value.toLowerCase()); saveCombatState(); rerenderCombatOps(); }
     }
     function setActiveStatus(status) { const c = getActiveCombatant(); if (!c || (status === "Active" && Number(c.hp) <= 0)) return; c.status = status; saveCombatState(); rerenderCombatOps(); }
-    async function addLateParticipant() { const name = await showCombatDialog({ title: "Add Late Participant", message: "This participant exists only in the current combat and will not write back to a canonical record.", confirmLabel: "Add Participant", input: { label: "Participant name", placeholder: "Name" } }); if (!name) return; combatOpsState.combatants.push({ id: `late-${Date.now()}`, sourceParticipantId: "", sourceType: "other", sourceId: "", sourceEntityId: "", sourceDisplayName: name, sourceWriteBackEligible: false, importedAt: new Date().toISOString(), snapshotVersion: 2, name, subtitle: "Late participant", portrait: "", initiative: "", ac: null, hp: null, maxHp: null, tempHp: 0, abilities: {}, conditions: [], hidden: false, status: "Active", notes: "", traits: [], actions: [], bonusActions: [], reactions: [], legendaryActions: [], spellcasting: [], equipment: [] }); saveCombatState(); rerenderCombatOps(); }
+
+    function lateParticipantTypeMatches(left, right) {
+        if (left === right) return true;
+        return ["vehicle", "ship"].includes(left) && ["vehicle", "ship"].includes(right);
+    }
+
+    function isCanonicalParticipantInCombat(type, record) {
+        const references = new Set(canonicalIds(record));
+        return combatOpsState.combatants.some(combatant =>
+            !combatant.quickParticipant &&
+            lateParticipantTypeMatches(type, combatant.sourceType) &&
+            [combatant.sourceId, combatant.sourceEntityId, combatant.sourceParticipantId]
+                .filter(Boolean)
+                .some(reference => references.has(String(reference)))
+        );
+    }
+
+    function makeLateParticipantPreview(type, record) {
+        const sourceData = record?.data_json || {};
+        const characterData = sourceData.character || {};
+        const canonical = { ...sourceData, ...characterData, ...(record || {}) };
+        const stats = { ...(sourceData.stats || {}), ...(canonical.stats || {}) };
+        const systemId = canonical.systemId || sourceData.systemId || window.dmState?.current?.systemId || "system-neutral";
+        const maxHp = firstFinite(readSemantic(canonical, "maximumHealth", systemId), parseStatNumber(stats.hp));
+        return {
+            key: `${type}:${record.id}`,
+            type,
+            record,
+            id: String(record.id),
+            name: canonical.name || record.name || "Unnamed Participant",
+            portrait: portraitOf(canonical),
+            category: canonical.type || canonical.species || canonical.vehicleType || canonical.class || combatTypeLabel(type),
+            cr: readSemantic(canonical, "threat", systemId) || "",
+            level: readSemantic(canonical, "levelRank", systemId) ?? "",
+            ac: firstFinite(readSemantic(canonical, "primaryDefence", systemId)),
+            maxHp,
+            alreadyPresent: isCanonicalParticipantInCombat(type, record)
+        };
+    }
+
+    async function loadLateParticipantSources() {
+        const types = ["pc", "npc", "creature", "vehicle", "ship"];
+        const loaded = await Promise.all(types.map(async type => {
+            try {
+                return (await canonicalRecords(type))
+                    .filter(record => {
+                        const status = String(record.status || record.data_json?.status || "").toLowerCase();
+                        return !["archived", "deleted"].includes(status) &&
+                            sourceScopeMatches(record, {
+                                campaignId: currentCampaignScope(),
+                                systemId: window.dmState?.current?.systemId || ""
+                            });
+                    })
+                    .map(record => makeLateParticipantPreview(type, record));
+            } catch (error) {
+                console.warn(`Could not load ${type} records for late participant picker:`, error);
+                return [];
+            }
+        }));
+        return loaded.flat().sort((left, right) =>
+            left.name.localeCompare(right.name) || left.type.localeCompare(right.type)
+        );
+    }
+
+    function quickParticipantSnapshot(values) {
+        const numberOr = (value, fallback) => value === "" || !Number.isFinite(Number(value)) ? fallback : Number(value);
+        const currentHp = Math.max(0, numberOr(values.currentHp, 1));
+        const maximumHp = Math.max(1, numberOr(values.maximumHp, currentHp || 1));
+        const type = values.type || "creature";
+        const name = values.name.trim();
+        return {
+            id: `quick-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            sourceParticipantId: "",
+            sourceType: type,
+            sourceId: "",
+            sourceEntityId: "",
+            sourceStore: "",
+            sourceScope: "combat-runtime",
+            sourceWriteBackEligible: false,
+            sourceDisplayName: name,
+            importedAt: new Date().toISOString(),
+            snapshotVersion: 2,
+            quickParticipant: true,
+            temporary: true,
+            name,
+            subtitle: `Quick ${combatTypeLabel(type)} · Temporary`,
+            portrait: values.portrait || "",
+            systemId: window.dmState?.current?.systemId || "system-neutral",
+            level: null,
+            cr: "",
+            className: "",
+            subtype: "",
+            size: "",
+            creatureType: "",
+            alignment: "",
+            initiative: values.initiative === "" ? "" : numberOr(values.initiative, ""),
+            initiativeModifier: null,
+            proficiencyBonus: "",
+            ac: Math.max(0, numberOr(values.ac, 10)),
+            hp: Math.min(currentHp, maximumHp),
+            maxHp: maximumHp,
+            tempHp: 0,
+            speed: values.speed || "30",
+            attributes: {},
+            abilities: {},
+            savingThrows: "",
+            skills: "",
+            senses: "",
+            languages: "",
+            passiveScores: {},
+            capabilityProfile: { systemId: window.dmState?.current?.systemId || "system-neutral", categories: [], warnings: [], conflicts: [], resources: { legendaryActions: null, spellSlots: null } },
+            damageVulnerabilities: "",
+            damageResistances: "",
+            damageImmunities: "",
+            conditionImmunities: "",
+            traits: [],
+            actions: [],
+            bonusActions: [],
+            reactions: [],
+            legendaryActions: [],
+            lairActions: [],
+            mythicActions: [],
+            spellcasting: [],
+            innateSpellcasting: [],
+            equipment: [],
+            loot: [],
+            group: type === "pc" ? "Allies" : "Enemies",
+            conditions: [],
+            hidden: false,
+            status: "Active",
+            notes: values.notes || ""
+        };
+    }
+
+    async function showLateParticipantDialog() {
+        pendingCombatDialog?.cancel();
+        const previousFocus = document.activeElement;
+        const backdrop = document.createElement("div");
+        backdrop.className = "combatDeploymentBackdrop combatLateParticipantBackdrop";
+        backdrop.innerHTML = `
+          <section class="combatDeploymentDialog combatLateParticipantDialog" role="dialog" aria-modal="true" aria-labelledby="lateParticipantDialogTitle">
+            <header>
+              <div><h2 id="lateParticipantDialogTitle">Add Late Participant</h2><p>Add a canonical MasterForge record or create a temporary combat-only participant.</p></div>
+              <button type="button" data-late-close aria-label="Close late participant dialog">Close</button>
+            </header>
+            <div class="combatLateParticipantModes" role="tablist" aria-label="Participant source">
+              <button type="button" role="tab" aria-selected="true" data-late-mode="canonical">From MasterForge</button>
+              <button type="button" role="tab" aria-selected="false" data-late-mode="quick">Quick Add</button>
+            </div>
+            <section data-late-panel="canonical" role="tabpanel">
+              <div class="combatLateParticipantFilters">
+                <label>Search<input type="search" data-late-search placeholder="Search PCs, NPCs, creatures and vehicles."></label>
+                <label>Record Type<select data-late-type><option value="all">All Types</option><option value="pc">PC</option><option value="npc">NPC</option><option value="creature">Creature</option><option value="vehicle">Vehicle</option></select></label>
+              </div>
+              <div class="combatLateParticipantBrowser">
+                <div class="combatLateParticipantResults" data-late-results><p class="forgeEmptyState">Loading MasterForge records…</p></div>
+                <aside class="combatLateParticipantPreview" data-late-preview><p class="forgeEmptyState">Select a participant to preview it.</p></aside>
+              </div>
+            </section>
+            <section data-late-panel="quick" role="tabpanel" hidden>
+              <div class="combatLateParticipantQuickGrid">
+                <label class="combatLateParticipantWide">Name <span aria-hidden="true">*</span><input data-quick-name required autocomplete="off"></label>
+                <label>Participant Type<select data-quick-type><option value="creature">Creature</option><option value="npc">NPC</option><option value="pc">PC</option><option value="vehicle">Vehicle</option><option value="other">Other</option></select></label>
+                <label>Current HP<input data-quick-current-hp type="number" min="0" value="1"></label>
+                <label>Maximum HP<input data-quick-max-hp type="number" min="1" value="1"></label>
+                <label>Armour Class<input data-quick-ac type="number" min="0" value="10"></label>
+                <label>Initiative<input data-quick-initiative type="number" placeholder="Optional"></label>
+                <label>Speed<input data-quick-speed value="30"></label>
+                <label class="combatLateParticipantWide">Portrait<input data-quick-portrait type="file" accept="image/*"><small data-quick-portrait-status>No portrait selected.</small></label>
+                <label class="combatLateParticipantWide">Notes<textarea data-quick-notes rows="3"></textarea></label>
+              </div>
+            </section>
+            <p class="combatLateParticipantStatus" data-late-status aria-live="polite"></p>
+            <footer><button type="button" data-late-cancel>Cancel</button><button type="button" class="primaryBtn" data-late-add disabled>Add Participant</button></footer>
+          </section>
+        `;
+        document.body.appendChild(backdrop);
+        document.body.classList.add("masterforgeModalOpen");
+
+        const dialog = backdrop.querySelector(".combatLateParticipantDialog");
+        const searchInput = backdrop.querySelector("[data-late-search]");
+        const typeInput = backdrop.querySelector("[data-late-type]");
+        const results = backdrop.querySelector("[data-late-results]");
+        const preview = backdrop.querySelector("[data-late-preview]");
+        const status = backdrop.querySelector("[data-late-status]");
+        const addButton = backdrop.querySelector("[data-late-add]");
+        const quickName = backdrop.querySelector("[data-quick-name]");
+        const quickCurrentHp = backdrop.querySelector("[data-quick-current-hp]");
+        const quickMaxHp = backdrop.querySelector("[data-quick-max-hp]");
+        const quickPortraitInput = backdrop.querySelector("[data-quick-portrait]");
+        const quickPortraitStatus = backdrop.querySelector("[data-quick-portrait-status]");
+        let mode = "canonical";
+        let sources = [];
+        let selected = null;
+        let quickPortrait = "";
+        let maximumHpWasEdited = false;
+        let closed = false;
+
+        const isQuickValid = () => Boolean(quickName.value.trim()) &&
+            Number(quickCurrentHp.value) >= 0 &&
+            Number(quickMaxHp.value) >= 1;
+        const updateValidity = () => {
+            addButton.disabled = mode === "canonical" ? !selected : !isQuickValid();
+        };
+        const previewStats = source => [
+            source.cr !== "" ? `CR ${source.cr}` : "",
+            source.level !== "" ? `Level ${source.level}` : "",
+            source.ac != null ? `AC ${source.ac}` : "AC not set",
+            source.maxHp != null ? `HP ${source.maxHp}` : "HP not set"
+        ].filter(Boolean).join(" · ");
+        const renderPreview = () => {
+            if (!selected) {
+                preview.innerHTML = `<p class="forgeEmptyState">Select a participant to preview it.</p>`;
+                return;
+            }
+            preview.innerHTML = `
+              <div class="combatLateParticipantPreviewPortrait">${selected.portrait ? `<img src="${esc(selected.portrait)}" alt="">` : `<span aria-label="No portrait">◆</span>`}</div>
+              <div><span class="combatTypeBadge combatTypeBadge--${esc(selected.type)}">${esc(combatTypeLabel(selected.type))}</span><h3>${esc(selected.name)}</h3><p>${esc(selected.category)}</p><small>${esc(previewStats(selected))}</small></div>
+            `;
+        };
+        const renderResults = () => {
+            const search = normalisedName(searchInput.value);
+            const filter = typeInput.value;
+            const matches = sources.filter(source =>
+                (!search || normalisedName(`${source.name} ${source.category}`).includes(search)) &&
+                (filter === "all" || (filter === "vehicle" ? ["vehicle", "ship"].includes(source.type) : source.type === filter))
+            );
+            const available = matches.filter(source => !source.alreadyPresent);
+            if (!available.length) {
+                const duplicateOnly = matches.length && matches.every(source => source.alreadyPresent);
+                results.innerHTML = `<p class="forgeEmptyState">${duplicateOnly ? "This participant is already in the current combat." : search ? "No matching MasterForge records found." : "Search PCs, NPCs, creatures and vehicles."}</p>`;
+                selected = null;
+                renderPreview();
+                updateValidity();
+                return;
+            }
+            results.innerHTML = available.map(source => `
+              <button type="button" class="combatLateParticipantResult ${selected?.key === source.key ? "is-selected" : ""}" data-late-source="${esc(source.key)}" aria-pressed="${selected?.key === source.key}">
+                <span class="combatLateParticipantThumb">${source.portrait ? `<img src="${esc(source.portrait)}" alt="">` : "◆"}</span>
+                <span><strong>${esc(source.name)}</strong><small>${esc(`${combatTypeLabel(source.type)} · ${source.category}`)}</small><small>${esc(previewStats(source))}</small></span>
+              </button>
+            `).join("");
+        };
+        const setMode = nextMode => {
+            mode = nextMode;
+            backdrop.querySelectorAll("[data-late-mode]").forEach(button => {
+                const active = button.dataset.lateMode === mode;
+                button.setAttribute("aria-selected", String(active));
+                button.classList.toggle("is-active", active);
+            });
+            backdrop.querySelectorAll("[data-late-panel]").forEach(panel => {
+                panel.hidden = panel.dataset.latePanel !== mode;
+            });
+            status.textContent = mode === "quick" ? "Quick participants are temporary and exist only in this combat." : "";
+            updateValidity();
+            requestAnimationFrame(() => (mode === "quick" ? quickName : searchInput).focus());
+        };
+        const finish = () => {
+            if (closed) return;
+            closed = true;
+            if (pendingCombatDialog?.backdrop === backdrop) pendingCombatDialog = null;
+            document.removeEventListener("keydown", handleKeydown);
+            backdrop.remove();
+            document.body.classList.remove("masterforgeModalOpen");
+            previousFocus?.focus?.();
+        };
+        pendingCombatDialog = { backdrop, cancel: finish };
+        const submit = async () => {
+            if (addButton.disabled) return;
+            addButton.disabled = true;
+            status.textContent = "Adding participant…";
+            try {
+                if (mode === "canonical") {
+                    const participant = {
+                        id: `late-canonical-${selected.type}-${selected.id}-${Date.now()}`,
+                        sourceType: selected.type,
+                        sourceId: selected.id,
+                        sourceEntityId: selected.id,
+                        displayName: selected.name,
+                        disposition: selected.type === "pc" ? "friendly" : "hostile",
+                        quantity: 1
+                    };
+                    const deployed = await deployParticipant(participant, combatOpsState.combatants.length);
+                    if (!deployed.length) throw new Error("The selected canonical participant could not be resolved.");
+                    combatOpsState.combatants.push(...deployed);
+                } else {
+                    combatOpsState.combatants.push(quickParticipantSnapshot({
+                        name: quickName.value,
+                        type: backdrop.querySelector("[data-quick-type]").value,
+                        currentHp: quickCurrentHp.value,
+                        maximumHp: quickMaxHp.value,
+                        ac: backdrop.querySelector("[data-quick-ac]").value,
+                        initiative: backdrop.querySelector("[data-quick-initiative]").value,
+                        speed: backdrop.querySelector("[data-quick-speed]").value,
+                        portrait: quickPortrait,
+                        notes: backdrop.querySelector("[data-quick-notes]").value
+                    }));
+                }
+                saveCombatState();
+                finish();
+                rerenderCombatOps();
+            } catch (error) {
+                console.error("Could not add late combat participant:", error);
+                status.textContent = error?.message || "Participant could not be added.";
+                updateValidity();
+            }
+        };
+        const handleKeydown = event => {
+            if (event.key === "Escape") {
+                event.preventDefault();
+                finish();
+                return;
+            }
+            if (event.key === "Enter" && event.target.tagName !== "TEXTAREA" && !event.target.closest("[data-late-source]")) {
+                if (!addButton.disabled) {
+                    event.preventDefault();
+                    submit();
+                }
+                return;
+            }
+            if (event.key === "Tab") {
+                const focusable = [...dialog.querySelectorAll("button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled])")]
+                    .filter(element => !element.closest("[hidden]"));
+                if (!focusable.length) return;
+                const first = focusable[0];
+                const last = focusable[focusable.length - 1];
+                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+            }
+        };
+
+        backdrop.onclick = event => {
+            const modeButton = event.target.closest("[data-late-mode]");
+            const resultButton = event.target.closest("[data-late-source]");
+            if (modeButton) setMode(modeButton.dataset.lateMode);
+            else if (resultButton) {
+                selected = sources.find(source => source.key === resultButton.dataset.lateSource) || null;
+                renderResults();
+                renderPreview();
+                updateValidity();
+            } else if (event.target === backdrop || event.target.closest("[data-late-close], [data-late-cancel]")) finish();
+            else if (event.target.closest("[data-late-add]")) submit();
+        };
+        searchInput.oninput = renderResults;
+        typeInput.onchange = renderResults;
+        backdrop.querySelectorAll("[data-quick-name], [data-quick-current-hp], [data-quick-max-hp]").forEach(input => {
+            input.addEventListener("input", updateValidity);
+        });
+        quickCurrentHp.oninput = () => {
+            if (!maximumHpWasEdited) quickMaxHp.value = Math.max(1, Number(quickCurrentHp.value || 1));
+            updateValidity();
+        };
+        quickMaxHp.oninput = () => {
+            maximumHpWasEdited = true;
+            updateValidity();
+        };
+        quickPortraitInput.onchange = () => {
+            const file = quickPortraitInput.files?.[0];
+            if (!file) {
+                quickPortrait = "";
+                quickPortraitStatus.textContent = "No portrait selected.";
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = () => {
+                quickPortrait = String(reader.result || "");
+                quickPortraitStatus.textContent = file.name;
+            };
+            reader.onerror = () => {
+                quickPortrait = "";
+                quickPortraitStatus.textContent = "Portrait could not be loaded.";
+            };
+            reader.readAsDataURL(file);
+        };
+        document.addEventListener("keydown", handleKeydown);
+        setMode("canonical");
+        try {
+            sources = await loadLateParticipantSources();
+            renderResults();
+        } catch (error) {
+            console.error("Could not load late participant sources:", error);
+            results.innerHTML = `<p class="forgeEmptyState">MasterForge records could not be loaded.</p>`;
+        }
+    }
+
+    async function addLateParticipant() {
+        await showLateParticipantDialog();
+    }
     async function removeActiveParticipant() { const c = getActiveCombatant(); if (!c || !await showCombatDialog({ title: "Remove Combat Participant?", message: `Remove ${c.name} from this runtime combat? The planned encounter will not be changed.`, confirmLabel: "Remove Participant", danger: true })) return; combatOpsState.combatants.splice(combatOpsState.activeIndex, 1); combatOpsState.activeIndex = Math.max(0, Math.min(combatOpsState.activeIndex, combatOpsState.combatants.length - 1)); saveCombatState(); rerenderCombatOps(); }
+    function applySystemCombatValues(target, combatant) {
+        const statistics = { ...(target?.systemValues?.statistics || {}) };
+        const capabilityRuntime = { ...(target?.systemValues?.capabilityRuntime || {}) };
+        [
+            ["currentHealth", combatant.hp],
+            ["temporaryHealth", combatant.tempHp || 0]
+        ].forEach(([role, value]) => {
+            const definition = semanticStat(combatant.systemId, role);
+            if (definition?.combatWriteBack) statistics[definition.id] = value;
+        });
+        (combatant.capabilityProfile?.categories || []).filter(category => category.persistentRuntime).forEach(category => {
+            capabilityRuntime[category.id] = Object.fromEntries(
+                (category.entries || []).filter(entry => entry.runtime).map(entry => [entry.id, { ...entry.runtime }])
+            );
+        });
+        return {
+            ...(target?.systemValues || {}),
+            systemId: combatant.systemId,
+            schemaVersion: combatRules(combatant.systemId).schemaVersion || 1,
+            statistics,
+            capabilityRuntime
+        };
+    }
     function applyCanonicalPcFields(target, combatant) {
-        const updated = { ...target, currentHP: combatant.hp, temporaryHP: combatant.tempHp || 0, status: combatant.status };
+        const updated = { ...target, currentHP: combatant.hp, temporaryHP: combatant.tempHp || 0, status: combatant.status, systemValues: applySystemCombatValues(target, combatant) };
         if (Array.isArray(target?.conditions)) updated.conditions = [...(combatant.conditions || [])];
         else updated.persistentConditions = [...(combatant.conditions || [])];
         return updated;
     }
     function applyEntityCombatFields(target, combatant) {
-        const updated = { ...target, status: combatant.status };
+        const updated = { ...target, status: combatant.status, systemValues: applySystemCombatValues(target, combatant) };
         if (Array.isArray(target?.conditions)) updated.conditions = [...(combatant.conditions || [])];
         else updated.persistentConditions = [...(combatant.conditions || [])];
         updated.stats = {
@@ -508,6 +1330,7 @@ console.log("combatOps.js loaded");
                             currentHP: savedCharacter.currentHP,
                             temporaryHP: savedCharacter.temporaryHP || 0,
                             status: savedCharacter.status,
+                            systemValues: savedCharacter.systemValues,
                             persistentConditions: [...(savedCharacter.persistentConditions || savedCharacter.conditions || [])]
                         }
                     }
@@ -563,6 +1386,7 @@ console.log("combatOps.js loaded");
             localStorage.removeItem(STORAGE_KEY);
             Object.assign(combatOpsState, freshState());
             document.body.classList.remove("combatOpsMode");
+            document.querySelector("#mainLayout")?.classList.remove("is-combat-focus-mode");
             await loadEncounters();
             if (typeof window.renderParty === "function") {
                 try {
@@ -582,7 +1406,17 @@ console.log("combatOps.js loaded");
     function wireCombatOpsControls() {
         document.querySelector("#combatOpsRefreshBtn")?.addEventListener("click", loadEncounters);
         document.querySelector("#combatOpsChooseEncounterBtn")?.addEventListener("click", () => { combatOpsState.mode = "selection"; rerenderCombatOps(); if (!combatOpsState.encounters.length) loadEncounters(); });
-        document.querySelector("#toggleCombatOpsModeBtn")?.addEventListener("click", () => { document.body.classList.toggle("combatOpsMode"); rerenderCombatOps(); });
+        document.querySelector("#toggleCombatOpsModeBtn")?.addEventListener("click", () => {
+            const content = document.querySelector("#content");
+            const entering = !document.body.classList.contains("combatOpsMode");
+            if (entering) focusModeScrollPosition = content?.scrollTop || 0;
+            document.body.classList.toggle("combatOpsMode", entering);
+            document.querySelector("#mainLayout")?.classList.toggle("is-combat-focus-mode", entering);
+            rerenderCombatOps();
+            requestAnimationFrame(() => {
+                if (content) content.scrollTop = focusModeScrollPosition;
+            });
+        });
         document.querySelector("#combatOpsSetInitiativeBtn")?.addEventListener("click", () => { combatOpsState.mode = "initiative"; rerenderCombatOps(); });
         document.querySelector("#combatOpsCancelInitiativeBtn")?.addEventListener("click", () => { combatOpsState.mode = "setup"; rerenderCombatOps(); });
         document.querySelector("#combatOpsStartCombatBtn")?.addEventListener("click", startCombat);
@@ -591,6 +1425,16 @@ console.log("combatOps.js loaded");
         document.querySelectorAll(".combatOpsReadinessInput").forEach(input => input.addEventListener("change", () => { const c = combatOpsState.combatants[Number(input.dataset.combatantIndex)]; if (!c) return; c[input.dataset.readinessField] = input.value === "" ? null : Number(input.value); saveCombatState(); rerenderCombatOps(); }));
         document.querySelectorAll(".combatOpsInitiativeCard").forEach(card => card.onclick = () => { combatOpsState.activeIndex = Number(card.dataset.combatantIndex); saveCombatState(); rerenderCombatOps(); });
         document.querySelectorAll(".combatOpsDamageBtn").forEach(button => button.onclick = () => adjustHp(-Number(button.dataset.amount))); document.querySelectorAll(".combatOpsHealBtn").forEach(button => button.onclick = () => adjustHp(Number(button.dataset.amount)));
+        document.querySelectorAll("[data-capability-action]").forEach(button => button.onclick = () => {
+            const entry = button.closest("[data-capability-id]");
+            const section = button.closest(".combatCapabilitySection");
+            if (entry && section) updateCapabilityRuntime(section.id.replace("combat-capability-", ""), entry.dataset.capabilityId, button.dataset.capabilityAction);
+        });
+        document.querySelectorAll("[data-resource-action]").forEach(button => button.onclick = () => {
+            const resource = button.closest("[data-capability-resource]");
+            const key = button.closest("[data-resource-key]")?.dataset.resourceKey || "";
+            updateCapabilityResource(resource?.dataset.capabilityResource, key, button.dataset.resourceAction === "increment" ? 1 : -1);
+        });
         document.querySelector(".combatOpsRevealBtn")?.addEventListener("click", () => { getActiveCombatant().hidden = false; saveCombatState(); rerenderCombatOps(); });
         const bindNumber = (selector, field, minimum = -Infinity) => document.querySelector(selector)?.addEventListener("change", event => { const c = getActiveCombatant(); c[field] = event.currentTarget.value === "" ? null : Math.max(minimum, Number(event.currentTarget.value)); if (field === "maxHp" && c.hp != null && c.maxHp != null) c.hp = Math.min(c.hp, c.maxHp); saveCombatState(); rerenderCombatOps(); });
         bindNumber("#combatOpsHpInput", "hp", 0); bindNumber("#combatOpsMaxHpInput", "maxHp", 1); bindNumber("#combatOpsTempHpInput", "tempHp", 0); bindNumber("#combatOpsAcInput", "ac");
@@ -598,8 +1442,14 @@ console.log("combatOps.js loaded");
         document.querySelector("#combatOpsNotesInput")?.addEventListener("change", event => { getActiveCombatant().notes = event.currentTarget.value; saveCombatState(); });
     }
 
-    async function open() { restoreCombatState(); rerenderCombatOps(); updateCombatDiagnostic("Combat module initialised"); await loadEncounters(); }
+    async function open() {
+        restoreCombatState();
+        rerenderCombatOps();
+        updateCombatDiagnostic("Combat module initialised");
+        await Promise.all([loadEncounters(), refreshMissingSourceReferences()]);
+        rerenderCombatOps();
+    }
     restoreCombatState();
-    window.MasterForgeCombatOps = { open, render: renderCombatOperationsCentre, wire: wireCombatOpsControls, state: combatOpsState, startCombat, nextTurn, adjustHp, addCondition, removeCondition, setActiveStatus, addLateParticipant, removeActiveParticipant, endCombat, getActiveCombatant, isCombatantReady };
+    window.MasterForgeCombatOps = { open, render: renderCombatOperationsCentre, wire: wireCombatOpsControls, state: combatOpsState, startCombat, nextTurn, adjustHp, resolveHitPointAdjustment, formatSourceReference, refreshMissingSourceReferences, addCondition, removeCondition, setActiveStatus, addLateParticipant, removeActiveParticipant, endCombat, getActiveCombatant, getActiveReferenceDestinations, navigateActiveReference, isCombatantReady };
     initialiseCombatOps();
 })();

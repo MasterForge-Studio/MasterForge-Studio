@@ -1057,6 +1057,7 @@ textarea {
 .masterforge-action-group__toggle, .masterforge-console-action { width: 100%; display: flex; justify-content: space-between; text-align: left; }
 .masterforge-action-group__toggle { background: var(--mf-panel-bg-soft, var(--card-bg)); font-weight: 700; }
 .masterforge-action-group__items { display: grid; gap: 5px; padding: 6px 0; }
+.masterforge-action-group__items[hidden] { display: none; }
 .masterforge-console-action { color: var(--mf-text, var(--text-main)); }
 .masterforge-console-action.danger { border-color: var(--mf-danger-border, #d85a5a); color: var(--mf-danger-text, #fff4f4); }
 .masterforge-action-badge { border-radius: 999px; padding: 1px 7px; background: var(--mf-accent, var(--accent)); color: var(--mf-panel-bg, #111); }
@@ -1323,6 +1324,223 @@ textarea {
   .entity-tree-equal-row::after,
   .entity-tree-equal-branch::before {
     display: none;
+  }
+}
+
+/* Combat participant card contrast layer; final cascade enforcement is at EOF. */
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardOverlay {
+  display: block;
+  background:
+    linear-gradient(
+      to top,
+      var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 0%,
+      color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 88%, transparent) 43%,
+      color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 54%, transparent) 62%,
+      transparent 82%
+    ),
+    linear-gradient(to right, color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 32%, transparent), transparent 70%);
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity,
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity {
+  padding-bottom: 44px;
+  color: var(--mf-button-text-resolved, var(--mf-button-text, var(--text-main))) !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity :is(.combatOpsInitName, small, span),
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity :is(.combatOpsInitName, small, span) {
+  color: var(--mf-button-text-resolved, var(--mf-button-text, var(--text-main))) !important;
+  text-shadow: 0 2px 6px color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 92%, transparent) !important;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsInitName {
+  font-weight: 900;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity > small {
+  font-weight: 650;
+  opacity: .92;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsKeyStats {
+  font-size: .82rem;
+  font-weight: 900;
+  opacity: 1;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardStatus {
+  font-weight: 750;
+  opacity: .96;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardIdentity :is(.combatOpsInitName, small, span),
+#combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardIdentity :is(.combatOpsInitName, small, span) {
+  color: var(--mf-text, var(--text-main)) !important;
+  text-shadow: none !important;
+}
+
+#combat-operations .combatOpsInitiativeCard.is-active-turn {
+  border-color: var(--mf-accent, var(--accent)) !important;
+  outline: 2px solid color-mix(in srgb, var(--mf-accent, var(--accent)) 82%, transparent);
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--mf-accent, var(--accent)) 54%, transparent),
+    0 0 24px color-mix(in srgb, var(--mf-accent, var(--accent)) 48%, transparent) !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+#combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+  padding: 4px 8px;
+  border: 2px solid color-mix(in srgb, var(--mf-accent, var(--accent)) 72%, var(--mf-border, var(--border)));
+  background: var(--mf-accent, var(--accent)) !important;
+  color: var(--mf-button-active-text-resolved, var(--mf-panel-bg, var(--card-bg))) !important;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 72%, transparent),
+    0 0 14px color-mix(in srgb, var(--mf-accent, var(--accent)) 68%, transparent);
+  font-weight: 950;
+}
+
+@media (max-width: 720px) {
+  #combat-operations .combatOpsInitiativeCard .combatOpsCardIdentity {
+    padding-inline: 10px;
+    padding-bottom: 44px;
+  }
+
+  #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsKeyStats {
+    font-size: .76rem;
+  }
+}
+
+/* Active Turn badge lane: final cascade-safe positioning. */
+#combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity {
+  padding-bottom: 58px !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+#combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+  inset: auto 10px 13px auto !important;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  min-height: 24px;
+  line-height: 1;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+@media (max-width: 720px) {
+  #combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity {
+    padding-bottom: 56px !important;
+  }
+
+  body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+  #combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+    inset: auto 9px 12px auto !important;
+    max-width: calc(100% - 18px);
+    padding: 3px 7px;
+    font-size: .61rem;
+  }
+}
+
+/* Active Turn occupies a dedicated bottom lane; metadata never flows beneath it. */
+#combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity,
+#combat-operations .combatOpsInitiativeCard.is-active-turn.no-portrait .combatOpsCardIdentity,
+#combat-operations .combatOpsInitiativeCard.is-active-turn:not(.no-portrait) .combatOpsCardIdentity {
+  padding-bottom: 58px;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+#combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+  inset: auto 10px 13px auto;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  min-height: 24px;
+  line-height: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+@media (max-width: 720px) {
+  #combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity {
+    padding-bottom: 56px;
+  }
+
+  body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+  #combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+    right: 9px;
+    bottom: 12px;
+    max-width: calc(100% - 18px);
+    padding: 3px 7px;
+    font-size: .61rem;
+  }
+}
+
+/* Combat Operations active-participant reference navigation. */
+#masterForgeActionConsole .combatReferenceNavigation {
+  display: grid;
+  gap: 6px;
+}
+
+#masterForgeActionConsole .combatReferenceNavigation button {
+  width: 100%;
+  min-width: 0;
+  padding: 8px 10px;
+  text-align: left;
+  color: var(--mf-text, var(--text-main, #f4efe3));
+  border-color: var(--mf-border, var(--border, #4b5260));
+  background: var(--mf-panel-bg-soft, var(--card-bg, #202630));
+}
+
+#masterForgeActionConsole .combatReferenceNavigation button:hover {
+  color: var(--mf-heading, #fffaf0);
+  border-color: var(--mf-accent, var(--accent, #cf9d51));
+  background: var(--mf-card-hover, #2b3441);
+}
+
+#masterForgeActionConsole .combatReferenceNavigation button:focus-visible {
+  outline: 2px solid var(--mf-button-focus-resolved, var(--mf-accent, #cf9d51));
+  outline-offset: 2px;
+}
+
+#masterForgeActionConsole .combatReferenceEmpty {
+  margin: 4px 0;
+  color: var(--mf-text-muted, var(--text-muted, #c2c5cb));
+  line-height: 1.45;
+}
+
+#combat-operations [data-combat-reference] {
+  scroll-margin-top: 88px;
+}
+
+#combat-operations .combatReferenceHighlight {
+  animation: combat-reference-highlight 1.5s ease-out;
+}
+
+@keyframes combat-reference-highlight {
+  0%,
+  35% {
+    box-shadow: 0 0 0 3px var(--mf-accent, var(--accent, #cf9d51)), 0 0 24px color-mix(in srgb, var(--mf-accent, var(--accent, #cf9d51)) 45%, transparent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 transparent;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #combat-operations .combatReferenceHighlight {
+    animation: none;
+    outline: 3px solid var(--mf-accent, var(--accent, #cf9d51));
+    outline-offset: 3px;
   }
 }
 
@@ -2994,13 +3212,43 @@ body::before {
 .sessionSelectedCastItem,
 .sessionCastPickerItem {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-columns: 48px minmax(0, 1fr) auto;
   gap: 10px;
   align-items: center;
   padding: 8px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.045);
   border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.sessionCastPortrait {
+  width: 48px;
+  aspect-ratio: 1;
+  align-self: stretch;
+  border-radius: 7px;
+  background: linear-gradient(145deg, #342d28, #171412);
+  background-position: center;
+  background-size: cover;
+  border: 1px solid rgba(255, 255, 255, .13);
+}
+
+.sessionCastEntityIdentity {
+  min-width: 0;
+  align-self: center;
+}
+
+.sessionCastTypeBadge {
+  display: inline-block;
+  margin-bottom: .2rem;
+  padding: .08rem .38rem;
+  border: 1px solid var(--accent-color, #d5ad55);
+  border-radius: 999px;
+  color: var(--text-primary, #fff8e9);
+  background: rgba(0, 0, 0, .4);
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
 }
 
 .sessionSelectedCastItem strong,
@@ -3019,29 +3267,257 @@ body::before {
   font-size: 0.8rem;
 }
 
-.sessionCastPickerBox {
-  width: min(780px, 92vw);
-  max-height: 82vh;
+#sessionCastPickerModal {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: rgba(0, 0, 0, 0.75);
+}
+
+#sessionCastPickerModal .sessionCastPickerBox {
+  width: min(720px, calc(100vw - 48px));
+  max-width: 100%;
+  max-height: min(720px, calc(100vh - 48px));
+  max-height: min(720px, calc(100dvh - 48px));
+  box-sizing: border-box;
+  padding: 0;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  border: 1px solid var(--mf-border, var(--border, #75694f));
+  background:
+    linear-gradient(
+      var(--mf-panel-bg, var(--panel-bg, #191814)),
+      var(--mf-panel-bg, var(--panel-bg, #191814))
+    ),
+    #191814 !important;
+  color: var(--mf-text, var(--text-main, #f5efe3));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.72);
 }
 
-#sessionCastPickerSearchInput {
-  width: 100%;
-  margin-bottom: 10px;
+#sessionCastPickerModal .modalHeader {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border-bottom: 1px solid var(--mf-border, var(--border, #75694f));
+  background:
+    linear-gradient(
+      var(--mf-panel-bg, var(--panel-bg, #191814)),
+      var(--mf-panel-bg, var(--panel-bg, #191814))
+    ),
+    #191814;
 }
 
-.sessionCastPickerResults {
+#sessionCastPickerModal .modalHeader h2 {
+  min-width: 0;
+  margin: 0;
+  color: var(--mf-heading, var(--text-primary, #fff8e8));
+}
+
+#sessionCastPickerModal #closeSessionCastPickerBtn {
+  flex: 0 0 auto;
+  min-width: 42px;
+  min-height: 38px;
+  border-color: var(--mf-border, var(--border, #75694f));
+  background:
+    linear-gradient(
+      var(--mf-button-bg, var(--button-bg, #302c24)),
+      var(--mf-button-bg, var(--button-bg, #302c24))
+    ),
+    #302c24 !important;
+  color: var(--mf-button-text, var(--button-text, #fff8e8)) !important;
+}
+
+#sessionCastPickerModal #closeSessionCastPickerBtn:is(:hover, :focus-visible) {
+  border-color: var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+  background:
+    linear-gradient(
+      var(--mf-button-hover-bg, var(--button-hover-bg, #514329)),
+      var(--mf-button-hover-bg, var(--button-hover-bg, #514329))
+    ),
+    #514329 !important;
+  color: var(--mf-button-hover-text, var(--button-hover-text, #ffffff)) !important;
+}
+
+#sessionCastPickerModal #sessionCastPickerSearchInput {
+  flex: 0 0 auto;
+  width: calc(100% - 40px);
+  min-width: 0;
+  margin: 16px 20px 12px;
+  box-sizing: border-box;
+  border: 1px solid var(--mf-input-border, var(--mf-border, var(--border, #75694f)));
+  background:
+    linear-gradient(
+      var(--mf-input-bg, var(--input-bg, #10110e)),
+      var(--mf-input-bg, var(--input-bg, #10110e))
+    ),
+    #10110e !important;
+  color: var(--mf-input-text, var(--text-primary, #fffaf0)) !important;
+  caret-color: var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+}
+
+#sessionCastPickerModal #sessionCastPickerSearchInput::placeholder {
+  color: var(--mf-text-muted, var(--text-muted, #c5bdad));
+  opacity: 0.82;
+}
+
+#sessionCastPickerModal #sessionCastPickerSearchInput:focus-visible {
+  border-color: var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+  outline: 2px solid var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+  outline-offset: 2px;
+}
+
+#sessionCastPickerModal .sessionCastPickerResults {
   display: grid;
-  gap: 6px;
-  max-height: 58vh;
+  flex: 1 1 auto;
+  align-content: start;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+  margin: 0 20px 20px;
+  padding: 12px;
   overflow-y: auto;
-  padding-right: 4px;
+  overflow-x: hidden;
+  border: 1px solid var(--mf-border, var(--border, #665d49));
+  border-radius: calc(var(--radius, 10px) - 2px);
+  background:
+    linear-gradient(
+      var(--mf-panel-bg-soft, var(--card-bg, #24221c)),
+      var(--mf-panel-bg-soft, var(--card-bg, #24221c))
+    ),
+    #24221c;
+  scrollbar-gutter: stable;
 }
 
-.sessionCastPickerItem button:disabled {
-  opacity: 0.55;
+#sessionCastPickerModal .sessionCastPickerItem {
+  min-width: 0;
+  border-color: var(--mf-border, var(--border, #665d49));
+  background:
+    linear-gradient(
+      var(--mf-card-bg, var(--card-bg, #2b2821)),
+      var(--mf-card-bg, var(--card-bg, #2b2821))
+    ),
+    #2b2821;
+  color: var(--mf-text, var(--text-main, #f5efe3));
+  transition: border-color 120ms ease, box-shadow 120ms ease;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem:is(:hover, :focus-within) {
+  border-color: var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+  box-shadow: inset 3px 0 0 var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+}
+
+#sessionCastPickerModal .sessionCastPickerItem .sessionCastEntityIdentity {
+  color: #f2eadc !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem .sessionCastEntityIdentity > strong {
+  color: #fffaf0 !important;
+  font-weight: 750;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem .sessionCastEntityIdentity > small {
+  color: #d7d0c4 !important;
+  opacity: 1 !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem .sessionCastTypeBadge {
+  border: 1px solid #d8b65f !important;
+  background: #40341d !important;
+  color: #fff2c7 !important;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+#sessionCastPickerModal .sessionCastPickerItem:has(.addCreatureToSessionCastBtn) .sessionCastTypeBadge {
+  border-color: #d98d79 !important;
+  background: #6b2d25 !important;
+  color: #fff3ed !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem:has(.addNpcToSessionCastBtn) .sessionCastTypeBadge {
+  border-color: #b7a0e6 !important;
+  background: #49366f !important;
+  color: #f8f2ff !important;
+}
+
+#sessionCastPickerModal .sessionCastPortrait {
+  background-color: #161612;
+  background-image: linear-gradient(145deg, #34312b, #161612);
+  border: 1px solid #8f8267 !important;
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.07),
+    0 2px 6px rgba(0, 0, 0, 0.42);
+}
+
+#sessionCastPickerModal .sessionCastPickerItem:is(:hover, :focus-within) .sessionCastEntityIdentity > strong {
+  color: #ffffff !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem:is(:hover, :focus-within) .sessionCastEntityIdentity > small {
+  color: #eee7da !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem > button {
+  border-color: var(--mf-accent, var(--accent-color, var(--accent, #d6a928)));
+  background:
+    linear-gradient(
+      var(--mf-button-bg, var(--button-bg, #3b3020)),
+      var(--mf-button-bg, var(--button-bg, #3b3020))
+    ),
+    #3b3020 !important;
+  color: var(--mf-button-text, var(--button-text, #fff8e8)) !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem > button:is(:hover, :focus-visible) {
+  background:
+    linear-gradient(
+      var(--mf-button-hover-bg, var(--button-hover-bg, #665025)),
+      var(--mf-button-hover-bg, var(--button-hover-bg, #665025))
+    ),
+    #665025 !important;
+  color: var(--mf-button-hover-text, var(--button-hover-text, #ffffff)) !important;
+}
+
+#sessionCastPickerModal .sessionCastPickerItem button:disabled {
+  color: #e2dacb !important;
+  opacity: 0.72;
   cursor: not-allowed;
+}
+
+@media (max-width: 520px) {
+  #sessionCastPickerModal {
+    padding: 12px;
+  }
+
+  #sessionCastPickerModal .sessionCastPickerBox {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+    max-height: calc(100dvh - 24px);
+  }
+
+  #sessionCastPickerModal .modalHeader {
+    padding: 14px 16px;
+  }
+
+  #sessionCastPickerModal #sessionCastPickerSearchInput {
+    width: calc(100% - 32px);
+    margin: 14px 16px 10px;
+  }
+
+  #sessionCastPickerModal .sessionCastPickerResults {
+    margin: 0 16px 16px;
+    padding: 10px;
+  }
 }
 
 @media (max-width: 1000px) {
@@ -8889,6 +9365,25 @@ body[data-manual-visual="true"] .splitGroupManagerStatus.success {
   grid-template-columns: var(--mf-navigation-width) minmax(0, 1fr) !important;
 }
 #mainLayout.is-action-console-closed #masterForgeActionConsole { display: none !important; }
+#mainLayout.is-combat-focus-mode.has-action-console.is-action-console-open:not(.is-action-console-overlay) {
+  grid-template-columns: minmax(0, 1fr) var(--mf-action-console-width) !important;
+}
+#mainLayout.is-combat-focus-mode.is-action-console-closed,
+#mainLayout.is-combat-focus-mode.is-action-console-overlay {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+#mainLayout.is-combat-focus-mode #tabs {
+  display: none !important;
+  width: 0 !important;
+  min-width: 0 !important;
+  padding: 0 !important;
+}
+body.combatOpsMode :is(#topbar, #stateBar) {
+  height: auto !important;
+  min-height: 0 !important;
+  opacity: 1 !important;
+  overflow: visible !important;
+}
 #content, #content > .panel, #regionGrid, .plannedEncounterShell, .forgeWorkspaceGrid, .genericEntityBuilderCard { min-width: 0; max-width: 100%; }
 #tabs { min-width: 0; overflow-x: hidden; }
 #tabs button { white-space: normal; overflow-wrap: anywhere; }
@@ -9497,6 +9992,28 @@ body.combatOpsMode #combat-operations {
   border: 1px solid currentColor;
   border-radius: 8px;
 }
+.combatStatDefence [data-combat-temp-hp-summary] {
+  display: block;
+  margin-top: 3px;
+  padding-top: 4px;
+  border-top: 1px solid color-mix(in srgb, var(--mf-accent, var(--accent)) 55%, transparent);
+  color: color-mix(in srgb, var(--mf-accent, var(--accent)) 72%, currentColor);
+  font-size: 0.78rem;
+  font-weight: 700;
+  line-height: 1.25;
+}
+[data-builder-save-status] {
+  display: block;
+  min-height: 1.25em;
+  color: var(--mf-text-muted, var(--text-muted));
+  font-weight: 650;
+}
+[data-builder-save-status][data-status="error"] {
+  color: var(--danger-color, var(--mf-accent, var(--accent)));
+}
+body[data-manual-visual="true"] #combat-operations .combatStatDefence [data-combat-temp-hp-summary] {
+  color: color-mix(in srgb, var(--mf-accent) 72%, var(--mf-text)) !important;
+}
 .combatStatReferences {
   max-height: min(55vh, 620px);
   padding-right: 6px;
@@ -9598,7 +10115,7 @@ body.masterforgeModalOpen { overflow: hidden !important; }
   max-height: calc(100dvh - 32px) !important;
   box-sizing: border-box;
   overflow-x: hidden !important;
-  overflow-y: auto !important;
+  overflow: hidden !important;
   color: var(--mf-text, var(--text-main));
 }
 #characterModal :is(input, select, textarea),
@@ -9624,6 +10141,200 @@ body.masterforgeModalOpen { overflow: hidden !important; }
   min-width: 0;
 }
 .modalActions { flex-wrap: wrap; }
+
+#characterModal .characterModalBox {
+  width: min(1080px, calc(100vw - 32px)) !important;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 12px;
+}
+.characterEditorHeader { display: flex; align-items: start; justify-content: space-between; gap: 12px; }
+.characterEditorHeader h2 { margin: 0; }
+.characterEditorError { margin: 6px 0 0; color: var(--mf-danger-text, #ffd7d7); }
+.characterEditorLayout {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(150px, 210px) minmax(0, 1fr);
+  gap: 14px;
+}
+.characterEditorSections {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow-y: auto;
+}
+.characterEditorSections button { text-align: left; }
+.characterEditorSections button.active {
+  background: var(--mf-button-active-bg-resolved) !important;
+  color: var(--mf-button-active-text-resolved) !important;
+}
+.characterEditorSectionViewport {
+  min-width: 0;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+}
+.characterEditorSection { min-width: 0; }
+.characterEditorSection textarea { min-height: 90px; resize: vertical; }
+.characterPortraitEditor { display: flex; align-items: center; gap: 14px; margin-bottom: 14px; }
+.characterPortraitEditor > div:last-child { display: flex; flex-wrap: wrap; gap: 8px; }
+.characterPortraitPreview,
+.characterCardPortrait {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--mf-border, var(--border));
+  background: var(--mf-panel-bg, var(--panel-bg));
+}
+.characterPortraitPreview { width: 112px; aspect-ratio: 1; border-radius: 12px; }
+.characterCardPortrait { width: 56px; aspect-ratio: 1; border-radius: 10px; float: left; margin: 0 10px 8px 0; }
+.characterPortraitPreview img,
+.characterCardPortrait img { width: 100%; height: 100%; object-fit: cover; }
+#characterModal .modalActions {
+  position: sticky;
+  bottom: 0;
+  margin: 0;
+  padding-top: 10px;
+  background: var(--mf-panel-bg, var(--panel-bg));
+}
+@media (max-width: 720px) {
+  .characterEditorLayout { grid-template-columns: minmax(0, 1fr); }
+  .characterEditorSections { flex-direction: row; overflow-x: auto; overflow-y: hidden; }
+  .characterEditorSections button { flex: 0 0 auto; }
+}
+
+/* PC editor: opaque, self-contained workspace surfaces. */
+#characterModal .characterModalBox {
+  padding: 0 !important;
+  gap: 0;
+  border: 1px solid var(--mf-border, var(--border, #70664f));
+  background: linear-gradient(var(--mf-panel-bg, var(--panel-bg, #191814)), var(--mf-panel-bg, var(--panel-bg, #191814))), #191814 !important;
+  background-color: var(--mf-panel-bg, var(--panel-bg, #191814)) !important;
+  color: var(--mf-text, var(--text-main, #f4f0e6));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, .72);
+}
+#characterModal .characterEditorHeader {
+  min-width: 0;
+  padding: 18px 22px 15px;
+  border-bottom: 1px solid var(--mf-border, var(--border, #70664f));
+  background: linear-gradient(var(--mf-panel-bg, var(--panel-bg, #191814)), var(--mf-panel-bg, var(--panel-bg, #191814))), #191814 !important;
+  color: var(--mf-heading, var(--mf-text, var(--text-main, #fff8e8)));
+}
+#characterModal .characterEditorHeader h2 {
+  color: var(--mf-heading, var(--mf-text, var(--text-main, #fff8e8)));
+}
+#characterModal .characterEditorLayout {
+  padding: 16px;
+  gap: 16px;
+  overflow: hidden;
+  background: linear-gradient(var(--mf-panel-bg, var(--panel-bg, #191814)), var(--mf-panel-bg, var(--panel-bg, #191814))), #191814 !important;
+}
+#characterModal .characterEditorSections {
+  padding: 12px;
+  border: 1px solid var(--mf-border, var(--border, #70664f));
+  border-radius: 10px;
+  background: linear-gradient(var(--mf-panel-bg-soft, var(--card-bg, #24221c)), var(--mf-panel-bg-soft, var(--card-bg, #24221c))), #24221c !important;
+}
+#characterModal .characterEditorSections button {
+  width: 100%;
+  flex-shrink: 0;
+  color: var(--mf-button-text-resolved, #f6f0df) !important;
+}
+#characterModal .characterEditorSections button:hover:not(:disabled),
+#characterModal .characterEditorSections button:focus-visible {
+  color: var(--mf-button-hover-text-resolved, #fff8e8) !important;
+}
+#characterModal .characterEditorSections button.active {
+  color: var(--mf-button-active-text-resolved, #211607) !important;
+}
+#characterModal .characterEditorSectionViewport {
+  padding: 18px;
+  border: 1px solid var(--mf-border, var(--border, #70664f));
+  border-radius: 10px;
+  background: linear-gradient(var(--mf-panel-bg-soft, var(--card-bg, #24221c)), var(--mf-panel-bg-soft, var(--card-bg, #24221c))), #24221c !important;
+  color: var(--mf-text, var(--text-main, #f4f0e6));
+  scrollbar-gutter: stable;
+}
+#characterModal .characterEditorSection {
+  color: var(--mf-text, var(--text-main, #f4f0e6));
+}
+#characterModal .characterEditorSection :is(h3, .modalSectionTitle) {
+  margin-top: 0;
+  color: var(--mf-heading, var(--mf-text, var(--text-main, #fff8e8)));
+}
+#characterModal .characterEditorSection label {
+  color: var(--mf-text, var(--text-main, #f4f0e6));
+  font-weight: 650;
+}
+#characterModal .characterEditorSection :is(input, select, textarea) {
+  border: 1px solid var(--mf-input-border, var(--mf-border, var(--border, #70664f))) !important;
+  background: linear-gradient(var(--mf-input-bg, var(--input-bg, #11120f)), var(--mf-input-bg, var(--input-bg, #11120f))), #11120f !important;
+  background-color: var(--mf-input-bg, var(--input-bg, #11120f)) !important;
+  color: var(--mf-input-text, var(--mf-text, var(--text-main, #fffaf0))) !important;
+  caret-color: var(--mf-accent, var(--accent, #d6a928));
+}
+#characterModal .characterEditorSection :is(input, select, textarea)::placeholder {
+  color: var(--mf-text-muted, var(--text-muted, #c5bdad));
+  opacity: .78;
+}
+#characterModal .characterEditorSection :is(input, select, textarea):focus-visible {
+  outline: 2px solid var(--mf-button-focus-resolved, var(--mf-accent, var(--accent, #d6a928)));
+  outline-offset: 2px;
+}
+#characterModal .characterEditorSection :is(input, select, textarea):disabled {
+  background: var(--mf-button-disabled-bg-resolved, #302e29) !important;
+  color: var(--mf-button-disabled-text-resolved, #d2c9b7) !important;
+  opacity: .82;
+}
+#characterModal .characterEditorSection textarea {
+  display: block;
+  max-width: 100%;
+  border-radius: 8px;
+}
+#characterModal .modalActions {
+  position: sticky;
+  bottom: 0;
+  z-index: 3;
+  min-height: 0;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0;
+  padding: 13px 20px;
+  border-top: 1px solid var(--mf-border, var(--border, #70664f));
+  background: linear-gradient(var(--mf-panel-bg, var(--panel-bg, #191814)), var(--mf-panel-bg, var(--panel-bg, #191814))), #191814 !important;
+}
+#characterModal #saveCharacterBtn {
+  background: var(--mf-button-active-bg-resolved, var(--mf-accent, var(--accent, #d6a928))) !important;
+  color: var(--mf-button-active-text-resolved, #211607) !important;
+  font-weight: 750;
+}
+@media (max-width: 720px) {
+  #characterModal .characterEditorLayout {
+    grid-template-rows: auto minmax(0, 1fr);
+    padding: 10px;
+    gap: 10px;
+  }
+  #characterModal .characterEditorSections {
+    padding: 8px;
+    max-width: 100%;
+  }
+  #characterModal .characterEditorSections button {
+    width: auto;
+  }
+  #characterModal .characterEditorSectionViewport {
+    padding: 13px;
+  }
+  #characterModal .modalActions {
+    padding: 10px 12px;
+  }
+}
+@media (max-width: 480px) {
+  #characterModal .modalActions > button {
+    flex: 1 1 130px;
+  }
+}
 
 .combatOpsCardBadges,
 .combatConditionBadges {
@@ -9666,6 +10377,407 @@ body.masterforgeModalOpen { overflow: hidden !important; }
 .combatOpsPortraitFallback {
   font-size: 1.1rem;
   color: var(--mf-text-muted, var(--text-muted));
+}
+
+/* Combat Operations full-image initiative cards and selected hero. */
+#combat-operations {
+  --combat-card-min-width: 190px;
+  --combat-card-height: clamp(210px, 25vw, 270px);
+  --combat-hero-height: clamp(220px, 24vw, 280px);
+  --combat-image-fallback: var(--mf-panel-bg-soft, var(--card-bg, #1a1916));
+  --combat-overlay-top: rgba(4, 5, 5, .24);
+  --combat-overlay-bottom: rgba(3, 4, 4, .96);
+}
+#combat-operations .combatOpsInitiativeRibbon {
+  display: flex;
+  align-items: stretch;
+  gap: 12px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x proximity;
+  padding: 12px;
+}
+#combat-operations .combatOpsInitiativeCard {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  flex: 0 0 clamp(var(--combat-card-min-width), 19vw, 245px);
+  min-width: var(--combat-card-min-width);
+  min-height: var(--combat-card-height);
+  padding: 0 !important;
+  overflow: hidden;
+  border: 2px solid var(--mf-border, var(--border, #71684f)) !important;
+  border-radius: 12px;
+  background: var(--combat-image-fallback) !important;
+  color: var(--mf-button-text, var(--text-main)) !important;
+  text-align: left;
+  scroll-snap-align: start;
+  transform: none;
+}
+#combat-operations .combatOpsCardImage,
+#combat-operations .combatOpsCardOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#combat-operations .combatOpsCardImage {
+  background-color: var(--combat-image-fallback);
+  background-image: none;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: auto;
+  filter: none;
+  opacity: 1;
+  transform: none;
+}
+#combat-operations .combatOpsCardOverlay {
+  z-index: 1;
+  background:
+    linear-gradient(180deg, var(--combat-overlay-top) 0%, transparent 48%, rgba(3, 4, 4, .48) 64%, var(--combat-overlay-bottom) 100%),
+    linear-gradient(90deg, rgba(0, 0, 0, .2), transparent 32%, transparent 72%, rgba(0, 0, 0, .12));
+}
+#combat-operations .combatOpsCardTop {
+  position: absolute;
+  inset: 9px 9px auto;
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  z-index: 2;
+}
+#combat-operations .combatOpsCardTop .combatConditionBadges {
+  margin: 0;
+}
+#combat-operations .combatOpsCardIdentity {
+  align-self: flex-end;
+  display: grid;
+  gap: 5px;
+  width: 100%;
+  min-width: 0;
+  padding: 88px 12px 19px;
+  position: relative;
+  z-index: 2;
+}
+#combat-operations .combatOpsInitName {
+  color: var(--mf-button-text, var(--text-main)) !important;
+  font-size: clamp(1.02rem, 1.5vw, 1.3rem);
+  line-height: 1.08;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  text-shadow: 0 2px 8px #000;
+}
+#combat-operations .combatOpsCardIdentity > small {
+  color: var(--mf-button-text, var(--text-main)) !important;
+  line-height: 1.25;
+  text-shadow: 0 1px 5px #000;
+  opacity: .9;
+}
+#combat-operations .combatOpsInitMeta {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 4px 9px;
+  color: var(--mf-button-text, var(--text-main)) !important;
+  font-size: .78rem;
+  font-weight: 650;
+  text-shadow: 0 1px 5px #000;
+}
+#combat-operations .combatOpsKeyStats {
+  font-weight: 800;
+}
+#combat-operations .combatOpsCardStatus {
+  font-weight: 650;
+  opacity: .92;
+}
+#combat-operations .combatOpsHpMini {
+  position: absolute;
+  inset: auto 0 0;
+  z-index: 2;
+  height: 8px;
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  background: rgba(0, 0, 0, .72);
+}
+#combat-operations .combatOpsHpMini > span {
+  box-shadow: 0 0 8px rgba(122, 196, 107, .65);
+}
+#combat-operations .combatOpsInitiativeCard.is-active-turn {
+  border-color: var(--mf-accent, var(--accent)) !important;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--mf-accent, var(--accent)) 76%, transparent),
+    0 0 20px color-mix(in srgb, var(--mf-accent, var(--accent)) 38%, transparent) !important;
+}
+#combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+  content: "Active turn";
+  position: absolute;
+  right: 8px;
+  bottom: 14px;
+  padding: 3px 7px;
+  border: 1px solid var(--mf-accent, var(--accent));
+  border-radius: 999px;
+  background: var(--mf-accent, var(--accent));
+  color: var(--mf-button-active-text-resolved, var(--mf-panel-bg, var(--card-bg)));
+  box-shadow: 0 0 10px color-mix(in srgb, var(--mf-accent, var(--accent)) 52%, transparent);
+  font-size: .65rem;
+  font-weight: 900;
+  letter-spacing: .03em;
+  text-transform: uppercase;
+}
+#combat-operations .combatOpsInitiativeCard:focus-visible {
+  outline: 3px solid var(--mf-button-focus-resolved, var(--mf-focus, var(--mf-accent, var(--accent))));
+  outline-offset: 3px;
+}
+#combat-operations .combatOpsInitiativeCard:is(.is-unconscious, .is-inactive, .is-defeated, .is-dead) .combatOpsCardImage,
+#combat-operations .combatStatBlock:is(.is-unconscious, .is-inactive, .is-defeated, .is-dead) .combatStatHeroImage {
+  filter: grayscale(.75) saturate(.55) brightness(.76);
+}
+#combat-operations .combatOpsInitiativeCard:is(.is-unconscious, .is-defeated, .is-dead)::before {
+  content: attr(aria-label);
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+#combat-operations .combatOpsInitiativeCard.is-hidden .combatOpsCardImage,
+#combat-operations .combatStatBlock.is-hidden .combatStatHeroImage {
+  filter: grayscale(.55) brightness(.72);
+  transform: none;
+}
+#combat-operations .combatOpsInitiativeCard.is-hidden {
+  opacity: 1;
+  border-style: dashed !important;
+}
+#combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardImage {
+  background-image:
+    radial-gradient(circle at 50% 34%, color-mix(in srgb, var(--mf-accent, #c8960c) 15%, transparent), transparent 42%),
+    linear-gradient(145deg, var(--mf-panel-bg-soft, #24221c), var(--mf-panel-bg, #13120f));
+}
+#combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardOverlay {
+  display: none;
+}
+#combat-operations .combatOpsInitiativeCard.no-portrait,
+#combat-operations .combatOpsInitiativeCard.no-portrait :is(.combatOpsInitName, .combatOpsCardIdentity > small, .combatOpsInitMeta) {
+  color: var(--mf-text, var(--text-main)) !important;
+  text-shadow: none;
+}
+#combat-operations .combatOpsInitiativeCard.no-portrait :is(.combatTypeBadge, .combatGroupBadge, .combatConditionBadges > span) {
+  border-color: var(--mf-border, var(--border));
+  color: var(--mf-text, var(--text-main)) !important;
+  background: var(--mf-panel-bg-soft, var(--card-bg));
+  box-shadow: none;
+}
+#combat-operations .combatOpsCardBadges,
+#combat-operations .combatConditionBadges {
+  position: relative;
+  z-index: 2;
+}
+#combat-operations :is(.combatTypeBadge, .combatGroupBadge, .combatConditionBadges > span) {
+  border-color: rgba(255, 255, 255, .62);
+  color: var(--mf-button-text, var(--text-main));
+  box-shadow: 0 2px 7px rgba(0, 0, 0, .55);
+  backdrop-filter: none;
+}
+#combat-operations .combatTypeBadge--pc { background: rgba(32, 103, 196, .9); }
+#combat-operations .combatTypeBadge--npc { background: rgba(104, 66, 174, .92); }
+#combat-operations .combatTypeBadge--creature { background: rgba(157, 48, 40, .92); }
+#combat-operations :is(.combatTypeBadge--vehicle, .combatTypeBadge--ship) { background: rgba(151, 93, 22, .94); }
+#combat-operations :is(.combatTypeBadge--party, .combatTypeBadge--party_group) { background: rgba(31, 116, 68, .94); }
+#combat-operations .combatGroupBadge {
+  background: rgba(181, 125, 13, .94);
+  color: var(--mf-button-text, var(--text-main));
+}
+#combat-operations .combatConditionBadges > span {
+  background: rgba(91, 34, 29, .94);
+}
+#combat-operations .combatOpsInitiativeCard .combatOpsCardTop .combatConditionBadges > span,
+#combat-operations .combatOpsInitiativeCard:is(:hover, :focus-visible, :active, [aria-pressed="true"]) .combatOpsCardTop .combatConditionBadges > span,
+#combat-operations .combatStatHeader .combatStatHeroContent .combatConditionBadges > span {
+  border: 1px solid rgba(255, 226, 205, .82) !important;
+  border-radius: 999px;
+  background: rgba(104, 27, 22, .96) !important;
+  color: #fff8ee !important;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, .95);
+  box-shadow: 0 2px 7px rgba(0, 0, 0, .6);
+  opacity: 1;
+}
+#combat-operations .combatStatHeader {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  align-items: flex-end;
+  min-height: var(--combat-hero-height);
+  padding: clamp(18px, 3vw, 32px);
+  overflow: hidden;
+  border: 1px solid var(--mf-border, var(--border, #71684f));
+  border-radius: 12px;
+  background: var(--combat-image-fallback);
+  color: #fffaf0;
+}
+#combat-operations .combatStatHeroImage,
+#combat-operations .combatStatHeroOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+#combat-operations .combatStatHeroImage {
+  background-color: var(--combat-image-fallback);
+  background-image: none;
+  background-position: center 18%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  image-rendering: auto;
+  filter: none;
+  opacity: 1;
+  transform: none;
+}
+#combat-operations .combatStatHeroOverlay {
+  z-index: 1;
+  background:
+    linear-gradient(0deg, rgba(3, 4, 4, .94) 0%, rgba(3, 4, 4, .58) 32%, transparent 68%),
+    linear-gradient(90deg, rgba(3, 4, 4, .3) 0%, transparent 46%);
+}
+#combat-operations .combatStatHeroContent {
+  display: grid;
+  gap: 7px;
+  width: min(680px, 88%);
+  min-width: 0;
+  position: relative;
+  z-index: 2;
+}
+#combat-operations .combatStatHeroContent :is(h1, p, small) {
+  margin: 0;
+  color: #fffaf0 !important;
+  text-shadow: 0 2px 9px #000;
+  overflow-wrap: anywhere;
+}
+#combat-operations .combatStatHeroContent h1 {
+  font-size: clamp(1.8rem, 4vw, 3.25rem);
+  line-height: 1;
+}
+#combat-operations [data-combat-source-reference] {
+  color: var(--mf-text-muted, var(--text-muted, #d8d3c7)) !important;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  opacity: 0.94;
+}
+#combat-operations .combatStatBlock.no-portrait .combatStatHeader {
+  min-height: 150px;
+}
+#combat-operations .combatStatBlock.no-portrait .combatStatHeroImage {
+  background-image:
+    radial-gradient(circle at 75% 50%, color-mix(in srgb, var(--mf-accent, #c8960c) 13%, transparent), transparent 42%),
+    linear-gradient(120deg, var(--mf-panel-bg, #13120f), var(--mf-panel-bg-soft, #24221c));
+}
+@media (max-width: 720px) {
+  #combat-operations {
+    --combat-card-min-width: 175px;
+    --combat-card-height: 220px;
+    --combat-hero-height: 190px;
+  }
+  #combat-operations .combatOpsInitiativeRibbon {
+    margin-inline: -4px;
+    padding-inline: 8px;
+  }
+  #combat-operations .combatStatHeader {
+    padding: 17px;
+  }
+  #combat-operations .combatStatHeroImage {
+    background-position: center 12%;
+  }
+  #combat-operations .combatStatHeroContent {
+    width: 100%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #combat-operations .combatOpsInitiativeCard,
+  #combat-operations .combatOpsCardImage,
+  #combat-operations .combatStatHeroImage {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+.combatCapabilities {
+  display: grid;
+  gap: 10px;
+}
+.combatCapabilityIndex {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  background: var(--mf-panel-bg, var(--panel-bg, #171717));
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: 8px;
+}
+.combatCapabilityIndex a {
+  color: var(--mf-text, var(--text-main, #f4f1e8));
+  text-decoration: none;
+}
+.combatCapabilityIndex a span {
+  color: var(--mf-text-muted, var(--text-muted, #d9d5ca));
+}
+.combatCapabilitySection {
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: 8px;
+  background: var(--mf-panel-bg-soft, var(--card-bg));
+}
+.combatCapabilitySection.is-prominent {
+  border-color: var(--mf-accent, var(--accent));
+}
+.combatCapabilitySection > summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  cursor: pointer;
+  color: var(--mf-heading, var(--text-main, #fff4d6));
+}
+.combatCapabilitySection > div {
+  display: grid;
+  gap: 8px;
+  padding: 0 10px 10px;
+}
+.combatCapabilityEntry {
+  padding: 10px;
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: 6px;
+}
+.combatCapabilityEntry header {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.combatCapabilityEntry header small,
+.combatCapabilitySummary {
+  color: var(--mf-text-muted, var(--text-muted, #d9d5ca));
+}
+.combatCapabilityTracking,
+.combatCapabilityResource,
+.combatCapabilityUses,
+.combatSpellSlots > span {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.combatCapabilityTracking {
+  margin-top: 8px;
+}
+.combatCapabilityResource {
+  padding: 8px 10px;
+  border: 1px solid var(--mf-accent, var(--accent));
+  border-radius: 8px;
+}
+.combatCapabilityTracking button.is-spent {
+  opacity: .72;
 }
 
 .masterforge-home__choices button {
@@ -9711,6 +10823,44 @@ body.masterforgeModalOpen { overflow: hidden !important; }
 #windowControls #maxBtn { order: 2; }
 #windowControls #closeBtn { order: 3; }
 
+.gameSystemsList,
+.gameSystemSchema {
+  display: grid;
+  gap: 12px;
+}
+.gameSystemCard {
+  padding: 14px;
+  border: 1px solid var(--mf-border, var(--border));
+  border-radius: 10px;
+  background: var(--mf-panel-bg-soft, var(--card-bg));
+}
+.gameSystemSchema {
+  margin-top: 12px;
+}
+.gameSystemSchema section {
+  padding-top: 8px;
+  border-top: 1px solid var(--mf-border, var(--border));
+}
+.gameSystemSchema :is(h4, ul) {
+  margin: 6px 0;
+}
+.gameSystemSchema ul {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 6px 12px;
+  padding: 0;
+  list-style: none;
+}
+.gameSystemSchema li {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+.gameSystemSchema li span {
+  color: var(--mf-text-muted, var(--text-muted, #d9d5ca));
+  overflow-wrap: anywhere;
+}
+
 .dmEntityWorkspaceTabs button.active,
 .dmEntityWorkspaceTabs button[aria-pressed="true"],
 body[data-manual-visual="true"] .dmEntityWorkspaceTabs button.active,
@@ -9726,4 +10876,1093 @@ body[data-manual-visual="true"] .dmEntityWorkspaceTabs button[aria-pressed="true
   }
   .combatDeploymentDialog,
   .masterforgeModal { max-height: calc(100dvh - 16px); }
+}
+#session-reference {
+  color: var(--mf-text, var(--text-main, #f5efe4));
+}
+
+.sessionReferenceHeader {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--mf-border, var(--border, #6f604a));
+}
+
+.sessionReferenceEyebrow,
+.sessionReferenceDate,
+.sessionReferenceSaveState {
+  color: var(--mf-text-muted, var(--text-muted, #c9bea9));
+}
+
+.sessionReferenceEyebrow {
+  margin: 0 0 .25rem;
+  font-size: .78rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.sessionReferenceHeader h1 {
+  margin: 0;
+  color: color-mix(
+    in srgb,
+    var(--mf-heading, var(--accent, #fff8e9)) 58%,
+    var(--mf-text, var(--text-main, #fff8e9)) 42%
+  ) !important;
+}
+
+.sessionReferenceDate {
+  margin: .35rem 0 0;
+}
+
+.sessionReferenceGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.sessionReferenceCard,
+.sessionReferenceEmpty {
+  min-width: 0;
+  padding: 1rem;
+  border: 1px solid var(--mf-border, var(--border, #6f604a));
+  border-radius: var(--border-radius, 10px);
+  background:
+    linear-gradient(
+      var(--mf-panel-bg-soft, var(--card-bg, #24221c)),
+      var(--mf-panel-bg-soft, var(--card-bg, #24221c))
+    ),
+    #24221c !important;
+  color: var(--mf-text, var(--text-main, #f5efe4)) !important;
+  box-shadow: 0 10px 24px rgba(0, 0, 0, .22), inset 0 1px 0 rgba(255, 255, 255, .035);
+}
+
+.sessionReferenceCard h2,
+.sessionReferenceLiveNotes label span {
+  display: block;
+  margin: 0 0 .7rem;
+  color: color-mix(
+    in srgb,
+    var(--mf-heading, var(--accent, #e7bd63)) 58%,
+    var(--mf-text, var(--text-main, #fff8e9)) 42%
+  ) !important;
+  font-size: 1rem;
+  font-weight: 700;
+  text-shadow: 0 1px 2px color-mix(in srgb, var(--mf-panel-bg, #191814) 70%, transparent);
+}
+
+.sessionReferenceText {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  line-height: 1.55;
+  color: var(--mf-text, var(--text-main, #fff8e9)) !important;
+}
+
+.sessionReferenceCast {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: .5rem;
+}
+
+.sessionReferenceCast .sessionCastEntityCard {
+  display: grid;
+  grid-template-columns: 52px minmax(0, 1fr);
+  align-items: center;
+  gap: .8rem;
+  width: 100%;
+  min-width: 0;
+  padding: .75rem;
+  text-align: left;
+  border-color: var(--mf-border, var(--border, #6f604a)) !important;
+  background:
+    linear-gradient(
+      var(--mf-panel-bg, var(--panel-bg, #191814)),
+      var(--mf-panel-bg, var(--panel-bg, #191814))
+    ),
+    #191814 !important;
+  color: var(--mf-text, var(--text-main, #f5efe4)) !important;
+}
+
+.sessionReferenceCast .sessionCastEntityIdentity {
+  display: grid;
+  gap: .28rem;
+  min-width: 0;
+}
+
+.sessionReferenceCast .sessionCastTypeBadge {
+  justify-self: start;
+  margin: 0;
+  border-color: var(--mf-border, var(--border, #6f604a));
+  background: var(--mf-panel-bg-soft, var(--card-bg, #24221c));
+  color: color-mix(
+    in srgb,
+    var(--mf-heading, var(--accent, #e7bd63)) 58%,
+    var(--mf-text, var(--text-main, #fff8e9)) 42%
+  );
+}
+
+.sessionReferenceCast .sessionCastEntityIdentity strong {
+  color: color-mix(
+    in srgb,
+    var(--mf-heading, var(--accent, #e7bd63)) 58%,
+    var(--mf-text, var(--text-main, #fff8e9)) 42%
+  ) !important;
+  line-height: 1.25;
+  overflow-wrap: anywhere;
+}
+
+.sessionReferenceCast .sessionCastEntityIdentity small {
+  color: var(--mf-text-muted, var(--text-muted, #c9bea9)) !important;
+  line-height: 1.35;
+  white-space: normal;
+  overflow-wrap: anywhere;
+}
+
+.sessionReferenceCast .sessionCastPortrait {
+  border-color: var(--mf-border, var(--border, #6f604a));
+  background-color: var(--mf-panel-bg, var(--panel-bg, #191814));
+}
+
+.sessionReferenceCast button,
+.sessionReferenceEmpty button {
+  color: var(--mf-button-text, var(--button-text, #fff8e9)) !important;
+  background: var(--mf-button-bg, var(--button-bg, var(--card-bg, #443522))) !important;
+  border: 1px solid var(--mf-border, var(--border, #6f604a));
+}
+
+.sessionReferenceLiveNotes {
+  grid-column: 1 / -1;
+}
+
+.sessionReferenceOpening {
+  grid-column: 1 / -1;
+  border-color: var(--mf-heading, var(--mf-border, var(--border, #6f604a)));
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, .28),
+    inset 4px 0 0 var(--mf-heading, var(--mf-border, var(--border, #6f604a)));
+}
+
+.sessionReferenceOpening .sessionReferenceText {
+  font-size: 1.05rem;
+}
+
+.sessionReferenceSecrets {
+  border-left: .3rem solid var(--mf-danger, var(--danger-color, var(--mf-heading, #a94b45)));
+}
+
+.sessionReferenceNextHook {
+  border-left: .2rem solid color-mix(
+    in srgb,
+    var(--mf-heading, var(--mf-border, #6f604a)) 45%,
+    var(--mf-border, var(--border, #6f604a))
+  );
+}
+
+.sessionReferenceGoals {
+  border-left: .2rem solid color-mix(
+    in srgb,
+    var(--mf-heading, var(--mf-border, #6f604a)) 62%,
+    var(--mf-border, var(--border, #6f604a))
+  );
+}
+
+.sessionReferenceSummary {
+  border-left: .2rem solid var(--mf-border, var(--border, #6f604a));
+}
+
+.sessionReferenceLiveNotes {
+  border-left: .2rem solid color-mix(
+    in srgb,
+    var(--mf-heading, var(--mf-border, #6f604a)) 52%,
+    var(--mf-border, var(--border, #6f604a))
+  );
+}
+
+.sessionReferenceLiveNotes textarea {
+  width: 100%;
+  min-height: 12rem;
+  box-sizing: border-box;
+  resize: vertical;
+  color: var(--mf-input-text, var(--input-text, #fff8e9)) !important;
+  background:
+    linear-gradient(
+      var(--mf-input-bg, var(--input-bg, #171412)),
+      var(--mf-input-bg, var(--input-bg, #171412))
+    ),
+    #171412 !important;
+  border: 1px solid var(--mf-border, var(--border, #6f604a)) !important;
+}
+
+.sessionReferenceLiveNotes textarea:focus-visible {
+  border-color: var(--mf-heading, var(--mf-border, var(--border, #6f604a))) !important;
+  outline: 2px solid var(--mf-heading, var(--mf-border, var(--border, #6f604a)));
+  outline-offset: 2px;
+}
+
+.sessionReferenceSaveState {
+  margin: .5rem 0 0;
+  font-size: .82rem;
+}
+
+@media (max-width: 760px) {
+  .sessionReferenceGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .sessionReferenceLiveNotes {
+    grid-column: auto;
+  }
+
+  .sessionReferenceOpening {
+    grid-column: auto;
+  }
+
+  .sessionReferenceCast {
+    grid-template-columns: 1fr;
+  }
+
+  .sessionSelectedCastItem,
+  .sessionCastPickerItem {
+    grid-template-columns: 42px minmax(0, 1fr);
+  }
+
+  .sessionCastItemActions,
+  .sessionCastPickerItem > button {
+    grid-column: 1 / -1;
+    justify-self: end;
+  }
+}
+
+/* Session Prompter: opaque editor workspace and isolated prompt backdrop. */
+#sessionPrompterSlideDown {
+  --prompter-surface: var(--mf-panel-bg, var(--panel-bg, #191814));
+  --prompter-surface-soft: var(--mf-panel-bg-soft, var(--card-bg, #24221c));
+  --prompter-input-surface: var(--mf-input-bg, var(--input-bg, #10110e));
+  --prompter-border: var(--mf-border, var(--border, #75694f));
+  --prompter-text: var(--mf-text, var(--text-main, #f5efe3));
+  --prompter-muted: var(--mf-text-muted, var(--text-muted, #c9c0b1));
+  --prompter-heading: var(--mf-heading, var(--accent, #d4af37));
+  --prompter-accent: var(--mf-accent, var(--accent-color, var(--accent, #d4af37)));
+  background:
+    linear-gradient(var(--prompter-surface), var(--prompter-surface)),
+    #191814 !important;
+  color: var(--prompter-text) !important;
+  border-color: var(--prompter-border) !important;
+}
+
+#sessionPrompterSlideDown .sessionPrompterHeader {
+  border-bottom-color: var(--prompter-border);
+}
+
+#sessionPrompterSlideDown .sessionPrompterHeader :is(h2, p) {
+  color: var(--prompter-text) !important;
+}
+
+#sessionPrompterSlideDown .sessionPrompterHeader h2 {
+  color: color-mix(in srgb, var(--prompter-heading) 58%, var(--prompter-text) 42%) !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter {
+  min-width: 0 !important;
+  padding: 16px !important;
+  overflow: hidden !important;
+  border: 1px solid var(--prompter-border);
+  border-radius: 12px;
+  background:
+    linear-gradient(var(--prompter-surface), var(--prompter-surface)),
+    #191814 !important;
+  color: var(--prompter-text) !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #storyToolbar {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  min-width: 0;
+  margin-bottom: 14px;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterControlGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  padding: 10px;
+  border: 1px solid var(--prompter-border);
+  border-radius: 9px;
+  background:
+    linear-gradient(var(--prompter-surface-soft), var(--prompter-surface-soft)),
+    #24221c;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterControlGroupLabel {
+  flex: 0 0 100%;
+  color: color-mix(in srgb, var(--prompter-heading) 58%, var(--prompter-text) 42%);
+  font-size: 0.75rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterInlineLabel,
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls label,
+#sessionPrompterSlideDown .embeddedSessionPrompter :is(
+  #promptSpeedDisplay,
+  #fontSizeDisplay,
+  #storyOpacityDisplay,
+  #notesWidthDisplay
+) {
+  color: var(--prompter-text) !important;
+  white-space: nowrap;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterScriptControls {
+  grid-column: 1 / -1;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterPlaybackControls,
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterTextControls {
+  align-content: start;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterScriptControls :is(
+  #scriptSelect,
+  #scriptTypeInput,
+  #scriptTitleInput
+) {
+  flex: 1 1 180px !important;
+  width: auto !important;
+  min-width: min(180px, 100%) !important;
+  max-width: 320px !important;
+  margin: 0 !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls {
+  display: grid;
+  grid-template-columns: max-content minmax(100px, 1fr) max-content;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls .prompterControlGroupLabel {
+  grid-column: 1 / -1;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls input[type="range"] {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #storyEditorLayout {
+  min-width: 0;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .storyColumn {
+  min-width: 0;
+  padding: 14px;
+  border: 1px solid var(--prompter-border);
+  border-radius: 10px;
+  background:
+    linear-gradient(var(--prompter-surface-soft), var(--prompter-surface-soft)),
+    #24221c;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter .storyColumn h2 {
+  margin-top: 0;
+  color: color-mix(in srgb, var(--prompter-heading) 58%, var(--prompter-text) 42%) !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter :is(
+  #readAloudInput,
+  #dmNotesInput,
+  #scriptTitleInput,
+  #scriptSelect,
+  #scriptTypeInput
+) {
+  box-sizing: border-box;
+  border: 1px solid var(--prompter-border) !important;
+  background:
+    linear-gradient(var(--prompter-input-surface), var(--prompter-input-surface)),
+    #10110e !important;
+  color: var(--mf-input-text, #fffaf0) !important;
+  caret-color: var(--prompter-accent);
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter :is(
+  #readAloudInput,
+  #dmNotesInput,
+  #scriptTitleInput,
+  #scriptSelect,
+  #scriptTypeInput
+):focus-visible {
+  border-color: var(--prompter-accent) !important;
+  outline: 2px solid var(--prompter-accent);
+  outline-offset: 2px;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #storyPromptLayout {
+  position: relative !important;
+  inset: auto !important;
+  gap: 12px !important;
+  width: 100% !important;
+  min-height: min(520px, calc(100dvh - 180px)) !important;
+  height: clamp(360px, 60dvh, 720px) !important;
+  max-height: calc(100dvh - 48px) !important;
+  box-sizing: border-box;
+  border: 0 !important;
+  background: transparent !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #teleprompterPanel {
+  isolation: isolate;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  border: 1px solid var(--prompter-border) !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #teleprompterPanel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: rgba(5, 7, 5, var(--prompter-overlay-opacity, 0.9));
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #teleprompterText {
+  left: 50% !important;
+  right: auto !important;
+  z-index: 1;
+  width: min(88%, 920px) !important;
+  max-width: 920px !important;
+  translate: -50% 0;
+  color: #e6bd45 !important;
+  opacity: 1 !important;
+  text-shadow:
+    0 3px 8px rgba(0, 0, 0, 1),
+    0 0 12px rgba(0, 0, 0, 0.95),
+    0 0 7px rgba(212, 175, 55, 0.32) !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #promptNotesPanel {
+  min-width: 0 !important;
+  min-height: 0 !important;
+  box-sizing: border-box;
+  border: 1px solid var(--prompter-border) !important;
+  background:
+    linear-gradient(var(--prompter-surface-soft), var(--prompter-surface-soft)),
+    #24221c !important;
+  box-shadow: none !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter #promptNotesText {
+  z-index: 1;
+  color: var(--prompter-text) !important;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9) !important;
+}
+
+@media (max-width: 900px) {
+  #sessionPrompterSlideDown .embeddedSessionPrompter #storyToolbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter .prompterScriptControls {
+    grid-column: auto;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter #storyEditorLayout {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter #storyPromptLayout {
+    flex-direction: column !important;
+    height: min(720px, calc(100dvh - 32px)) !important;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter #teleprompterPanel,
+  #sessionPrompterSlideDown .embeddedSessionPrompter #promptNotesPanel {
+    width: 100% !important;
+    min-height: 240px !important;
+    flex: 1 1 50% !important;
+  }
+}
+
+@media (max-width: 560px) {
+  #sessionPrompterSlideDown {
+    margin-inline: 8px;
+    padding: 10px;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter {
+    padding: 10px !important;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls {
+    grid-template-columns: minmax(0, 1fr) max-content;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter .prompterDisplayControls label {
+    grid-column: 1 / -1;
+  }
+
+  #sessionPrompterSlideDown .embeddedSessionPrompter .prompterScriptControls :is(
+    #scriptSelect,
+    #scriptTypeInput,
+    #scriptTitleInput
+  ) {
+    flex-basis: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #sessionPrompterSlideDown .embeddedSessionPrompter *,
+  #sessionPrompterSlideDown .embeddedSessionPrompter *::before,
+  #sessionPrompterSlideDown .embeddedSessionPrompter *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+.prompterConfirmBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: rgba(0, 0, 0, 0.74);
+}
+
+.prompterConfirmDialog {
+  width: min(460px, calc(100vw - 40px));
+  max-height: calc(100dvh - 40px);
+  padding: 20px;
+  overflow-y: auto;
+  box-sizing: border-box;
+  border: 1px solid var(--mf-border, var(--border, #75694f));
+  border-radius: var(--radius, 12px);
+  background:
+    linear-gradient(
+      var(--mf-panel-bg, var(--panel-bg, #191814)),
+      var(--mf-panel-bg, var(--panel-bg, #191814))
+    ),
+    #191814;
+  color: var(--mf-text, var(--text-main, #f5efe3));
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.72);
+}
+
+.prompterConfirmDialog h3 {
+  margin: 0 0 10px;
+  color: var(--mf-heading, var(--accent-color, #e7bd63));
+}
+
+.prompterConfirmDialog p {
+  margin: 0;
+  color: var(--mf-text, var(--text-main, #f5efe3));
+  line-height: 1.5;
+}
+
+.prompterConfirmActions {
+  display: flex;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+}
+
+.prompterConfirmDialog button {
+  background:
+    linear-gradient(
+      var(--mf-button-bg, var(--button-bg, #302c24)),
+      var(--mf-button-bg, var(--button-bg, #302c24))
+    ),
+    #302c24 !important;
+  color: var(--mf-button-text, var(--button-text, #fff8e8)) !important;
+}
+
+.prompterConfirmDialog button.danger {
+  border-color: var(--mf-danger, var(--danger-color, #b85b52)) !important;
+  background: #672c28 !important;
+  color: #fff4f1 !important;
+}
+
+.prompterConfirmDialog button:is(:hover, :focus-visible) {
+  border-color: var(--mf-accent, var(--accent-color, #d6a928)) !important;
+  color: #ffffff !important;
+  outline: 2px solid var(--mf-accent, var(--accent-color, #d6a928));
+  outline-offset: 2px;
+}
+
+/* Creature and NPC Builder portrait panels. */
+#creatures .forgeImageBlock:has(#creatureImagePreview),
+#npc .forgeImageBlock:has(#npcImagePreview) {
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  gap: 0;
+  overflow: hidden;
+}
+
+#creatures #creatureImagePreview,
+#npc #npcImagePreview {
+  width: 100%;
+  height: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  border: 0;
+  border-radius: inherit;
+  background: var(--mf-panel-bg-soft, var(--card-bg, rgba(0, 0, 0, 0.28)));
+  overflow: hidden;
+}
+
+#creatures #creatureImagePreview {
+  min-height: 150px;
+}
+
+#npc #npcImagePreview {
+  min-height: 160px;
+}
+
+#creatures #creatureImagePreview + .forgeImageActions:has(> input[type="file"][hidden]:only-child),
+#npc #npcImagePreview + .forgeImageActions:has(> input[type="file"][hidden]:only-child) {
+  display: none;
+}
+
+#creatures #creatureImagePreview > .creaturePortraitPreview,
+#npc #npcImagePreview > .creaturePortraitPreview {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
+  border-radius: inherit;
+}
+
+/* Shared collapsible repeatable editors for Creature and NPC Builders. */
+#creatures .forgeRepeatableEditorCard,
+#npc .forgeRepeatableEditorCard {
+  padding: 0;
+  overflow: hidden;
+}
+
+#creatures .forgeRepeatableEditorSummary,
+#npc .forgeRepeatableEditorSummary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 10px 12px;
+  background: var(--mf-panel-bg-soft, var(--card-bg));
+}
+
+#creatures .forgeRepeatableEditorSummaryText,
+#npc .forgeRepeatableEditorSummaryText {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+#creatures .forgeRepeatableEditorSummaryText strong,
+#npc .forgeRepeatableEditorSummaryText strong {
+  color: var(--mf-heading, var(--text-main));
+  overflow-wrap: anywhere;
+}
+
+#creatures .forgeRepeatableEditorSummaryText small,
+#npc .forgeRepeatableEditorSummaryText small {
+  color: var(--mf-text-muted, var(--text-muted));
+  overflow-wrap: anywhere;
+}
+
+#creatures .forgeRepeatableEditorActions,
+#npc .forgeRepeatableEditorActions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+
+#creatures .forgeRepeatableEditorBody,
+#npc .forgeRepeatableEditorBody {
+  display: grid;
+  padding: 12px;
+  border-top: 1px solid var(--mf-border, var(--border));
+}
+
+#creatures .forgeRepeatableEditorBody[hidden],
+#npc .forgeRepeatableEditorBody[hidden] {
+  display: none;
+}
+
+#creatures .forgeRepeatableEditorBody > .forgeObjectHeader,
+#npc .forgeRepeatableEditorBody > .forgeObjectHeader {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+#creatures .forgeRepeatableEditorToggle:focus-visible,
+#npc .forgeRepeatableEditorToggle:focus-visible {
+  outline: 2px solid var(--mf-button-focus-resolved, var(--mf-accent, var(--accent)));
+  outline-offset: 2px;
+}
+
+@media (max-width: 620px) {
+  #creatures .forgeRepeatableEditorSummary,
+  #npc .forgeRepeatableEditorSummary {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  #creatures .forgeRepeatableEditorActions,
+  #npc .forgeRepeatableEditorActions {
+    justify-content: flex-end;
+    flex-wrap: wrap;
+  }
+}
+
+/* Combat Operations: canonical and quick late-participant picker. */
+.combatLateParticipantBackdrop {
+  padding: 24px;
+}
+
+.combatDeploymentDialog.combatLateParticipantDialog {
+  width: min(920px, calc(100vw - 48px));
+  max-width: none;
+  max-height: min(780px, calc(100vh - 48px));
+  grid-template-rows: auto auto minmax(0, 1fr) auto auto;
+  overflow: hidden;
+  background: var(--mf-panel-bg, var(--card-bg, #171b22));
+  color: var(--mf-text, var(--text-main, #f4efe3));
+}
+
+.combatLateParticipantDialog > header {
+  border-bottom: 1px solid var(--mf-border, var(--border, #4b5260));
+}
+
+.combatLateParticipantDialog > header p,
+.combatLateParticipantDialog small,
+.combatLateParticipantStatus {
+  color: var(--mf-text-muted, var(--text-muted, #c2c5cb));
+}
+
+.combatLateParticipantModes {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid var(--mf-border, var(--border, #4b5260));
+  border-radius: 9px;
+  background: var(--mf-panel-bg-soft, #10141a);
+}
+
+.combatLateParticipantDialog .combatLateParticipantModes button {
+  width: 100%;
+  min-width: 0;
+}
+
+.combatLateParticipantModes button.is-active,
+.combatLateParticipantModes button[aria-selected="true"] {
+  border-color: var(--mf-accent, var(--accent, #cf9d51));
+  background: var(--mf-accent, var(--accent, #cf9d51));
+  color: #11151a;
+}
+
+.combatLateParticipantDialog [data-late-panel] {
+  min-height: 0;
+  overflow: auto;
+}
+
+.combatLateParticipantFilters {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(170px, .32fr);
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.combatLateParticipantDialog label {
+  display: grid;
+  gap: 6px;
+  min-width: 0;
+  color: var(--mf-text, var(--text-main, #f4efe3));
+  font-weight: 700;
+}
+
+.combatLateParticipantDialog :is(input, select, textarea) {
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  background: var(--mf-input-bg, #0f1319);
+  color: var(--mf-text, var(--text-main, #f4efe3));
+  border-color: var(--mf-border, var(--border, #4b5260));
+}
+
+.combatLateParticipantBrowser {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(240px, .65fr);
+  gap: 12px;
+  min-height: 290px;
+}
+
+.combatLateParticipantResults,
+.combatLateParticipantPreview {
+  min-width: 0;
+  min-height: 0;
+  border: 1px solid var(--mf-border, var(--border, #4b5260));
+  border-radius: 10px;
+  background: var(--mf-panel-bg-soft, #10141a);
+}
+
+.combatLateParticipantResults {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  max-height: 390px;
+  padding: 8px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.combatLateParticipantDialog .combatLateParticipantResult {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  text-align: left;
+  border: 1px solid var(--mf-border, var(--border, #4b5260));
+  border-radius: 8px;
+  background: var(--mf-card-bg, #202630);
+  color: var(--mf-text, var(--text-main, #f4efe3));
+}
+
+.combatLateParticipantResult > span:last-child {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.combatLateParticipantResult :is(strong, small) {
+  color: inherit;
+  overflow-wrap: anywhere;
+}
+
+.combatLateParticipantResult small {
+  color: var(--mf-text-muted, var(--text-muted, #c2c5cb));
+}
+
+.combatLateParticipantResult:hover,
+.combatLateParticipantResult.is-selected,
+.combatLateParticipantResult:focus-visible {
+  border-color: var(--mf-accent, var(--accent, #cf9d51));
+  background: var(--mf-card-hover, #2b3441);
+  color: #fffaf0;
+}
+
+.combatLateParticipantResult:focus-visible,
+.combatLateParticipantModes button:focus-visible {
+  outline: 2px solid var(--mf-button-focus-resolved, var(--mf-accent, #cf9d51));
+  outline-offset: 2px;
+}
+
+.combatLateParticipantThumb,
+.combatLateParticipantPreviewPortrait {
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid var(--mf-border-strong, #697383);
+  border-radius: 8px;
+  background: #0b0e13;
+  color: var(--mf-text-muted, #d4d0c7);
+}
+
+.combatLateParticipantThumb {
+  width: 56px;
+  height: 56px;
+}
+
+.combatLateParticipantThumb img,
+.combatLateParticipantPreviewPortrait img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.combatLateParticipantPreview {
+  display: grid;
+  align-content: start;
+  gap: 12px;
+  padding: 14px;
+  overflow: auto;
+}
+
+.combatLateParticipantPreviewPortrait {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+
+.combatLateParticipantPreview h3 {
+  margin: 8px 0 4px;
+  color: var(--mf-heading, #fffaf0);
+}
+
+.combatLateParticipantPreview p {
+  color: var(--mf-text, var(--text-main, #f4efe3));
+}
+
+.combatLateParticipantQuickGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 2px;
+}
+
+.combatLateParticipantWide {
+  grid-column: 1 / -1;
+}
+
+.combatLateParticipantStatus {
+  min-height: 1.25em;
+  margin: 0;
+}
+
+.combatQuickBadge {
+  display: inline-flex;
+  padding: 2px 7px;
+  border: 1px solid #ddb65d;
+  border-radius: 999px;
+  background: #3d3118;
+  color: #fff0bd;
+  font-size: .72rem;
+  font-weight: 800;
+}
+
+@media (max-width: 700px) {
+  .combatLateParticipantBackdrop {
+    padding: 12px;
+  }
+
+  .combatDeploymentDialog.combatLateParticipantDialog {
+    width: calc(100vw - 24px);
+    max-height: calc(100vh - 24px);
+  }
+
+  .combatLateParticipantFilters,
+  .combatLateParticipantBrowser,
+  .combatLateParticipantQuickGrid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .combatLateParticipantWide {
+    grid-column: auto;
+  }
+
+  .combatLateParticipantResults {
+    max-height: 300px;
+  }
+}
+
+/* Combat participant cards: cascade-safe portrait and active-turn enforcement. */
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardOverlay,
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardOverlay {
+  display: block !important;
+  background:
+    linear-gradient(
+      to top,
+      var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 0%,
+      color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 88%, transparent) 43%,
+      color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 54%, transparent) 62%,
+      transparent 82%
+    ) !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity :is(.combatOpsInitName, small, span),
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity :is(.combatOpsInitName, small, span) {
+  color: var(--mf-button-text-resolved, var(--mf-button-text, var(--text-main))) !important;
+  text-shadow: 0 2px 6px color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 92%, transparent) !important;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsCardIdentity {
+  padding-bottom: 44px;
+}
+
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsInitName,
+#combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsKeyStats {
+  font-weight: 900 !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardIdentity :is(.combatOpsInitName, small, span),
+#combat-operations .combatOpsInitiativeCard.no-portrait .combatOpsCardIdentity :is(.combatOpsInitName, small, span) {
+  color: var(--mf-text, var(--text-main)) !important;
+  text-shadow: none !important;
+}
+
+#combat-operations .combatOpsInitiativeCard.is-active-turn {
+  border-color: var(--mf-accent, var(--accent)) !important;
+  outline: 2px solid color-mix(in srgb, var(--mf-accent, var(--accent)) 82%, transparent) !important;
+  outline-offset: 2px;
+  box-shadow:
+    0 0 0 3px color-mix(in srgb, var(--mf-accent, var(--accent)) 54%, transparent),
+    0 0 24px color-mix(in srgb, var(--mf-accent, var(--accent)) 48%, transparent) !important;
+}
+
+body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+#combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+  padding: 4px 8px;
+  border: 2px solid color-mix(in srgb, var(--mf-accent, var(--accent)) 72%, var(--mf-border, var(--border))) !important;
+  background: var(--mf-accent, var(--accent)) !important;
+  color: var(--mf-button-active-text-resolved, var(--mf-panel-bg, var(--card-bg))) !important;
+  box-shadow:
+    0 0 0 2px color-mix(in srgb, var(--mf-overlay-bg, rgba(0, 0, 0, .96)) 72%, transparent),
+    0 0 14px color-mix(in srgb, var(--mf-accent, var(--accent)) 68%, transparent) !important;
+  font-weight: 950 !important;
+  inset: auto 10px 13px auto !important;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: max-content;
+  max-width: calc(100% - 20px);
+  min-height: 24px;
+  line-height: 1;
+  white-space: nowrap !important;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+#combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity {
+  padding-bottom: 58px !important;
+}
+
+@media (max-width: 720px) {
+  #combat-operations .combatOpsInitiativeCard .combatOpsCardIdentity {
+    padding-inline: 10px;
+    padding-bottom: 44px;
+  }
+
+  #combat-operations .combatOpsInitiativeCard:not(.no-portrait) .combatOpsKeyStats {
+    font-size: .76rem;
+  }
+
+  #combat-operations .combatOpsInitiativeCard.is-active-turn .combatOpsCardIdentity {
+    padding-bottom: 56px !important;
+  }
+
+  body[data-manual-visual="true"] #combat-operations .combatOpsInitiativeCard.is-active-turn::after,
+  #combat-operations .combatOpsInitiativeCard.is-active-turn::after {
+    inset: auto 9px 12px auto !important;
+    max-width: calc(100% - 18px);
+    padding: 3px 7px;
+    font-size: .61rem;
+  }
 }

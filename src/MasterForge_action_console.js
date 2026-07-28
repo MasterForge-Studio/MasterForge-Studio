@@ -11,7 +11,8 @@
     isOverlay: false,
     busyActionId: null,
     registeredWorkspaces: new Map(),
-    collapsedGroups: new Set()
+    collapsedGroups: new Set(),
+    hasSavedCollapsePreferences: false
   };
   let host = null;
   let shell = null;
@@ -24,13 +25,17 @@
     catch (error) { console.error("Action Console resolver failed:", error); return fallback; }
   };
   const save = () => {
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ isOpen: state.isOpen, collapsedGroups: [...state.collapsedGroups] })); }
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({ isOpen: state.isOpen, collapsedGroups: [...state.collapsedGroups] }));
+      state.hasSavedCollapsePreferences = true;
+    }
     catch (error) { console.warn("Could not save Action Console preferences:", error); }
   };
   const load = () => {
     try {
       const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
       state.isOpen = saved.isOpen !== false;
+      state.hasSavedCollapsePreferences = Object.prototype.hasOwnProperty.call(saved, "collapsedGroups");
       state.collapsedGroups = new Set(Array.isArray(saved.collapsedGroups) ? saved.collapsedGroups : []);
     } catch (error) { console.warn("Could not load Action Console preferences:", error); }
   };
@@ -65,6 +70,10 @@
 
   function render() {
     if (!host) return;
+    const workspace = state.registeredWorkspaces.get(state.activeWorkspaceId);
+    if (!state.hasSavedCollapsePreferences) {
+      (workspace?.defaultCollapsedGroups || []).forEach(groupId => state.collapsedGroups.add(groupId));
+    }
     const available = actions().filter(action => resolve(action.visible, state.context, true));
     const groups = new Map();
     available.forEach(action => {
@@ -75,7 +84,8 @@
     applyShellState();
     host.innerHTML = `<header class="masterforge-action-console__header"><div><strong>${getContextTitle()}</strong>${state.activePageId ? `<small>${String(state.activePageId).replace(/-/g, " ")}</small>` : ""}</div><button type="button" data-action-console-close aria-label="Close page actions">Close</button></header><div class="masterforge-action-console__body">${available.length ? [...groups.values()].sort((a,b) => a.order-b.order).map(group => {
       const collapsed = state.collapsedGroups.has(group.id);
-      return `<section class="masterforge-action-group"><button type="button" class="masterforge-action-group__toggle" data-action-group="${group.id}" aria-expanded="${!collapsed}"><span>${group.label}</span><span aria-hidden="true">${collapsed ? "+" : "−"}</span></button><div class="masterforge-action-group__items" ${collapsed ? "hidden" : ""}>${group.actions.sort((a,b) => (a.order||0)-(b.order||0)).map(action => {
+      const bodyId = `action-console-group-${String(group.id).replace(/[^a-z0-9_-]+/gi, "-")}`;
+      return `<section class="masterforge-action-group" data-console-section="${group.id}"><button type="button" class="masterforge-action-group__toggle" data-action-group="${group.id}" aria-controls="${bodyId}" aria-expanded="${!collapsed}"><span>${group.label}</span><span aria-hidden="true">${collapsed ? "+" : "−"}</span></button><div id="${bodyId}" class="masterforge-action-group__items" data-console-section-body="${group.id}" ${collapsed ? "hidden" : ""}>${group.actions.sort((a,b) => (a.order||0)-(b.order||0)).map(action => {
         const enabled = resolve(action.enabled, state.context, true) && state.busyActionId === null;
         const reason = enabled ? "" : resolve(action.disabledReason, state.context, "This action is unavailable.");
         const label = state.busyActionId === action.id ? (action.busyLabel || "Working…") : action.label;
@@ -98,7 +108,15 @@
     const groupButton = event.target.closest("[data-action-group]");
     if (groupButton) {
       const id = groupButton.dataset.actionGroup;
-      state.collapsedGroups.has(id) ? state.collapsedGroups.delete(id) : state.collapsedGroups.add(id);
+      const workspace = state.registeredWorkspaces.get(state.activeWorkspaceId);
+      const wasCollapsed = state.collapsedGroups.has(id);
+      if (workspace?.singleOpenAccordion) {
+        const workspaceGroupIds = new Set(actions().map(action => action.groupId || "actions"));
+        workspaceGroupIds.forEach(groupId => state.collapsedGroups.add(groupId));
+        if (wasCollapsed) state.collapsedGroups.delete(id);
+      } else {
+        wasCollapsed ? state.collapsedGroups.delete(id) : state.collapsedGroups.add(id);
+      }
       save(); render(); return;
     }
     const button = event.target.closest("[data-console-action]");
@@ -131,7 +149,17 @@
   function updateContext(patch = {}) { setContext({ ...state.context, ...patch }); }
   function updateAction(id, patch = {}) { const workspace = state.registeredWorkspaces.get(state.activeWorkspaceId); const action = workspace?.actions.find(item => item.id === id); if (action) Object.assign(action, patch); render(); }
   function open() { returnFocus = document.activeElement; state.isOpen = true; save(); render(); requestAnimationFrame(() => host?.querySelector("button")?.focus()); }
-  function openGroup(id) { if (id) state.collapsedGroups.delete(id); open(); requestAnimationFrame(() => host?.querySelector(`[data-action-group="${id}"]`)?.focus()); }
+  function openGroup(id) {
+    if (id) {
+      const workspace = state.registeredWorkspaces.get(state.activeWorkspaceId);
+      if (workspace?.singleOpenAccordion) {
+        new Set(actions().map(action => action.groupId || "actions")).forEach(groupId => state.collapsedGroups.add(groupId));
+      }
+      state.collapsedGroups.delete(id);
+    }
+    open();
+    requestAnimationFrame(() => host?.querySelector(`[data-action-group="${id}"]`)?.focus());
+  }
   function close() { state.isOpen = false; save(); render(); (returnFocus?.isConnected ? returnFocus : toggleButton)?.focus?.(); }
   function toggle() { state.isOpen ? close() : open(); }
   function clear() { state.activeWorkspaceId = null; state.activePageId = null; state.context = {}; state.busyActionId = null; render(); }
