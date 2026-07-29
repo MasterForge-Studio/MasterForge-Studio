@@ -2573,13 +2573,13 @@ function renderUpdaterModal(state = {}) {
   error.classList.toggle("hidden", state.status !== "error");
 
   if (state.status === "available" || state.status === "error") {
-    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="download">${state.status === "error" ? "Try Again" : "Download Update"}</button>${state.required ? "" : `<button type="button" data-update-action="remind">Remind Me Tomorrow</button><button type="button" data-update-action="skip">Skip This Version</button>`}<button type="button" data-update-action="cancel">Cancel</button>`;
+    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="download">${state.status === "error" ? "Try Again" : "Download Update"}</button>${state.status === "error" ? `<button type="button" data-update-action="open-browser">Open Installer Page</button>` : ""}${state.required ? "" : `<button type="button" data-update-action="remind">Remind Me Tomorrow</button><button type="button" data-update-action="skip">Skip This Version</button>`}<button type="button" data-update-action="cancel">Cancel</button>`;
   } else if (isDownloading) {
     actions.innerHTML = `<button type="button" data-update-action="cancel">Cancel Download</button>`;
   } else if (isVerifying) {
     actions.innerHTML = `<button type="button" disabled>Verifying…</button>`;
   } else if (state.status === "ready") {
-    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="install-now">Install Now</button><button type="button" data-update-action="install-exit">Install on Exit</button><button type="button" data-update-action="cancel">Cancel</button>`;
+    actions.innerHTML = `<button type="button" class="primaryBtn" data-update-action="install-now">Install and Restart</button><button type="button" data-update-action="install-exit">Install on Exit</button><button type="button" data-update-action="cancel">Cancel</button>`;
   } else if (state.status === "install-on-exit") {
     actions.innerHTML = `<button type="button" data-update-action="dismiss">Continue Working</button><button type="button" data-update-action="cancel">Cancel Installation</button>`;
   } else {
@@ -2591,7 +2591,18 @@ function renderUpdaterModal(state = {}) {
       button.disabled = true;
       try {
         const action = button.dataset.updateAction;
-        if (action === "download") renderUpdaterModal(await window.dmAPI.downloadUpdate());
+        if (action === "download") {
+          renderUpdaterModal({
+            ...state,
+            status: "downloading",
+            percent: 0,
+            transferredBytes: 0,
+            totalBytes: 0,
+            message: "Starting update download…"
+          });
+          renderUpdaterModal(await window.dmAPI.downloadUpdate());
+        }
+        if (action === "open-browser") renderUpdaterModal(await window.dmAPI.openUpdateDownloadPage());
         if (action === "install-now") await window.dmAPI.installUpdateNow();
         if (action === "install-exit") renderUpdaterModal(await window.dmAPI.installUpdateOnExit());
         if (action === "cancel") renderUpdaterModal(await window.dmAPI.cancelUpdate());

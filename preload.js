@@ -10,6 +10,8 @@ contextBridge.exposeInMainWorld("dmAPI", {
     ipcRenderer.invoke("updater:getState"),
   downloadUpdate: () =>
     ipcRenderer.invoke("updater:download"),
+  openUpdateDownloadPage: () =>
+    ipcRenderer.invoke("updater:openDownloadPage"),
   installUpdateNow: () =>
     ipcRenderer.invoke("updater:installNow"),
   installUpdateOnExit: () =>

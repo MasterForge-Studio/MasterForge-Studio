@@ -15,6 +15,7 @@ const { pipeline } = require("stream/promises");
 
 const {
   autoUpdater,
+  CancellationToken,
 } = require("electron-updater");
 
 const {
@@ -76,11 +77,14 @@ function safePath(basePath, relativePath) {
 let win;
 
 let updaterDownloadInProgress = false;
+let updaterDownloadCancelled = false;
 let updaterReadyToInstall = false;
 let updaterAbortController = null;
+let updaterCancellationToken = null;
 let updaterPartialPath = "";
 let verifiedInstallerPath = "";
 let installOnExitPath = "";
+let updaterInstallMode = "";
 let installerLaunchStarted = false;
 let currentUpdateStatus = null;
 let updaterUiState = {
@@ -363,6 +367,11 @@ function configureAutomaticUpdater() {
       console.log(
         "[MasterForge Updater] Checking for update."
       );
+      publishUpdaterState({
+        status: "downloading",
+        percent: 0,
+        message: "Checking release metadata…",
+      });
     }
   );
 
@@ -373,6 +382,11 @@ function configureAutomaticUpdater() {
         "[MasterForge Updater] Update available:",
         updateInfo?.version
       );
+      publishUpdaterState({
+        status: "downloading",
+        version: updateInfo?.version || currentUpdateStatus?.latestVersion,
+        message: "Update found. Starting download…",
+      });
     }
   );
 
@@ -392,6 +406,13 @@ function configureAutomaticUpdater() {
       ) {
         win.setProgressBar(-1);
       }
+      if (updaterDownloadInProgress) {
+        publishUpdaterState({
+          status: "error",
+          message: "The automatic updater did not find the expected release.",
+          error: "The expected update was not available through the automatic update provider.",
+        });
+      }
     }
   );
 
@@ -406,6 +427,13 @@ function configureAutomaticUpdater() {
         "[MasterForge Updater] Download progress:",
         `${percent.toFixed(1)}%`
       );
+      publishUpdaterState({
+        status: "downloading",
+        percent,
+        transferredBytes: Number(progress?.transferred || 0),
+        totalBytes: Number(progress?.total || 0),
+        message: `Downloading update… ${percent.toFixed(1)}%`,
+      });
 
       if (
         win &&
@@ -429,6 +457,7 @@ function configureAutomaticUpdater() {
     async updateInfo => {
       updaterDownloadInProgress = false;
       updaterReadyToInstall = true;
+      updaterInstallMode = "electron-updater";
 
       if (
         win &&
@@ -441,40 +470,12 @@ function configureAutomaticUpdater() {
         "[MasterForge Updater] Update downloaded:",
         updateInfo?.version
       );
-
-      const result =
-        await dialog.showMessageBox(
-          win,
-          {
-            type: "info",
-            title:
-              "MasterForge Studio Update Ready",
-            message:
-              `MasterForge Studio ${updateInfo?.version || "update"} is ready to install.`,
-            detail:
-              "MasterForge Studio will close, install the update over the existing version, and reopen automatically.",
-            buttons: [
-              "Restart and Install",
-              "Install When I Close MasterForge",
-            ],
-            defaultId: 0,
-            cancelId: 1,
-            noLink: true,
-          }
-        );
-
-      if (result.response === 0) {
-        console.log(
-          "[MasterForge Updater] Restarting to install update."
-        );
-
-        setImmediate(() => {
-          autoUpdater.quitAndInstall(
-            false,
-            true
-          );
-        });
-      }
+      publishUpdaterState({
+        status: "ready",
+        version: updateInfo?.version || currentUpdateStatus?.latestVersion,
+        percent: 100,
+        message: "Update downloaded. Install and restart when ready.",
+      });
     }
   );
 
@@ -494,25 +495,15 @@ function configureAutomaticUpdater() {
         "[MasterForge Updater] Automatic update failed:",
         error
       );
-
-      await dialog.showMessageBox(
-        win,
-        {
-          type: "error",
-          title:
-            "MasterForge Studio Update Failed",
-          message:
-            "The update could not be downloaded automatically.",
-          detail:
-            error?.message ||
-            "Please try again later or download the installer manually.",
-          buttons: [
-            "OK",
-          ],
-          defaultId: 0,
-          noLink: true,
-        }
-      );
+      if (updaterDownloadCancelled) {
+        console.log("[MasterForge Updater] Download cancellation acknowledged.");
+        return;
+      }
+      publishUpdaterState({
+        status: "error",
+        error: error?.message || "The update could not be downloaded automatically.",
+        message: "Automatic download failed.",
+      });
     }
   );
 }
@@ -538,6 +529,9 @@ async function downloadAutomaticUpdate() {
   }
 
   updaterDownloadInProgress = true;
+  updaterDownloadCancelled = false;
+  updaterCancellationToken = new CancellationToken();
+  updaterInstallMode = "";
 
   try {
     console.log(
@@ -560,14 +554,11 @@ async function downloadAutomaticUpdate() {
       updateCheck.updateInfo.version
     );
 
-    await autoUpdater.downloadUpdate();
+    await autoUpdater.downloadUpdate(
+      updaterCancellationToken
+    );
 
-    return {
-      success: true,
-      status: "downloading",
-      version:
-        updateCheck.updateInfo.version,
-    };
+    return updaterUiState;
   } catch (error) {
     updaterDownloadInProgress = false;
 
@@ -583,7 +574,49 @@ async function downloadAutomaticUpdate() {
       error
     );
 
+    if (
+      updaterDownloadCancelled ||
+      error?.name === "CancellationError"
+    ) {
+      return publishUpdaterState({
+        status: "available",
+        percent: 0,
+        transferredBytes: 0,
+        totalBytes: 0,
+        message: "Update download cancelled.",
+      });
+    }
+
+    const fallbackUrl = String(currentUpdateStatus?.downloadUrl || "").trim();
+    if (/^https:\/\//i.test(fallbackUrl)) {
+      try {
+        await shell.openExternal(fallbackUrl);
+        console.warn(
+          "[MasterForge Updater] Automatic download failed; opened installer URL externally:",
+          fallbackUrl
+        );
+        return publishUpdaterState({
+          status: "error",
+          externalFallbackOpened: true,
+          fallbackUrl,
+          error: error?.message || "Automatic download could not be started.",
+          message: "Automatic download failed. The Windows Alpha installer page was opened in your browser.",
+        });
+      } catch (fallbackError) {
+        console.error(
+          "[MasterForge Updater] Browser fallback failed:",
+          fallbackError
+        );
+        throw new Error(
+          `${error?.message || "Automatic download failed."} Browser fallback also failed: ${fallbackError?.message || fallbackError}`
+        );
+      }
+    }
+
     throw error;
+  } finally {
+    updaterCancellationToken = null;
+    updaterDownloadCancelled = false;
   }
 }
 
@@ -1237,31 +1270,58 @@ ipcMain.handle(
   "updater:download",
   async () => {
     try {
-      return await downloadVerifiedUpdate();
+      return await downloadAutomaticUpdate();
     } catch (error) {
-      return {
-        ...updaterUiState,
+      return publishUpdaterState({
+        status: "error",
         success: false,
-        error:
-          error?.message ||
-          "The update could not be downloaded.",
-      };
+        error: error?.message || "The update could not be downloaded.",
+        message: "Download failed. Try again or open the installer page in your browser.",
+      });
     }
+  }
+);
+
+ipcMain.handle(
+  "updater:openDownloadPage",
+  async () => {
+    const downloadUrl = String(currentUpdateStatus?.downloadUrl || "").trim();
+    if (!/^https:\/\//i.test(downloadUrl)) {
+      throw new Error("No confirmed HTTPS installer URL is available.");
+    }
+    await shell.openExternal(downloadUrl);
+    console.log("[MasterForge Updater] Opened installer URL externally:", downloadUrl);
+    return publishUpdaterState({
+      status: "error",
+      externalFallbackOpened: true,
+      fallbackUrl: downloadUrl,
+      message: "The Windows Alpha installer page was opened in your browser.",
+      error: "",
+    });
   }
 );
 
 ipcMain.handle(
   "updater:installNow",
   () => {
-    if (
-      !updaterReadyToInstall ||
-      !verifiedInstallerPath
-    ) {
+    if (!updaterReadyToInstall) {
       throw new Error(
-        "No verified installer is ready."
+        "No downloaded update is ready."
       );
     }
 
+    if (updaterInstallMode === "electron-updater") {
+      console.log("[MasterForge Updater] Installing downloaded update now.");
+      setImmediate(() => autoUpdater.quitAndInstall(false, true));
+      return publishUpdaterState({
+        status: "installing",
+        message: "Restarting to install the update…",
+      });
+    }
+
+    if (!verifiedInstallerPath) {
+      throw new Error("No verified installer is ready.");
+    }
     launchInstaller(
       verifiedInstallerPath
     );
@@ -1275,15 +1335,23 @@ ipcMain.handle(
 ipcMain.handle(
   "updater:installOnExit",
   () => {
-    if (
-      !updaterReadyToInstall ||
-      !verifiedInstallerPath
-    ) {
+    if (!updaterReadyToInstall) {
       throw new Error(
-        "No verified installer is ready."
+        "No downloaded update is ready."
       );
     }
 
+    if (updaterInstallMode === "electron-updater") {
+      autoUpdater.autoInstallOnAppQuit = true;
+      return publishUpdaterState({
+        status: "install-on-exit",
+        message: "The downloaded update will install when MasterForge Studio closes.",
+      });
+    }
+
+    if (!verifiedInstallerPath) {
+      throw new Error("No verified installer is ready.");
+    }
     installOnExitPath =
       verifiedInstallerPath;
 
@@ -1298,6 +1366,10 @@ ipcMain.handle(
 ipcMain.handle(
   "updater:cancel",
   () => {
+    if (updaterCancellationToken) {
+      updaterDownloadCancelled = true;
+      updaterCancellationToken.cancel();
+    }
     if (updaterAbortController) {
       updaterAbortController.abort();
     }
@@ -1316,6 +1388,7 @@ ipcMain.handle(
 
     verifiedInstallerPath = "";
     updaterReadyToInstall = false;
+    updaterInstallMode = "";
 
     return publishUpdaterState({
       status:
@@ -2029,6 +2102,7 @@ app.whenReady().then(() => {
     VERSION
   );
 
+  configureAutomaticUpdater();
   createWindow();
 
   fetchUpdateInfo()
