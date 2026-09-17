@@ -2002,6 +2002,43 @@ console.log("Locations:", window.dmState.locations);
 }
 
 
+function setupAtlasImportPreviewWorkspace() {
+  const ui = window.MasterForgeAtlasImportPreviewUi;
+  const parser = window.MasterForgeAtlasPackageParser;
+  const previewBuilder = window.MasterForgeAtlasImportPreview;
+  const provenance = window.MasterForgeExternalProvenance;
+  const matchModule = window.MasterForgeExternalEntityMatch;
+  const root = document.querySelector("#atlasImportPreviewRoot");
+  if (!ui || !parser || !previewBuilder || !provenance || !matchModule || !root) {
+    console.warn("Atlas Import Preview dependencies are unavailable.");
+    return;
+  }
+  const entityTypes = window.MasterForgeInterchangeContract?.SUPPORTED_EXTERNAL_ENTITY_TYPES || [];
+  const recordCollections = ["worlds", "regions", "locations", "settlements", "landmarks", "routes", "territories", "biomes", "environments", "npcs", "creatures", "factions", "items", "resources", "hazards", "quests", "planned-encounters", "parties"];
+  ui.mountAtlasImportPreview({
+    root,
+    parsePackage: parser.parseAtlasPackage,
+    buildPreview: previewBuilder.buildAtlasImportPreview,
+    choosePackage: () => window.dmAPI.chooseAtlasPackage(),
+    actionConsole: window.MasterForgeActionConsole,
+    getPreviewDependencies: async () => {
+      const [entityGroups, recordGroups] = await Promise.all([
+        Promise.all(entityTypes.map(type => window.dmAPI.getEntitiesByType(type).catch(() => []))),
+        Promise.all(recordCollections.map(collection => window.dmAPI.getAllRecordsInCollection(collection).then(records => (records || []).map(record => ({ ...record, _collection: collection }))).catch(() => [])))
+      ]);
+      const entities = entityGroups.flat();
+      const records = recordGroups.flat();
+      return {
+        provenance,
+        matchModule,
+        listEntities: async () => entities,
+        listRecords: async () => records,
+        isRelationshipTypeSupported: type => window.MasterForgeRelationshipTypes?.has?.(type) === true
+      };
+    }
+  });
+}
+
 // ===========================
 // APP STARTUP
 // ===========================
@@ -2065,6 +2102,7 @@ await migrateCampaignPartyEntities();
   setupWindowButtons();
   setupWorkflowShell();
   setupTabs();
+  setupAtlasImportPreviewWorkspace();
   setupDataPathButton();
 
   await setupStateBar();
@@ -2090,6 +2128,12 @@ await applyCurrentTheme();
   setupCreatureModule();
 } catch (error) {
   console.error("Creature module failed:", error);
+}
+
+try {
+  setupItemModule();
+} catch (error) {
+  console.error("Item module failed:", error);
 }
 
 try {
@@ -2195,6 +2239,10 @@ function setupTabs() {
 
       if (targetId === "session-reference") {
         await renderSessionReference({ preferredSessionId: currentSessionId, preserveDraft: true });
+      }
+
+      if (targetId === "reference-browser") {
+        await renderReferenceBrowser();
       }
 
       console.log("Opened tab:", targetId);
@@ -2319,6 +2367,13 @@ function registerMasterForgeActionWorkspaces() {
     { id: "reference-prompter", label: "Open Prompter", groupId: "tools", groupLabel: "Session Tools", order: 10, enabled: () => Boolean(sessionReferenceState.sessionId), disabledReason: "No session is selected.", handler: openSessionReferencePrompter },
     { id: "reference-add-cast", label: "Add to Cast", groupId: "tools", groupLabel: "Session Tools", order: 20, enabled: () => Boolean(sessionReferenceState.sessionId), disabledReason: "No session is selected.", handler: openSessionReferenceCastPicker }
   ] });
+  consoleApi.registerWorkspace("reference-browser", { title: "Reference Browser Actions", actions: [
+    { id: "reference-browser-pin", label: "Pin / Unpin", groupId: "reference", groupLabel: "Reference", order: 10, enabled: hasActiveReferenceBrowserTab, disabledReason: "No reference is open.", handler: toggleActiveReferencePin },
+    { id: "reference-browser-close", label: "Close Active Reference", groupId: "reference", groupLabel: "Reference", order: 20, enabled: hasActiveReferenceBrowserTab, disabledReason: "No reference is open.", handler: closeActiveReferenceBrowserTab },
+    { id: "reference-browser-open-library", label: "Open in Entity Library", groupId: "reference", groupLabel: "Reference", order: 30, enabled: hasActiveReferenceBrowserTab, disabledReason: "No reference is open.", handler: openActiveReferenceInEntityLibrary },
+    { id: "reference-browser-pinned", label: "Jump to Pinned", groupId: "navigation", groupLabel: "Navigation", order: 10, handler: () => document.querySelector("#referenceBrowserPinned")?.scrollIntoView({ behavior: "smooth", block: "start" }) },
+    { id: "reference-browser-recent", label: "Jump to Recent", groupId: "navigation", groupLabel: "Navigation", order: 20, handler: () => document.querySelector("#referenceBrowserRecent")?.scrollIntoView({ behavior: "smooth", block: "start" }) }
+  ] });
   consoleApi.registerWorkspace("session-prompter", { title: "Session Prompter Actions", actions: [
     { id: "prompter-new", label: "New Script", groupId: "script", groupLabel: "Script", order: 10, enabled: () => Boolean(currentSessionId), disabledReason: "Select or save a session first.", handler: newScript },
     { id: "prompter-save", label: "Save Script", groupId: "script", groupLabel: "Script", order: 20, enabled: hasUnsavedPrompterChanges, disabledReason: "There are no unsaved script changes.", handler: saveCurrentScript },
@@ -2393,21 +2448,15 @@ function registerMasterForgeActionWorkspaces() {
     { id: "edit-location", label: "Open Full Location Management", groupId: "location", groupLabel: "Location", order: 20, handler: () => document.querySelector('#tabs [data-workspace-group="world-building"] .tab[data-tab="world"]')?.click() }
   ] });
   consoleApi.registerWorkspace("entities", { actions: [
-    { id: "browse-search", label: "Search entities", groupId: "browse", groupLabel: "Browse", groupOrder: -20, order: 10,
-      renderControl: () => `<label>Search entities<input id="entitySearchInput" type="search" autocomplete="off" value="${escapeHtml(activeEntitySearchTerm)}" placeholder="Search entities..."></label>`,
-      bindControl: host => { const input = host.querySelector("#entitySearchInput"); if (input) input.oninput = () => { activeEntitySearchTerm = input.value; renderEntityIndexResults(); }; } },
-    { id: "browse-type", label: "Entity Type", groupId: "browse", groupLabel: "Browse", groupOrder: -20, order: 20,
-      renderControl: () => `<label>Entity Type<select id="entityTypeFilterInput">${ENTITY_LIBRARY_TYPE_FILTER_OPTIONS.map(([value, label]) => `<option value="${value}" ${activeEntityTypeFilter === value ? "selected" : ""}>${label}</option>`).join("")}</select></label>`,
-      bindControl: host => { const input = host.querySelector("#entityTypeFilterInput"); if (input) input.onchange = () => { activeEntityTypeFilter = input.value || "all"; renderEntityIndexResults(); }; } },
     { id: "browse-scope", label: "Scope", groupId: "browse", groupLabel: "Browse", groupOrder: -20, order: 30,
       renderControl: () => `<label>Scope<select id="entityScopeFilterInput"><option value="current-location">Current Location</option><option value="current-world">Current World</option><option value="current-system">Current System</option><option value="all">All</option></select></label>`,
       bindControl: host => { const input = host.querySelector("#entityScopeFilterInput"); if (input) { input.value = activeEntityScopeFilter; input.onchange = () => { activeEntityScopeFilter = input.value; renderEntityIndexResults(); }; } } },
     { id: "browse-visibility", label: "Visibility", groupId: "browse", groupLabel: "Browse", groupOrder: -20, order: 40,
       renderControl: () => `<label>Visibility<select id="entityVisibilityFilterInput"><option value="active">Active Only</option><option value="pinned">Pinned</option><option value="hidden">Hidden</option><option value="archived">Archived</option><option value="all">All</option></select></label>`,
       bindControl: host => { const input = host.querySelector("#entityVisibilityFilterInput"); if (input) { input.value = activeEntityVisibilityFilter; input.onchange = () => { activeEntityVisibilityFilter = input.value; renderEntityIndexResults(); }; } } },
-    { id: "new-entity", label: "New Record", groupId: "record", groupLabel: "Record", order: 10, handler: () => showGenericEntityBuilder(getDefaultGenericEntity(entityBuilderState.activeEntityType || "faction")) },
-    { id: "save-entity", label: "Save Record", groupId: "record", groupLabel: "Record", order: 20, enabled: () => Boolean(entityBuilderState.activeEntity), disabledReason: "Open or create a record first.", handler: saveGenericEntityFromBuilder },
-    { id: "delete-entity", label: "Delete Record", groupId: "lifecycle", groupLabel: "Lifecycle", order: 30, danger: true, enabled: () => Boolean(entityBuilderState.activeEntityId), disabledReason: "Select a saved record first.", handler: deleteGenericEntityFromBuilder },
+    { id: "new-entity", label: "New Entity", groupId: "record", groupLabel: "Record", order: 10, handler: () => showGenericEntityBuilder(getDefaultGenericEntity(entityBuilderState.activeEntityType || "faction")) },
+    { id: "save-entity", label: "Save Entity", groupId: "record", groupLabel: "Record", order: 20, enabled: () => hasEditableGenericEntityDraft(), disabledReason: "Open or create an editable entity first.", handler: saveGenericEntityFromBuilder },
+    { id: "delete-entity", label: "Delete Entity", groupId: "lifecycle", groupLabel: "Lifecycle", order: 30, danger: true, enabled: () => hasEditableGenericEntityDraft() && Boolean(entityBuilderState.activeEntityId), disabledReason: "Open a saved entity in the editor first.", handler: deleteGenericEntityFromBuilder },
     { id: "copy-faction-hierarchy", label: "Copy Hierarchy From Faction", groupId: "hierarchy", groupLabel: "Hierarchy", order: 10, visible: () => entityBuilderState.activeEntityType === "faction", enabled: () => Boolean(entityBuilderState.activeEntityId), disabledReason: "Save the target faction first.", handler: openCopyFactionHierarchyDialog }
   ] });
 }
@@ -2499,27 +2548,45 @@ async function openHomeOnStartup() {
 
 
 async function renderMasterForgeVersion() {
-  const versionElement =
-    document.querySelector(
+  const versionElements = [
+    ...document.querySelectorAll(
       "[data-masterforge-version]"
-    );
+    )
+  ];
+  const runtimeTargets = [
+    ...document.querySelectorAll(
+      "[data-masterforge-runtime]"
+    )
+  ];
 
   if (
-    !versionElement ||
-    !window.dmAPI?.getAppVersion
+    (!versionElements.length && !runtimeTargets.length) ||
+    !window.dmAPI?.getRuntimeInfo
   ) {
     return;
   }
 
   try {
-    const version =
-      await window.dmAPI.getAppVersion();
+    const runtime =
+      await window.dmAPI.getRuntimeInfo();
+    const version = String(runtime?.version || "").trim();
 
-    versionElement.textContent =
-      `MasterForge Studio v${version}`;
+    if (!version) return;
+
+    versionElements.forEach(element => {
+      element.textContent = `MasterForge Studio v${version}`;
+    });
+    runtimeTargets.forEach(target => {
+      const details = target.querySelector(".masterforge-runtime__details");
+      const versionTarget = target.querySelector("[data-masterforge-runtime-version]");
+      const badge = target.querySelector("[data-masterforge-runtime-badge]");
+      if (versionTarget) versionTarget.textContent = `v${version}`;
+      if (badge) badge.hidden = runtime.isPackaged !== false;
+      if (details) details.hidden = false;
+    });
   } catch (error) {
     console.warn(
-      "Could not display the MasterForge version:",
+      "Could not display MasterForge runtime information:",
       error
     );
   }
@@ -7644,6 +7711,7 @@ function getBuilderSections(entityType, record = null) {
       ]
     : [
         { id: "overview", label: "Overview" },
+        { id: "ecology", label: "Ecology" },
         { id: "loot", label: "Loot" },
         { id: "notes", label: "Notes" },
         { id: "entityLinks", label: "Entity Links" }
@@ -8577,27 +8645,41 @@ function renderNpcBuilderShell() {
     </div>
   `;
 }
-function handleNpcPortraitSelected(event) {
+function readImageFileAsDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    if (!file || !String(file.type || "").startsWith("image/")) {
+      reject(new Error("Choose a supported image file."));
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => resolve(String(reader.result || ""));
+    reader.onerror = () => reject(new Error("The image could not be read."));
+    reader.readAsDataURL(file);
+  });
+}
+
+async function handleNpcPortraitSelected(event) {
   const file = event.target.files?.[0];
 
   if (!file) return;
 
-  const reader = new FileReader();
-
-  reader.onload = () => {
+  try {
+    const imageDataUrl = await readImageFileAsDataUrl(file);
     if (!npcBuilderState.activeNpc) {
       npcBuilderState.activeNpc = getDefaultNpc();
     }
 
     npcBuilderState.activeNpc.image = {
       ...(npcBuilderState.activeNpc.image || {}),
-      portrait: reader.result
+      portrait: imageDataUrl
     };
 
-    renderNpcImagePreview(reader.result);
-  };
-
-  reader.readAsDataURL(file);
+    renderNpcImagePreview(imageDataUrl);
+  } catch (error) {
+    alert(error?.message || "The image could not be loaded.");
+  } finally {
+    event.target.value = "";
+  }
 }
 
 function renderNpcImagePreview(src) {
@@ -13460,7 +13542,10 @@ async function syncNpcToEntity(npc) {
       locationId: npc.locationId || window.dmState.current.location,
 
       faction: npc.faction || null,
-      flags: npc.flags || {}
+      flags: npc.flags || {},
+      ...(window.MasterForgeExternalProvenance?.toExternalIdentity(npc.externalProvenance)
+        ? { externalIdentity: window.MasterForgeExternalProvenance.toExternalIdentity(npc.externalProvenance) }
+        : {})
     }
   };
 
@@ -15951,6 +16036,227 @@ function normaliseEntityContext(record = {}) {
 }
 
 
+let referenceBrowserController = null;
+let referenceBrowserIndex = [];
+let referenceBrowserSearch = "";
+let referenceBrowserType = "all";
+let referenceBrowserResolved = null;
+
+function getReferenceBrowserController() {
+  if (referenceBrowserController) return referenceBrowserController;
+  const stateApi = window.MasterForgeReferenceBrowser;
+  const resolverApi = window.MasterForgeCanonicalEntityResolver;
+  if (!stateApi?.createReferenceBrowser || !resolverApi?.createCanonicalEntityResolver) return null;
+  const canonicalResolver = resolverApi.createCanonicalEntityResolver({
+    getEntity: (type, id) => window.dmAPI.getEntity(type, id),
+    getRecord: (_collection, id) => window.dmAPI.getRecord(id),
+    getRelationshipsForEntity: (type, id) => window.MasterForgeRelationshipEngine.getRelationshipsForEntity(type, id),
+    projectFactionLore: (lore, options) => getFactionLoreApi().projectFactionLore(lore, options),
+    projectItemForVisibility: (item, mode) => window.MasterForgeItemModel.projectItemForVisibility(item, mode),
+    resolveCapabilities: (entity, _canonical, options) => window.MasterForgeInheritanceEngine.resolveForEntityRecord(entity, options),
+    resolveCombatProfile: (entity, _canonical, options) => window.MasterForgeInheritanceEngine.resolveCombatProfile(entity, options)
+  });
+  referenceBrowserController = stateApi.createReferenceBrowser({
+    resolveCanonicalEntityReference: canonicalResolver.resolveCanonicalEntityReference
+  });
+  return referenceBrowserController;
+}
+
+async function loadReferenceBrowserIndex() {
+  const types = window.MasterForgeReferenceBrowser?.SUPPORTED_TYPES || [];
+  const groups = await Promise.all(types.map(type => window.dmAPI.getEntitiesByType(type).catch(error => {
+    console.warn(`Could not load ${type} references:`, error);
+    return [];
+  })));
+  referenceBrowserIndex = window.MasterForgeReferenceBrowser.createReferenceIndex(groups.flat());
+}
+
+function referenceBrowserEntry(reference) {
+  return referenceBrowserIndex.find(item => item.entityType === reference.entityType && item.entityId === reference.entityId) || null;
+}
+
+function renderReferenceBrowserRow(reference, { recent = false } = {}) {
+  const entry = referenceBrowserEntry(reference);
+  const name = entry?.name || reference.entityId;
+  return `<button type="button" class="referenceBrowserRow" data-reference-type="${escapeHtml(reference.entityType)}" data-reference-id="${escapeHtml(reference.entityId)}">
+    <span class="referenceBrowserRowIcon">${getEntityTreeIcon(reference.entityType)}</span>
+    <span><strong>${escapeHtml(name)}</strong><small>${escapeHtml(formatEntityTypeLabel(reference.entityType))}${recent && reference.openedAt ? ` · ${new Date(reference.openedAt).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}` : ""}</small></span>
+    ${entry?.pinned ? `<span aria-label="Pinned" title="Pinned">📌</span>` : ""}
+  </button>`;
+}
+
+function readReferenceImage(resolved) {
+  const canonical = resolved?.canonical || {};
+  const candidate = (typeof canonical.image === "string" ? canonical.image : canonical.image?.portrait || canonical.image?.full) || canonical.portrait ||
+    canonical.data_json?.factionLore?.public?.symbolImage || canonical.data_json?.portrait || canonical.data_json?.image || "";
+  return /^data:image\/(?:png|jpe?g|gif|webp);base64,[a-z0-9+/=\s]+$/i.test(String(candidate || "")) ? candidate : "";
+}
+
+function referenceCapabilityCount(resolved, type) {
+  const capabilities = resolved?.resolvedCapabilities || {};
+  if (Array.isArray(capabilities.categories)) return capabilities.categories.reduce((total, category) => total + (type === "actions" && category.id === "actions" ? (category.entries?.length || 0) : type === "traits" && category.id === "traits" ? (category.entries?.length || 0) : 0), 0);
+  return capabilities.effective?.[type]?.length || 0;
+}
+
+function renderReferenceBrowserSummary(resolved) {
+  const type = resolved.reference.entityType;
+  const canonical = resolved.canonical || {};
+  const relationships = resolved.relationships?.length || 0;
+  if (type === "npc") return [["Overview", canonical.overview ? "Available" : "Limited"], ["Personality", canonical.personality ? "Available" : "Limited"], ["Traits", referenceCapabilityCount(resolved, "traits")], ["Actions", referenceCapabilityCount(resolved, "actions")], ["Relationships", relationships]];
+  if (type === "creature") return [["Stat Profile", canonical.ac != null || canonical.hp != null ? "Available" : "Limited"], ["Traits", referenceCapabilityCount(resolved, "traits")], ["Actions", referenceCapabilityCount(resolved, "actions")], ["Relationships", relationships]];
+  if (type === "faction") {
+    const membershipTypes = new Set(["member_of", "secretly_member_of", "leader_of"]);
+    return [["Lore", canonical.data_json?.factionLore ? "Available" : "Limited"], ["Members", (resolved.relationships || []).filter(item => membershipTypes.has(item.type)).length], ["Relationships", relationships]];
+  }
+  return [["Canonical Item Data", resolved.source.kind === "record" ? "Source record available" : "Generic entity"], ["Relationships", relationships]];
+}
+
+function renderReferenceBrowserWorkspace(resolved) {
+  if (!resolved) return `<div class="referenceBrowserEmpty"><h2>No reference open</h2><p>Select a reference to open it for live-session use.</p></div>`;
+  if (!resolved.entity || !resolved.canonical) return `<div class="referenceBrowserEmpty"><h2>Reference unavailable</h2><p>This entity is no longer available.</p></div>`;
+  const canonical = resolved.canonical;
+  const entity = resolved.entity;
+  const image = readReferenceImage(resolved);
+  const visibility = entity.visibility || entity.data_json?.visibility || {};
+  const pinned = visibility.pinned === true;
+  const position = canonical.currentPosition || canonical.locationState || entity.data_json?.currentPosition || {};
+  const location = position.locationId || canonical.locationId || entity.data_json?.scope?.locationId || "No location";
+  const status = canonical.status || canonical.data_json?.status || entity.data_json?.status || "Active";
+  const attribution = [resolved.attribution?.sourceTitle, resolved.attribution?.sourceReference].filter(Boolean).join(" · ");
+  const summary = renderReferenceBrowserSummary(resolved);
+  const factionViewApi = window.MasterForgeFactionReferenceView;
+  const factionView = resolved.reference.entityType === "faction" && factionViewApi
+    ? factionViewApi.renderFactionReferenceView(factionViewApi.buildFactionReferenceViewModel(resolved))
+    : "";
+  const npcViewApi = window.MasterForgeNpcReferenceView;
+  const npcView = resolved.reference.entityType === "npc" && npcViewApi
+    ? npcViewApi.renderNpcReferenceView(npcViewApi.buildNpcReferenceViewModel(resolved))
+    : "";
+  const creatureViewApi = window.MasterForgeCreatureReferenceView;
+  const creatureView = resolved.reference.entityType === "creature" && creatureViewApi
+    ? creatureViewApi.renderCreatureReferenceView(creatureViewApi.buildCreatureReferenceViewModel(resolved, { gameSystems: window.MasterForgeGameSystems }))
+    : "";
+  const itemViewApi = window.MasterForgeItemReferenceView;
+  const itemView = resolved.reference.entityType === "item" && itemViewApi
+    ? itemViewApi.renderItemReferenceView(itemViewApi.buildItemReferenceViewModel(resolved))
+    : "";
+  const name = canonical.name || entity.name || resolved.reference.entityId;
+  const entityLabel = formatEntityTypeLabel(resolved.reference.entityType);
+  return `<article class="referenceBrowserReference mf-reading-page mf-reading-layout">
+    <div class="mf-reading-main">
+      <header class="referenceBrowserHero">
+        <div><span class="referenceBrowserType">${escapeHtml(entityLabel)}</span><h1>${escapeHtml(name)}</h1><div class="referenceBrowserHeroMeta mf-reading-meta"><span>${escapeHtml(status)}</span><span>${escapeHtml(location)}</span><span>${pinned ? "Pinned" : "Not pinned"}</span></div>${attribution ? `<p>${escapeHtml(attribution)}</p>` : ""}</div>
+      </header>
+      ${(resolved.warnings || []).length ? `<aside class="referenceBrowserWarnings mf-reading-callout mf-reading-warning">${resolved.warnings.map(item => `<p>${escapeHtml(item.message)}</p>`).join("")}</aside>` : ""}
+      ${factionView || npcView || creatureView || itemView || `<section class="referenceBrowserSummary"><h2>Resolved Reference</h2><div>${summary.map(([label, value]) => `<article><small>${escapeHtml(label)}</small><strong>${escapeHtml(value)}</strong></article>`).join("")}</div></section>`}
+    </div>
+    <aside class="mf-reading-visual-rail" aria-label="${escapeHtml(entityLabel)} illustration"><figure class="mf-reading-figure">${image ? `<img class="mf-reading-figure-image" src="${escapeHtml(image)}" alt="${escapeHtml(name)}">` : `<div class="mf-reading-figure-placeholder"><span aria-hidden="true">${getEntityTreeIcon(resolved.reference.entityType)}</span><small>No ${escapeHtml(entityLabel.toLowerCase())} artwork</small></div>`}</figure></aside>
+  </article>`;
+}
+
+async function openReferenceBrowserReference(reference) {
+  const controller = getReferenceBrowserController();
+  if (!controller) return;
+  const result = await controller.openReference(reference);
+  referenceBrowserResolved = result.resolved;
+  await renderReferenceBrowser({ preserveIndex: true });
+}
+
+function hasActiveReferenceBrowserTab() {
+  return Boolean(getReferenceBrowserController()?.getState().activeTab);
+}
+
+async function closeActiveReferenceBrowserTab() {
+  const controller = getReferenceBrowserController();
+  const state = controller?.getState();
+  const active = state?.openTabs.find(item => `${item.entityType}:${item.entityId}` === state.activeTab);
+  if (!active) return;
+  controller.closeReference(active);
+  referenceBrowserResolved = await controller.resolveActive();
+  await renderReferenceBrowser({ preserveIndex: true });
+}
+
+async function openActiveReferenceInEntityLibrary() {
+  const reference = referenceBrowserResolved?.reference;
+  if (reference) await openEntityLibraryRecord(reference.entityType, reference.entityId);
+}
+
+async function toggleActiveReferencePin() {
+  const entity = referenceBrowserResolved?.entity;
+  if (!entity) return;
+  const pinned = entity.visibility?.pinned === true || entity.data_json?.visibility?.pinned === true;
+  await updateEntityVisibility(entity, pinned ? "active" : "pinned");
+  await loadReferenceBrowserIndex();
+  referenceBrowserResolved = await getReferenceBrowserController().resolveActive();
+  await renderReferenceBrowser({ preserveIndex: true });
+}
+
+async function renderReferenceBrowser({ preserveIndex = false, focusSearch = false } = {}) {
+  const panel = document.querySelector("#reference-browser");
+  const controller = getReferenceBrowserController();
+  if (!panel || !controller) return;
+  if (!preserveIndex || !referenceBrowserIndex.length) await loadReferenceBrowserIndex();
+  const filtered = window.MasterForgeReferenceBrowser.filterReferenceIndex(referenceBrowserIndex, {
+    entityType: referenceBrowserType, search: referenceBrowserSearch,
+    campaignId: window.dmState.current?.campaign || "", worldId: window.dmState.current?.world || ""
+  });
+  const groups = window.MasterForgeReferenceBrowser.groupReferenceIndex(filtered);
+  const state = controller.getState();
+  const active = state.openTabs.find(item => `${item.entityType}:${item.entityId}` === state.activeTab);
+  panel.innerHTML = `<div class="referenceBrowserShell">
+    <aside class="referenceBrowserRail infoCard"><header><h1>Reference Browser</h1><p>Canonical live-session references.</p></header><label>Search<input type="search" data-reference-search value="${escapeHtml(referenceBrowserSearch)}" placeholder="Search references..."></label>
+      <div class="referenceBrowserFilters">${[["all", "All"], ["npc", "NPCs"], ["creature", "Creatures"], ["faction", "Factions"], ["item", "Items"]].map(([value, label]) => `<button type="button" data-reference-filter="${value}" class="${referenceBrowserType === value ? "active" : ""}" aria-pressed="${referenceBrowserType === value}">${label}</button>`).join("")}</div>
+      <div class="referenceBrowserLists">
+        <section id="referenceBrowserPinned"><h2>Pinned <span>${groups.pinned.length}</span></h2>${groups.pinned.length ? groups.pinned.map(renderReferenceBrowserRow).join("") : `<p>No pinned references.</p>`}</section>
+        <section id="referenceBrowserRecent"><h2>Recent <span>${state.recent.length}</span></h2>${state.recent.length ? state.recent.map(item => renderReferenceBrowserRow(item, { recent: true })).join("") : `<p>No recent references.</p>`}</section>
+        <section><h2>Results <span>${groups.results.length}</span></h2>${groups.results.length ? groups.results.map(renderReferenceBrowserRow).join("") : `<p>No matching references.</p>`}</section>
+      </div></aside>
+    <main class="referenceBrowserWorkspace infoCard"><nav class="referenceBrowserTabs" aria-label="Open references">${state.openTabs.map(item => { const entry = referenceBrowserEntry(item); const key = `${item.entityType}:${item.entityId}`; return `<button type="button" class="${key === state.activeTab ? "active" : ""}" data-reference-tab-type="${item.entityType}" data-reference-tab-id="${escapeHtml(item.entityId)}"><span>${escapeHtml(entry?.name || item.entityId)}</span><span data-reference-tab-close aria-label="Close reference">×</span></button>`; }).join("")}</nav><div class="referenceBrowserWorkspaceBody">${renderReferenceBrowserWorkspace(active ? referenceBrowserResolved : null)}</div></main>
+  </div>`;
+  wireReferenceBrowserControls();
+  if (focusSearch) {
+    const search = panel.querySelector("[data-reference-search]");
+    search?.focus();
+    search?.setSelectionRange(search.value.length, search.value.length);
+  }
+  window.MasterForgeActionConsole?.refresh();
+}
+
+function wireReferenceBrowserControls() {
+  const panel = document.querySelector("#reference-browser");
+  const search = panel?.querySelector("[data-reference-search]");
+  if (search) search.oninput = () => { referenceBrowserSearch = search.value; renderReferenceBrowser({ preserveIndex: true, focusSearch: true }); };
+  panel?.querySelectorAll("[data-reference-filter]").forEach(button => button.onclick = () => { referenceBrowserType = button.dataset.referenceFilter; renderReferenceBrowser({ preserveIndex: true }); });
+  panel?.querySelectorAll("[data-reference-type]").forEach(button => button.onclick = () => openReferenceBrowserReference({ entityType: button.dataset.referenceType, entityId: button.dataset.referenceId }));
+  panel?.querySelectorAll("[data-reference-tab-type]").forEach(button => button.onclick = async event => {
+    const reference = { entityType: button.dataset.referenceTabType, entityId: button.dataset.referenceTabId };
+    if (event.target.closest("[data-reference-tab-close]")) {
+      getReferenceBrowserController().closeReference(reference);
+      referenceBrowserResolved = await getReferenceBrowserController().resolveActive();
+    } else {
+      getReferenceBrowserController().activateReference(reference);
+      referenceBrowserResolved = await getReferenceBrowserController().resolveActive();
+    }
+    renderReferenceBrowser({ preserveIndex: true });
+  });
+  panel?.querySelectorAll("[data-faction-reference-type][data-faction-reference-id]").forEach(button => button.addEventListener("click", () => openReferenceBrowserReference({
+    entityType: button.dataset.factionReferenceType,
+    entityId: button.dataset.factionReferenceId
+  })));
+  panel?.querySelectorAll("[data-npc-reference-type][data-npc-reference-id]").forEach(button => button.addEventListener("click", () => openReferenceBrowserReference({
+    entityType: button.dataset.npcReferenceType,
+    entityId: button.dataset.npcReferenceId
+  })));
+  panel?.querySelectorAll("[data-creature-reference-type][data-creature-reference-id]").forEach(button => button.addEventListener("click", () => openReferenceBrowserReference({
+    entityType: button.dataset.creatureReferenceType,
+    entityId: button.dataset.creatureReferenceId
+  })));
+  panel?.querySelectorAll("[data-item-reference-type][data-item-reference-id]").forEach(button => button.addEventListener("click", () => openReferenceBrowserReference({
+    entityType: button.dataset.itemReferenceType,
+    entityId: button.dataset.itemReferenceId
+  })));
+}
+
 let entityIndexCache = [];
 let entityIndexRenderSequence = 0;
 let activeEntitySearchTerm = "";
@@ -15996,11 +16302,14 @@ function getEntityLibraryBrowseLabel(options, value, fallback = value) {
 
 function syncEntityLibraryBrowseControls() {
   const search = document.getElementById("entitySearchInput");
-  const type = document.getElementById("entityTypeFilterInput");
   const scope = document.getElementById("entityScopeFilterInput");
   const visibility = document.getElementById("entityVisibilityFilterInput");
   if (search && search.value !== activeEntitySearchTerm) search.value = activeEntitySearchTerm;
-  if (type) type.value = activeEntityTypeFilter;
+  document.querySelectorAll("[data-entity-library-type]").forEach(button => {
+    const active = button.dataset.entityLibraryType === activeEntityTypeFilter;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-pressed", String(active));
+  });
   if (scope) scope.value = activeEntityScopeFilter;
   if (visibility) visibility.value = activeEntityVisibilityFilter;
 }
@@ -16447,6 +16756,8 @@ let entityBuilderState = {
   factionHierarchyBaseline: null,
   factionTraits: [],
   factionAbilityPackIds: [],
+  factionLore: null,
+  factionLoreShouldPersist: false,
   abilityPackWorkspaceTab: "overview",
   abilityPackData: null
 };
@@ -16463,6 +16774,12 @@ function getFactionMetadataRegistry() {
 function getFactionHierarchyApi() {
   const api = window.MasterForgeFactionHierarchy;
   if (!api) throw new Error("Faction hierarchy helpers are unavailable.");
+  return api;
+}
+
+function getFactionLoreApi() {
+  const api = window.MasterForgeFactionLore;
+  if (!api) throw new Error("Faction Lore helpers are unavailable.");
   return api;
 }
 
@@ -16782,15 +17099,24 @@ async function ensureEntityRelationshipMapShell() {
     </div>
   </div>
 
+  <label class="entityLibrarySearch">
+    <span>Search</span>
+    <input id="entitySearchInput" type="search" autocomplete="off" placeholder="Search entities..." value="${escapeHtml(activeEntitySearchTerm)}">
+  </label>
+
+  <div class="entityTypeFilterBar" aria-label="Entity type filters">
+    ${ENTITY_LIBRARY_TYPE_FILTER_OPTIONS.map(([value, label]) => `<button type="button" class="entity-type-tab ${activeEntityTypeFilter === value ? "active" : ""}" data-entity-library-type="${escapeHtml(value)}" aria-pressed="${activeEntityTypeFilter === value}">${escapeHtml(label)}</button>`).join("")}
+  </div>
+
   <div class="entityLibraryBrowseSummary" aria-live="polite">
     <div id="entityLibraryActiveFilters"></div>
     <div class="entityLibraryBrowseSummaryActions">
       <button id="entityClearFiltersBtn" type="button">Clear Filters</button>
-      <button id="entityBrowseOpenBtn" type="button">Search &amp; Filters</button>
+      <button id="entityBrowseOpenBtn" type="button">Advanced Filters</button>
     </div>
   </div>
 
-  <div id="entityIndexResults" class="entityMapList"></div>
+  <div id="entityIndexResults" class="entityMapList" aria-live="polite"></div>
 
 </aside>
 
@@ -16803,10 +17129,8 @@ async function ensureEntityRelationshipMapShell() {
               <p>Choose an entity from the left to view its relationships.</p>
             </div>
           </div>
-        </section>
-
-        <section class="entityMapRelationships infoCard">
-          <div class="entityMapSectionHeader">
+          <section id="entityRelationshipsSurface" class="entityMapRelationships" hidden>
+            <div class="entityMapSectionHeader">
             <div>
               <h2>Relationships</h2>
               <p>Story-facing links for the selected entity.</p>
@@ -16815,11 +17139,12 @@ async function ensureEntityRelationshipMapShell() {
             <button id="showRelationshipTreeBtn" class="hidden" type="button">
               🌳 Show Trees
             </button>
-          </div>
+            </div>
 
-          <div id="entity-debug-relationships">
-            <p class="forgeEmptyState">No entity selected.</p>
-          </div>
+            <div id="entity-debug-relationships">
+              <p class="forgeEmptyState">No entity selected.</p>
+            </div>
+          </section>
         </section>
 
         <aside id="entityRelationshipTreePanel" class="entityRelationshipTreePanel hidden">
@@ -16978,6 +17303,17 @@ function wireEntityRelationshipMapControls() {
 
   document.getElementById("entityClearFiltersBtn")?.addEventListener("click", clearEntityLibraryBrowseFilters);
   document.getElementById("entityBrowseOpenBtn")?.addEventListener("click", () => window.MasterForgeActionConsole?.openGroup("browse"));
+  const searchInput = document.getElementById("entitySearchInput");
+  if (searchInput) searchInput.oninput = () => {
+    activeEntitySearchTerm = searchInput.value;
+    renderEntityIndexResults();
+  };
+  document.querySelectorAll("[data-entity-library-type]").forEach(button => {
+    button.onclick = () => {
+      activeEntityTypeFilter = button.dataset.entityLibraryType || "all";
+      renderEntityIndexResults();
+    };
+  });
   updateEntityLibraryBrowseSummary();
 
   const showRelationshipTreeBtn = document.getElementById("showRelationshipTreeBtn");
@@ -17618,19 +17954,13 @@ async function renderEntityIndexResults() {
     return;
   }
 
-  resultsContainer.innerHTML = filteredEntities.map(entity => {
+  const renderEntityRow = entity => {
     const isActive =
       currentlySelectedEntity &&
       currentlySelectedEntity.entity_type === entity.entity_type &&
       currentlySelectedEntity.id === entity.id;
 
     const visibility = entity._context.visibility || {};
-
-const badges = [
-  visibility.pinned ? "Pinned" : "",
-  visibility.hidden ? "Hidden" : "",
-  visibility.archived ? "Archived" : ""
-].filter(Boolean);
 
 const locationLabel = getEntityLibraryLocationLabel(entity);
 
@@ -17646,24 +17976,25 @@ return `
         <span class="entityMapListBody">
           <strong>${escapeHtml(entity.name || entity.id)}</strong>
 
-          <small>
-            ${escapeHtml(formatEntityTypeLabel(entity.entity_type))}
-            · ${escapeHtml(entity._context.systemId)}
-          </small>
-
-          <small>
-  📍 ${escapeHtml(locationLabel)}
-</small>
-
-          ${
-            badges.length
-              ? `<em>${badges.map(badge => escapeHtml(badge)).join(" · ")}</em>`
-              : ""
-          }
+          <small>${escapeHtml(formatEntityTypeLabel(entity.entity_type))} · ${escapeHtml(locationLabel)}</small>
         </span>
+        ${visibility.pinned ? `<span class="entityMapPinIndicator" title="Pinned" aria-label="Pinned">📌</span>` : ""}
       </button>
     `;
-  }).join("");
+  };
+
+  const pinnedEntities = filteredEntities.filter(entity => entity._context.visibility?.pinned);
+  const allEntities = filteredEntities.filter(entity => !entity._context.visibility?.pinned);
+  const renderGroup = (title, entities, className) => `
+    <section class="entityMapListGroup ${className}">
+      <h2>${escapeHtml(title)} <span>${entities.length}</span></h2>
+      ${entities.length ? entities.map(renderEntityRow).join("") : `<p class="entityMapGroupEmpty">None</p>`}
+    </section>`;
+
+  resultsContainer.innerHTML = [
+    renderGroup("Pinned", pinnedEntities, "entityMapPinnedGroup"),
+    renderGroup("All Entities", allEntities, "entityMapAllGroup")
+  ].join("");
 
 resultsContainer
   .querySelectorAll(".entityMapListItem")
@@ -17821,6 +18152,8 @@ async function showEntityDebugDetails(
   );
 }
 
+  parkEntityRelationshipsSurface();
+
   const displayResolution = await resolveFactionMemberDisplayTitle(entity, {
     visibilityMode: "gm"
   }).catch(() => null);
@@ -17832,6 +18165,7 @@ async function showEntityDebugDetails(
     presentationEntity,
     displayResolution
   );
+  window.MasterForgeActionConsole?.refresh();
 
 wireEntityProfileButtons(entity);
 setupDmEntityWorkspace(presentationEntity, selectedContainer.querySelector(".dmEntityWorkspace"));
@@ -17876,6 +18210,31 @@ if (typeof renderEntityWorldStateWarnings === "function") {
       { preserveTreeOpen }
     );
   }
+}
+
+function parkEntityRelationshipsSurface() {
+  const surface = document.getElementById("entityRelationshipsSurface");
+  const main = document.querySelector("#entityRelationshipWorkspace .entityMapMain");
+  if (!surface || !main) return null;
+  surface.hidden = true;
+  if (surface.parentElement !== main) main.appendChild(surface);
+  return surface;
+}
+
+function mountEntityRelationshipsSurface(target) {
+  const surface = parkEntityRelationshipsSurface();
+  if (!surface || !target) return;
+  target.appendChild(surface);
+  surface.hidden = false;
+}
+
+function renderEntityWorkspaceTabs(entity) {
+  const tabs = entity.entity_type === "faction"
+    ? [["overview", "Overview"], ["lore", "Lore"], ["members", "Members"], ["hierarchy", "Hierarchy"], ["traits", "Traits"], ["ability-packs", "Ability Packs"], ["relationships", "Relationships"]]
+    : [["overview", "Overview"], ["relationships", "Relationships"]];
+  return `<nav class="entityWorkspaceTabs" aria-label="${escapeHtml(formatEntityTypeLabel(entity.entity_type))} workspace">
+    ${tabs.map(([key, label]) => `<button type="button" class="${key === "overview" ? "active" : ""}" data-entity-workspace-tab="${key}">${escapeHtml(label)}</button>`).join("")}
+  </nav>`;
 }
 
 function getEntityVisibilityLabel(entity = {}) {
@@ -18166,6 +18525,10 @@ function renderEntityProfileCard(entity, displayResolution = null) {
   const typeLabel = formatEntityTypeLabel(entity.entity_type);
   const icon = getEntityTreeIcon(entity.entity_type);
   const visibilityLabel = getEntityVisibilityLabel(entity);
+  const context = entity._context || getEntityEffectiveContext(entity);
+  const status = entity.data_json?.status || visibilityLabel;
+  const locationLabel = getEntityLibraryLocationLabel(entity);
+  const scopeLabel = [context.scope?.campaignId, context.scope?.worldId].filter(Boolean).join(" · ") || "Unscoped";
 
   return `
     <div class="entityProfileCard">
@@ -18187,6 +18550,12 @@ function renderEntityProfileCard(entity, displayResolution = null) {
             ${escapeHtml(entity.description || "No description recorded yet.")}
           </p>
 
+          <div class="entityProfileContext">
+            <span><small>Status</small>${escapeHtml(status)}</span>
+            <span><small>Location</small>${escapeHtml(locationLabel)}</span>
+            <span><small>Scope</small>${escapeHtml(scopeLabel)}</span>
+          </div>
+
           ${entity.data_json?.source === "campaign-party" ? `
             <p class="forgeEmptyState">
               Party membership is managed from the Party screen.
@@ -18196,7 +18565,6 @@ function renderEntityProfileCard(entity, displayResolution = null) {
           <div id="entityWorldStateWarnings"></div>
 
         </div>
-      </div>
 
       <div class="entityProfileActions">
   <button id="openEntitySourceBtn" type="button">
@@ -18227,8 +18595,9 @@ function renderEntityProfileCard(entity, displayResolution = null) {
     ↩ Restore
   </button>
 </div>
-      
       </div>
+
+      ${renderEntityWorkspaceTabs(entity)}
 
       ${["npc", "pc", "creature"].includes(entity.entity_type) ? renderDmEntityWorkspaceShell(entity, { hostContext: "entity-library", defaultTab: activeDmEntityWorkspaceTab }) : ""}
 
@@ -18248,12 +18617,19 @@ function renderEntityProfileCard(entity, displayResolution = null) {
 async function openCanonicalEntityEditor(entity) {
   if (entity.entity_type === "npc") return openNpcEntityInBuilder(entity);
   if (entity.entity_type === "creature") return openCreatureFromRegionOverview(entity.data_json?.creatureId || entity.id);
+  if (entity.entity_type === "item") {
+    const tab = document.querySelector('#tabs .tab[data-tab="items"]');
+    const panel = document.querySelector("#items");
+    if (!tab || !panel || !itemBuilderWorkspace) return;
+    activateMainPanel(tab, panel);
+    return itemBuilderWorkspace.openEntity(entity);
+  }
   if (entity.entity_type === "pc") return openCharacterFromForgeSearch(entity.data_json?.characterId || entity.id);
   return showGenericEntityBuilder(entity);
 }
 
 async function openCanonicalEntityFromContext(entity, origin = "entity-library") {
-  if (["npc", "pc", "creature"].includes(entity?.entity_type)) return openCanonicalEntityEditor(entity);
+  if (["npc", "pc", "creature", "item"].includes(entity?.entity_type)) return openCanonicalEntityEditor(entity);
   return showEntityDebugDetails(entity, { preserveTreeOpen: origin === "entity-library" });
 }
 
@@ -19768,6 +20144,23 @@ function wireEntityProfileButtons(entity) {
   const openBtn = document.querySelector("#openEntitySourceBtn");
   const moveEntityBtn = document.querySelector("#openMoveEntityBtn");
 
+  document.querySelectorAll("[data-entity-workspace-tab]").forEach(button => {
+    button.onclick = async () => {
+      const tab = button.dataset.entityWorkspaceTab;
+      if (tab === "overview") {
+        parkEntityRelationshipsSurface();
+        document.querySelectorAll("[data-entity-workspace-tab]").forEach(item => item.classList.toggle("active", item === button));
+        return;
+      }
+      if (tab === "relationships") {
+        document.querySelectorAll("[data-entity-workspace-tab]").forEach(item => item.classList.toggle("active", item === button));
+        mountEntityRelationshipsSurface(document.querySelector(".entityProfileCard"));
+        return;
+      }
+      await showGenericEntityBuilder(entity, { factionTab: tab });
+    };
+  });
+
   if (openBtn) {
     openBtn.onclick = async () => {
       if (["npc", "pc", "creature"].includes(entity.entity_type)) await openCanonicalEntityEditor(entity);
@@ -19903,6 +20296,13 @@ visibility: getDefaultVisibility(),
   };
 }
 
+function hasEditableGenericEntityDraft() {
+  return Boolean(
+    entityBuilderState.activeEntity &&
+    document.querySelector("#entity-debug-selected .genericEntityBuilderCard")
+  );
+}
+
 function showGenericEntityBuilder(
   entity = null,
   { factionTab = "overview", abilityPackTab = "overview", preserveNew = false } = {}
@@ -19916,6 +20316,7 @@ function showGenericEntityBuilder(
 
   const selectedContainer = document.getElementById("entity-debug-selected");
   const relationshipsContainer = document.getElementById("entity-debug-relationships");
+  parkEntityRelationshipsSurface();
 
   const workspace = document.getElementById("entityRelationshipWorkspace");
 
@@ -19962,6 +20363,10 @@ entityBuilderState.originalEntityType =
   entityBuilderState.factionAbilityPackIds = workingEntity.entity_type === "faction"
     ? getAbilityPackApi().uniqueIds(workingEntity.data_json?.abilityPackIds)
     : [];
+  entityBuilderState.factionLore = workingEntity.entity_type === "faction"
+    ? getFactionLoreApi().normaliseFactionLore(workingEntity.data_json?.factionLore)
+    : null;
+  entityBuilderState.factionLoreShouldPersist = false;
   entityBuilderState.abilityPackWorkspaceTab = abilityPackTab;
   entityBuilderState.abilityPackData = workingEntity.entity_type === "ability_pack"
     ? getAbilityPackApi().normalisePackData(workingEntity.data_json)
@@ -19970,6 +20375,7 @@ entityBuilderState.originalEntityType =
   currentlySelectedEntity = workingEntity;
 
   selectedContainer.innerHTML = renderGenericEntityBuilder(workingEntity);
+  window.MasterForgeActionConsole?.refresh();
 
   relationshipsContainer.innerHTML = `
     <div class="relationshipEmptyState">
@@ -19990,8 +20396,6 @@ entityBuilderState.originalEntityType =
     updateGenericEntityJsonPreview();
 
     console.log("GENERIC ENTITY BUILDER FULLY WIRED", {
-      saveButton:
-        document.querySelector("#saveGenericEntityBtn"),
       typeInput:
         document.querySelector("#genericEntityTypeInput")
     });
@@ -20548,6 +20952,7 @@ function setupAbilityPackWorkspaceControls() {
 function renderFactionWorkspaceShell() {
   const tabs = [
     ["overview", "Overview"],
+    ["lore", "Lore"],
     ["members", "Members"],
     ["hierarchy", "Hierarchy"],
     ["traits", "Traits"],
@@ -20580,6 +20985,139 @@ function renderFactionOverviewWorkspace() {
       </div>
     </div>
   `;
+}
+
+const FACTION_LORE_GROUPS = Object.freeze([
+  { key: "identity", title: "Identity", fields: [["identity", "Identity", "textarea"], ["symbolImage", "Faction Emblem / Symbol", "image"], ["symbol", "Visual Motif", "textarea"], ["motto", "Motto", "input"], ["concept", "One-Line Concept", "input"]] },
+  { key: "purpose-operations", title: "Purpose & Operations", fields: [["goals", "Goals", "array"], ["motivation", "Motivation", "textarea"], ["methods", "Methods", "array"], ["resources", "Resources", "array"]] },
+  { key: "organisation", title: "Organisation", fields: [["structure", "Structure", "textarea"], ["internalTensions", "Internal Tensions", "array"]] },
+  { key: "history", title: "History", fields: [["history", "History", "textarea"], ["founding", "Founding / Origin", "textarea"], ["turningPoints", "Major Turning Points", "array"]] },
+  { key: "current-campaign-state", title: "Current Campaign State", fields: [["currentTrajectory", "Current Trajectory", "textarea"], ["currentStatus", "Current Status", "textarea"], ["playerHooks", "Player-Facing Hooks", "array"]] }
+]);
+
+const factionLoreOpenGroups = new Set(["identity", "current-campaign-state"]);
+const FACTION_LORE_ADD_LABELS = Object.freeze({
+  goals: "Add Goal", methods: "Add Method", resources: "Add Resource",
+  internalTensions: "Add Tension", turningPoints: "Add Turning Point",
+  playerHooks: "Add Player Hook", secrets: "Add Secret", hiddenGoals: "Add Hidden Goal"
+});
+
+const FACTION_GM_LORE_FIELDS = Object.freeze([
+  ["secrets", "Secrets", "array"],
+  ["hiddenGoals", "Hidden Goals", "array"],
+  ["hiddenHistory", "Hidden History", "textarea"],
+  ["futurePlans", "Future Plans", "textarea"]
+]);
+
+function renderFactionLoreArray(section, key, label, values = []) {
+  const cards = values.map((value, index) => `
+    <article class="factionLoreListItem" data-faction-lore-item>
+      <textarea data-faction-lore-item-value aria-label="${escapeHtml(label)} ${index + 1}">${escapeHtml(value)}</textarea>
+      <button type="button" data-faction-lore-remove aria-label="Remove ${escapeHtml(label)} entry">Remove</button>
+    </article>`).join("");
+  return `<div class="factionLoreField factionLoreField--${key} factionLoreArray" data-faction-lore-array data-lore-section="${section}" data-lore-key="${key}"><div class="factionLoreFieldHeader"><label>${escapeHtml(label)}</label><button type="button" data-faction-lore-add>${escapeHtml(FACTION_LORE_ADD_LABELS[key] || `Add ${label}`)}</button></div><div data-faction-lore-items>${cards || `<p class="forgeEmptyState">No entries yet.</p>`}</div></div>`;
+}
+
+function renderFactionLoreField(section, [key, label, type], loreSection) {
+  if (type === "array") return renderFactionLoreArray(section, key, label, loreSection[key]);
+  if (type === "image") {
+    const image = loreSection[key] || "";
+    return `<section class="factionLoreField factionLoreField--${key} factionLoreImageField" data-faction-lore-image data-lore-section="${section}" data-lore-key="${key}">
+      <span>${escapeHtml(label)}</span>
+      <div class="factionLoreImagePreview">${image ? `<img src="${escapeHtml(image)}" alt="Faction emblem preview">` : `<span>No emblem uploaded.</span>`}</div>
+      <div class="factionLoreImageActions">
+        <input type="file" accept="image/*" data-faction-lore-image-input hidden>
+        <button type="button" data-faction-lore-image-choose>${image ? "Replace" : "Upload Image"}</button>
+        <button type="button" data-faction-lore-image-remove ${image ? "" : "disabled"}>Remove</button>
+      </div>
+    </section>`;
+  }
+  const control = type === "input"
+    ? `<input data-faction-lore-field data-lore-section="${section}" data-lore-key="${key}" value="${escapeHtml(loreSection[key] || "")}">`
+    : `<textarea data-faction-lore-field data-lore-section="${section}" data-lore-key="${key}">${escapeHtml(loreSection[key] || "")}</textarea>`;
+  return `<label class="factionLoreField factionLoreField--${key}"><span>${escapeHtml(label)}</span>${control}</label>`;
+}
+
+function renderFactionLoreWorkspace() {
+  const lore = entityBuilderState.factionLore || getFactionLoreApi().getDefaultFactionLore();
+  const legacy = entityBuilderState.activeEntity?.data_json || {};
+  const legacyNotes = [
+    !lore.public.identity && entityBuilderState.activeEntity?.description ? `Identity fallback: ${entityBuilderState.activeEntity.description}` : "",
+    !lore.public.history && legacy.publicNotes ? `Player-safe notes fallback: ${legacy.publicNotes}` : "",
+    !lore.gm.secrets.length && legacy.dmSecrets ? `GM secrets fallback: ${legacy.dmSecrets}` : ""
+  ].filter(Boolean);
+  return `<div class="factionWorkspacePanel factionLoreWorkspace">
+    <div class="factionWorkspaceHeader"><div><h2>Faction Lore</h2><p>Structured narrative stored on this canonical Faction. Memberships and relationships remain in URE.</p></div><span class="factionLoreVersion">Schema v${escapeHtml(lore.version)}</span></div>
+    ${legacyNotes.length ? `<details class="factionLoreLegacy"><summary>Legacy fallback content</summary>${legacyNotes.map(note => `<p>${escapeHtml(note)}</p>`).join("")}<small>Fallbacks are displayed only and are not copied into Faction Lore.</small></details>` : ""}
+    <section class="factionLoreVisibilitySection factionLorePublic"><header><span class="factionLoreAudienceBadge">Player Safe</span><p>Information suitable for player-facing reference.</p></header>${FACTION_LORE_GROUPS.map(group => `<details class="factionLoreGroup factionLoreGroup--${group.key}" data-faction-lore-group="${group.key}" ${factionLoreOpenGroups.has(group.key) ? "open" : ""}><summary>${escapeHtml(group.title)}</summary><div class="factionLoreGroupFields factionLoreGroupFields--${group.key}">${group.fields.map(field => renderFactionLoreField("public", field, lore.public)).join("")}</div></details>`).join("")}</section>
+    <details class="factionLoreGroup factionLoreGm" data-faction-lore-group="gm-only" ${factionLoreOpenGroups.has("gm-only") ? "open" : ""}><summary><span class="factionLoreGmBadge">GM Only</span><span>Hidden Lore</span><small>Secrets and plans that must never appear in player-safe projections.</small></summary><div class="factionLoreGroupFields factionLoreGroupFields--gm">${FACTION_GM_LORE_FIELDS.map(field => renderFactionLoreField("gm", field, lore.gm)).join("")}</div></details>
+  </div>`;
+}
+
+function syncFactionLoreFromDom() {
+  const workspace = document.querySelector(".factionLoreWorkspace");
+  if (!workspace || !entityBuilderState.factionLore) return;
+  workspace.querySelectorAll("[data-faction-lore-field]").forEach(control => {
+    if (entityBuilderState.factionLore[control.dataset.loreSection][control.dataset.loreKey] !== control.value) {
+      entityBuilderState.factionLoreShouldPersist = true;
+    }
+    entityBuilderState.factionLore[control.dataset.loreSection][control.dataset.loreKey] = control.value;
+  });
+  workspace.querySelectorAll("[data-faction-lore-array]").forEach(container => {
+    const nextValues = [...container.querySelectorAll("[data-faction-lore-item-value]")].map(control => control.value);
+    const currentValues = entityBuilderState.factionLore[container.dataset.loreSection][container.dataset.loreKey];
+    if (JSON.stringify(currentValues) !== JSON.stringify(nextValues)) entityBuilderState.factionLoreShouldPersist = true;
+    entityBuilderState.factionLore[container.dataset.loreSection][container.dataset.loreKey] = nextValues;
+  });
+}
+
+function wireFactionLoreControls() {
+  const mount = document.querySelector("#factionWorkspaceMount");
+  mount?.querySelectorAll("[data-faction-lore-group]").forEach(group => {
+    group.addEventListener("toggle", () => {
+      group.open ? factionLoreOpenGroups.add(group.dataset.factionLoreGroup) : factionLoreOpenGroups.delete(group.dataset.factionLoreGroup);
+    });
+  });
+  mount?.querySelectorAll("[data-faction-lore-add]").forEach(button => button.onclick = () => {
+    syncFactionLoreFromDom();
+    const container = button.closest("[data-faction-lore-array]");
+    entityBuilderState.factionLoreShouldPersist = true;
+    entityBuilderState.factionLore[container.dataset.loreSection][container.dataset.loreKey].push("");
+    switchFactionWorkspace("lore");
+  });
+  mount?.querySelectorAll("[data-faction-lore-remove]").forEach(button => button.onclick = () => {
+    const container = button.closest("[data-faction-lore-array]");
+    const item = button.closest("[data-faction-lore-item]");
+    const index = [...container.querySelectorAll("[data-faction-lore-item]")].indexOf(item);
+    syncFactionLoreFromDom();
+    entityBuilderState.factionLoreShouldPersist = true;
+    entityBuilderState.factionLore[container.dataset.loreSection][container.dataset.loreKey].splice(index, 1);
+    switchFactionWorkspace("lore");
+  });
+  mount?.querySelectorAll("[data-faction-lore-image]").forEach(field => {
+    const input = field.querySelector("[data-faction-lore-image-input]");
+    field.querySelector("[data-faction-lore-image-choose]").onclick = () => input.click();
+    input.onchange = async () => {
+      const file = input.files?.[0];
+      if (!file) return;
+      try {
+        const imageDataUrl = await readImageFileAsDataUrl(file);
+        syncFactionLoreFromDom();
+        entityBuilderState.factionLore[field.dataset.loreSection][field.dataset.loreKey] = imageDataUrl;
+        entityBuilderState.factionLoreShouldPersist = true;
+        switchFactionWorkspace("lore");
+      } catch (error) {
+        alert(error?.message || "The image could not be loaded.");
+        input.value = "";
+      }
+    };
+    field.querySelector("[data-faction-lore-image-remove]").onclick = () => {
+      syncFactionLoreFromDom();
+      entityBuilderState.factionLore[field.dataset.loreSection][field.dataset.loreKey] = "";
+      entityBuilderState.factionLoreShouldPersist = true;
+      switchFactionWorkspace("lore");
+    };
+  });
 }
 
 function renderFactionPlaceholderWorkspace(name) {
@@ -20652,16 +21190,6 @@ async function renderFactionAbilityPacksWorkspace() {
   mount.innerHTML = `<div class="factionWorkspacePanel"><div class="factionWorkspaceHeader"><div><h2>Faction-wide Ability Packs</h2><p>Attached packs currently affect ${memberCount} member${memberCount === 1 ? "" : "s"}. Save the faction to persist changes.</p></div><button type="button" id="createAbilityPackBtn">+ Create Pack</button></div>${missing.map(id => `<p class="factionValidation warning">Missing Ability Pack: ${escapeHtml(id)}</p>`).join("")}${renderAbilityPackSelector(packs, entityBuilderState.factionAbilityPackIds, "faction")}</div>`;
   wireAbilityPackSelector(mount.querySelector('[data-pack-selector="faction"]'), ids => { entityBuilderState.factionAbilityPackIds = ids; updateGenericEntityJsonPreview(); });
   mount.querySelector("#createAbilityPackBtn").onclick = () => { syncFactionTraitsFromDom(); entityBuilderState.activeEntityType = "ability_pack"; showGenericEntityBuilder(getDefaultGenericEntity("ability_pack")); };
-}
-
-function renderFactionRelationshipsWorkspace() {
-  return `
-    <div class="factionWorkspacePanel">
-      <h2>Relationships</h2>
-      <p>Use the existing Relationships panel alongside this editor. No relationship records are duplicated into faction data.</p>
-      <button type="button" id="focusFactionRelationshipsBtn">Focus Relationships Panel</button>
-    </div>
-  `;
 }
 
 function getFactionNodeDepth(nodes, node, visited = new Set()) {
@@ -20947,6 +21475,7 @@ function wireFactionMemberControls(rows, hierarchy) {
 async function switchFactionWorkspace(tab) {
   syncFactionHierarchyDraftFromDom();
   syncFactionTraitsFromDom();
+  syncFactionLoreFromDom();
   if (entityBuilderState.factionWorkspaceTab === "hierarchy" && tab !== "hierarchy" && hasUnsavedFactionHierarchyChanges()) {
     if (!confirmDiscardFactionHierarchyChanges()) return false;
     discardUnsavedFactionHierarchyChanges();
@@ -20957,13 +21486,14 @@ async function switchFactionWorkspace(tab) {
   );
   const mount = document.querySelector("#factionWorkspaceMount");
   if (!mount) return;
+  parkEntityRelationshipsSurface();
   if (tab === "overview") mount.innerHTML = renderFactionOverviewWorkspace();
+  if (tab === "lore") { mount.innerHTML = renderFactionLoreWorkspace(); wireFactionLoreControls(); }
   if (tab === "traits") { mount.innerHTML = renderFactionTraitsWorkspace(); wireFactionTraitControls(); }
   if (tab === "ability-packs") await renderFactionAbilityPacksWorkspace();
   if (tab === "relationships") {
-    mount.innerHTML = renderFactionRelationshipsWorkspace();
-    mount.querySelector("#focusFactionRelationshipsBtn").onclick = () =>
-      document.querySelector("#entity-debug-relationships")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    mount.innerHTML = "";
+    mountEntityRelationshipsSurface(mount);
   }
   if (tab === "members") await renderFactionMembersWorkspace();
   if (tab === "hierarchy") await refreshFactionHierarchyWorkspace();
@@ -21476,6 +22006,11 @@ window.runInheritanceDiagnostic = async function (entityType, entityId) {
 
 function renderGenericEntityBuilder(entity) {
   const data = entity.data_json || {};
+  const context = getEntityEffectiveContext(entity);
+  const typeLabel = formatEntityTypeLabel(entity.entity_type || "faction");
+  const statusLabel = data.status || getEntityVisibilityLabel(entity);
+  const locationLabel = getEntityLibraryLocationLabel(entity);
+  const scopeLabel = [context.scope?.campaignId, context.scope?.worldId].filter(Boolean).join(" · ") || "Unscoped";
   const isMirroredCampaignParty =
     data.source === "campaign-party";
   const isMirroredCharacter =
@@ -21493,12 +22028,17 @@ function renderGenericEntityBuilder(entity) {
 
         <div>
           <div class="entityProfileMeta">
-            <span>Entity Builder</span>
+            <span>${escapeHtml(typeLabel)}</span>
+            <span class="entityVisibilityBadge">${escapeHtml(getEntityVisibilityLabel(entity))}</span>
           </div>
 
-          <h1>${entity.id ? "Edit Entity" : "New Entity"}</h1>
+          <h1>${escapeHtml(entity.name || (entity.id ? entity.id : `New ${typeLabel}`))}</h1>
 
-          <p>Create factions, vehicles, locations, items, quests and other campaign entities.</p>
+          <div class="entityProfileContext">
+            <span><small>Status</small>${escapeHtml(statusLabel)}</span>
+            <span><small>Location</small>${escapeHtml(locationLabel)}</span>
+            <span><small>Scope</small>${escapeHtml(scopeLabel)}</span>
+          </div>
           ${isMirroredCampaignParty ? `
             <p class="forgeEmptyState">
               Party membership is managed from the Party screen.
@@ -21506,6 +22046,9 @@ function renderGenericEntityBuilder(entity) {
           ` : ""}
         </div>
       </div>
+
+      ${entity.entity_type === "faction" ? renderFactionWorkspaceShell() : ""}
+      ${entity.entity_type === "ability_pack" ? renderAbilityPackWorkspaceShell() : ""}
 
       <div class="genericEntityFormGrid">
 
@@ -21671,19 +22214,6 @@ function renderGenericEntityBuilder(entity) {
 
 </div>
 
-      ${entity.entity_type === "faction" ? renderFactionWorkspaceShell() : ""}
-      ${entity.entity_type === "ability_pack" ? renderAbilityPackWorkspaceShell() : ""}
-
-      <div class="entityProfileActions">
-        <button id="saveGenericEntityBtn" type="button">
-          💾 Save Entity
-        </button>
-
-        <button id="deleteGenericEntityBtn" class="dangerBtn" type="button" ${entity.id ? "" : "disabled"}>
-          Delete
-        </button>
-      </div>
-
       <details class="relationshipAdvancedBox">
         <summary>Advanced technical preview</summary>
         <pre id="genericEntityJsonPreview">${escapeHtml(JSON.stringify(entity, null, 2))}</pre>
@@ -21708,12 +22238,6 @@ function setupGenericEntityBuilderControls() {
     document.querySelector(
       "#genericEntityVehicleSubtypeField"
     );
-
-  const saveBtn =
-    document.querySelector("#saveGenericEntityBtn");
-
-  const deleteBtn =
-    document.querySelector("#deleteGenericEntityBtn");
 
   const updateVehicleSubtypeVisibility = () => {
     const selectedType =
@@ -21810,26 +22334,6 @@ function setupGenericEntityBuilderControls() {
       updateGenericEntityJsonPreview;
   });
 
-  if (saveBtn) {
-  saveBtn.onclick = async event => {
-    event.preventDefault();
-    event.stopPropagation();
-
-    console.log("SAVE ENTITY BUTTON CLICKED");
-
-    await saveGenericEntityFromBuilder();
-  };
-
-  console.log("SAVE ENTITY BUTTON WIRED");
-} else {
-  console.error("SAVE ENTITY BUTTON NOT FOUND");
-}
-
-  if (deleteBtn) {
-    deleteBtn.onclick =
-      deleteGenericEntityFromBuilder;
-  }
-
   updateVehicleSubtypeVisibility();
   updateGenericEntityLocationFieldVisibility();
   updateGenericEntityJsonPreview();
@@ -21838,6 +22342,7 @@ function setupGenericEntityBuilderControls() {
 function collectGenericEntityFromBuilder() {
   syncFactionHierarchyDraftFromDom();
   syncFactionTraitsFromDom();
+  syncFactionLoreFromDom();
   syncAbilityPackDraftFromDom();
   const builder = document.querySelector(".genericEntityBuilderCard");
 
@@ -22002,6 +22507,9 @@ worldId: selectedCurrentWorld,
     };
     entity.data_json.traits = (entityBuilderState.factionTraits || []).map(trait => ({ ...trait, tags: [...(trait.tags || [])], systemData: { ...(trait.systemData || {}) } }));
     entity.data_json.abilityPackIds = getAbilityPackApi().uniqueIds(entityBuilderState.factionAbilityPackIds);
+    if (entityBuilderState.factionLoreShouldPersist) {
+      entity.data_json.factionLore = getFactionLoreApi().copyFactionLore(entityBuilderState.factionLore);
+    }
   }
 
   if (entity.entity_type === "ability_pack") {
@@ -23800,10 +24308,46 @@ function debounce(fn, delay = 200) {
 // Forge Builder Framework v0.1
 // ===========================
 
+let itemBuilderWorkspace = null;
+
+function setupItemModule() {
+  const root = document.querySelector("#itemBuilderRoot");
+  if (!root || !window.MasterForgeItemBuilder || !window.MasterForgeItemModel) return;
+  const notify = (message, status = "success") => {
+    let output = root.querySelector("[data-item-builder-status]");
+    if (!output) {
+      output = document.createElement("p");
+      output.dataset.itemBuilderStatus = "";
+      output.setAttribute("role", "status");
+      output.setAttribute("aria-live", "polite");
+      root.prepend(output);
+    }
+    output.dataset.status = status;
+    output.textContent = message;
+  };
+  itemBuilderWorkspace = window.MasterForgeItemBuilder.mountItemBuilder({
+    root,
+    model: window.MasterForgeItemModel,
+    api: window.dmAPI,
+    actionConsole: window.MasterForgeActionConsole,
+    slugify: value => window.dmStorage.slugify(value),
+    readImage: file => readImageFileAsDataUrl(file),
+    scope: () => ({
+      campaignId: window.dmState.current.campaign || "",
+      worldId: window.dmState.current.world || "",
+      regionId: window.dmState.current.region || "",
+      locationId: window.dmState.current.location || ""
+    }),
+    notify
+  });
+}
+
 let creatureBuilderState = {
   currentCreatureId: null,
   activeWorkspace: "overview",
   activeCreature: null,
+  ecologyDraft: null,
+  ecologyDirty: false,
   creatures: []
 };
 let activeCreatureScopeFilter = "current-system";
@@ -23867,7 +24411,10 @@ async function syncCreatureToEntity(creature) {
       alignment: creature.alignment || "",
       cr: creature.cr || "",
       status: creature.status || existingData.status || "",
-      tags: creature.tags || existingData.tags || ""
+      tags: creature.tags || existingData.tags || "",
+      ...(window.MasterForgeExternalProvenance?.toExternalIdentity(creature.externalProvenance)
+        ? { externalIdentity: window.MasterForgeExternalProvenance.toExternalIdentity(creature.externalProvenance) }
+        : {})
     }
   };
 
@@ -23906,6 +24453,7 @@ async function migrateCreatureEntities() {
 
 const creatureWorkspaceRenderers = {
   overview: renderCreatureOverviewWorkspace,
+  ecology: renderCreatureEcologyWorkspace,
   loot: renderCreatureLootWorkspace,
   notes: renderCreatureNotesWorkspace,
   entityLinks: renderCreatureEntityLinksWorkspace
@@ -23968,27 +24516,28 @@ if (creatureScopeFilterInput) {
       console.warn("Creature entity migration could not start:", error);
     });
 }
-function handleCreaturePortraitSelected(event) {
+async function handleCreaturePortraitSelected(event) {
   const file = event.target.files?.[0];
 
   if (!file) return;
 
-  const reader = new FileReader();
-
-  reader.onload = () => {
+  try {
+    const imageDataUrl = await readImageFileAsDataUrl(file);
     if (!creatureBuilderState.activeCreature) {
       creatureBuilderState.activeCreature = getDefaultCreature();
     }
 
     creatureBuilderState.activeCreature.image = {
       ...(creatureBuilderState.activeCreature.image || {}),
-      portrait: reader.result
+      portrait: imageDataUrl
     };
 
-    renderCreatureImagePreview(reader.result);
-  };
-
-  reader.readAsDataURL(file);
+    renderCreatureImagePreview(imageDataUrl);
+  } catch (error) {
+    alert(error?.message || "The image could not be loaded.");
+  } finally {
+    event.target.value = "";
+  }
 }
 
 function renderCreatureImagePreview(src) {
@@ -24194,6 +24743,7 @@ function renderCreatureBuilderShell() {
 
         <nav class="forgeWorkspaceTabs">
           <button class="mf-workspace-tab active" data-workspace="overview">Overview</button>
+          <button class="mf-workspace-tab" data-workspace="ecology">Ecology</button>
         </nav>
 
         <section id="creatureWorkspaceMount" class="forgeWorkspaceMount"></section>
@@ -24701,6 +25251,8 @@ function fillCreatureForm(creature) {
 
   creatureBuilderState.currentCreatureId = normalised.id || null;
   creatureBuilderState.activeCreature = normalised;
+  creatureBuilderState.ecologyDraft = window.MasterForgeCreatureEcology.normaliseCreatureEcology(normalised.ecology);
+  creatureBuilderState.ecologyDirty = false;
 
   document.querySelector("#creatureEditorTitle").innerText =
     normalised.name || "New Creature";
@@ -24845,6 +25397,11 @@ function syncActiveCreatureWorkspace() {
   if (!creature) return;
 
   const workspace = creatureBuilderState.activeWorkspace;
+
+  if (workspace === "ecology" && creatureBuilderState.ecologyDirty) {
+    creatureBuilderState.ecologyDraft = collectCreatureEcologyWorkspace();
+    creature.ecology = window.MasterForgeCreatureEcology.cloneCreatureEcology(creatureBuilderState.ecologyDraft);
+  }
 
   if (workspace === "overview") {
   const mode =
@@ -25084,6 +25641,63 @@ setTimeout(() => {
   }
 }, 0);
   return wrapper;
+}
+
+const CREATURE_ECOLOGY_NARRATIVE_FIELDS = Object.freeze([
+  ["behaviour", "Behaviour", "medium"],
+  ["temperament", "Temperament", "short"],
+  ["diet", "Diet", "short"],
+  ["socialStructure", "Social Structure", "medium"],
+  ["activityCycle", "Activity Cycle", "short"],
+  ["reproductiveNotes", "Reproductive Notes", "medium"],
+  ["ecologyNotes", "Ecology Notes", "long"]
+]);
+const CREATURE_ECOLOGY_HABITAT_FIELDS = Object.freeze([
+  ["biomes", "Biomes"], ["terrain", "Terrain"], ["climate", "Climate"],
+  ["elevation", "Elevation"], ["waterProximity", "Water Proximity"],
+  ["temperature", "Temperature"], ["humidity", "Humidity"],
+  ["settlementProximity", "Settlement Proximity"], ["activityPeriod", "Activity Period"],
+  ["seasonality", "Seasonality"]
+]);
+
+function renderCreatureEcologyPreference(key, label, values = []) {
+  const rows = values.map((value, index) => `<div class="creatureEcologyPreferenceRow"><input value="${escapeHtml(value)}" data-creature-ecology-preference="${key}" data-ecology-index="${index}" aria-label="${escapeHtml(label)} value ${index + 1}"><button type="button" class="dangerBtn" data-creature-ecology-remove="${key}" data-ecology-index="${index}" aria-label="Remove ${escapeHtml(label)} value">Remove</button></div>`).join("");
+  return `<section class="creatureEcologyPreference" data-creature-ecology-list="${key}"><header><h3>${escapeHtml(label)}</h3><button type="button" data-creature-ecology-add="${key}">Add Value</button></header><div>${rows || `<p class="forgeEmptyState">No values yet.</p>`}</div></section>`;
+}
+
+function renderCreatureEcologyWorkspace() {
+  const ecology = creatureBuilderState.ecologyDraft || window.MasterForgeCreatureEcology.createDefaultCreatureEcology();
+  const wrapper = document.createElement("div");
+  wrapper.className = "forgeWorkspace creatureEcologyWorkspace";
+  wrapper.innerHTML = `<header class="creatureEcologyHeader"><h2>Ecology</h2><p>Describe this Creature's ecology and structured habitat preferences. Actual locations, ranges, prey and other entities remain relationships.</p></header>
+    <section class="forgeWorkspaceCard creatureEcologyNarrative"><h2>Narrative Ecology</h2><div class="creatureEcologyNarrativeGrid">${CREATURE_ECOLOGY_NARRATIVE_FIELDS.map(([key, label, size]) => `<label class="creatureEcologyField creatureEcologyField--${size}"><span>${escapeHtml(label)}</span><textarea data-creature-ecology-field="${key}">${escapeHtml(ecology[key] || "")}</textarea></label>`).join("")}</div></section>
+    <section class="forgeWorkspaceCard creatureEcologyHabitat"><header><h2>Habitat Preferences</h2><p>Keep each deterministic preference as an individual value. Geographic placement is managed separately.</p></header><div class="creatureEcologyPreferenceGrid">${CREATURE_ECOLOGY_HABITAT_FIELDS.map(([key, label]) => renderCreatureEcologyPreference(key, label, ecology.habitatPreferences?.[key] || [])).join("")}</div></section>`;
+
+  wrapper.querySelectorAll("[data-creature-ecology-field], [data-creature-ecology-preference]").forEach(input => input.addEventListener("input", () => { creatureBuilderState.ecologyDirty = true; }));
+  wrapper.querySelectorAll("[data-creature-ecology-add]").forEach(button => button.addEventListener("click", () => {
+    creatureBuilderState.ecologyDraft = collectCreatureEcologyWorkspace();
+    creatureBuilderState.ecologyDraft.habitatPreferences[button.dataset.creatureEcologyAdd].push("");
+    creatureBuilderState.ecologyDirty = true;
+    switchCreatureWorkspace("ecology", false);
+    const inputs = document.querySelectorAll(`[data-creature-ecology-preference="${CSS.escape(button.dataset.creatureEcologyAdd)}"]`);
+    inputs[inputs.length - 1]?.focus();
+  }));
+  wrapper.querySelectorAll("[data-creature-ecology-remove]").forEach(button => button.addEventListener("click", () => {
+    creatureBuilderState.ecologyDraft = collectCreatureEcologyWorkspace();
+    creatureBuilderState.ecologyDraft.habitatPreferences[button.dataset.creatureEcologyRemove].splice(Number(button.dataset.ecologyIndex), 1);
+    creatureBuilderState.ecologyDirty = true;
+    switchCreatureWorkspace("ecology", false);
+  }));
+  return wrapper;
+}
+
+function collectCreatureEcologyWorkspace() {
+  const base = window.MasterForgeCreatureEcology.normaliseCreatureEcology(creatureBuilderState.ecologyDraft);
+  document.querySelectorAll("[data-creature-ecology-field]").forEach(input => { base[input.dataset.creatureEcologyField] = input.value.trim(); });
+  CREATURE_ECOLOGY_HABITAT_FIELDS.forEach(([key]) => {
+    base.habitatPreferences[key] = [...document.querySelectorAll(`[data-creature-ecology-preference="${CSS.escape(key)}"]`)].map(input => input.value.trim()).filter(Boolean);
+  });
+  return base;
 }
 
 function renderCreatureTraitsWorkspace(creature) {

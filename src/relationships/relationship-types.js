@@ -35,6 +35,21 @@
     };
   }
 
+  // Ecology stores one canonical edge. Incoming labels provide the inverse
+  // presentation without creating a second relationship row.
+  function createEcologyType(id, label, sourceLabel, targetLabel, { symmetrical = false } = {}) {
+    return createType({
+      id, label,
+      description: `${sourceLabel} / ${targetLabel} ecology relationship.`,
+      category: "ecology",
+      modes: ["ecology", "general"],
+      directional: !symmetrical,
+      symmetrical,
+      inverseType: symmetrical ? id : null,
+      labels: { source: sourceLabel, target: targetLabel }
+    });
+  }
+
   const types = {
     answers_to: createType({
       id: "answers_to",
@@ -767,7 +782,17 @@
       secrecy: { inherentlySecret: false, allowed: true },
       aliases: [],
       deprecatedAliases: []
-    })
+    }),
+
+    preys_on: createEcologyType("preys_on", "Preys On", "Preys On", "Preyed On By"),
+    hunted_by: createEcologyType("hunted_by", "Hunted By", "Hunted By", "Hunts"),
+    symbiotic_with: createEcologyType("symbiotic_with", "Symbiotic With", "Symbiotic With", "Symbiotic With", { symmetrical: true }),
+    parasitic_on: createEcologyType("parasitic_on", "Parasitic On", "Parasitic On", "Host To"),
+    competes_with: createEcologyType("competes_with", "Competes With", "Competes With", "Competes With", { symmetrical: true }),
+    domesticated_by: createEcologyType("domesticated_by", "Domesticated By", "Domesticated By", "Domesticates"),
+    scavenges_from: createEcologyType("scavenges_from", "Scavenges From", "Scavenges From", "Scavenged By"),
+    avoids: createEcologyType("avoids", "Avoids", "Avoids", "Avoided By"),
+    attracted_to: createEcologyType("attracted_to", "Attracted To", "Attracted To", "Attracts")
   };
 
   const movementTypes = [

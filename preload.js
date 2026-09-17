@@ -5,6 +5,8 @@ contextBridge.exposeInMainWorld("dmAPI", {
 
   getAppVersion: () =>
     ipcRenderer.invoke("app:getVersion"),
+  getRuntimeInfo: () =>
+    ipcRenderer.invoke("app:getRuntimeInfo"),
 
   getUpdaterState: () =>
     ipcRenderer.invoke("updater:getState"),
@@ -121,6 +123,9 @@ removeContentPack: (packId) =>
   
 chooseContentPackFile: () =>
   ipcRenderer.invoke("content:choosePackFile"),
+
+chooseAtlasPackage: () =>
+  ipcRenderer.invoke("interchange:chooseAtlasPackage"),
 
 getDbThemeSettings: () =>
   ipcRenderer.invoke("settings:getTheme"),

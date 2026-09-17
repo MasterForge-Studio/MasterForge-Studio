@@ -87,11 +87,20 @@
       </nav>
 
       <nav id="tabs" aria-label="MasterForge workspaces">
-        <button class="tab home-tab" data-tab="home">Home</button>
-        <section class="workflow-nav-group" data-workspace-group="in-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-in-game">In Game <span aria-hidden="true">−</span></button><div id="nav-in-game" class="workflow-nav-children"><button class="tab" data-tab="region">Current Location</button><button class="tab" data-tab="party">Party</button><button class="tab" data-tab="session-reference">Session Reference</button><button class="tab" data-tab="combat-operations">Combat Operations Centre</button></div></section>
-        <section class="workflow-nav-group" data-workspace-group="pre-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-pre-game">Pre-Game <span aria-hidden="true">−</span></button><div id="nav-pre-game" class="workflow-nav-children"><button class="tab" data-tab="session">Session Planner</button><button class="tab" data-tab="encounters">Encounter Planner</button><button class="tab" data-tab="loot">Loot Preparation</button></div></section>
-        <section class="workflow-nav-group" data-workspace-group="world-building"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-world-building">World Building <span aria-hidden="true">−</span></button><div id="nav-world-building" class="workflow-nav-children"><button class="tab" data-tab="world">Campaigns &amp; Worlds</button><button class="tab" data-tab="region">Regions &amp; Locations</button><button class="tab" data-tab="entities">Entity Library</button><button class="tab" data-tab="npc">NPCs</button><button class="tab" data-tab="creatures">Creatures</button><button class="tab" data-tab="party">Parties</button></div></section>
-        <section class="workflow-nav-group" data-workspace-group="settings"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-settings">Settings <span aria-hidden="true">−</span></button><div id="nav-settings" class="workflow-nav-children"><button class="tab" data-tab="settings">Configure MasterForge</button></div></section>
+        <div class="masterforge-nav-items">
+          <button class="tab home-tab" data-tab="home">Home</button>
+          <section class="workflow-nav-group" data-workspace-group="in-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-in-game">In Game <span aria-hidden="true">−</span></button><div id="nav-in-game" class="workflow-nav-children"><button class="tab" data-tab="region">Current Location</button><button class="tab" data-tab="party">Party</button><button class="tab" data-tab="session-reference">Session Reference</button><button class="tab" data-tab="reference-browser">Reference Browser</button><button class="tab" data-tab="combat-operations">Combat Operations Centre</button></div></section>
+          <section class="workflow-nav-group" data-workspace-group="pre-game"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-pre-game">Pre-Game <span aria-hidden="true">−</span></button><div id="nav-pre-game" class="workflow-nav-children"><button class="tab" data-tab="session">Session Planner</button><button class="tab" data-tab="encounters">Encounter Planner</button><button class="tab" data-tab="loot">Loot Preparation</button></div></section>
+          <section class="workflow-nav-group" data-workspace-group="world-building"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-world-building">World Building <span aria-hidden="true">−</span></button><div id="nav-world-building" class="workflow-nav-children"><button class="tab" data-tab="world">Campaigns &amp; Worlds</button><button class="tab" data-tab="region">Regions &amp; Locations</button><button class="tab" data-tab="entities">Entity Library</button><button class="tab" data-tab="npc">NPCs</button><button class="tab" data-tab="creatures">Creatures</button><button class="tab" data-tab="items">Items</button><button class="tab" data-tab="party">Parties</button><button class="tab" data-tab="atlas-import">Atlas Import</button></div></section>
+          <section class="workflow-nav-group" data-workspace-group="settings"><button class="workflow-nav-heading" type="button" aria-expanded="true" aria-controls="nav-settings">Settings <span aria-hidden="true">−</span></button><div id="nav-settings" class="workflow-nav-children"><button class="tab" data-tab="settings">Configure MasterForge</button></div></section>
+        </div>
+        <footer class="masterforge-runtime" data-masterforge-runtime aria-label="Application runtime" aria-live="polite">
+          <span class="masterforge-runtime__name">MasterForge Studio</span>
+          <span class="masterforge-runtime__details" hidden>
+            <span data-masterforge-runtime-version></span>
+            <span class="masterforge-runtime__badge" data-masterforge-runtime-badge hidden>DEV</span>
+          </span>
+        </footer>
       </nav>
 
       <main id="content">
@@ -188,6 +197,8 @@
 
         </section>
 
+        <section id="reference-browser" class="panel" aria-label="In Game Reference Browser"></section>
+
         <section id="session-reference" class="panel" aria-label="In-Game Session Reference">
           <div class="sessionReferenceHeader">
             <div>
@@ -267,6 +278,10 @@
 <!-- ==================== NPCS ==================== -->
 <section id="npc" class="panel">
   <div id="npcBuilderRoot"></div>
+</section>
+
+<section id="items" class="panel">
+  <div id="itemBuilderRoot"></div>
 </section>
 
         <!-- ==================== ENCOUNTERS ==================== -->
@@ -451,6 +466,10 @@
 
         </section>
 
+
+        <section id="atlas-import" class="panel" aria-label="Atlas Import Preview">
+          <div id="atlasImportPreviewRoot"></div>
+        </section>
 
                 <!-- ==================== ENTITIES ==================== -->
         <section id="entities" class="panel">
@@ -810,7 +829,23 @@
 <script src="relationships/relationship-metadata.js"></script>
 <script src="configuration/configuration-assets.js"></script>
 <script src="configuration/configuration-reference-helper.js"></script>
+<script src="interchange/interchange-contract.js"></script>
+<script src="interchange/external-provenance.js"></script>
+<script src="interchange/external-entity-match.js"></script>
+<script src="interchange/atlas-package-parser.js"></script>
+<script src="interchange/atlas-import-preview.js"></script>
+<script src="interchange/atlas-import-preview-ui.js"></script>
+<script src="creatures/creature-ecology.js"></script>
+<script src="items/item-model.js"></script>
+<script src="items/item-builder.js"></script>
 <script src="factions/faction-hierarchy.js"></script>
+<script src="factions/faction-lore.js"></script>
+<script src="entities/canonical-entity-resolver.js"></script>
+<script src="inGame/reference-browser.js"></script>
+<script src="inGame/views/faction-reference-view.js"></script>
+<script src="inGame/views/npc-reference-view.js"></script>
+<script src="inGame/views/creature-reference-view.js"></script>
+<script src="inGame/views/item-reference-view.js"></script>
 <script src="abilities/ability-packs.js"></script>
 <script src="engines/inheritance-engine.js"></script>
 <script src="renderers/relationship-graph-renderer.js"></script>

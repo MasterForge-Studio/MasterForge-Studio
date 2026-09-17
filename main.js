@@ -1261,6 +1261,12 @@ ipcMain.handle("app:getVersion", () => {
   return app.getVersion();
 });
 
+ipcMain.handle("app:getRuntimeInfo", () => ({
+  version: VERSION,
+  isPackaged: app.isPackaged,
+  channel: app.isPackaged ? "installed" : "development",
+}));
+
 ipcMain.handle(
   "updater:getState",
   () => updaterUiState
@@ -1653,6 +1659,29 @@ ipcMain.handle("content:choosePackFile", async () => {
   }
 
   return result.filePaths[0];
+});
+
+const ATLAS_PREVIEW_MAX_FILE_BYTES = 5 * 1024 * 1024;
+
+ipcMain.handle("interchange:chooseAtlasPackage", async () => {
+  const result = await dialog.showOpenDialog(win, {
+    title: "Choose MasterForge Atlas Package",
+    properties: ["openFile"],
+    filters: [{ name: "JSON package", extensions: ["json"] }]
+  });
+  if (result.canceled || !result.filePaths[0]) return { cancelled: true };
+
+  const filePath = result.filePaths[0];
+  try {
+    const stats = fs.statSync(filePath);
+    if (!stats.isFile()) return { cancelled: false, error: { code: "ATLAS_PACKAGE_NOT_FILE", message: "The selected package is not a file." } };
+    if (stats.size > ATLAS_PREVIEW_MAX_FILE_BYTES) {
+      return { cancelled: false, fileName: path.basename(filePath), size: stats.size, error: { code: "ATLAS_PACKAGE_TOO_LARGE", message: "The selected package exceeds the 5 MB preview limit." } };
+    }
+    return { cancelled: false, fileName: path.basename(filePath), size: stats.size, text: fs.readFileSync(filePath, "utf8") };
+  } catch (error) {
+    return { cancelled: false, fileName: path.basename(filePath), error: { code: "ATLAS_PACKAGE_READ_FAILED", message: "The selected package could not be read." } };
+  }
 });
 
 ipcMain.handle("worlds:list", () => {

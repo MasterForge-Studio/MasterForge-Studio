@@ -1,5 +1,33 @@
 # MasterForge Studio Changelog
 
+## v0.3.6-alpha
+
+### Highlights
+
+- Added the In Game Reference Browser with full read-only Faction, NPC, Creature and Item views.
+- Added the first-class Item Builder and expanded Creature ecology and habitat data.
+- Improved Faction Lore with dedicated editing, emblem support and refined presentation.
+- Introduced sourcebook-style reading surfaces with responsive editorial layouts and a shared artwork rail.
+- Added the Atlas import dry-run preview foundation without applying live changes.
+
+### Improvements
+
+- Refined the Entity Library browser rail and consolidated entity actions in the Action Console.
+- Added canonical read resolution and improved cross-reference relationship navigation.
+- Improved image, emblem and portrait presentation with safe fallbacks.
+- Kept mechanical and stat information structured for quick live-session scanning.
+
+### Atlas / Interchange
+
+- Added the external provenance identity foundation and documented the Atlas ↔ Studio interchange contract.
+- Added Atlas package parsing, entity matching and dry-run import previews.
+- Live Atlas import/apply remains unavailable in this release.
+
+### Notes
+
+- This is an Alpha release.
+- The Windows installer remains unsigned, so Windows SmartScreen or antivirus warnings may appear.
+
 ## v0.3.1-alpha
 
 - Added automatic startup into the campaign creation wizard when no campaigns exist.
