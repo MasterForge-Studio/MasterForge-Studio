@@ -1,6 +1,10 @@
 # MasterForge Studio Changelog
 
-## Unreleased
+## v0.3.7-alpha
+
+### Highlights
+
+- Security hardening release: content packs and campaign text can no longer run code inside MasterForge Studio, and the app is locked to its own pages and data folder.
 
 ### Security
 
@@ -11,6 +15,13 @@
 - Content packs install only from the file chosen in the install dialog, and archives are checked for size, entry count, duplicate names and zip-bomb compression before extraction.
 - Installer download links open in the browser only for GitHub and masterforgestudio.com.
 - Upgraded adm-zip to 0.6.1 and js-yaml to 4.3.2 (`npm audit --omit=dev` reports no runtime vulnerabilities).
+
+### Notes
+
+- No new features or data changes; existing campaigns and installed content packs are unaffected.
+- Very large content packs (over 250 MB, or expanding beyond 750 MB) are now refused.
+- This is an Alpha release.
+- The Windows installer remains unsigned, so Windows SmartScreen or antivirus warnings may appear.
 
 ## v0.3.6-alpha
 
