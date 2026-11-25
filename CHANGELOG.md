@@ -1,5 +1,17 @@
 # MasterForge Studio Changelog
 
+## Unreleased
+
+### Security
+
+- Added a Content Security Policy to the main and activation windows, so text from content packs or campaigns can no longer run script.
+- Escaped pack and campaign text in the older Sessions, Party, World Notes, generator, faction, encounter and vendor views.
+- The window now stays on the app's own pages: remote navigation, new windows and webviews are blocked, and only clipboard writing is permitted.
+- Theme settings can no longer change the data folder; it changes only through the folder picker. Data writes are limited to `.json` files inside the data folder, including through links and junctions.
+- Content packs install only from the file chosen in the install dialog, and archives are checked for size, entry count, duplicate names and zip-bomb compression before extraction.
+- Installer download links open in the browser only for GitHub and masterforgestudio.com.
+- Upgraded adm-zip to 0.6.1 and js-yaml to 4.3.2 (`npm audit --omit=dev` reports no runtime vulnerabilities).
+
 ## v0.3.6-alpha
 
 ### Highlights

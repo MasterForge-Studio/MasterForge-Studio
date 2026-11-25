@@ -1952,9 +1952,9 @@ console.log("Locations:", window.dmState.locations);
 
   const buildOptions = selectedTheme =>
     installedThemes.map(theme => `
-      <option value="${theme.id}"
+      <option value="${escapeHtml(theme.id)}"
         ${selectedTheme === theme.id ? "selected" : ""}>
-        ${theme.name}
+        ${escapeHtml(theme.name)}
       </option>
     `).join("");
 
@@ -3479,14 +3479,14 @@ async function renderSessionList() {
 
   list.innerHTML = sorted.map(s => `
     <div class="sessionListItem ${s.id === currentSessionId ? "active" : ""}"
-         data-id="${s.id}">
+         data-id="${escapeHtml(s.id)}">
 
       <div class="sessionItemInfo">
-        <div class="sessionItemTitle">${s.title || "Untitled Session"}</div>
-        <div class="sessionItemDate">${s.date || "No date set"}</div>
+        <div class="sessionItemTitle">${escapeHtml(s.title || "Untitled Session")}</div>
+        <div class="sessionItemDate">${escapeHtml(s.date || "No date set")}</div>
       </div>
 
-      <button class="sessionDeleteBtn" data-id="${s.id}">✕</button>
+      <button class="sessionDeleteBtn" data-id="${escapeHtml(s.id)}">✕</button>
 
     </div>
   `).join("");
@@ -5775,12 +5775,12 @@ async function renderParty() {
       activeGrid.innerHTML += `
         <div class="activePartyCard" data-character-id="${escapeHtml(c.id)}">
           <div class="characterCardPortrait">${c.image?.portrait ? `<img src="${escapeHtml(c.image.portrait)}" alt="${escapeHtml(c.name)} portrait">` : `<span aria-hidden="true">PC</span>`}</div>
-          <h3>${c.name}</h3>
-          <p>${player?.name || "Unknown Player"}</p>
-          <p>${c.species || "Unknown Species"} ${c.class || "Unknown Class"} ${c.subclass ? `(${c.subclass})` : ""}</p>
+          <h3>${escapeHtml(c.name)}</h3>
+          <p>${escapeHtml(player?.name || "Unknown Player")}</p>
+          <p>${escapeHtml(c.species || "Unknown Species")} ${escapeHtml(c.class || "Unknown Class")} ${c.subclass ? `(${escapeHtml(c.subclass)})` : ""}</p>
 
           <div class="characterStats">
-            <span>Lv ${c.level}</span>
+            <span>Lv ${escapeHtml(c.level)}</span>
             <span>${escapeHtml(healthLabel)} ${currentHealth ?? 0}/${maximumHealth ?? 0}</span>
             <span>${escapeHtml(defenceLabel)} ${defence ?? "—"}</span>
             ${passiveSummary}
@@ -5807,8 +5807,8 @@ async function renderParty() {
 
     let html = `
       <div class="playerCardHeader">
-        <h3>${player.name}</h3>
-        <button class="addCharacterForPlayerBtn" data-player-id="${player.id}" data-player-name="${player.name}">
+        <h3>${escapeHtml(player.name)}</h3>
+        <button class="addCharacterForPlayerBtn" data-player-id="${escapeHtml(player.id)}" data-player-name="${escapeHtml(player.name)}">
           + Character
         </button>
       </div>
@@ -5834,10 +5834,10 @@ async function renderParty() {
       }).filter(Boolean).join("");
 
       html += `
-        <div class="characterMiniCard" data-character-id="${c.id}">
+        <div class="characterMiniCard" data-character-id="${escapeHtml(c.id)}">
   <div class="characterCardPortrait">${c.image?.portrait ? `<img src="${escapeHtml(c.image.portrait)}" alt="${escapeHtml(c.name)} portrait">` : `<span aria-hidden="true">PC</span>`}</div>
-  <b>${c.name}</b><br>
-          ${c.species || "Unknown Species"} ${c.class || "Unknown Class"} ${c.subclass ? `(${c.subclass})` : ""} Lv ${c.level}
+  <b>${escapeHtml(c.name)}</b><br>
+          ${escapeHtml(c.species || "Unknown Species")} ${escapeHtml(c.class || "Unknown Class")} ${c.subclass ? `(${escapeHtml(c.subclass)})` : ""} Lv ${escapeHtml(c.level)}
 
           <div class="characterStats">
             <span>${escapeHtml(healthLabel)} ${currentHealth ?? 0}/${maximumHealth ?? 0}</span>
@@ -5847,11 +5847,11 @@ async function renderParty() {
 
           <div class="characterActions">
             <label class="activeToggleLine">
-              <input type="checkbox" class="activeCharacterToggle" data-character-id="${c.id}" ${checked}>
-              Active in ${window.dmState.current.campaign}
+              <input type="checkbox" class="activeCharacterToggle" data-character-id="${escapeHtml(c.id)}" ${checked}>
+              Active in ${escapeHtml(window.dmState.current.campaign)}
             </label>
 
-            <button class="editCharacterBtn" data-character-id="${c.id}">
+            <button class="editCharacterBtn" data-character-id="${escapeHtml(c.id)}">
               Edit
             </button>
             <button class="openCharacterDmWorkspaceBtn" data-character-id="${c.id}">
@@ -6019,7 +6019,7 @@ function listHtml(items) {
 
   return `
     <ul>
-      ${items.map((item) => `<li>${item}</li>`).join("")}
+      ${items.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
     </ul>
   `;
 }
@@ -7539,7 +7539,7 @@ async function findEncounterByRoll() {
   });
 
   output.innerHTML = encounter
-    ? `<h2>🎲 ${encounter.name}</h2><p>${encounter.description || encounter.notes || ""}</p>`
+    ? `<h2>🎲 ${escapeHtml(encounter.name)}</h2><p>${escapeHtml(encounter.description || encounter.notes || "")}</p>`
     : `<h2>No encounter found for roll ${roll}</h2>`;
 }
 
@@ -7556,7 +7556,7 @@ function renderEncounterChecks(checks, activeChars) {
           ${activeChars.map((char) => {
             const pp = Number(char.passivePerception || 10);
             const success = pp >= check.dc ? "✅ notices" : "❌ misses";
-            return `<li>${char.name}: PP ${pp} ${success}</li>`;
+            return `<li>${escapeHtml(char.name)}: PP ${pp} ${success}</li>`;
           }).join("")}
         </ul>
       `;
@@ -7618,14 +7618,14 @@ async function generateVendor() {
     .slice(0, 6);
 
   output.innerHTML = `
-    <h2>🛒 ${pickRandom(table.names)}</h2>
-    <p><b>Type:</b> ${pickRandom(table.vendorTypes)}</p>
-    <p><b>Personality:</b> ${pickRandom(table.personalities)}</p>
-    <p><b>Secret:</b> ${pickRandom(table.secrets)}</p>
+    <h2>🛒 ${escapeHtml(pickRandom(table.names))}</h2>
+    <p><b>Type:</b> ${escapeHtml(pickRandom(table.vendorTypes))}</p>
+    <p><b>Personality:</b> ${escapeHtml(pickRandom(table.personalities))}</p>
+    <p><b>Secret:</b> ${escapeHtml(pickRandom(table.secrets))}</p>
 
     <h3>Items Available</h3>
     <ul>
-      ${stock.map((item) => `<li>${item}</li>`).join("")}
+      ${stock.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
     </ul>
   `;
 }
@@ -13973,23 +13973,23 @@ async function generateNpc() {
   };
 
   output.innerHTML = `
-    <h2>🧙 ${currentGeneratedNpc.name}</h2>
+    <h2>🧙 ${escapeHtml(currentGeneratedNpc.name)}</h2>
 
-    <p><b>Species:</b> ${currentGeneratedNpc.species}</p>
-    <p><b>Role:</b> ${currentGeneratedNpc.role}</p>
-    <p><b>Faction:</b> ${currentGeneratedNpc.faction}</p>
+    <p><b>Species:</b> ${escapeHtml(currentGeneratedNpc.species)}</p>
+    <p><b>Role:</b> ${escapeHtml(currentGeneratedNpc.role)}</p>
+    <p><b>Faction:</b> ${escapeHtml(currentGeneratedNpc.faction)}</p>
 
     <h3>Appearance</h3>
-    <p>${currentGeneratedNpc.appearance}</p>
+    <p>${escapeHtml(currentGeneratedNpc.appearance)}</p>
 
     <h3>Personality</h3>
-    <p>${currentGeneratedNpc.personality}</p>
+    <p>${escapeHtml(currentGeneratedNpc.personality)}</p>
 
     <h3>Secret</h3>
-    <p>${currentGeneratedNpc.secret}</p>
+    <p>${escapeHtml(currentGeneratedNpc.secret)}</p>
 
     <h3>Hook</h3>
-    <p>${currentGeneratedNpc.hook}</p>
+    <p>${escapeHtml(currentGeneratedNpc.hook)}</p>
   `;
 }
 
@@ -14021,10 +14021,10 @@ async function renderSavedNpcs() {
 
   list.innerHTML = npcs.map((npc) => `
     <div class="characterMiniCard savedNpcCard" data-npc-id="${escapeHtml(npc.id)}">
-      <b>${npc.name}</b><br>
-      ${npc.species} ${npc.role}<br>
-      <span>Faction: ${npc.faction}</span><br>
-      <span>First met: ${npc.firstMet?.campaign} - ${npc.firstMet?.region}</span>
+      <b>${escapeHtml(npc.name)}</b><br>
+      ${escapeHtml(npc.species)} ${escapeHtml(npc.role)}<br>
+      <span>Faction: ${escapeHtml(npc.faction)}</span><br>
+      <span>First met: ${escapeHtml(npc.firstMet?.campaign)} - ${escapeHtml(npc.firstMet?.region)}</span>
     </div>
   `).join("");
 }
@@ -14087,16 +14087,16 @@ async function renderSelectedFaction() {
   }
 
   output.innerHTML = `
-    <h2>🏰 ${faction.name}</h2>
+    <h2>🏰 ${escapeHtml(faction.name)}</h2>
 
-    <p><b>Type:</b> ${faction.type}</p>
-    <p><b>Alignment:</b> ${faction.alignment}</p>
-    <p><b>Status:</b> ${faction.status}</p>
-    <p><b>Leader:</b> ${faction.leader}</p>
-    ${faction.companion ? `<p><b>Companion:</b> ${faction.companion}</p>` : ""}
+    <p><b>Type:</b> ${escapeHtml(faction.type)}</p>
+    <p><b>Alignment:</b> ${escapeHtml(faction.alignment)}</p>
+    <p><b>Status:</b> ${escapeHtml(faction.status)}</p>
+    <p><b>Leader:</b> ${escapeHtml(faction.leader)}</p>
+    ${faction.companion ? `<p><b>Companion:</b> ${escapeHtml(faction.companion)}</p>` : ""}
 
     <h3>Summary</h3>
-    <p>${faction.summary}</p>
+    <p>${escapeHtml(faction.summary)}</p>
 
     <h3>Goals</h3>
     ${listHtml(faction.goals)}
@@ -14157,12 +14157,12 @@ async function generateFactionContact() {
   output.innerHTML += `
     <hr>
     <h2>🕵 Generated Local Contact</h2>
-    <p><b>Name:</b> ${contact.name}</p>
-    <p><b>Role:</b> ${contact.role}</p>
-    <p><b>Faction:</b> ${contact.faction}</p>
-    <p><b>Location:</b> ${contact.region}, ${contact.location}</p>
-    <p><b>Attitude:</b> ${contact.attitude}</p>
-    <p><b>Hook:</b> ${contact.hook}</p>
+    <p><b>Name:</b> ${escapeHtml(contact.name)}</p>
+    <p><b>Role:</b> ${escapeHtml(contact.role)}</p>
+    <p><b>Faction:</b> ${escapeHtml(contact.faction)}</p>
+    <p><b>Location:</b> ${escapeHtml(contact.region)}, ${escapeHtml(contact.location)}</p>
+    <p><b>Attitude:</b> ${escapeHtml(contact.attitude)}</p>
+    <p><b>Hook:</b> ${escapeHtml(contact.hook)}</p>
   `;
 }
 
@@ -15560,11 +15560,11 @@ async function renderWorldNotes() {
 
   box.innerHTML = notes.map(note => `
     <div class="characterMiniCard">
-      <h3>${note.type}: ${note.title}</h3>
-      <p>${note.region}, ${note.location}</p>
-      <p>${note.content || "No information added yet."}</p>
-      <button class="editWorldNoteBtn" data-id="${note.id}">Edit</button>
-      <button class="deleteWorldNoteBtn" data-id="${note.id}">Delete</button>
+      <h3>${escapeHtml(note.type)}: ${escapeHtml(note.title)}</h3>
+      <p>${escapeHtml(note.region)}, ${escapeHtml(note.location)}</p>
+      <p>${escapeHtml(note.content || "No information added yet.")}</p>
+      <button class="editWorldNoteBtn" data-id="${escapeHtml(note.id)}">Edit</button>
+      <button class="deleteWorldNoteBtn" data-id="${escapeHtml(note.id)}">Delete</button>
     </div>
   `).join("");
 

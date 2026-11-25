@@ -41,9 +41,37 @@ function validateManifest(manifest) {
   for (const collection of Object.keys(manifest.collections)) if (!SUPPORTED_COLLECTIONS.has(collection)) throw new Error(`Unsupported canonical collection: ${collection}`);
 }
 
+// Bounds for untrusted pack archives (zip bombs, huge entry counts).
+const PACK_LIMITS = Object.freeze({
+  maxArchiveBytes: 250 * 1024 * 1024,
+  maxUncompressedBytes: 750 * 1024 * 1024,
+  maxEntries: 10000,
+  maxEntryBytes: 200 * 1024 * 1024,
+  maxCompressionRatio: 200
+});
+
+function assertArchiveWithinLimits(entries, archiveBytes, limits = PACK_LIMITS) {
+  if (archiveBytes > limits.maxArchiveBytes) throw new Error("Content-pack archive is larger than the 250 MB limit.");
+  if (entries.length > limits.maxEntries) throw new Error(`Content-pack archive has more than ${limits.maxEntries} entries.`);
+  const names = new Set();
+  let total = 0;
+  for (const entry of entries) {
+    const name = assertSafeRelative(entry.entryName).toLowerCase();
+    if (names.has(name)) throw new Error(`Content-pack archive contains a duplicate entry: ${entry.entryName}`);
+    names.add(name);
+    const size = Number(entry.header?.size ?? entry.size ?? 0);
+    const compressed = Number(entry.header?.compressedSize ?? entry.compressedSize ?? 0);
+    if (!Number.isFinite(size) || size < 0 || size > limits.maxEntryBytes) throw new Error(`Content-pack entry is too large: ${entry.entryName}`);
+    if (compressed > 0 && size / compressed > limits.maxCompressionRatio) throw new Error(`Content-pack entry is compressed suspiciously well: ${entry.entryName}`);
+    total += size;
+    if (total > limits.maxUncompressedBytes) throw new Error("Content-pack archive expands beyond the 750 MB limit.");
+  }
+}
+
 function extractArchive(packPath, target) {
   const zip = new AdmZip(packPath);
-  for (const entry of zip.getEntries()) assertSafeRelative(entry.entryName);
+  const entries = zip.getEntries();
+  assertArchiveWithinLimits(entries, fs.statSync(packPath).size);
   zip.extractAllTo(target, true);
   if (fs.existsSync(path.join(target, "manifest.json"))) return target;
   const roots = fs.readdirSync(target).map(name => path.join(target, name)).filter(item => fs.statSync(item).isDirectory() && fs.existsSync(path.join(item, "manifest.json")));
@@ -278,4 +306,4 @@ function installContentPack(db, packPath) {
   }
 }
 
-module.exports = { installContentPack, installContentPackFromFolder, validateManifest, prepareImport, rewriteReferences, assertSafeRelative };
+module.exports = { installContentPack, installContentPackFromFolder, validateManifest, prepareImport, rewriteReferences, assertSafeRelative, assertArchiveWithinLimits, PACK_LIMITS };

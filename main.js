@@ -58,21 +58,20 @@ const {
   getUpdateStatus,
 } = require("./src/update/updateManager.js");
 
-function safePath(basePath, relativePath) {
-  const resolved = path.resolve(
-    basePath,
-    relativePath
-  );
+const {
+  safePath,
+  pickThemeSettings,
+  assertJsonPath,
+  isAllowedDownloadUrl,
+  isAppFileUrl,
+  isAllowedPermission,
+} = require("./src/security/main-guards.js");
 
-  const resolvedBase = path.resolve(basePath);
-  if (resolved !== resolvedBase && !resolved.startsWith(resolvedBase + path.sep)) {
-    throw new Error(
-      `Path traversal blocked: ${relativePath}`
-    );
-  }
+const APP_PAGE_ROOT = path.join(__dirname, "src");
 
-  return resolved;
-}
+// The only content-pack file the renderer may install: the one the user picked
+// in the main-process file dialog.
+let chosenContentPackPath = "";
 
 let win;
 
@@ -588,7 +587,7 @@ async function downloadAutomaticUpdate() {
     }
 
     const fallbackUrl = String(currentUpdateStatus?.downloadUrl || "").trim();
-    if (/^https:\/\//i.test(fallbackUrl)) {
+    if (isAllowedDownloadUrl(fallbackUrl)) {
       try {
         await shell.openExternal(fallbackUrl);
         console.warn(
@@ -1175,9 +1174,34 @@ function createWindow() {
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
       contextIsolation: true,
-      nodeIntegration: false
+      nodeIntegration: false,
+      sandbox: true,
+      webviewTag: false
     }
   });
+
+  // Keep the window on the app's own pages: no remote navigation, no new
+  // windows, no webviews and only the browser permissions the app needs.
+  win.webContents.on("will-navigate", (event, url) => {
+    if (!isAppFileUrl(url, APP_PAGE_ROOT)) {
+      event.preventDefault();
+      console.warn("[MasterForge] Blocked navigation outside the app:", url);
+    }
+  });
+  win.webContents.on("will-redirect", (event, url) => {
+    if (!isAppFileUrl(url, APP_PAGE_ROOT)) event.preventDefault();
+  });
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    console.warn("[MasterForge] Blocked new window:", url);
+    return { action: "deny" };
+  });
+  win.webContents.on("will-attach-webview", event => event.preventDefault());
+  win.webContents.session.setPermissionRequestHandler((webContents, permission, callback) => {
+    callback(isAllowedPermission(permission));
+  });
+  win.webContents.session.setPermissionCheckHandler((webContents, permission) =>
+    isAllowedPermission(permission)
+  );
 
   if (settings.windowMaximized) {
     win.maximize();
@@ -1292,8 +1316,8 @@ ipcMain.handle(
   "updater:openDownloadPage",
   async () => {
     const downloadUrl = String(currentUpdateStatus?.downloadUrl || "").trim();
-    if (!/^https:\/\//i.test(downloadUrl)) {
-      throw new Error("No confirmed HTTPS installer URL is available.");
+    if (!isAllowedDownloadUrl(downloadUrl)) {
+      throw new Error("No confirmed installer URL on an approved MasterForge download host is available.");
     }
     await shell.openExternal(downloadUrl);
     console.log("[MasterForge Updater] Opened installer URL externally:", downloadUrl);
@@ -1621,6 +1645,12 @@ ipcMain.handle("migration:jsonToDb", () => {
 ipcMain.handle(
   "content:installPack",
   async (event, packPath) => {
+    // Only install the file the user chose in the dialog, never an arbitrary
+    // path supplied by the renderer.
+    if (!chosenContentPackPath || path.resolve(String(packPath || "")) !== chosenContentPackPath) {
+      throw new Error("Choose the content pack with the Install Content Pack dialog first.");
+    }
+    chosenContentPackPath = "";
     return installContentPack(
       dmDatabase,
       packPath
@@ -1655,9 +1685,11 @@ ipcMain.handle("content:choosePackFile", async () => {
   });
 
   if (result.canceled || !result.filePaths[0]) {
+    chosenContentPackPath = "";
     return null;
   }
 
+  chosenContentPackPath = path.resolve(result.filePaths[0]);
   return result.filePaths[0];
 });
 
@@ -1897,7 +1929,7 @@ ipcMain.handle("file:writeJson", (event, relativePath, data) => {
   const fullPath =
   safePath(
     settings.dataPath,
-    relativePath
+    assertJsonPath(relativePath)
   );
   ensureFolder(path.dirname(fullPath));
 
@@ -2042,9 +2074,11 @@ ipcMain.handle("theme:getSettings", () => {
 ipcMain.handle("theme:saveSettings", (event, themeSettings) => {
   const settings = readSettings();
 
+  // Only theme keys may come from the renderer. The data folder can only be
+  // changed through settings:chooseDataPath (a main-process folder dialog).
   const updated = {
     ...settings,
-    ...themeSettings
+    ...pickThemeSettings(themeSettings)
   };
 
   writeSettings(updated);
