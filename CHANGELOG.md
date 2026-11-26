@@ -1,5 +1,11 @@
 # MasterForge Studio Changelog
 
+## Unreleased
+
+### Improvements
+
+- Session Prompter: while a script is playing, the prompter now sits at the top of the panel, with the script, speed, text and display controls in a compact row underneath. Edit mode keeps the controls above the editor as before.
+
 ## v0.3.7-alpha
 
 ### Highlights
