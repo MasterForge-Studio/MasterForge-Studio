@@ -11931,6 +11931,44 @@ body[data-manual-visual="true"] .dmEntityWorkspaceTabs button[aria-pressed="true
   text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9) !important;
 }
 
+/* Prompt mode: prompter first, then a compact row of controls underneath.
+   renderer.js adds .is-prompting to #story while the prompter is running. */
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting {
+  display: flex !important;
+  flex-direction: column;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting #storyPromptLayout {
+  order: -1;
+  margin: 0 0 14px !important;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting #storyToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  margin-bottom: 0;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting .prompterControlGroup {
+  align-content: flex-start;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting .prompterScriptControls {
+  flex: 1 1 260px;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting :is(
+  .prompterPlaybackControls,
+  .prompterTextControls
+) {
+  flex: 1 1 140px;
+}
+
+#sessionPrompterSlideDown .embeddedSessionPrompter.is-prompting .prompterDisplayControls {
+  flex: 1 1 320px;
+}
+
 @media (max-width: 900px) {
   #sessionPrompterSlideDown .embeddedSessionPrompter #storyToolbar {
     grid-template-columns: minmax(0, 1fr);

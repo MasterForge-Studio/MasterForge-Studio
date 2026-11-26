@@ -4863,6 +4863,8 @@ function enterStoryPromptMode() {
   els.storyEditorLayout.classList.add("hidden");
   els.scriptTitleInput.classList.add("hidden");
   els.storyPromptLayout.classList.remove("hidden");
+  // Prompt mode: the stylesheet moves the prompter above the controls.
+  els.storyPromptLayout.closest("#story")?.classList.add("is-prompting");
 
   promptRunning = true;
 
@@ -4881,6 +4883,7 @@ function enterStoryEditMode() {
   els.storyEditorLayout.classList.remove("hidden");
   els.scriptTitleInput.classList.remove("hidden");
   els.storyPromptLayout.classList.add("hidden");
+  els.storyPromptLayout.closest("#story")?.classList.remove("is-prompting");
 
   promptRunning = false;
   const pauseBtn = document.querySelector("#pausePromptBtn");
