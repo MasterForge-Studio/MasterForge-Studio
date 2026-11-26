@@ -55,7 +55,9 @@ jobs:
         run: npm ci
 
       - name: Build Windows x64 installer
-        run: npm run dist:win
+        # --publish never: electron-builder must not upload on its own because
+        # GH_TOKEN is set. The next steps upload a matching set explicitly.
+        run: npm run dist:win -- --publish never
 
       - name: Locate Windows installer
         id: installer
@@ -86,16 +88,40 @@ jobs:
           "path=$installerPath" >> $env:GITHUB_OUTPUT
           "name=$assetName" >> $env:GITHUB_OUTPUT
 
-      - name: Attach installer to GitHub Release
+      # This build replaces the installer that tools/release.ps1 uploaded, so
+      # every file that describes the installer is replaced from this build too:
+      # blockmap, SHA-256 checksum file and latest.yml (the auto-updater's
+      # sha512). latest.yml goes last so the updater never sees a new
+      # latest.yml before the matching installer.
+      - name: Attach installer and matching update files to GitHub Release
         shell: pwsh
         env:
           INSTALLER_PATH: ${{ steps.installer.outputs.path }}
+          INSTALLER_NAME: ${{ steps.installer.outputs.name }}
         run: |
-          gh release upload `
-            $env:RELEASE_TAG `
-            $env:INSTALLER_PATH `
-            --clobber `
-            --repo $env:GITHUB_REPOSITORY
+          $packageVersion = node -p "require('./package.json').version"
+          $blockmapPath = "$env:INSTALLER_PATH.blockmap"
+          $checksumPath = "$env:INSTALLER_PATH.sha256"
+          $latestYmlPath = Join-Path $env:GITHUB_WORKSPACE "release\latest.yml"
+
+          foreach ($required in @($blockmapPath, $latestYmlPath)) {
+            if (-not (Test-Path -LiteralPath $required -PathType Leaf)) {
+              throw "Expected build output '$required' was not generated."
+            }
+          }
+
+          if ((Get-Content -LiteralPath $latestYmlPath -Raw) -notmatch "version:\s*$([regex]::Escape($packageVersion))") {
+            throw "latest.yml does not contain the expected version: $packageVersion"
+          }
+
+          $checksum = (Get-FileHash -LiteralPath $env:INSTALLER_PATH -Algorithm SHA256).Hash.ToLowerInvariant()
+          "$checksum  $env:INSTALLER_NAME" | Set-Content -LiteralPath $checksumPath -Encoding ascii
+          Write-Host "Installer SHA-256: $checksum"
+
+          foreach ($asset in @($blockmapPath, $env:INSTALLER_PATH, $checksumPath, $latestYmlPath)) {
+            gh release upload $env:RELEASE_TAG $asset --clobber --repo $env:GITHUB_REPOSITORY
+            if ($LASTEXITCODE -ne 0) { throw "Upload failed: $asset" }
+          }
 
       - name: Sync release to WordPress
         shell: pwsh
