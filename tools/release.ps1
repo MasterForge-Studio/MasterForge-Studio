@@ -527,10 +527,14 @@ try {
         Out-Null
     }
 
-    $ReleaseNotes |
-    Set-Content `
-        -Path $ReleaseNotesPath `
-        -Encoding UTF8
+    # Write UTF-8 without a byte-order mark. Windows PowerShell 5.1's
+    # Set-Content -Encoding UTF8 adds one, which then appears at the start
+    # of the GitHub release notes and the synced website notes.
+    [System.IO.File]::WriteAllText(
+        $ReleaseNotesPath,
+        $ReleaseNotes + "`n",
+        (New-Object System.Text.UTF8Encoding $false)
+    )
 
     gh release create `
         $TagName `

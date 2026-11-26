@@ -1,10 +1,25 @@
 # MasterForge Studio Changelog
 
-## Unreleased
+## v0.3.8-alpha
+
+### Highlights
+
+- Session Prompter: while a script is playing, the prompter now sits at the top of the panel, so the read-aloud text is the first thing you see.
 
 ### Improvements
 
-- Session Prompter: while a script is playing, the prompter now sits at the top of the panel, with the script, speed, text and display controls in a compact row underneath. Edit mode keeps the controls above the editor as before.
+- The script, speed, text and display controls sit in a compact row underneath the prompter while it plays. Edit mode keeps the controls above the editor as before.
+
+### Release process
+
+- The installer's `.sha256` checksum file now always matches the published installer.
+- Release notes no longer start with a hidden character on GitHub or masterforgestudio.com.
+
+### Notes
+
+- No data changes; existing campaigns, scripts and content packs are unaffected.
+- This is an Alpha release.
+- The Windows installer remains unsigned, so Windows SmartScreen or antivirus warnings may appear.
 
 ## v0.3.7-alpha
 

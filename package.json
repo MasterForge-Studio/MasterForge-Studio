@@ -1,7 +1,7 @@
 {
   "name": "masterforge-studio",
   "productName": "MasterForge Studio",
-  "version": "0.3.7-alpha",
+  "version": "0.3.8-alpha",
   "description": "MasterForge Studio — offline-first campaign management for Game Masters.",
   "main": "main.js",
   "scripts": {
